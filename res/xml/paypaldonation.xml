@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+            android:title="@string/paypal_category_inoformation">
+ 	
+		<PreferenceScreen
+		    	android:key="@string/paypal_key_info"
+				android:title="@string/paypal_info"
+				android:summary="@string/paypal_info_sum" />
+	    
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+            android:title="@string/paypal_category_paypal">
+ 	
+		<PreferenceScreen
+			android:title="@string/paypal_receiver"
+			android:summary="@string/paypal_mail_mo" />
+ 
+		<EditTextPreference
+			android:key="@string/paypal_key_sender"
+			android:title="@string/paypal_sender"
+			android:dialogTitle="@string/paypal_sender_dialog" />
+		
+		<EditTextPreference
+			android:key="@string/paypal_key_value"
+			android:title="@string/paypal_value"
+			android:dialogTitle="@string/paypal_value_dialog"
+			android:numeric="decimal" />
+		
+		<PreferenceScreen
+		    android:key="@string/paypal_key_send"
+			android:title="@string/paypal_send"
+			android:summary="@string/paypal_send_sum" />
+		
+                 
+	
+    </PreferenceCategory>
+    
+
+</PreferenceScreen>
