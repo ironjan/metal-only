@@ -34,6 +34,9 @@ import android.widget.ListView;
  */
 public class FavoritesActivity extends SubActivity implements OnItemClickListener{
 	
+	// JSON file name for favorites
+	public static final String JSON_FILE_FAV = "mo_fav.json";
+	
 	// GUI
 	private ListView listView;
 	private Menu menu;
@@ -48,7 +51,7 @@ public class FavoritesActivity extends SubActivity implements OnItemClickListene
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
-		favoritesSaver = new SongSaver(this, MainActivity.KEY_SP_FAVORITE, -1);
+		favoritesSaver = new SongSaver(this, JSON_FILE_FAV, -1);
 		listView = (ListView)findViewById(R.id.listView1);
 		listView.setOnItemClickListener(this);
 		displayFavorites();

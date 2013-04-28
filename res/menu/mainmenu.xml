@@ -14,9 +14,6 @@
     	android:id="@+id/favorites"
         android:title="@string/menu_favorites" />
     <item
-    	android:id="@+id/website"
-        android:title="@string/menu_website" />
-    <item
     	android:id="@+id/donation"
         android:title="@string/menu_donation" />
     <item

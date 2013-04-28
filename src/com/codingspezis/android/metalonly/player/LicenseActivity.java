@@ -155,8 +155,9 @@ public class LicenseActivity extends SubActivity {
 			char buffer[] = new char[BUFF_SIZE];
 			do {
 				read = fr.read(buffer, 0, BUFF_SIZE);
-				s += String.valueOf(buffer, 0, read);
+				if(read > 0) s += String.valueOf(buffer, 0, read);
 			} while (read == BUFF_SIZE);
+			fr.close();
 			return s;
 		}
 	}

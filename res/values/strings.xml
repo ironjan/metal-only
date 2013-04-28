@@ -10,7 +10,6 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_favorites">Favoriten</string>
     <string name="menu_history">Verlauf</string>
-    <string name="menu_website">Website</string>
     <string name="menu_donation">Spende</string>
     <string name="menu_info">Info</string>
     
@@ -142,11 +141,11 @@
     <string-array name="favorite_options_array">
         <item>Wünschen</item>
         <item>Auf YouTube suchen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
         <item>Löschen</item>
     </string-array>
 	<string name="menu_deleteall">Alle löschen</string>
-	<string name="menu_shareall">Alle freigeben</string>
+	<string name="menu_shareall">Alle teilen</string>
 	<string name="delete_sure">Wirklich alle Einträge entfernen?</string>
     
     <!-- other features -->
@@ -157,7 +156,7 @@
     <string-array name="history_options_array">
         <item>Zu Favoriten hinzufügen</item>
         <item>Auf YouTube suchen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
     </string-array>
     <string name="fav_added">Erfolgreich hinzugefügt</string>
     <string name="fav_already_in">Titel ist bereits ein Favorit</string>
@@ -198,7 +197,7 @@
     <!-- plan -->
     <string-array name="plan_options_array">
         <item>Zu Kalender hinzufügen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
     </string-array>
     
 </resources>

@@ -6,7 +6,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
 
-import com.codingspezis.android.lazylistmodification.FileCache;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.SongSaver.Song;
 import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
@@ -49,7 +48,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
  * 
  * TODO: better lazylist
  * TODO: check static string (e.g. PlanGrabber is useless)
- * TODO: better song saving
  * 
  */
 public class MainActivity extends SherlockActivity implements OnClickListener, OnItemClickListener{
@@ -62,7 +60,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 	public static final int INTENT_RETURN_FAV =	0;
 	
 	// shared preferences keys
-	public static final String KEY_SP_FAVORITE =	"MO_SP_FAVORITE";
 	public static final String KEY_SP_MODTHUMBDATE ="MO_SP_MODTHUMBDATE_";
 	
 	// GUI objects
@@ -93,10 +90,11 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 		getSupportActionBar().setHomeButtonEnabled(false);
 		setContentView(R.layout.main_history);
 		setSupportProgressBarIndeterminateVisibility(false);
+		
 		setUpBroadcastReceiver();
 		setUpPlayerService();
+		setUpDataObjects();	
 		setUpGUIObjects();
-		setUpDataObjects();		
 	}
 	
 	@Override
@@ -107,7 +105,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 	
 	@Override
 	public void onDestroy(){
-		FileCache.clear(getApplicationContext());
 		Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
 		sendBroadcast(tmpIntent);
 		unregisterReceiver(broadcastReceiver);
@@ -118,7 +115,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 	 * sets up data objects
 	 */
 	private void setUpDataObjects(){
-		favoritesSaver = new SongSaver(this, KEY_SP_FAVORITE, -1);
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
 		metadataParser = new MetadataParser("-");
 	}
 
@@ -167,7 +164,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 	 * displays history songs on screen
 	 */
 	private void displaySongs(){
-		historySaver = new SongSaver(this, PlayerService.SP_HISTORY, PlayerService.HISTORY_ENTRIES);
+		historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST, PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 		for(int i=historySaver.size()-1; i>=0; i--){
@@ -228,12 +225,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener, O
 			favoritesSaver.saveSongsToStorage(); // this shouldn't be needed because of onPause function
 			Intent favoritesIntent = new Intent(getApplicationContext(), FavoritesActivity.class);
 			startActivityForResult(favoritesIntent, INTENT_RETURN_FAV);
-		}
-		else if(item.getItemId() == 	R.id.website)
-		{
-			Uri metalOnly = Uri.parse("http://metal-only.de/");
-			Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
-			startActivity(homepage);
 		}
 		else if(item.getItemId() == 	R.id.donation)
 		{
