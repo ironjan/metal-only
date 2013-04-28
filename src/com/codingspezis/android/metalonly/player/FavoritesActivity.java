@@ -2,11 +2,13 @@ package com.codingspezis.android.metalonly.player;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
+import com.codingspezis.android.metalonly.player.SongSaver.Song;
 import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
 
 import android.app.AlertDialog;
@@ -20,14 +22,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 
 /**
  * FavoritesActivity
  * @version 09.01.2013
- *
- * TODO: option for adding songs manually
- * TODO: saving via xml
  *
  * this activity displays favorites and allows to handle them
  *
@@ -61,6 +61,30 @@ public class FavoritesActivity extends SubActivity implements OnItemClickListene
 	public void onPause(){
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
+	}
+	
+	private void showAddSongDialog(){
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		alert.setTitle(R.string.menu_add_mannually);
+		final View v = getLayoutInflater().inflate(R.layout.add_song, null);
+		alert.setView(v);
+		alert.setNegativeButton(R.string.abort, null);
+		alert.setPositiveButton(R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {				
+				EditText artist = (EditText) v.findViewById(R.id.edit_artist);
+				EditText title  = (EditText) v.findViewById(R.id.edit_title);
+				Song song = new Song();
+				song.interpret = artist.getText().toString();
+				song.title     = title.getText().toString();
+				song.date = Calendar.getInstance().getTimeInMillis();
+				if(song.isValid() && favoritesSaver.isAlreadyIn(song)<0){
+					favoritesSaver.addSong(song);
+					displayFavorites();
+				}
+			}
+		});
+		alert.show();
 	}
 	
 	/**
@@ -153,6 +177,7 @@ public class FavoritesActivity extends SubActivity implements OnItemClickListene
 		this.menu=menu;
 		SubMenu sub = menu.addSubMenu(0, R.id.menu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
+		sub.add(0, R.id.add_manually, 0, R.string.menu_add_mannually);
 		sub.add(0, R.id.shareall, 0, R.string.menu_shareall);
 		sub.add(0, R.id.deleteall, 0, R.string.menu_deleteall);
         sub.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -177,8 +202,12 @@ public class FavoritesActivity extends SubActivity implements OnItemClickListene
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
+		// add manually
+		if(item.getItemId() == 			R.id.add_manually){	
+			showAddSongDialog();
+		}
 		// share all
-		if(item.getItemId() == 			R.id.shareall){	
+		else if(item.getItemId() == 			R.id.shareall){	
 			// generate share string
 			String message = "";
 			for(int i=favoritesSaver.size()-1; i>=0; i--){

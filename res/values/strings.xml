@@ -146,6 +146,7 @@
     </string-array>
 	<string name="menu_deleteall">Alle löschen</string>
 	<string name="menu_shareall">Alle teilen</string>
+	<string name="menu_add_mannually">Favorit hinzufügen</string>
 	<string name="delete_sure">Wirklich alle Einträge entfernen?</string>
     
     <!-- other features -->
