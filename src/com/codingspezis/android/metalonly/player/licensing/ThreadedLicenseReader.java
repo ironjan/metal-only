@@ -5,11 +5,8 @@ import java.io.*;
 import com.codingspezis.android.metalonly.player.*;
 
 /**
- * ThreadedLicenseReader
  * 
- * @version 08.01.2013
- * 
- *          loads licenses asynchronous
+ * loads licenses asynchronous
  * 
  */
 public class ThreadedLicenseReader extends Thread {

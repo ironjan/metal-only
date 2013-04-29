@@ -4,7 +4,6 @@ import java.net.*;
 import java.text.*;
 import java.util.*;
 
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
@@ -23,6 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
 import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
 import com.codingspezis.android.metalonly.player.utils.*;
@@ -30,15 +30,11 @@ import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
- * MainActivity
- * 
- * @version 07.02.2013
- * 
- *          main GUI activity
+ * main GUI activity
  * 
  * 
- *          TODO: better lazylist TODO: check static string (e.g. PlanGrabber is
- *          useless) TODO: better song saving
+ * TODO: better lazylist TODO: check static string (e.g. PlanGrabber is useless)
+ * TODO: better song saving
  * 
  */
 public class MainActivity extends SherlockActivity implements OnClickListener,

@@ -3,15 +3,11 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.content.*;
 
 import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.stream.*;
 
 /**
- * MainBroadcastReceiver
  * 
- * @version 25.12.2012
- * 
- *          broadcast receiver class for communication between other activities
- *          or services
+ * broadcast receiver class for communication between other activities or
+ * services
  * 
  */
 public class MainBroadcastReceiver extends BroadcastReceiver {

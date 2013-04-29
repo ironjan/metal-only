@@ -5,11 +5,7 @@ import android.os.*;
 import android.widget.*;
 
 /**
- * StreamWatcher
- * 
- * @version 22.12.2012
- * 
- *          listener for stream (e.g. meta data)
+ * listener for stream (e.g. meta data)
  * 
  */
 class StreamWatcher implements OnStreamListener {
@@ -52,18 +48,23 @@ class StreamWatcher implements OnStreamListener {
 
 	@Override
 	public void errorOccurred(final String err, final boolean canPlay) {
-		(new Handler(this.playerService.playerService.getMainLooper())).post(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(StreamWatcher.this.playerService.playerService, err, Toast.LENGTH_LONG)
-						.show();
-				if (!canPlay) {
-					Intent tmpIntent = new Intent(PlayerService.INTENT_STATUS);
-					tmpIntent.putExtra(PlayerService.EXTRA_CONNECTED, false);
-					StreamWatcher.this.playerService.sendBroadcast(tmpIntent);
-				}
-			}
-		});
+		(new Handler(this.playerService.playerService.getMainLooper()))
+				.post(new Runnable() {
+					@Override
+					public void run() {
+						Toast.makeText(
+								StreamWatcher.this.playerService.playerService,
+								err, Toast.LENGTH_LONG).show();
+						if (!canPlay) {
+							Intent tmpIntent = new Intent(
+									PlayerService.INTENT_STATUS);
+							tmpIntent.putExtra(PlayerService.EXTRA_CONNECTED,
+									false);
+							StreamWatcher.this.playerService
+									.sendBroadcast(tmpIntent);
+						}
+					}
+				});
 	}
 
 	@Override

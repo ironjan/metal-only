@@ -1,20 +1,14 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.plan;
 
 import java.io.*;
-
 
 import android.content.*;
 import android.os.*;
 
+import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
-import com.codingspezis.android.metalonly.player.utils.*;
 
-/**
- * PlanGrabber
- * 
- * @version 24.02.2013
- */
-class PlanGrabber {
+public class PlanGrabber {
 
 	/**
 	 * 
@@ -36,7 +30,8 @@ class PlanGrabber {
 				}
 				Bundle bundle = new Bundle();
 				bundle.putString(PlanActivity.KEY_SITE, site);
-				Intent planIntent = new Intent(PlanGrabber.this.mainActivity.getApplicationContext(),
+				Intent planIntent = new Intent(
+						PlanGrabber.this.mainActivity.getApplicationContext(),
 						PlanActivity.class);
 				planIntent.putExtras(bundle);
 				PlanGrabber.this.mainActivity.startActivity(planIntent);

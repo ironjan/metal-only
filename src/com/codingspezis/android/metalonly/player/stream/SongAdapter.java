@@ -2,7 +2,6 @@ package com.codingspezis.android.metalonly.player.stream;
 
 import java.util.*;
 
-
 import android.app.*;
 import android.content.*;
 import android.view.*;
@@ -12,11 +11,8 @@ import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
- * ThreeRowAdapter
  * 
- * @version 06.01.2013
- * 
- *          adapter for displaying a 3 row list view
+ * adapter for displaying a 3 row list view
  * 
  */
 public class SongAdapter extends BaseAdapter {

@@ -10,7 +10,6 @@ import org.apache.http.impl.client.*;
 import org.apache.http.message.*;
 import org.apache.http.protocol.*;
 
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
@@ -20,17 +19,11 @@ import android.view.View.OnClickListener;
 import android.webkit.*;
 import android.widget.*;
 
-import com.codingspezis.android.metalonly.player.utils.*;
 import com.codingspezis.android.metalonly.player.wish.*;
-import com.codingspezis.android.metalonly.player.wish.WishChecker.*;
 
 /**
- * WishActivity
- * 
- * @version 06.01.2013
- * 
- *          activity that is showing a GUI for entering and sending wishes
- *          and/or regards to metal-only.de
+ * activity that is showing a GUI for entering and sending wishes and/or regards
+ * to metal-only.de
  * 
  */
 public class WishActivity extends SubActivity implements OnClickListener {

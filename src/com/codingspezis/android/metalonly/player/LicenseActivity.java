@@ -6,14 +6,10 @@ import android.view.*;
 import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.licensing.*;
-import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
- * LicenseActivity
  * 
- * @version 08.01.2013
- * 
- *          displays one of: mit | lgpl | apache
+ * displays one of: mit | lgpl | apache
  * 
  */
 public class LicenseActivity extends SubActivity {

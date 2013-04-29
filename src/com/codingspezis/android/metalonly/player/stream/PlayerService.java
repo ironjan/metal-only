@@ -2,27 +2,18 @@ package com.codingspezis.android.metalonly.player.stream;
 
 import java.util.*;
 
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.media.*;
 import android.os.*;
 import android.telephony.*;
-import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.R.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver.*;
-import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
- * PlayerService
  * 
- * @version 24.02.2013
- * 
- *          service that is managing stream player
+ * service that is managing stream player
  * 
  */
 public class PlayerService extends Service {
@@ -69,7 +60,7 @@ public class PlayerService extends Service {
 
 		playerBCReceiver = new PlayerBCReceiver(this);
 		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		phoneStateListener = new MyPhoneStateListener();
+		phoneStateListener = new MyPhoneStateListener(this);
 		telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		telephonyManager.listen(phoneStateListener,
 				PhoneStateListener.LISTEN_CALL_STATE);
@@ -96,7 +87,8 @@ public class PlayerService extends Service {
 	 * instantiates music stream with selected player class (from
 	 * SettingsActivity)
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB) void instantiateSelectedPlayer() {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	void instantiateSelectedPlayer() {
 		SharedPreferences prefs = getSharedPreferences(
 				getString(R.string.app_name), Context.MODE_MULTI_PROCESS);
 		String rate = prefs.getString(getString(R.string.settings_key_rate),
@@ -114,7 +106,8 @@ public class PlayerService extends Service {
 	 * @param contentText
 	 *            text that should be displayed in the notify
 	 */
-	@SuppressWarnings("deprecation") void notify(String contentText) {
+	@SuppressWarnings("deprecation")
+	void notify(String contentText) {
 		if (audioStream != null && audioStream.isPlaying()) {
 			// text and icon
 			CharSequence tickerText = getResources()
@@ -193,46 +186,6 @@ public class PlayerService extends Service {
 			tmpIntent.putExtra(EXTRA_META, "");
 		}
 		sendBroadcast(tmpIntent);
-	}
-
-	/**
-	 * MyPhoneStateListener
-	 * 
-	 * @version < 22.12.2012
-	 * 
-	 *          listener for muting stream at calls
-	 * 
-	 */
-	private class MyPhoneStateListener extends PhoneStateListener {
-
-		private boolean mute;
-		private final AudioManager audioManager;
-
-		public MyPhoneStateListener() {
-			super();
-			audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-			mute = false;
-		}
-
-		@Override
-		public void onCallStateChanged(int state, String incomingNumber) {
-			super.onCallStateChanged(state, incomingNumber);
-			// call ended
-			if (state == TelephonyManager.CALL_STATE_IDLE) {
-				if (mute) {
-					audioManager
-							.setStreamMute(AudioManager.STREAM_MUSIC, false);
-					mute = false;
-				}
-				// call active
-			} else if (state == TelephonyManager.CALL_STATE_RINGING
-					|| state == TelephonyManager.CALL_STATE_OFFHOOK) {
-				if (!mute) {
-					audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-					mute = true;
-				}
-			}
-		}
 	}
 
 	@Override

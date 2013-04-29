@@ -2,17 +2,11 @@ package com.codingspezis.android.metalonly.player.stream;
 
 import java.util.*;
 
-
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver.*;
-import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
- * MetadataParser
  * 
- * @version 27.12.2012
- * 
- *          parses interpret title genre and moderator from meta data
+ * parses interpret title genre and moderator from meta data
  * 
  */
 public class MetadataParser {
@@ -68,8 +62,8 @@ public class MetadataParser {
 		song.title = TITLE;
 		song.thumb = MODERATOR;
 		if (song.thumb.indexOf(" OnAir") > 0) {
-			song.thumb = song.thumb.substring(0,
-					song.thumb.indexOf(" OnAir")).trim();
+			song.thumb = song.thumb.substring(0, song.thumb.indexOf(" OnAir"))
+					.trim();
 		}
 		song.date = Calendar.getInstance().getTimeInMillis();
 		return song;

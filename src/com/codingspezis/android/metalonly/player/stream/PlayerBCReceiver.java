@@ -1,15 +1,10 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import com.codingspezis.android.metalonly.player.stream.*;
-
 import android.content.*;
 
 /**
- * PlayerBCReceiver
  * 
- * @version 25.12.2012
- * 
- *          broadcast receiver that handles messages for this service
+ * broadcast receiver that handles messages for this service
  * 
  */
 public class PlayerBCReceiver extends BroadcastReceiver {
@@ -35,7 +30,8 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 			}
 			this.playerService.instantiateSelectedPlayer();
 			this.playerService.streamPlaying = true;
-			this.playerService.audioStream.setOnStreamListener(this.playerService.streamWatcher);
+			this.playerService.audioStream
+					.setOnStreamListener(this.playerService.streamWatcher);
 			this.playerService.audioStream.startPlaying();
 		}
 		// stop stream

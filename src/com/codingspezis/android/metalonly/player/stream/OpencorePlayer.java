@@ -6,15 +6,11 @@ import android.util.*;
 import com.spoledge.aacdecoder.*;
 
 /**
- * AACPlayerModified
- * @version 09.01.2013
- *
- * adds isPlaying functionality to MultiPlayer
- * sets priority higher
+ * adds isPlaying functionality to MultiPlayer sets priority higher
  * 
  */
-class OpencorePlayer extends MultiPlayer{
-	
+class OpencorePlayer extends MultiPlayer {
+
 	/**
 	 * 
 	 */
@@ -22,23 +18,28 @@ class OpencorePlayer extends MultiPlayer{
 
 	/**
 	 * same as super(cb)
+	 * 
 	 * @see AACPlaye(PlayerCallback cb)
-	 * @param cb the callback, can be null
-	 * @param streamPlayerOpencore TODO
+	 * @param cb
+	 *            the callback, can be null
+	 * @param streamPlayerOpencore
+	 *            TODO
 	 */
-	public OpencorePlayer(StreamPlayerOpencore streamPlayerOpencore, PlayerCallback cb){
+	public OpencorePlayer(StreamPlayerOpencore streamPlayerOpencore,
+			PlayerCallback cb) {
 		super(cb);
 		this.streamPlayerOpencore = streamPlayerOpencore;
 	}
-	
+
 	/**
 	 * is AACPlayer playing?
+	 * 
 	 * @return true if playing loop is still working - false otherwise
 	 */
-	public boolean isPlaying(){
+	public boolean isPlaying() {
 		return !stopped;
 	}
-	
+
 	/**
 	 * difference to original method:
 	 * Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
@@ -46,28 +47,31 @@ class OpencorePlayer extends MultiPlayer{
 	@Override
 	public void playAsync(final String url, final int expectedKBitSecRate) {
 		new Thread(new Runnable() {
-            @Override
+			@Override
 			public void run() {
-            	Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-            	OpencorePlayer.this.streamPlayerOpencore.wakeLock.acquire();
-            	while(OpencorePlayer.this.streamPlayerOpencore.shouldPlay){
-	                try {
-	                    play( url, expectedKBitSecRate );
-	                }
-	                catch (Exception e) {
-	                    // Log.e( LOG, "playAsync():", e);
-	                	if(e.getMessage()!=null &&
-	                	   e.getMessage().equals(Decoder.WORKAROUND_EXCEPTION)){
-	                		// reconnection max number? 
-	                		Log.e("AACDecoder", "stream could not be started -> trying again");
-	                	}else{
-	                		if (playerCallback != null) playerCallback.playerException( e );
-	                		break;
-	                	}
-	                }
-            	}
-            	OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
-            }
-        }).start();
-    }
+				Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+				OpencorePlayer.this.streamPlayerOpencore.wakeLock.acquire();
+				while (OpencorePlayer.this.streamPlayerOpencore.shouldPlay) {
+					try {
+						play(url, expectedKBitSecRate);
+					} catch (Exception e) {
+						// Log.e( LOG, "playAsync():", e);
+						if (e.getMessage() != null
+								&& e.getMessage().equals(
+										Decoder.WORKAROUND_EXCEPTION)) {
+							// reconnection max number?
+							Log.e("AACDecoder",
+									"stream could not be started -> trying again");
+						} else {
+							if (playerCallback != null) {
+								playerCallback.playerException(e);
+							}
+							break;
+						}
+					}
+				}
+				OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
+			}
+		}).start();
+	}
 }
