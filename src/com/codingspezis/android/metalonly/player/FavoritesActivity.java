@@ -4,10 +4,15 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
-import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
+import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.wish.*;
+import com.codingspezis.android.metalonly.player.wish.WishChecker.*;
 
 import android.app.AlertDialog;
 import android.content.Context;

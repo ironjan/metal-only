@@ -1,13 +1,15 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.stream;
 
 import java.util.*;
+
 
 import android.app.*;
 import android.content.*;
 import android.view.*;
 import android.widget.*;
 
-import com.codingspezis.android.lazylistmodification.*;
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
  * ThreeRowAdapter

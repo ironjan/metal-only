@@ -1,16 +1,18 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.plan;
 
 import java.util.*;
+
 
 import android.app.*;
 import android.content.*;
 import android.view.*;
 import android.widget.*;
 
-import com.codingspezis.android.lazylistmodification.*;
 import com.codingspezis.android.metalonly.player.PlanActivity.Item;
 import com.codingspezis.android.metalonly.player.PlanActivity.PlanData;
 import com.codingspezis.android.metalonly.player.PlanActivity.SectionItem;
+import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.*;
 
 public class PlanAdapter extends BaseAdapter {
 

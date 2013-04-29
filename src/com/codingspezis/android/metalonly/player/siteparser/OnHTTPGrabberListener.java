@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.siteparser;
 
 import java.io.BufferedReader;
 

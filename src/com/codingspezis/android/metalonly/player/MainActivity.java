@@ -1,9 +1,9 @@
 package com.codingspezis.android.metalonly.player;
 
-import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
+
 
 import android.annotation.*;
 import android.app.*;
@@ -22,9 +22,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
-import com.codingspezis.android.lazylistmodification.*;
-import com.codingspezis.android.metalonly.player.SongSaver.Song;
-import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
+import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.views.*;
+import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
  * MainActivity
@@ -106,14 +109,14 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 */
 	private void setUpDataObjects() {
 		favoritesSaver = new SongSaver(this, KEY_SP_FAVORITE, -1);
-		metadataParser = new MetadataParser("-");
+		setMetadataParser(new MetadataParser("-"));
 	}
 
 	/**
 	 * initializes main broadcast receiver with filters
 	 */
 	private void setUpBroadcastReceiver() {
-		broadcastReceiver = new MainBroadcastReceiver();
+		broadcastReceiver = new MainBroadcastReceiver(this);
 		registerReceiver(broadcastReceiver, new IntentFilter(
 				PlayerService.INTENT_STATUS));
 		registerReceiver(broadcastReceiver, new IntentFilter(
@@ -159,7 +162,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	/**
 	 * displays history songs on screen
 	 */
-	private void displaySongs() {
+	public void displaySongs() {
 		historySaver = new SongSaver(this, PlayerService.SP_HISTORY,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
@@ -185,7 +188,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 *            if this value is true the button shows stop from now on;
 	 *            otherwise play is shown
 	 */
-	private void toggleStreamButton(boolean listening) {
+	public void toggleStreamButton(boolean listening) {
 		if (listening) {
 			buttonStream.setImageResource(R.drawable.mo_stop5);
 		} else {
@@ -277,7 +280,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public void onClick(View arg0) {
 		// stream start / stop
 		if (arg0 == buttonStream) {
-			if (shouldPlay) {
+			if (isShouldPlay()) {
 				stopListening();
 			} else {
 				if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
@@ -304,7 +307,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	}
 
 	private void startPlanActivity() {
-		PlanGrabber pg = new PlanGrabber(this,
+		PlanGrabber pg = new PlanGrabber(this, this,
 				"http://www.metal-only.de/botcon/mob.php?action=plan");
 		pg.start();
 	}
@@ -378,7 +381,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 */
 	private void startListening() {
 		setSupportProgressBarIndeterminateVisibility(true);
-		shouldPlay = true;
+		setShouldPlay(true);
 		toggleStreamButton(true);
 		Intent tmpIntent = new Intent(PlayerService.INTENT_PLAY);
 		sendBroadcast(tmpIntent);
@@ -387,9 +390,9 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	/**
 	 * sets listening to false sends stop intent to PlayerService
 	 */
-	private void stopListening() {
+	public void stopListening() {
 		setSupportProgressBarIndeterminateVisibility(false);
-		shouldPlay = false;
+		setShouldPlay(false);
 		clearMetadata();
 		toggleStreamButton(false);
 		Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
@@ -402,10 +405,10 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * @param metadata
 	 *            data to display
 	 */
-	private void displayMetadata() {
-		if (metadataParser.toSong().isValid() && shouldPlay) {
-			marqueeGenre.setText(metadataParser.getGENRE());
-			marqueeMod.setText(metadataParser.getMODERATOR());
+	public void displayMetadata() {
+		if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
+			marqueeGenre.setText(getMetadataParser().getGENRE());
+			marqueeMod.setText(getMetadataParser().getMODERATOR());
 		}
 	}
 
@@ -415,7 +418,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	private void clearMetadata() {
 		marqueeGenre.setText("");
 		marqueeMod.setText("");
-		metadataParser = new MetadataParser("-");
+		setMetadataParser(new MetadataParser("-"));
 	}
 
 	@Override
@@ -530,193 +533,25 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		return sdf.format(calendar.getTime());
 	}
 
+	public boolean isShouldPlay() {
+		return shouldPlay;
+	}
+
+	public void setShouldPlay(boolean shouldPlay) {
+		this.shouldPlay = shouldPlay;
+	}
+
+	public MetadataParser getMetadataParser() {
+		return metadataParser;
+	}
+
+	public void setMetadataParser(MetadataParser metadataParser) {
+		this.metadataParser = metadataParser;
+	}
+
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * classes * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 * * * *
 	 */
-
-	/**
-	 * MetadataParser
-	 * 
-	 * @version 27.12.2012
-	 * 
-	 *          parses interpret title genre and moderator from meta data
-	 * 
-	 */
-	public static class MetadataParser {
-
-		private String INTERPRET;
-		private String TITLE;
-		private String GENRE;
-		private String MODERATOR;
-
-		public MetadataParser(String data) {
-			try {
-				if (numberOfStars(data) >= 3) {
-					String[] slices = data.split("\\*");
-					MODERATOR = slices[1].trim();
-					GENRE = slices[2].trim();
-					data = slices[0].trim();
-				} else {
-					MODERATOR = "MetalHead OnAir";
-					GENRE = "Mixed Metal";
-				}
-			} catch (Exception e) {
-				MODERATOR = "";
-				GENRE = "";
-			}
-			try {
-				INTERPRET = data.substring(0, data.indexOf(" - ")).trim();
-				TITLE = data.substring(data.indexOf(" - ") + 2).trim();
-			} catch (Exception e) {
-				INTERPRET = "";
-				TITLE = "";
-			}
-		}
-
-		public String getINTERPRET() {
-			return INTERPRET;
-		}
-
-		public String getTITLE() {
-			return TITLE;
-		}
-
-		public String getGENRE() {
-			return GENRE;
-		}
-
-		public String getMODERATOR() {
-			return MODERATOR;
-		}
-
-		public Song toSong() {
-			Song song = new Song();
-			song.interpret = INTERPRET;
-			song.title = TITLE;
-			song.thumb = MODERATOR;
-			if (song.thumb.indexOf(" OnAir") > 0) {
-				song.thumb = song.thumb.substring(0,
-						song.thumb.indexOf(" OnAir")).trim();
-			}
-			song.date = Calendar.getInstance().getTimeInMillis();
-			return song;
-		}
-
-		/**
-		 * checks string str for occurrence of '*'
-		 * 
-		 * @param str
-		 *            string to check
-		 * @return number of char '*' containing in str
-		 */
-		private int numberOfStars(String str) {
-			if (str.length() == 0) {
-				return 0;
-			}
-			if (str.charAt(0) == '*') {
-				return 1 + numberOfStars(str.substring(1));
-			} else {
-				return numberOfStars(str.substring(1));
-			}
-		}
-
-	}
-
-	/**
-	 * MainBroadcastReceiver
-	 * 
-	 * @version 25.12.2012
-	 * 
-	 *          broadcast receiver class for communication between other
-	 *          activities or services
-	 * 
-	 */
-	private class MainBroadcastReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// is playing?
-			if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
-				setSupportProgressBarIndeterminateVisibility(false);
-				if (intent
-						.getBooleanExtra(PlayerService.EXTRA_CONNECTED, false)) {
-					shouldPlay = true;
-					toggleStreamButton(true);
-					metadataParser = new MetadataParser(
-							intent.getStringExtra(PlayerService.EXTRA_META));
-					displayMetadata();
-				} else {
-					stopListening();
-					toggleStreamButton(false);
-				}
-				// meta data
-			} else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-				String metadata = intent
-						.getStringExtra(PlayerService.EXTRA_META);
-				metadataParser = new MetadataParser(metadata);
-				displayMetadata();
-				displaySongs();
-			}
-		}
-	}
-
-	/**
-	 * PlanGrabber
-	 * 
-	 * @version 24.02.2013
-	 */
-	private class PlanGrabber {
-
-		private final Context context;
-
-		private final HTTPGrabber grabber;
-		private final OnHTTPGrabberListener listener = new OnHTTPGrabberListener() {
-
-			@Override
-			public void onSuccess(BufferedReader httpResponse) {
-				// start activity
-				try {
-					String site = "", line;
-					while ((line = httpResponse.readLine()) != null) {
-						site += line;
-					}
-					Bundle bundle = new Bundle();
-					bundle.putString(PlanActivity.KEY_SITE, site);
-					Intent planIntent = new Intent(getApplicationContext(),
-							PlanActivity.class);
-					planIntent.putExtras(bundle);
-					startActivity(planIntent);
-				} catch (Exception e) {
-					toastMessage(context, e.getMessage());
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void onTimeout() {
-			}
-
-			@Override
-			public void onError(String error) {
-			}
-
-			@Override
-			public void onCancel() {
-			}
-
-		};
-
-		/** Constructor */
-		public PlanGrabber(Context context, String URL) {
-			this.context = context;
-			grabber = new HTTPGrabber(context, URL, listener);
-		}
-
-		public void start() {
-			grabber.start();
-		}
-
-	}
 
 }

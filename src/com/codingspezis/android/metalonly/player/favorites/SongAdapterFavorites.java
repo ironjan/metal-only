@@ -1,7 +1,10 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.favorites;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R.*;
 
 import android.app.Activity;
 import android.content.Context;

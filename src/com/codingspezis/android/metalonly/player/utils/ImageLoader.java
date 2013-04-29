@@ -1,4 +1,4 @@
-package com.codingspezis.android.lazylistmodification;
+package com.codingspezis.android.metalonly.player.utils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -87,7 +87,7 @@ public class ImageLoader {
     }
     
     //Task for the queue
-    private class PhotoToLoad
+    class PhotoToLoad
     {
         public String moderator;
         public ImageView imageView;
@@ -112,7 +112,7 @@ public class ImageLoader {
                 memoryCache.put(photoToLoad.moderator, bmp);
                 if(imageViewReused(photoToLoad))
                     return;
-                BitmapDisplayer bd=new BitmapDisplayer(bmp, photoToLoad);
+                BitmapDisplayer bd=new BitmapDisplayer(ImageLoader.this, bmp, photoToLoad);
                 handler.post(bd);
             }catch(Throwable th){
                 th.printStackTrace();
@@ -127,25 +127,6 @@ public class ImageLoader {
         return false;
     }
     
-    //Used to display bitmap in the UI thread
-    class BitmapDisplayer implements Runnable
-    {
-        Bitmap bitmap;
-        PhotoToLoad photoToLoad;
-        public BitmapDisplayer(Bitmap b, PhotoToLoad p){bitmap=b;photoToLoad=p;}
-        @Override
-		public void run()
-        {
-            if(imageViewReused(photoToLoad))
-                return;
-            if(bitmap!=null){
-                photoToLoad.imageView.setImageBitmap(bitmap);
-            }
-            else
-                photoToLoad.imageView.setImageResource(stub_id);
-        }
-    }
-
     public void clearCache() {
         memoryCache.clear();
         fileCache.clear();

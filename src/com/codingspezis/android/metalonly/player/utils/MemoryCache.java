@@ -1,4 +1,4 @@
-package com.codingspezis.android.lazylistmodification;
+package com.codingspezis.android.metalonly.player.utils;
 
 import java.util.Collections;
 import java.util.Iterator;

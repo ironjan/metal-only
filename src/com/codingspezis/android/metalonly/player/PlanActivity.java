@@ -6,6 +6,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
+
+import com.codingspezis.android.metalonly.player.plan.*;
+import com.codingspezis.android.metalonly.player.utils.*;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

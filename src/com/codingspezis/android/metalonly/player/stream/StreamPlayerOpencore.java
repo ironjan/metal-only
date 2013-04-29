@@ -1,12 +1,8 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.Context;
 import android.os.PowerManager;
-import android.os.Process;
-import android.util.Log;
 
-import com.spoledge.aacdecoder.Decoder;
-import com.spoledge.aacdecoder.MultiPlayer;
 import com.spoledge.aacdecoder.PlayerCallback;
 
 /**
@@ -20,10 +16,10 @@ public class StreamPlayerOpencore implements AudioStream{
 	
 	private OpencorePlayer ocPlayer;
 	private OnStreamListener streamListener;
-	private boolean shouldPlay = false;
+	boolean shouldPlay = false;
 	private String url;
 
-	private PowerManager.WakeLock wakeLock;
+	PowerManager.WakeLock wakeLock;
 	
 	/**
 	 * constructor
@@ -38,7 +34,7 @@ public class StreamPlayerOpencore implements AudioStream{
 	private void createPlayer(){
 		if(ocPlayer!=null)
 			ocPlayer.stop();
-		ocPlayer = new OpencorePlayer(callback); // playerCallback is defined bellow
+		ocPlayer = new OpencorePlayer(this, callback); // playerCallback is defined bellow
 		ocPlayer.setMetadataEnabled(true); 
 	}
 	
@@ -107,65 +103,5 @@ public class StreamPlayerOpencore implements AudioStream{
 				streamListener.errorOccurred("AAC+ Decoder Error "+arg0.getMessage(), false);
 		}
 	};
-	
-	/**
-	 * AACPlayerModified
-	 * @version 09.01.2013
-	 *
-	 * adds isPlaying functionality to MultiPlayer
-	 * sets priority higher
-	 * 
-	 */
-	private class OpencorePlayer extends MultiPlayer{
-		
-		/**
-		 * same as super(cb)
-		 * @see AACPlaye(PlayerCallback cb)
-		 * @param cb the callback, can be null
-		 */
-		public OpencorePlayer(PlayerCallback cb){
-			super(cb);
-		}
-		
-		/**
-		 * is AACPlayer playing?
-		 * @return true if playing loop is still working - false otherwise
-		 */
-		public boolean isPlaying(){
-			return !stopped;
-		}
-		
-		/**
-		 * difference to original method:
-		 * Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-		 */
-		@Override
-		public void playAsync(final String url, final int expectedKBitSecRate) {
-			new Thread(new Runnable() {
-	            @Override
-				public void run() {
-	            	Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-	            	wakeLock.acquire();
-	            	while(shouldPlay){
-		                try {
-		                    play( url, expectedKBitSecRate );
-		                }
-		                catch (Exception e) {
-		                    // Log.e( LOG, "playAsync():", e);
-		                	if(e.getMessage()!=null &&
-		                	   e.getMessage().equals(Decoder.WORKAROUND_EXCEPTION)){
-		                		// reconnection max number? 
-		                		Log.e("AACDecoder", "stream could not be started -> trying again");
-		                	}else{
-		                		if (playerCallback != null) playerCallback.playerException( e );
-		                		break;
-		                	}
-		                }
-	            	}
-	            	wakeLock.release();
-	            }
-	        }).start();
-	    }
-	}
 
 }

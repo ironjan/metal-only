@@ -1,6 +1,9 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.favorites;
 
 import java.util.LinkedList;
+
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R.*;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,22 +26,6 @@ public class SongSaver {
 	public static final String KEY_THUMB = "_THUMB_";
 	public static final String KEY_DATE = "_DATE_";
 	public static final String KEY_COUNT = "_COUNT";
-	
-	/**
-	 * Song
-	 * @version 03.02.2013
-	 *
-	 * class for holding a song
-	 */
-	public static class Song{
-		public String interpret = "";
-		public String title = "";
-		public String thumb = "";
-		public long date = 0;
-		public boolean isValid(){
-			return interpret.length()!=0 && title.length()!=0;
-		}
-	}
 	
 	// given by constructor
 	private String sharedPreferencesPrefix;

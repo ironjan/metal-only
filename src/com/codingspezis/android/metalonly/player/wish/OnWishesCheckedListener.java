@@ -1,6 +1,6 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.wish;
 
-import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
+import com.codingspezis.android.metalonly.player.wish.WishChecker.*;
 
 /**
  * OnWishesCheckedListener

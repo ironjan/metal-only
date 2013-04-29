@@ -1,6 +1,11 @@
-package com.codingspezis.android.metalonly.player;
+package com.codingspezis.android.metalonly.player.wish;
 
 import java.io.BufferedReader;
+
+
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.utils.*;
 
 import android.content.Context;
 
@@ -71,20 +76,6 @@ public class WishChecker {
 			public void onCancel() {}
 			
 		};
-	
-	/**
-	 * AllowedActions
-	 * @version 04.01.2013
-	 * 
-	 * class for saving information about actions that are allowed on wish page on metal-only.de
-	 * 
-	 */
-	public static class AllowedActions{
-		public String  limit = "";
-		public boolean wishes = false;
-		public boolean regards = false;
-		public boolean moderated = false;
-	}
 	
 	/**
 	 * constructor
