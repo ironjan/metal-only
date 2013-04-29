@@ -1,23 +1,11 @@
 package com.codingspezis.android.metalonly.player;
 
-import java.io.*;
-import java.net.*;
-import java.text.*;
-import java.util.*;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.media.*;
-import android.net.*;
-import android.os.*;
-import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -25,7 +13,6 @@ import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.lazylistmodification.*;
 import com.codingspezis.android.metalonly.player.SongSaver.Song;
 import com.codingspezis.android.metalonly.player.WishChecker.AllowedActions;
 
@@ -49,14 +36,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Toast;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 /**
  * MainActivity
@@ -136,7 +120,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		favoritesSaver = new SongSaver(this, KEY_SP_FAVORITE, -1);
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
 		metadataParser = new MetadataParser("-");
 	}
 
@@ -191,7 +175,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * displays history songs on screen
 	 */
 	private void displaySongs() {
-		historySaver = new SongSaver(this, PlayerService.SP_HISTORY,
+		historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
