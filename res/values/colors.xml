@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="greenishGrey">#ff747674</color>
+    <color name="darkGrey">#ff5a5d5a</color>
+    <color name="transparent">#01ffffff</color>
+    <color name="turkis">#ff0099cc</color>
+    <color name="turkisLight">#ff33b5e5</color>
+
+</resources>

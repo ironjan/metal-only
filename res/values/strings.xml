@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <!-- app -->
     <string name="app_name">Metal Only</string>
     <string name="app_version">0.4.9 (Beta)</string>
-    
+
     <!-- menu -->
     <string name="menu">Menü</string>
     <string name="menu_settings">Einstellungen</string>
@@ -12,11 +12,11 @@
     <string name="menu_history">Verlauf</string>
     <string name="menu_donation">Spende</string>
     <string name="menu_info">Info</string>
-    
+
     <!-- errors -->
     <string name="error_initialize_player">Fehler beim Erstellen des Players</string>
     <string name="error_player32">AAC+ Decoder-Fehler</string>
-    
+
     <!-- standard text -->
     <string name="ok">OK</string>
     <string name="abort">Abbruch</string>
@@ -26,24 +26,24 @@
     <string name="attention">Achtung</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
-    
+
     <!-- days of week -->
     <string-array name="days">
-        <item >Montag</item>
-        <item >Dienstag</item>
-        <item >Mittwoch</item>
-        <item >Donnerstag</item>
-        <item >Freitag</item>
-        <item >Samstag</item>
-        <item >Sonntag</item>
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
+        <item>Sonntag</item>
     </string-array>
-    
+
     <!-- stream -->
     <string name="connecting">Verbinde</string>
     <string name="timeout">Zeitüberschreitung</string>
     <string name="playing">Stream wird jetzt wiedergegeben</string>
     <string name="internet_timeout">Die Wiedergabe wurde unterbrochen, da momentan keine Internetverbindung existiert.</string>
-    
+
     <!-- wish activity -->
     <string name="wishes_regards">Wunsch / Gruß</string>
     <string name="send">Senden</string>
@@ -63,13 +63,14 @@
     <string name="title">Titel:</string>
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
-    
+
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
     <string name="to">An:</string>
     <string name="paypaladdress">metalonly@gmx.de</string>
     <string name="from">Von:</string>
     <string name="value">Betrag:</string>
+
     <string-array name="from_array">
         <item>Anonym</item>
     </string-array>
@@ -78,6 +79,7 @@
         <item>10 €</item>
         <item>25 €</item>
     </string-array>
+
     <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
     <string name="paypal_description2">Sie werden nach dem Klick auf Weiter auf die Website von PayPal weitergeleitet und aufgefordert Ihre Angaben zu überprüfen.</string>
     <string name="notification">Hinweis</string>
@@ -107,21 +109,15 @@
     
     <string name="paypal_category_inoformation">Informationen</string>
     <string name="paypal_category_paypal">PayPal Spende</string>
-    
-    
-    
-    
-    
-    
-    
+
     <!-- SpinnerOwnValue -->
     <string name="other">Anderer</string>
     <string name="choose_other">Anderen Wert eingeben:</string>
-    
+
     <!-- no internet -->
     <string name="no_internet">Keine Internetverbindung</string>
     <string name="open_internet_settings">Es besteht keine Verbindung zum Internet. Sollen die Netzwerkeinstellungen geöffnet werden?</string>
-    
+
     <!-- settings -->
     <string name="settings_key_rate">KEY_RATE</string>
     
@@ -132,11 +128,11 @@
         <item>32 kb/s</item>
         <item>128 kb/s</item>
     </string-array>
-    
+
     <string name="stream32_info">Der 32 kb/s Stream von Metal Only verwendet das AAC+-Kompressionsverfahren. Da dieses &amp;uuml;ber eine externe Bibliothek decodiert wird, kann es bei dessen Wiedergabe auf manchen Ger&amp;auml;ten zu erh&amp;ouml;hter CPU-Auslastung kommen.</string>
     <string name="settings_buffer">Stream-Puffer</string>
     <string name="ms">ms</string>
-    
+
     <!-- favorites -->
     <string-array name="favorite_options_array">
         <item>Wünschen</item>
@@ -152,7 +148,7 @@
     <!-- other features -->
     <string name="plan">Sendeplan</string>
     <string name="volume">Lautstärke</string>
-   
+
     <!-- history -->
     <string-array name="history_options_array">
         <item>Zu Favoriten hinzufügen</item>
@@ -200,5 +196,10 @@
         <item>Zu Kalender hinzufügen</item>
         <item>Teilen</item>
     </string-array>
-    
+
+    <string name="play">Abspielen</string>
+    <!-- \u0020 forced space -->
+    <string name="stop">Stop</string>
+    <string name="play_paus">Abspielen/Pause</string>
+
 </resources>
