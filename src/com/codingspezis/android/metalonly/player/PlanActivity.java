@@ -1,21 +1,17 @@
 package com.codingspezis.android.metalonly.player;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
+import java.text.*;
+import java.util.*;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
+import com.codingspezis.android.metalonly.player.plan.*;
 
 @SuppressLint("SimpleDateFormat")
 public class PlanActivity extends SubActivity implements OnItemClickListener {
@@ -32,7 +28,7 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		}
 
 	}
-  
+
 	public abstract class Item {
 
 		public PlanData data;
@@ -46,7 +42,7 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 	}
 
 	public class PlanData {
-		private String mod, genre, title;
+		private final String mod, genre, title;
 		private Calendar start;
 		private int duration;
 
@@ -64,10 +60,13 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 
 		public CharSequence getDateString() {
 			CharSequence ret;
-			if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(Calendar.DAY_OF_WEEK) || getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
+			if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(
+					Calendar.DAY_OF_WEEK)
+					|| getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
 				ret = DATE_FORMAT_DATE.format(getStart().getTime());
 			} else {
-				ret = DATE_FORMAT_DATE_DAY.format(getStart().getTime()) + "/" + DATE_FORMAT_DATE.format(getEnd().getTime());
+				ret = DATE_FORMAT_DATE_DAY.format(getStart().getTime()) + "/"
+						+ DATE_FORMAT_DATE.format(getEnd().getTime());
 			}
 
 			return ret;
@@ -98,7 +97,8 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		public int getProgress() {
 
 			Calendar cal = new GregorianCalendar();
-			float timeToEnd = getEnd().getTimeInMillis() - cal.getTimeInMillis();
+			float timeToEnd = getEnd().getTimeInMillis()
+					- cal.getTimeInMillis();
 			float durationInMillis = getDuration() * 60 * 60 * 1000;
 			return (int) ((timeToEnd / durationInMillis) * 100);
 
@@ -109,7 +109,8 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		}
 
 		public CharSequence getTimeString() {
-			return DATE_FORMAT_TIME.format(start.getTime()) + " - " + DATE_FORMAT_TIME.format(getEnd().getTime());
+			return DATE_FORMAT_TIME.format(start.getTime()) + " - "
+					+ DATE_FORMAT_TIME.format(getEnd().getTime());
 		}
 
 		public String getTitle() {
@@ -117,7 +118,8 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		}
 
 		public boolean sameDay(PlanData d1) {
-			return getStart().get(Calendar.DAY_OF_WEEK) == d1.getStart().get(Calendar.DAY_OF_WEEK);
+			return getStart().get(Calendar.DAY_OF_WEEK) == d1.getStart().get(
+					Calendar.DAY_OF_WEEK);
 		}
 
 		public void setDuration(int duration) {
@@ -149,12 +151,16 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 
 	}
 
-	public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat("{dd.MM.yy HH:mm");
-	public static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm");
+	public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
+			"{dd.MM.yy HH:mm");
+	public static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat(
+			"HH:mm");
 
-	public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
+	public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat(
+			"dd.MM.yy");
 
-	public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
+	public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat(
+			"dd");
 
 	private ArrayList<PlanData> listEvents;
 
@@ -170,24 +176,29 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 
 		// parse site
 		StringTokenizer token = new StringTokenizer(site, "}");
-//		Pattern pat = Pattern.compile("{.*?}");
-		
+		// Pattern pat = Pattern.compile("{.*?}");
+
 		// date_duration_Mod_Sendung_Genre
 		String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
-		
+
 		listEvents = new ArrayList<PlanData>();
-		
+
 		while (token.hasMoreTokens()) {
 			String tmp = token.nextToken();
 			PlanData tmpData = new PlanData();
 
 			try {
-				if (!((tmp.replaceAll(pattern, "$3").equals("MetalHead") || (tmp.replaceAll(pattern, "$3").equals("frei"))))) {
+				if (!((tmp.replaceAll(pattern, "$3").equals("MetalHead") || (tmp
+						.replaceAll(pattern, "$3").equals("frei"))))) {
 					GregorianCalendar tmpCal = new GregorianCalendar();
-					tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(tmp.replaceAll(pattern, "$1")).getTime());
-					tmpData = new PlanData(tmp.replaceAll(pattern, "$3"), tmp.replaceAll(pattern, "$4"), tmp.replaceAll(pattern, "$5"));
-					tmpData.setStart(tmpCal);					
-					tmpData.setDuration(Integer.parseInt(tmp.replaceAll(pattern, "$2")));
+					tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(
+							tmp.replaceAll(pattern, "$1")).getTime());
+					tmpData = new PlanData(tmp.replaceAll(pattern, "$3"),
+							tmp.replaceAll(pattern, "$4"), tmp.replaceAll(
+									pattern, "$5"));
+					tmpData.setStart(tmpCal);
+					tmpData.setDuration(Integer.parseInt(tmp.replaceAll(
+							pattern, "$2")));
 					listEvents.add(tmpData);
 				}
 			} catch (Exception e) {
@@ -227,31 +238,40 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		PlanAdapter adapter = (PlanAdapter) arg0.getAdapter();
 		final PlanData data = ((Item) adapter.getItem(arg2)).getPlanData();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setItems(R.array.plan_options_array, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case 0:
-					Intent intent = new Intent(Intent.ACTION_EDIT);
-					intent.setType("vnd.android.cursor.item/event");
-					intent.putExtra("title", "Metal Only");
-					intent.putExtra("description", data.getDescription());
-					intent.putExtra("beginTime", data.getStart().getTimeInMillis());
-					intent.putExtra("endTime", data.getEnd().getTimeInMillis());
-					startActivity(intent);
-					break;
-				case 1:
-					String message = data.getDateString() + " " + data.getTimeString() + "\n" + data.getTitle() + "\n" + data.getMod() + "\n"
-							+ data.getGenre();
-					Intent share = new Intent(Intent.ACTION_SEND);
-					share.setType("text/plain");
-					share.putExtra(Intent.EXTRA_TEXT, message);
-					startActivity(Intent.createChooser(share, getResources().getStringArray(R.array.plan_options_array)[1]));
-					break;
+		builder.setItems(R.array.plan_options_array,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							Intent intent = new Intent(Intent.ACTION_EDIT);
+							intent.setType("vnd.android.cursor.item/event");
+							intent.putExtra("title", "Metal Only");
+							intent.putExtra("description",
+									data.getDescription());
+							intent.putExtra("beginTime", data.getStart()
+									.getTimeInMillis());
+							intent.putExtra("endTime", data.getEnd()
+									.getTimeInMillis());
+							startActivity(intent);
+							break;
+						case 1:
+							String message = data.getDateString() + " "
+									+ data.getTimeString() + "\n"
+									+ data.getTitle() + "\n" + data.getMod()
+									+ "\n" + data.getGenre();
+							Intent share = new Intent(Intent.ACTION_SEND);
+							share.setType("text/plain");
+							share.putExtra(Intent.EXTRA_TEXT, message);
+							startActivity(Intent.createChooser(
+									share,
+									getResources().getStringArray(
+											R.array.plan_options_array)[1]));
+							break;
 
-				}
-			}
-		});
+						}
+					}
+				});
 		builder.show();
 	}
 
