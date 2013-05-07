@@ -1,28 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<selector 
-    xmlns:android="http://schemas.android.com/apk/res/android"> 
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_pressed="true" > 
-        <shape> 
-            <gradient
-				android:startColor="#ff33b5e5"
-				android:endColor="#ff0099cc"
-                android:angle = "270" />
-            <corners 
-                android:radius="4dip" /> 
-        </shape> 
-    </item>
+    <item android:drawable="@drawable/mo_pressable_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/darkbutton2_standard"/>
 
-    <item>         
-        <shape>
-            <gradient 
-                
-                android:startColor="#515151"
-				android:centerColor="#474747"
-				android:endColor="#2f2f2f"
-                android:angle = "270" />
-            <corners 
-                android:radius="4dip" />
-         </shape> 
-    </item> 
-</selector> 
+</selector>

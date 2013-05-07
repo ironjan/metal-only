@@ -1,116 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-    
-    <!-- marquee + top buttons -->
 
-    <RelativeLayout
-        android:id="@+id/top"
-        android:layout_width="fill_parent"
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeMod"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:shadowColor="#ff000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="4"
+        android:textSize="17sp" />
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeGenree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marqueeMod"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@id/imageButton5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/gradient2_bg" >
-        
-        <!--
-        <ImageButton
-	        android:id="@+id/imageButton4"
-	        android:layout_width="40dp"
-	        android:layout_height="40dp"
-	        android:layout_alignParentLeft="true"
-	        android:background="@drawable/darkbutton2"
-	        android:contentDescription="@string/empty"
-	        android:src="@drawable/mo_star_a5"
-	        android:layout_margin="2dp" />
-		-->
-    
-        <LinearLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    android:layout_marginLeft="2dp"
-		    android:layout_toLeftOf="@+id/imageButton5" >
-		    
-		    <com.codingspezis.android.metalonly.player.Marquee
-		        android:textSize="17sp"
-		        android:id="@+id/marquee1"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_horizontal"
-		        android:shadowColor="#ff000000"
-		        android:shadowRadius="4"
-		        android:shadowDx="0"
-		        android:shadowDy="0"
-		        android:textColor="#ffffffff" />
-		        
-			<com.codingspezis.android.metalonly.player.Marquee
-			    android:id="@+id/marquee2"
-			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:gravity="center_horizontal"
-			    android:textColor="#ffffffff"
-			    android:textSize="14sp" />
-		    
-	    </LinearLayout>
-        
-        <ImageButton
-	        android:id="@id/imageButton5"
-	        android:layout_height="40dp"
-	        android:layout_width="40dp"
-	        android:layout_alignParentRight="true"
-	        android:background="@drawable/darkbutton2"
-	        android:contentDescription="@string/empty"
-	        android:src="@drawable/mo_speaker"
-	        android:layout_margin="2dp" />
-        
-    </RelativeLayout>
-    
-    <!-- list view -->
+        android:background="@drawable/transparentbutton"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/mo_speaker" />
+
     <ListView
         android:id="@+id/listView"
-        android:layout_below="@id/top"
-        android:layout_marginBottom="80dp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-    
-    <!-- bottom (play) -->
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonBar"
+        android:layout_below="@+id/imageButton5" />
+
+    <RelativeLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/streamPlayButtonSize"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/gradient2_bg"
-        android:gravity="center"
-        android:weightSum="100" >
+        android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="20"
-            android:background="@drawable/darkbutton2"
+            android:id="@+id/btnWish"
+            android:layout_width="@dimen/streamOtherButtonSize"
+            android:layout_height="@dimen/streamOtherButtonSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/transparentbutton"
             android:contentDescription="@string/empty"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_pen" />
+
+        <ImageButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/streamOtherButtonSize"
+            android:layout_height="@dimen/streamOtherButtonSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/transparentbutton"
+            android:contentDescription="@string/empty"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/mo_calendar" />
-        
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="35"
-            android:background="@drawable/darkbutton2"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/mo_play5"
-            android:layout_margin="2dp" />
-        
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="20"
-            android:background="@drawable/darkbutton2"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/mo_pen" />       
-    </LinearLayout>
-    
-</RelativeLayout>        
+
+        <ImageView
+            android:id="@+id/buttonPlay"
+            style="?attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/streamPlayButtonSize"
+            android:layout_toLeftOf="@+id/btnWish"
+            android:layout_toRightOf="@+id/btnCalendar"
+            android:background="@drawable/transparentbutton"
+            android:contentDescription="@string/play_paus"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_play5" />
+    </RelativeLayout>
+
+</RelativeLayout>

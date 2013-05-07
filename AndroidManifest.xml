@@ -76,7 +76,7 @@
                 
 		<service
     		android:enabled="true"
-    		android:name=".PlayerService"
+    		android:name="com.codingspezis.android.metalonly.player.stream.PlayerService"
       		android:process=":PlayerProcess"
        	/>
        	
