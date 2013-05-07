@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <com.codingspezis.android.metalonly.player.Marquee
+    <com.codingspezis.android.metalonly.player.views.Marquee
         android:id="@+id/marqueeMod"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:shadowRadius="4"
         android:textStyle="bold" />
 
-    <com.codingspezis.android.metalonly.player.Marquee
+    <com.codingspezis.android.metalonly.player.views.Marquee
         android:id="@+id/marqueeGenree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
