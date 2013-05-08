@@ -306,8 +306,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 			@Override
 			public void onWishesChecked(AllowedActions allowedActions) {
-				if (allowedActions.moderated) {
-					if (allowedActions.wishes || allowedActions.regards) {
+//				if (allowedActions.moderated) {
+//					if (allowedActions.wishes || allowedActions.regards) {
 						Bundle bundle = new Bundle();
 						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
 								allowedActions.wishes);
@@ -319,14 +319,14 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 								WishActivity.class);
 						wishIntent.putExtras(bundle);
 						mainActivity.startActivity(wishIntent);
-					} else {
-						alertMessage(mainActivity, mainActivity
-								.getString(R.string.no_wishes_and_regards));
-					}
-				} else {
-					alertMessage(mainActivity,
-							mainActivity.getString(R.string.no_moderator));
-				}
+//					} else {
+//						alertMessage(mainActivity, mainActivity
+//								.getString(R.string.no_wishes_and_regards));
+//					}
+//				} else {
+//					alertMessage(mainActivity,
+//							mainActivity.getString(R.string.no_moderator));
+//				}
 			}
 		});
 		wishChecker.start();

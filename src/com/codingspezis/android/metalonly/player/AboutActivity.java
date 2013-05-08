@@ -39,9 +39,6 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 	private TextView buttonLazyList;
 	private TextView buttonMIT;
 
-	// tutorial
-	private TextView buttonTutorial;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,8 +72,6 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 		buttonLazyList.setOnClickListener(this);
 		buttonMIT = (TextView) findViewById(R.id.mit);
 		buttonMIT.setOnClickListener(this);
-		buttonTutorial = (TextView) findViewById(R.id.tutorial);
-		buttonTutorial.setOnClickListener(this);
 	}
 
 	/**
@@ -108,7 +103,11 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 		emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { strTo });
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, strSubject);
 		emailIntent.putExtra(Intent.EXTRA_TEXT, strText);
-		startActivity(Intent.createChooser(emailIntent, strTo));
+		try{
+			startActivity(Intent.createChooser(emailIntent, strTo)); // TODO: change this
+		} catch (android.content.ActivityNotFoundException ex) {
+			MainActivity.toastMessage(this, getString(R.string.no_mail_app));
+		}
 	}
 
 	/**
@@ -151,8 +150,6 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 			openWebsite(getString(R.string.url_lazylist));
 		} else if (v == buttonMIT) {
 			displayLicense(LicenseActivity.KEY_BU_LICENSE_MIT);
-		} else if (v == buttonTutorial) {
-			openWebsite(getString(R.string.url_androidhive));
 		}
 	}
 

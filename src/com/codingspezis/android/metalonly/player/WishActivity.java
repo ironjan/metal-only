@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.webkit.*;
 import android.widget.*;
 
+import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -170,11 +171,12 @@ public class WishActivity extends SubActivity implements OnClickListener {
 	 */
 	private void showInfo() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle(getString(R.string.notification));
-		WebView w = new WebView(this);
-		w.loadData(getString(R.string.wish_explanation), "text/html", "utf-8");
-		alert.setView(w);
-		alert.setPositiveButton(getString(R.string.ok), null);
+		alert.setTitle(R.string.notification);
+		final View v = getLayoutInflater().inflate(R.layout.text, null);
+		TextView tv = (TextView) v.findViewById(R.id.text);
+		tv.setText(R.string.wish_explanation);
+		alert.setView(v);
+		alert.setPositiveButton(R.string.ok, null);
 		alert.show();
 	}
 

@@ -56,7 +56,7 @@
     <string name="no_wishes_short">Playlist voll</string>
     <string name="no_regards">Zur Zeit sind keine Grüße möglich</string>
     <string name="no_wishes_and_regards">Zur Zeit sind keine Wünsche oder Grüße möglich.</string>
-    <string name="wish_explanation">W&amp;uuml;nsche und Gr&amp;uuml;&amp;szlig;e sind nur w&amp;auml;hrend der moderierten Sendezeit m&amp;ouml;glich. Das Team von Metal Only beh&amp;auml;lt es sich vor, W&amp;uuml;nsche nicht zu spielen und Gr&amp;uuml;&amp;szlig;e nicht vorzulesen, ohne eine Begr&amp;uuml;ndung daf&amp;uuml;r zu nennen. Kein Moderator ist dazu verpflichtet einen Gru&amp;szlig; vorzulesen oder einen Wunsch zu erf&amp;uuml;llen. Insbesondere gilt dies f&amp;uuml;r W&amp;uuml;nsche, die nicht den Genrevorgaben der Sendung entsprechen. Aufgrund der hohen Gru&amp;szlig;frequenz entscheidet jeder Moderator selbst, welche Gr&amp;uuml;&amp;szlig;e vorgelesen werden. Dies ist nicht als Wertung des Gr&amp;uuml;&amp;szlig;enden oder des Gegr&amp;uuml;&amp;szlig;ten zu verstehen.</string>
+    <string name="wish_explanation">Wünsche und Grüße sind nur während der moderierten Sendezeit möglich. Das Team von Metal Only behält es sich vor, Wünsche nicht zu spielen und Grüße nicht vorzulesen, ohne eine Begründung dafür zu nennen. Kein Moderator ist dazu verpflichtet einen Gruß vorzulesen oder einen Wunsch zu erfüllen. Insbesondere gilt dies für Wünsche, die nicht den Genrevorgaben der Sendung entsprechen. Aufgrund der hohen Grußfrequenz entscheidet jeder Moderator selbst, welche Grüße vorgelesen werden. Dies ist nicht als Wertung des Grüßenden oder des Gegrüßten zu verstehen.</string>
     <string name="no_moderator">Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!</string>
     <string name="per_user">pro Hörer</string>
     <string name="artist">Artist:</string>
@@ -189,7 +189,8 @@
 	<string name="apl2">Apache License 2.0</string>
     <string name="lgpl">GNU Lesser GPL</string>
     <string name="mit">MIT Lizenz</string>
-	
+    
+    <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
 	
     <!-- plan -->
     <string-array name="plan_options_array">
