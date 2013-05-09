@@ -25,7 +25,6 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
-import com.codingspezis.android.metalonly.player.utils.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
@@ -48,9 +47,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public static final int INTENT_RETURN_FAV = 0;
 
 	// shared preferences keys
-	public static final String KEY_SP_FAVORITE = "MO_SP_FAVORITE";
-	public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
-
+	public static final String KEY_SP_MODTHUMBDATE ="MO_SP_MODTHUMBDATE_";
+	
 	// GUI objects
 	private final MainActivity mainActivity = this;
 	private ListView listView;
@@ -81,8 +79,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		setSupportProgressBarIndeterminateVisibility(false);
 		setUpBroadcastReceiver();
 		setUpPlayerService();
-		setUpGUIObjects();
-		setUpDataObjects();
+		setUpDataObjects();	
+		setUpGUIObjects();	
 	}
 
 	@Override
@@ -93,7 +91,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 
 	@Override
 	public void onDestroy() {
-		FileCache.clear(getApplicationContext());
 		Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
 		sendBroadcast(tmpIntent);
 		unregisterReceiver(broadcastReceiver);
@@ -104,7 +101,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		favoritesSaver = new SongSaver(this, KEY_SP_FAVORITE, -1);
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
 		setMetadataParser(new MetadataParser("-"));
 	}
 
@@ -232,10 +229,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 			Intent favoritesIntent = new Intent(getApplicationContext(),
 					FavoritesActivity.class);
 			startActivityForResult(favoritesIntent, INTENT_RETURN_FAV);
-		} else if (item.getItemId() == R.id.website) {
-			Uri metalOnly = Uri.parse("http://metal-only.de/");
-			Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
-			startActivity(homepage);
 		} else if (item.getItemId() == R.id.donation) {
 			Intent paypalIntent = new Intent(getApplicationContext(),
 					PayPalDonationActivity.class);
@@ -313,8 +306,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 			@Override
 			public void onWishesChecked(AllowedActions allowedActions) {
-				if (allowedActions.moderated) {
-					if (allowedActions.wishes || allowedActions.regards) {
+//				if (allowedActions.moderated) {
+//					if (allowedActions.wishes || allowedActions.regards) {
 						Bundle bundle = new Bundle();
 						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
 								allowedActions.wishes);
@@ -326,14 +319,14 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 								WishActivity.class);
 						wishIntent.putExtras(bundle);
 						mainActivity.startActivity(wishIntent);
-					} else {
-						alertMessage(mainActivity, mainActivity
-								.getString(R.string.no_wishes_and_regards));
-					}
-				} else {
-					alertMessage(mainActivity,
-							mainActivity.getString(R.string.no_moderator));
-				}
+//					} else {
+//						alertMessage(mainActivity, mainActivity
+//								.getString(R.string.no_wishes_and_regards));
+//					}
+//				} else {
+//					alertMessage(mainActivity,
+//							mainActivity.getString(R.string.no_moderator));
+//				}
 			}
 		});
 		wishChecker.start();
@@ -545,9 +538,5 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		this.metadataParser = metadataParser;
 	}
 
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * classes * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * * * *
-	 */
 
 }

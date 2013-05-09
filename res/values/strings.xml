@@ -10,7 +10,6 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_favorites">Favoriten</string>
     <string name="menu_history">Verlauf</string>
-    <string name="menu_website">Website</string>
     <string name="menu_donation">Spende</string>
     <string name="menu_info">Info</string>
 
@@ -57,7 +56,7 @@
     <string name="no_wishes_short">Playlist voll</string>
     <string name="no_regards">Zur Zeit sind keine Grüße möglich</string>
     <string name="no_wishes_and_regards">Zur Zeit sind keine Wünsche oder Grüße möglich.</string>
-    <string name="wish_explanation">W&amp;uuml;nsche und Gr&amp;uuml;&amp;szlig;e sind nur w&amp;auml;hrend der moderierten Sendezeit m&amp;ouml;glich. Das Team von Metal Only beh&amp;auml;lt es sich vor, W&amp;uuml;nsche nicht zu spielen und Gr&amp;uuml;&amp;szlig;e nicht vorzulesen, ohne eine Begr&amp;uuml;ndung daf&amp;uuml;r zu nennen. Kein Moderator ist dazu verpflichtet einen Gru&amp;szlig; vorzulesen oder einen Wunsch zu erf&amp;uuml;llen. Insbesondere gilt dies f&amp;uuml;r W&amp;uuml;nsche, die nicht den Genrevorgaben der Sendung entsprechen. Aufgrund der hohen Gru&amp;szlig;frequenz entscheidet jeder Moderator selbst, welche Gr&amp;uuml;&amp;szlig;e vorgelesen werden. Dies ist nicht als Wertung des Gr&amp;uuml;&amp;szlig;enden oder des Gegr&amp;uuml;&amp;szlig;ten zu verstehen.</string>
+    <string name="wish_explanation">Wünsche und Grüße sind nur während der moderierten Sendezeit möglich. Das Team von Metal Only behält es sich vor, Wünsche nicht zu spielen und Grüße nicht vorzulesen, ohne eine Begründung dafür zu nennen. Kein Moderator ist dazu verpflichtet einen Gruß vorzulesen oder einen Wunsch zu erfüllen. Insbesondere gilt dies für Wünsche, die nicht den Genrevorgaben der Sendung entsprechen. Aufgrund der hohen Grußfrequenz entscheidet jeder Moderator selbst, welche Grüße vorgelesen werden. Dies ist nicht als Wertung des Grüßenden oder des Gegrüßten zu verstehen.</string>
     <string name="no_moderator">Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!</string>
     <string name="per_user">pro Hörer</string>
     <string name="artist">Artist:</string>
@@ -87,6 +86,8 @@
     <string name="donation_enter_from">Wer spendet?</string>
     <string name="donation_enter_value">Welchen Betrag spenden?</string>
     <string name="help">Hilfe</string>
+    
+    
     <string name="paypal_receiver">Empfänger</string>
     <string name="paypal_mail_mo">metalonly@gmx.de</string>
     <string name="paypal_sender">Spender</string>
@@ -97,12 +98,15 @@
     <string name="paypal_send_sum">Zur PayPal Website weiterleiten</string>
     <string name="paypal_info">Kontoinformationen</string>
     <string name="paypal_info_sum">Allgemeine Informationen über Spenden aufrufen</string>
+    
     <string name="paypal_key_sender">MO_SP_SENDER</string>
     <string name="paypal_key_value">MO_SP_VALUE</string>
     <string name="paypal_key_send">MO_SP_SEND</string>
     <string name="paypal_key_info">MO_SP_INFO</string>
+    
     <string name="paypal_default_sender">Anonym</string>
     <string name="paypal_default_value">5</string>
+    
     <string name="paypal_category_inoformation">Informationen</string>
     <string name="paypal_category_paypal">PayPal Spende</string>
 
@@ -116,10 +120,10 @@
 
     <!-- settings -->
     <string name="settings_key_rate">KEY_RATE</string>
+    
     <string name="settings_category_stream">Stream</string>
     <string name="settings_rate">Übertragungsrate</string>
     <string name="settings_rate_summary"></string>
-
     <string-array name="rate_label">
         <item>32 kb/s</item>
         <item>128 kb/s</item>
@@ -133,14 +137,14 @@
     <string-array name="favorite_options_array">
         <item>Wünschen</item>
         <item>Auf YouTube suchen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
         <item>Löschen</item>
     </string-array>
-
-    <string name="menu_deleteall">Alle löschen</string>
-    <string name="menu_shareall">Alle freigeben</string>
-    <string name="delete_sure">Wirklich alle Einträge entfernen?</string>
-
+	<string name="menu_deleteall">Alle löschen</string>
+	<string name="menu_shareall">Alle teilen</string>
+	<string name="menu_add_mannually">Favorit hinzufügen</string>
+	<string name="delete_sure">Wirklich alle Einträge entfernen?</string>
+    
     <!-- other features -->
     <string name="plan">Sendeplan</string>
     <string name="volume">Lautstärke</string>
@@ -149,45 +153,49 @@
     <string-array name="history_options_array">
         <item>Zu Favoriten hinzufügen</item>
         <item>Auf YouTube suchen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
     </string-array>
-
     <string name="fav_added">Erfolgreich hinzugefügt</string>
     <string name="fav_already_in">Titel ist bereits ein Favorit</string>
 
     <!-- about -->
-    <string name="mailaddress_codingspezis">mail@codingspezis.com</string>
-    <string name="url_codingspezis">http://www.codingspezis.com/</string>
-    <string name="url_metalonly">http://www.metal-only.de/</string>
-    <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
-    <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
-    <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
-    <string name="url_lazylist">https://www.github.com/thest1/LazyList/</string>
-    <string name="url_androidhive">http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/</string>
-    <string name="about_category_app">App</string>
-    <string name="about_name">Name:</string>
-    <string name="about_version">Version:</string>
-    <string name="about_web1">Web:</string>
-    <string name="about_web2">metal-only.de</string>
-    <string name="about_developers1">Entwickler:</string>
-    <string name="about_developers2">codingspezis.com</string>
-    <string name="about_mail">Feedback / Bug Report</string>
+	<string name="mailaddress_codingspezis">mail@codingspezis.com</string>
+	<string name="url_codingspezis">http://www.codingspezis.com/</string>
+	<string name="url_metalonly">http://www.metal-only.de/</string>
+	<string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
+	<string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
+	<string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
+	<string name="url_lazylist">https://www.github.com/thest1/LazyList/</string>
+	<string name="url_androidhive">http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/</string>
+	
+	<string name="about_category_app">App</string>
+	<string name="about_name">Name:</string>
+	<string name="about_version">Version:</string>
+	<string name="about_web1">Web:</string>
+	<string name="about_web2">metal-only.de</string>
+	<string name="about_developers1">Entwickler:</string>
+	<string name="about_developers2">codingspezis.com</string>
+	<string name="about_mail">Feedback / Bug Report</string>
+	
     <string name="about_category_libs">Verwendete Bibliotheken</string>
-    <string name="about_link">Link:</string>
-    <string name="about_license">Lizenz:</string>
-    <string name="about_opencore">OpenCORE aacdec</string>
-    <string name="about_aacdecoder">AAC Decoder for Android</string>
-    <string name="about_lazylist">LazyList</string>
-    <string name="about_sherlock">ActionBarSherlock</string>
+	<string name="about_link">Link:</string>
+	<string name="about_license">Lizenz:</string>
+	<string name="about_opencore">OpenCORE aacdec</string>
+	<string name="about_aacdecoder">AAC Decoder for Android</string>
+	<string name="about_lazylist">LazyList</string>
+	<string name="about_sherlock">ActionBarSherlock</string>
     <string name="about_tutorial">Android Custom ListView</string>
-    <string name="apl2">Apache License 2.0</string>
+    
+	<string name="apl2">Apache License 2.0</string>
     <string name="lgpl">GNU Lesser GPL</string>
     <string name="mit">MIT Lizenz</string>
-
+    
+    <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
+	
     <!-- plan -->
     <string-array name="plan_options_array">
         <item>Zu Kalender hinzufügen</item>
-        <item>Freigeben</item>
+        <item>Teilen</item>
     </string-array>
 
     <string name="play">Abspielen</string>

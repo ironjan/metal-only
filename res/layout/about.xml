@@ -128,48 +128,28 @@
             android:layout_height="wrap_content"
             android:text="@string/about_opencore"
             android:layout_marginLeft="5dp"
+            
             android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_link"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/opencore"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/url_opencore"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_license"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/apl2_opencore"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/apl2"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+    	    android:id="@+id/opencore"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/url_opencore"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp" />
+    	<TextView
+    	    android:id="@+id/apl2_opencore"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/apl2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp" />
         
         <!-- aacdecoder -->
         <TextView
@@ -179,47 +159,26 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_link"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/aacdecoder"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/url_aacdecoder"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_license"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/lgpl"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/lgpl"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+    	    android:id="@+id/aacdecoder"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/url_aacdecoder"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp" />
+    	<TextView
+    	    android:id="@+id/lgpl"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lgpl"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp" />
         
         <!-- sherlock -->
         <TextView
@@ -229,47 +188,26 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_link"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/sherlock"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/url_sherlock"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_license"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/apl2_sherlock"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/apl2"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+    	    android:id="@+id/sherlock"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/url_sherlock"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp" />
+    	<TextView
+    	    android:id="@+id/apl2_sherlock"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/apl2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp" />
         
         <!-- lazylist -->
         <TextView
@@ -279,77 +217,26 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_link"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/lazylist"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/url_lazylist"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_license"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/mit"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/mit"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
-        
-        <!-- tutorial -->
-        <TextView
-    	    android:layout_width="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    	<TextView
+    	    android:id="@+id/lazylist"
+    	    android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_tutorial"
+            android:text="@string/url_lazylist"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
+            android:layout_marginLeft="5dp" />
+    	<TextView
+    	    android:id="@+id/mit"
+    	    android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mit"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="3"
+            android:textColor="#ff33b5e5"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        <LinearLayout
-	        android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:orientation="horizontal" >
-	    	<TextView
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/about_link"
-	            android:layout_marginLeft="5dp"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="1" />
-	    	<TextView
-	    	    android:id="@+id/tutorial"
-	    	    android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:text="@string/url_androidhive"
-	            android:textAppearance="?android:attr/textAppearanceSmall"
-	            android:layout_weight="3"
-	            android:textColor="#ff33b5e5" />
-        </LinearLayout>
+            android:layout_marginTop="5dp" />
         
     </LinearLayout>
 </ScrollView>

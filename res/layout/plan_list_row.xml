@@ -20,7 +20,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:contentDescription="@string/empty"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/mod"
@@ -28,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/list_image"
+        android:layout_marginTop="4dp"
         android:gravity="right"
         android:textIsSelectable="false" />
 
@@ -35,11 +37,13 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/mod"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
         android:layout_toLeftOf="@+id/time"
         android:layout_toRightOf="@id/list_image"
+        android:singleLine="true"
         android:textIsSelectable="false"
         android:textStyle="bold"
         android:typeface="sans" />
@@ -50,19 +54,21 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/list_image"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/mod"
         android:gravity="right"
+        android:singleLine="true"
         android:textIsSelectable="false" />
 
     <TextView
         android:id="@+id/genre"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/time"
+        android:layout_alignBaseline="@+id/time"
         android:layout_below="@id/title"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_toLeftOf="@+id/time"
         android:layout_toRightOf="@+id/list_image"
+        android:singleLine="true"
         android:textIsSelectable="false" />
 
 </RelativeLayout>
