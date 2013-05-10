@@ -3,5 +3,7 @@
 
     <dimen name="streamPlayButtonSize">72dp</dimen>
     <dimen name="streamOtherButtonSize">56dp</dimen>
+    <dimen name="streamButtonDividerMarginTop">8dp</dimen>
+    <dimen name="streamButtonDividerMarginBottom">8dp</dimen>
 
 </resources>
