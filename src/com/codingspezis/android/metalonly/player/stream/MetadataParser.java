@@ -57,15 +57,13 @@ public class MetadataParser {
 	}
 
 	public Song toSong() {
-		Song song = new Song();
-		song.interpret = INTERPRET;
-		song.title = TITLE;
-		song.thumb = MODERATOR;
-		if (song.thumb.indexOf(" OnAir") > 0) {
-			song.thumb = song.thumb.substring(0, song.thumb.indexOf(" OnAir"))
-					.trim();
-		}
-		song.date = Calendar.getInstance().getTimeInMillis();
+
+		long date = Calendar.getInstance().getTimeInMillis();
+
+		MODERATOR.replace(" OnAir", "");
+
+		Song song = new Song(INTERPRET, TITLE, MODERATOR, date);
+
 		return song;
 	}
 
