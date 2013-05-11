@@ -160,16 +160,13 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		historySaver = new SongSaver(this, PlayerService.SP_HISTORY,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
-		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		ArrayList<Song> data = new ArrayList<Song>();
+
 		for (int i = historySaver.size() - 1; i >= 0; i--) {
-			HashMap<String, String> dataEntry = new HashMap<String, String>(2);
 			final Song song = historySaver.get(i);
-			dataEntry.put(SongAdapter.KEY_TITLE, song.title);
-			dataEntry.put(SongAdapter.KEY_INTERPRET, song.interpret);
-			dataEntry.put(SongAdapter.KEY_THUMB, song.getThumb());
-			dataEntry.put(SongAdapter.KEY_DATE, longToDateString(song.date));
-			data.add(dataEntry);
+			data.add(song);
 		}
+
 		SongAdapter adapter = new SongAdapter(this, data);
 		listView.setAdapter(adapter);
 	}
