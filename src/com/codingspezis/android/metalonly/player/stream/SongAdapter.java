@@ -1,5 +1,6 @@
 package com.codingspezis.android.metalonly.player.stream;
 
+import java.text.*;
 import java.util.*;
 
 import android.app.*;
@@ -8,6 +9,7 @@ import android.view.*;
 import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.utils.*;
 
 /**
@@ -24,7 +26,7 @@ public class SongAdapter extends BaseAdapter {
 	public static final String KEY_DATE = "MO_HK_DATE";
 
 	private final Activity activity;
-	private final ArrayList<HashMap<String, String>> data;
+	private final ArrayList<Song> data;
 	private final LayoutInflater inflater;
 	private final ImageLoader imageLoader;
 
@@ -35,7 +37,7 @@ public class SongAdapter extends BaseAdapter {
 	 * @param d
 	 *            data to display
 	 */
-	public SongAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+	public SongAdapter(Activity a, ArrayList<Song> d) {
 		activity = a;
 		data = d;
 		inflater = (LayoutInflater) activity
@@ -50,24 +52,31 @@ public class SongAdapter extends BaseAdapter {
 			view = inflater.inflate(R.layout.song_hist, null);
 		}
 
-		HashMap<String, String> song = new HashMap<String, String>();
-		song = data.get(position);
+		Song song = data.get(position);
 
-		final TextView textView = (TextView) view.findViewById(R.id.title);
-		textView.setText(song.get(KEY_TITLE));
-		((TextView) view.findViewById(R.id.artist)).setText(song
-				.get(KEY_INTERPRET));
+		final TextView txtTitle = (TextView) view.findViewById(R.id.title);
+		final TextView txtArtist = (TextView) view.findViewById(R.id.artist);
+		final TextView txtTime = (TextView) view.findViewById(R.id.time);
+		final TextView txtDate = (TextView) view.findViewById(R.id.date);
+
+		txtTitle.setText(song.title);
+		txtArtist.setText(song.interpret);
 		try {
-			String dateParts[] = song.get(KEY_DATE).split("-");
-			((TextView) view.findViewById(R.id.time)).setText(dateParts[0]);
-			((TextView) view.findViewById(R.id.date)).setText(dateParts[1]);
+			final Date dateAsDate = new Date(song.date);
+			String day = DateFormat.getDateInstance(DateFormat.SHORT,
+					Locale.GERMAN).format(dateAsDate);
+			String time = DateFormat.getTimeInstance(DateFormat.SHORT,
+					Locale.GERMAN).format(dateAsDate);
+
+			txtDate.setText(day);
+			txtTime.setText(time);
 		} catch (Exception e) {
-			((TextView) view.findViewById(R.id.time)).setText("");
-			((TextView) view.findViewById(R.id.date)).setText("");
+			txtDate.setText("");
+			txtTime.setText("");
 		}
 
 		ImageView image = (ImageView) view.findViewById(R.id.list_image);
-		String thumb = song.get(KEY_THUMB);
+		String thumb = song.getThumb();
 		imageLoader.DisplayImage(thumb, image);
 
 		return view;
@@ -79,8 +88,8 @@ public class SongAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		return arg0;
+	public Object getItem(int pos) {
+		return data.get(pos);
 	}
 
 	@Override

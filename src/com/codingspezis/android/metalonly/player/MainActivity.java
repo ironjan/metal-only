@@ -47,8 +47,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public static final int INTENT_RETURN_FAV = 0;
 
 	// shared preferences keys
-	public static final String KEY_SP_MODTHUMBDATE ="MO_SP_MODTHUMBDATE_";
-	
+	public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
+
 	// GUI objects
 	private final MainActivity mainActivity = this;
 	private ListView listView;
@@ -79,8 +79,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		setSupportProgressBarIndeterminateVisibility(false);
 		setUpBroadcastReceiver();
 		setUpPlayerService();
-		setUpDataObjects();	
-		setUpGUIObjects();	
+		setUpDataObjects();
+		setUpGUIObjects();
 	}
 
 	@Override
@@ -101,7 +101,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
+				-1);
 		setMetadataParser(new MetadataParser("-"));
 	}
 
@@ -159,17 +160,13 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		historySaver = new SongSaver(this, PlayerService.SP_HISTORY,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
-		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		ArrayList<Song> data = new ArrayList<Song>();
+
 		for (int i = historySaver.size() - 1; i >= 0; i--) {
-			HashMap<String, String> dataEntry = new HashMap<String, String>(2);
-			dataEntry.put(SongAdapter.KEY_TITLE, historySaver.get(i).title);
-			dataEntry.put(SongAdapter.KEY_INTERPRET,
-					historySaver.get(i).interpret);
-			dataEntry.put(SongAdapter.KEY_THUMB, historySaver.get(i).thumb);
-			dataEntry.put(SongAdapter.KEY_DATE,
-					longToDateString(historySaver.get(i).date));
-			data.add(dataEntry);
+			final Song song = historySaver.get(i);
+			data.add(song);
 		}
+
 		SongAdapter adapter = new SongAdapter(this, data);
 		listView.setAdapter(adapter);
 	}
@@ -306,27 +303,26 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 			@Override
 			public void onWishesChecked(AllowedActions allowedActions) {
-//				if (allowedActions.moderated) {
-//					if (allowedActions.wishes || allowedActions.regards) {
-						Bundle bundle = new Bundle();
-						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-								allowedActions.wishes);
-						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-								allowedActions.regards);
-						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-								allowedActions.limit);
-						Intent wishIntent = new Intent(mainActivity,
-								WishActivity.class);
-						wishIntent.putExtras(bundle);
-						mainActivity.startActivity(wishIntent);
-//					} else {
-//						alertMessage(mainActivity, mainActivity
-//								.getString(R.string.no_wishes_and_regards));
-//					}
-//				} else {
-//					alertMessage(mainActivity,
-//							mainActivity.getString(R.string.no_moderator));
-//				}
+				// if (allowedActions.moderated) {
+				// if (allowedActions.wishes || allowedActions.regards) {
+				Bundle bundle = new Bundle();
+				bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
+						allowedActions.wishes);
+				bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
+						allowedActions.regards);
+				bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
+						allowedActions.limit);
+				Intent wishIntent = new Intent(mainActivity, WishActivity.class);
+				wishIntent.putExtras(bundle);
+				mainActivity.startActivity(wishIntent);
+				// } else {
+				// alertMessage(mainActivity, mainActivity
+				// .getString(R.string.no_wishes_and_regards));
+				// }
+				// } else {
+				// alertMessage(mainActivity,
+				// mainActivity.getString(R.string.no_moderator));
+				// }
 			}
 		});
 		wishChecker.start();
@@ -437,7 +433,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		case 0: // add to favorites
 			Song song = historySaver.get(index);
 			if (favoritesSaver.isAlreadyIn(song) == -1) {
-				song.thumb = "";
+				song.clearThumb();
 				favoritesSaver.addSong(song);
 				Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
 						.show();
@@ -537,6 +533,5 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public void setMetadataParser(MetadataParser metadataParser) {
 		this.metadataParser = metadataParser;
 	}
-
 
 }
