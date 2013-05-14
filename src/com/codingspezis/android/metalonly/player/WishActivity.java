@@ -60,7 +60,7 @@ public class WishActivity extends SubActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.wishes);
+		setContentView(R.layout.activity_wishes);
 		settings = getSharedPreferences(getString(R.string.app_name),
 				Context.MODE_MULTI_PROCESS);
 
@@ -170,7 +170,7 @@ public class WishActivity extends SubActivity implements OnClickListener {
 	private void showInfo() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle(R.string.notification);
-		final View v = getLayoutInflater().inflate(R.layout.text, null);
+		final View v = getLayoutInflater().inflate(R.layout.dialog_text, null);
 		TextView tv = (TextView) v.findViewById(R.id.text);
 		tv.setText(R.string.wish_explanation);
 		alert.setView(v);

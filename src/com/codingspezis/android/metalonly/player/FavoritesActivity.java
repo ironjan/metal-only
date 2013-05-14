@@ -62,7 +62,7 @@ public class FavoritesActivity extends SubActivity implements
 	private void showAddSongDialog() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle(R.string.menu_add_mannually);
-		final View v = getLayoutInflater().inflate(R.layout.add_song, null);
+		final View v = getLayoutInflater().inflate(R.layout.dialog_add_song, null);
 		alert.setView(v);
 		alert.setNegativeButton(R.string.abort, null);
 		alert.setPositiveButton(R.string.ok, new OnClickListener() {

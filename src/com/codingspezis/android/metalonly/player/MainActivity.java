@@ -75,7 +75,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getSupportActionBar().setHomeButtonEnabled(false);
-		setContentView(R.layout.main_history);
+		setContentView(R.layout.activity_stream);
 		setSupportProgressBarIndeterminateVisibility(false);
 		setUpBroadcastReceiver();
 		setUpPlayerService();

@@ -42,7 +42,7 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
+		setContentView(R.layout.activity_about);
 		setUpButtons();
 	}
 

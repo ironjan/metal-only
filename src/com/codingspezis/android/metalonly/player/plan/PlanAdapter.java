@@ -59,7 +59,7 @@ public class PlanAdapter extends BaseAdapter {
 						.findViewById(R.id.list_item_section_text);
 				sectionView.setText(si.getTitle());
 			} else {
-				v = inflater.inflate(R.layout.plan_list_row, null);
+				v = inflater.inflate(R.layout.view_list_row_plan, null);
 				TextView title = (TextView) v.findViewById(R.id.txtTitle);
 				TextView mod = (TextView) v.findViewById(R.id.txtMod);
 				TextView time = (TextView) v.findViewById(R.id.txtTime);

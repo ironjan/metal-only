@@ -44,7 +44,7 @@ public class SongAdapterFavorites extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		if (convertView == null) {
-			view = inflater.inflate(R.layout.song_fav, null);
+			view = inflater.inflate(R.layout.view_list_item_song_fav, null);
 		}
 		HashMap<String, String> song = new HashMap<String, String>();
 		song = data.get(position);

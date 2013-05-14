@@ -29,7 +29,7 @@ public class LicenseActivity extends SubActivity {
 		if (bundle != null) {
 			license = bundle.getString(KEY_BU_LICENSE_NAME);
 		}
-		setContentView(R.layout.license);
+		setContentView(R.layout.activity_licensing);
 		setTitle(license.toUpperCase());
 		final TextView textView = (TextView) findViewById(R.id.license);
 		final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
