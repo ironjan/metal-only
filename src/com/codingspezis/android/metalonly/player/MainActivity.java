@@ -139,7 +139,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		buttonWish = (ImageButton) findViewById(R.id.btnWish);
 		marqueeMod = (Marquee) findViewById(R.id.marqueeMod);
 		marqueeGenre = (Marquee) findViewById(R.id.marqueeGenree);
-		listView = (ListView) findViewById(R.id.listView);
+		listView = (ListView) findViewById(R.id.listSongHistory);
 
 		buttonStream.setOnClickListener(this);
 

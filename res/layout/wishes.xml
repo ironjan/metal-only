@@ -1,130 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/scrollView8"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-	<LinearLayout
-		android:layout_width="fill_parent"
-	  	android:layout_height="wrap_content"
-	  	android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-		<!-- nick -->				
-	    <TextView
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/nick"
-	    	android:layout_marginLeft="10dp"
-	    	android:layout_marginTop="10dp"
-	    	android:textAppearance="?android:attr/textAppearanceLarge" />
-	    <EditText
-	        android:id="@+id/nick"
-	        android:inputType="text"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content" />
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"
-		    android:layout_marginTop="5dp"
-		    android:layout_marginBottom="5dp"
-		    android:background="#ff545454" />
-	    
-	    <!-- artist + title label -->
-	    <LinearLayout
-			android:layout_width="fill_parent"
-	  		android:layout_height="wrap_content"
-	  		android:orientation="horizontal">
-	        <TextView
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:text="@string/artist"
-		    	android:layout_marginLeft="10dp"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:layout_weight="1" />
-	        <TextView
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:text="@string/title"
-		    	android:layout_marginLeft="10dp"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:layout_weight="1" />
-  		</LinearLayout>
-  		
-	    <!-- artist + title edit text -->
-	  	<LinearLayout
-			android:layout_width="fill_parent"
-	  		android:layout_height="wrap_content"
-	  		android:orientation="horizontal">
-	  	    <EditText
-		        android:id="@+id/artist"
-		        android:inputType="text"
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:layout_weight="1" />
-	  	    <EditText
-		        android:id="@+id/title"
-		        android:inputType="text"
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- nick -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/nick"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@id/editNick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#ff545454" />
+
+        <!-- artist + title label -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="@string/artist"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="@string/title"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"
-		    android:layout_marginTop="5dp"
-		    android:layout_marginBottom="5dp"
-		    android:background="#ff545454" />
-	    
-	    <!-- regard -->
-	    <TextView
-		    	android:layout_width="fill_parent"
-		    	android:layout_height="wrap_content"
-		    	android:text="@string/regard"
-		    	android:layout_marginLeft="10dp"
-				android:textAppearance="?android:attr/textAppearanceLarge" />
-	    <EditText
-	        android:id="@+id/regard"
-	        android:inputType="textMultiLine"
-	    	android:layout_width="fill_parent"
-	    	android:layout_height="wrap_content" />
-	    <View
-		    android:layout_width="fill_parent"
-		    android:layout_height="1dp"
-		    android:layout_marginTop="5dp"
-		    android:layout_marginBottom="5dp"
-		    android:background="#ff545454" />
-	    
-	    <!-- number of wishes and regards -->
-		<TextView
-		    android:id="@+id/wishcount"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="5dp"
-			android:text="@string/empty"
-			android:textAppearance="?android:attr/textAppearanceSmall" />
-	    
-		<!-- buttons -->
-	    <LinearLayout 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-	        
-	        <!-- help -->
-		    <Button
-		        android:id="@+id/help"
-		        android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:text="@string/help" />
-	        
-	        <!-- send -->
-		    <Button
-		        android:id="@+id/send"
-		        android:layout_width="wrap_content"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="3"
-	        	android:text="@string/send" />
-		    
-	    </LinearLayout>
-	    
-	</LinearLayout>
+
+        <!-- artist + title edit text -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@id/editArtist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#ff545454" />
+
+        <!-- regard -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/regard"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@id/editRegard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#ff545454" />
+
+        <!-- number of wishes and regards -->
+
+        <TextView
+            android:id="@id/txtWishcount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/empty"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- buttons -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <!-- help -->
+
+            <Button
+                android:id="@id/btnHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/help" />
+
+            <!-- send -->
+
+            <Button
+                android:id="@id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/send" />
+        </LinearLayout>
+    </LinearLayout>
+
 </ScrollView>

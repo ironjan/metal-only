@@ -16,10 +16,8 @@ import android.content.*;
 import android.os.*;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.webkit.*;
 import android.widget.*;
 
-import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -67,14 +65,14 @@ public class WishActivity extends SubActivity implements OnClickListener {
 				Context.MODE_MULTI_PROCESS);
 
 		// input fields
-		editNick = (EditText) findViewById(R.id.nick);
+		editNick = (EditText) findViewById(R.id.editNick);
 		editNick.setText(settings.getString(KEY_SP_NICK, ""));
-		editArtist = (EditText) findViewById(R.id.artist);
-		editTitle = (EditText) findViewById(R.id.title);
-		editRegard = (EditText) findViewById(R.id.regard);
+		editArtist = (EditText) findViewById(R.id.editArtist);
+		editTitle = (EditText) findViewById(R.id.editTitle);
+		editRegard = (EditText) findViewById(R.id.editRegard);
 
-		buttonHelp = (Button) findViewById(R.id.help);
-		buttonSend = (Button) findViewById(R.id.send);
+		buttonHelp = (Button) findViewById(R.id.btnHelp);
+		buttonSend = (Button) findViewById(R.id.btnSend);
 		buttonHelp.setOnClickListener(this);
 		buttonSend.setOnClickListener(this);
 
@@ -88,7 +86,7 @@ public class WishActivity extends SubActivity implements OnClickListener {
 			editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
 		}
 
-		((TextView) findViewById(R.id.wishcount)).setText(numberOfWishes);
+		((TextView) findViewById(R.id.txtWishcount)).setText(numberOfWishes);
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);

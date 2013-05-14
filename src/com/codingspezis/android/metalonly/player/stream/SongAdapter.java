@@ -54,10 +54,10 @@ public class SongAdapter extends BaseAdapter {
 
 		Song song = data.get(position);
 
-		final TextView txtTitle = (TextView) view.findViewById(R.id.title);
-		final TextView txtArtist = (TextView) view.findViewById(R.id.artist);
-		final TextView txtTime = (TextView) view.findViewById(R.id.time);
-		final TextView txtDate = (TextView) view.findViewById(R.id.date);
+		final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+		final TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
+		final TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
+		final TextView txtDate = (TextView) view.findViewById(R.id.txtDate);
 
 		txtTitle.setText(song.title);
 		txtArtist.setText(song.interpret);
@@ -75,7 +75,7 @@ public class SongAdapter extends BaseAdapter {
 			txtTime.setText("");
 		}
 
-		ImageView image = (ImageView) view.findViewById(R.id.list_image);
+		ImageView image = (ImageView) view.findViewById(R.id.modImage);
 		String thumb = song.getThumb();
 		imageLoader.DisplayImage(thumb, image);
 

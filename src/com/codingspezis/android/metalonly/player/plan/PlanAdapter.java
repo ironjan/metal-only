@@ -2,7 +2,6 @@ package com.codingspezis.android.metalonly.player.plan;
 
 import java.util.*;
 
-
 import android.app.*;
 import android.content.*;
 import android.view.*;
@@ -11,8 +10,8 @@ import android.widget.*;
 import com.codingspezis.android.metalonly.player.PlanActivity.Item;
 import com.codingspezis.android.metalonly.player.PlanActivity.PlanData;
 import com.codingspezis.android.metalonly.player.PlanActivity.SectionItem;
-import com.codingspezis.android.metalonly.player.utils.*;
 import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.utils.*;
 
 public class PlanAdapter extends BaseAdapter {
 
@@ -61,11 +60,11 @@ public class PlanAdapter extends BaseAdapter {
 				sectionView.setText(si.getTitle());
 			} else {
 				v = inflater.inflate(R.layout.plan_list_row, null);
-				TextView title = (TextView) v.findViewById(R.id.title);
-				TextView mod = (TextView) v.findViewById(R.id.mod);
-				TextView time = (TextView) v.findViewById(R.id.time);
-				TextView genre = (TextView) v.findViewById(R.id.genre);
-				ImageView image = (ImageView) v.findViewById(R.id.list_image);
+				TextView title = (TextView) v.findViewById(R.id.txtTitle);
+				TextView mod = (TextView) v.findViewById(R.id.txtMod);
+				TextView time = (TextView) v.findViewById(R.id.txtTime);
+				TextView genre = (TextView) v.findViewById(R.id.txtGenre);
+				ImageView image = (ImageView) v.findViewById(R.id.modImage);
 				ProgressBar bar = (ProgressBar) v.findViewById(R.id.progress);
 				PlanData tmpData = data.get(position).getPlanData();
 

@@ -48,8 +48,9 @@ public class SongAdapterFavorites extends BaseAdapter {
 		}
 		HashMap<String, String> song = new HashMap<String, String>();
 		song = data.get(position);
-		((TextView) view.findViewById(R.id.title)).setText(song.get(KEY_TITLE));
-		((TextView) view.findViewById(R.id.artist)).setText(song
+		((TextView) view.findViewById(R.id.txtTitle)).setText(song
+				.get(KEY_TITLE));
+		((TextView) view.findViewById(R.id.txtArtist)).setText(song
 				.get(KEY_INTERPRET));
 		return view;
 	}

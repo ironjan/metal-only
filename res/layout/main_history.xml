@@ -11,7 +11,7 @@
         layout="@layout/stream_title_bar" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@id/listSongHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
