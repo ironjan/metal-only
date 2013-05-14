@@ -25,9 +25,9 @@
         android:textStyle="bold" />
 
     <ImageButton
-        android:id="@id/imageButton5"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:id="@+id/imageButton5"
+        android:layout_width="@dimen/streamPlayButtonSize"
+        android:layout_height="@dimen/streamPlayButtonSize"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/transparentbutton"
