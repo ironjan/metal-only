@@ -7,14 +7,18 @@ import android.annotation.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.MenuItem;
 import com.codingspezis.android.metalonly.player.plan.*;
 
 @SuppressLint("SimpleDateFormat")
-public class PlanActivity extends SubActivity implements OnItemClickListener {
+public class PlanActivity extends SherlockListActivity implements
+		OnItemClickListener {
 
 	public class EntryItem extends Item {
 
@@ -169,7 +173,9 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+
 		setTitle(getResources().getString(R.string.plan));
 
 		String site = getIntent().getStringExtra(KEY_SITE);
@@ -225,7 +231,7 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 				}
 			}
 		}
-		ListView listView = (ListView) findViewById(R.id.listView1);
+		ListView listView = getListView();
 		PlanAdapter adapter = new PlanAdapter(this, listItems);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
@@ -275,4 +281,13 @@ public class PlanActivity extends SubActivity implements OnItemClickListener {
 		builder.show();
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == com.actionbarsherlock.R.id.abs__home) {
+			Intent intent = new Intent(this, MainActivity.class);
+			NavUtils.navigateUpTo(this, intent);
+			return true;
+		}
+		return false;
+	}
 }

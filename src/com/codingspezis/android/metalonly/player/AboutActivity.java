@@ -3,9 +3,13 @@ package com.codingspezis.android.metalonly.player;
 import android.content.*;
 import android.net.*;
 import android.os.*;
+import android.support.v4.app.*;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * 
@@ -15,7 +19,7 @@ import android.widget.*;
  * @author codingspezis.com
  * 
  */
-public class AboutActivity extends SubActivity implements OnClickListener {
+public class AboutActivity extends SherlockActivity implements OnClickListener {
 
 	// metal only
 	private TextView buttonMetalOnly;
@@ -44,6 +48,8 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
 		setUpButtons();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	/**
@@ -103,8 +109,10 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 		emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { strTo });
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, strSubject);
 		emailIntent.putExtra(Intent.EXTRA_TEXT, strText);
-		try{
-			startActivity(Intent.createChooser(emailIntent, strTo)); // TODO: change this
+		try {
+			startActivity(Intent.createChooser(emailIntent, strTo)); // TODO:
+																		// change
+																		// this
 		} catch (android.content.ActivityNotFoundException ex) {
 			MainActivity.toastMessage(this, getString(R.string.no_mail_app));
 		}
@@ -153,4 +161,13 @@ public class AboutActivity extends SubActivity implements OnClickListener {
 		}
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == com.actionbarsherlock.R.id.abs__home) {
+			Intent intent = new Intent(this, MainActivity.class);
+			NavUtils.navigateUpTo(this, intent);
+			return true;
+		}
+		return false;
+	}
 }
