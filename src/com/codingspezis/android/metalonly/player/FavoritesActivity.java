@@ -29,7 +29,7 @@ import com.codingspezis.android.metalonly.player.wish.*;
  *          this activity displays favorites and allows to handle them
  * 
  */
-public class FavoritesActivity extends SherlockActivity implements
+public class FavoritesActivity extends SherlockListActivity implements
 		OnItemClickListener {
 
 	// JSON file name for favorites
@@ -48,13 +48,12 @@ public class FavoritesActivity extends SherlockActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		favoritesSaver = new SongSaver(this, JSON_FILE_FAV, -1);
-		listView = (ListView) findViewById(R.id.listView1);
+		listView = getListView();
 		listView.setOnItemClickListener(this);
 		displayFavorites();
 	}

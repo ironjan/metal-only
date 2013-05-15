@@ -17,7 +17,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.codingspezis.android.metalonly.player.plan.*;
 
 @SuppressLint("SimpleDateFormat")
-public class PlanActivity extends SherlockActivity implements
+public class PlanActivity extends SherlockListActivity implements
 		OnItemClickListener {
 
 	public class EntryItem extends Item {
@@ -173,7 +173,6 @@ public class PlanActivity extends SherlockActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -232,7 +231,7 @@ public class PlanActivity extends SherlockActivity implements
 				}
 			}
 		}
-		ListView listView = (ListView) findViewById(R.id.listView1);
+		ListView listView = getListView();
 		PlanAdapter adapter = new PlanAdapter(this, listItems);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(this);
