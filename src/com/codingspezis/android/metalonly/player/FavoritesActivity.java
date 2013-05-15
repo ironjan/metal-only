@@ -198,11 +198,11 @@ public class FavoritesActivity extends SubActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
-		SubMenu sub = menu.addSubMenu(0, R.id.menu_sub, 0, R.string.menu);
+		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
-		sub.add(0, R.id.add_manually, 0, R.string.menu_add_mannually);
-		sub.add(0, R.id.shareall, 0, R.string.menu_shareall);
-		sub.add(0, R.id.deleteall, 0, R.string.menu_deleteall);
+		sub.add(0, R.id.mnu_add_manually, 0, R.string.menu_add_mannually);
+		sub.add(0, R.id.mnu_shareall, 0, R.string.menu_shareall);
+		sub.add(0, R.id.mnu_deleteall, 0, R.string.menu_deleteall);
 		sub.getItem().setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_ALWAYS
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -213,8 +213,8 @@ public class FavoritesActivity extends SubActivity implements
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			if (event.getAction() == KeyEvent.ACTION_UP && menu != null
-					&& menu.findItem(R.id.menu_sub) != null) {
-				menu.performIdentifierAction(R.id.menu_sub, 0);
+					&& menu.findItem(R.id.mnu_sub) != null) {
+				menu.performIdentifierAction(R.id.mnu_sub, 0);
 				return true;
 			}
 		}
@@ -228,11 +228,11 @@ public class FavoritesActivity extends SubActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
 		// add manually
-		if (item.getItemId() == R.id.add_manually) {
+		if (item.getItemId() == R.id.mnu_add_manually) {
 			showAddSongDialog();
 		}
 		// share all
-		if (item.getItemId() == R.id.shareall) {
+		if (item.getItemId() == R.id.mnu_shareall) {
 			// generate share string
 			String message = "";
 			for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
@@ -247,7 +247,7 @@ public class FavoritesActivity extends SubActivity implements
 					.getStringArray(R.array.favorite_options_array)[2]));
 		}
 		// delete all
-		else if (item.getItemId() == R.id.deleteall) {
+		else if (item.getItemId() == R.id.mnu_deleteall) {
 			askSureDelete(this, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

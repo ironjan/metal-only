@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item
-    	android:id="@+id/menu_sub"
+    	android:id="@+id/mnu_sub"
         android:title="@string/menu" />
     <item
-    	android:id="@+id/favorites"
+    	android:id="@+id/mnu_favorites"
         android:title="@string/menu_favorites" />
     <item
-    	android:id="@+id/donation"
+    	android:id="@+id/mnu_donation"
         android:title="@string/menu_donation" />
     <item
-    	android:id="@+id/settings"
+    	android:id="@+id/mnu_settings"
         android:title="@string/menu_settings" />
     <item
-    	android:id="@+id/info"
+    	android:id="@+id/mnu_info"
         android:title="@string/menu_info" />
 
 </menu>

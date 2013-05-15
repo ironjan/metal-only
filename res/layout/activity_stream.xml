@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/streamPlayButtonSize"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/stripes_for_background" >
+        android:background="@drawable/bg_stripes" >
 
         <ImageButton
             android:id="@+id/btnWish"
@@ -31,7 +31,7 @@
             android:layout_height="@dimen/streamPlayButtonSize"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/transparentbutton"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/empty"
             android:padding="4dp"
             android:scaleType="fitEnd"
@@ -43,7 +43,7 @@
             android:layout_height="@dimen/streamPlayButtonSize"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/transparentbutton"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/empty"
             android:padding="4dp"
             android:scaleType="fitEnd"
@@ -76,7 +76,7 @@
             android:layout_height="@dimen/streamPlayButtonSize"
             android:layout_toLeftOf="@+id/buttonBarDividerRight"
             android:layout_toRightOf="@+id/buttonBarDividerLeft"
-            android:background="@drawable/transparentbutton"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/play_paus"
             android:scaleType="fitCenter"
             android:src="@drawable/mo_play5" />

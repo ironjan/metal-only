@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
    
     <item
-    	android:id="@+id/add_manually"
+    	android:id="@+id/mnu_add_manually"
         android:title="@string/menu_add_mannually" />
     
     <item
-    	android:id="@+id/shareall"
+    	android:id="@+id/mnu_shareall"
         android:title="@string/menu_shareall" />
     
     <item
-    	android:id="@+id/deleteall"
+    	android:id="@+id/mnu_deleteall"
         android:title="@string/menu_deleteall" />
 
 </menu>
