@@ -198,10 +198,11 @@
     <string name="date">Datum</string>
     <string name="time">Time</string>
     <string name="colon">:</string>
-    
+
     <!-- Layouting texts -->
 
     <string name="artistDummy">A very long dummy text for an artist\'s name</string>
-    <string name="titleDummy">A very long dummy text for a song\'s title</string>
+    <string name="genreDummy">A very long dummy text for a show\'s genre</string>
+    <string name="titleDummy">A very long dummy text for a song\'s or show\'s title</string>
 
 </resources>

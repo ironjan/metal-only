@@ -71,7 +71,9 @@ public class PlanAdapter extends BaseAdapter {
 				time.setText(tmpData.getTimeString());
 				genre.setText(tmpData.getGenre());
 				imageLoader.DisplayImage(tmpData.getMod(), image);
-				bar.setProgress(tmpData.getProgress());
+
+				// workaround for bottom margin bug
+				bar.setProgress(100 - tmpData.getProgress());
 			}
 		}
 		return v;

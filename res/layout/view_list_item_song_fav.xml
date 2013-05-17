@@ -8,22 +8,15 @@
     <TextView
         android:id="@id/txtArtist"
         style="?android:attr/textAppearanceSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/artist"
-        android:textIsSelectable="false" />
-
-    <TextView
-        android:id="@+id/colon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/txtArtist"
-        android:layout_toRightOf="@id/txtArtist"
-        android:text="@string/colon"
+        android:singleLine="true"
+        android:text="@string/artistDummy"
         android:textIsSelectable="false" />
 
     <TextView
@@ -33,7 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtArtist"
         android:layout_marginLeft="8dp"
-        android:text="@string/title"
+        android:layout_marginRight="8dp"
+        android:singleLine="true"
+        android:text="@string/titleDummy"
         android:textIsSelectable="false" />
 
     <TextView
