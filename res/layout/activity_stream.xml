@@ -7,46 +7,23 @@
     <include
         android:id="@+id/streamTitleBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/imageButton5"
-        android:gravity="center_horizontal"
-        android:shadowColor="#ff000000"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="4"
-        android:textStyle="bold" />
-
-    <com.codingspezis.android.metalonly.player.views.Marquee
-        android:id="@+id/marqueeGenree"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/marqueeMod"
-        android:layout_toLeftOf="@+id/imageButton5"
-        android:gravity="center_horizontal"
-        android:textStyle="bold" />
-
-    <ImageButton
-        android:id="@id/imageButton5"
-        android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/transparentbutton"
-        android:contentDescription="@string/empty"
-        android:src="@drawable/mo_speaker" />
+        layout="@layout/include_stream_title_bar" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
-        android:layout_below="@+id/imageButton5" />
+        android:layout_below="@+id/streamTitleBar"
+        android:layout_marginTop="48dp" />
 
     <RelativeLayout
         android:id="@+id/buttonBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/streamPlayButtonSize"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_stripes" >
 
         <ImageButton
             android:id="@+id/btnWish"
@@ -54,7 +31,7 @@
             android:layout_height="@dimen/streamPlayButtonSize"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/transparentbutton"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/empty"
             android:padding="4dp"
             android:scaleType="fitCenter"
@@ -66,20 +43,40 @@
             android:layout_height="@dimen/streamPlayButtonSize"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/transparentbutton"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/empty"
             android:padding="4dp"
             android:scaleType="fitCenter"
             android:src="@drawable/mo_calendar" />
 
         <ImageView
+            android:id="@+id/buttonBarDividerRight"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/streamButtonDividerMarginBottom"
+            android:layout_marginTop="@dimen/streamButtonDividerMarginTop"
+            android:layout_toLeftOf="@+id/btnWish"
+            android:src="@drawable/grey_vertical_line"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/buttonBarDividerLeft"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/streamButtonDividerMarginBottom"
+            android:layout_marginTop="@dimen/streamButtonDividerMarginTop"
+            android:layout_toRightOf="@+id/btnCalendar"
+            android:src="@drawable/grey_vertical_line"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
             android:id="@+id/buttonPlay"
             style="?attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="@dimen/streamPlayButtonSize"
-            android:layout_toLeftOf="@+id/btnWish"
-            android:layout_toRightOf="@+id/btnCalendar"
-            android:background="@drawable/transparentbutton"
+            android:layout_toLeftOf="@+id/buttonBarDividerRight"
+            android:layout_toRightOf="@+id/buttonBarDividerLeft"
+            android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/play_paus"
             android:scaleType="fitCenter"
             android:src="@drawable/mo_play5" />

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="@dimen/streamPlayButtonSize"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_stripes" >
+
+        <ImageButton
+            android:id="@+id/btnWish"
+            android:layout_width="@dimen/streamPlayButtonSize"
+            android:layout_height="@dimen/streamOtherButtonSize"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/mo_pen" />
+
+        <ImageButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/streamPlayButtonSize"
+            android:layout_height="@dimen/streamOtherButtonSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/mo_calendar" />
+
+        <ImageView
+            android:id="@+id/buttonBarDividerRight"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/btnWish"
+            android:layout_marginBottom="@dimen/streamButtonDividerMarginBottom"
+            android:layout_marginTop="@dimen/streamButtonDividerMarginTop"
+            android:src="@drawable/grey_vertical_line"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/buttonBarDividerLeft"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/btnCalendar"
+            android:layout_marginBottom="@dimen/streamButtonDividerMarginBottom"
+            android:layout_marginTop="@dimen/streamButtonDividerMarginTop"
+            android:src="@drawable/grey_vertical_line"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/buttonPlay"
+            style="?attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/buttonBarDividerLeft"
+            android:layout_below="@+id/buttonBarDividerRight"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/play_paus"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_play5" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/streamTitleBar"
+        android:layout_marginTop="48dp"
+        android:layout_toLeftOf="@+id/buttonBar" />
+
+    <!-- fix layouting issue with include and relative layout -->
+    <!-- https://code.google.com/p/android/issues/detail?id=2863 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/streamOtherButtonSize"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/buttonBar" >
+
+        <include
+            android:id="@+id/streamTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/include_stream_title_bar" />
+    </RelativeLayout>
+
+</RelativeLayout>

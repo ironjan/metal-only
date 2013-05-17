@@ -8,10 +8,12 @@ import android.content.*;
 import android.content.DialogInterface.OnClickListener;
 import android.net.*;
 import android.os.*;
+import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
@@ -27,7 +29,7 @@ import com.codingspezis.android.metalonly.player.wish.*;
  *          this activity displays favorites and allows to handle them
  * 
  */
-public class FavoritesActivity extends SubActivity implements
+public class FavoritesActivity extends SherlockListActivity implements
 		OnItemClickListener {
 
 	// JSON file name for favorites
@@ -46,9 +48,12 @@ public class FavoritesActivity extends SubActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+
 		favoritesSaver = new SongSaver(this, JSON_FILE_FAV, -1);
-		listView = (ListView) findViewById(R.id.listView1);
+		listView = getListView();
 		listView.setOnItemClickListener(this);
 		displayFavorites();
 	}
@@ -62,7 +67,8 @@ public class FavoritesActivity extends SubActivity implements
 	private void showAddSongDialog() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle(R.string.menu_add_mannually);
-		final View v = getLayoutInflater().inflate(R.layout.add_song, null);
+		final View v = getLayoutInflater().inflate(R.layout.dialog_add_song,
+				null);
 		alert.setView(v);
 		alert.setNegativeButton(R.string.abort, null);
 		alert.setPositiveButton(R.string.ok, new OnClickListener() {
@@ -198,11 +204,11 @@ public class FavoritesActivity extends SubActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
-		SubMenu sub = menu.addSubMenu(0, R.id.menu_sub, 0, R.string.menu);
+		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
-		sub.add(0, R.id.add_manually, 0, R.string.menu_add_mannually);
-		sub.add(0, R.id.shareall, 0, R.string.menu_shareall);
-		sub.add(0, R.id.deleteall, 0, R.string.menu_deleteall);
+		sub.add(0, R.id.mnu_add_manually, 0, R.string.menu_add_mannually);
+		sub.add(0, R.id.mnu_shareall, 0, R.string.menu_shareall);
+		sub.add(0, R.id.mnu_deleteall, 0, R.string.menu_deleteall);
 		sub.getItem().setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_ALWAYS
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -213,8 +219,8 @@ public class FavoritesActivity extends SubActivity implements
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			if (event.getAction() == KeyEvent.ACTION_UP && menu != null
-					&& menu.findItem(R.id.menu_sub) != null) {
-				menu.performIdentifierAction(R.id.menu_sub, 0);
+					&& menu.findItem(R.id.mnu_sub) != null) {
+				menu.performIdentifierAction(R.id.mnu_sub, 0);
 				return true;
 			}
 		}
@@ -227,13 +233,16 @@ public class FavoritesActivity extends SubActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
-		// add manually
-		if (item.getItemId() == R.id.add_manually) {
+
+		switch (item.getItemId()) {
+		case com.actionbarsherlock.R.id.abs__home:
+			Intent intent = new Intent(this, MainActivity.class);
+			NavUtils.navigateUpTo(this, intent);
+			return true;
+		case R.id.mnu_add_manually:
 			showAddSongDialog();
-		}
-		// share all
-		if (item.getItemId() == R.id.shareall) {
-			// generate share string
+			return true;
+		case R.id.mnu_shareall:
 			String message = "";
 			for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
 				message += favoritesSaver.get(i).interpret + " - "
@@ -245,9 +254,8 @@ public class FavoritesActivity extends SubActivity implements
 			share.putExtra(Intent.EXTRA_TEXT, message);
 			startActivity(Intent.createChooser(share, getResources()
 					.getStringArray(R.array.favorite_options_array)[2]));
-		}
-		// delete all
-		else if (item.getItemId() == R.id.deleteall) {
+			return true;
+		case R.id.mnu_deleteall:
 			askSureDelete(this, new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -255,10 +263,12 @@ public class FavoritesActivity extends SubActivity implements
 					displayFavorites();
 				}
 			}, null);
-		} else {
+			return true;
+
+		default:
 			return false;
 		}
-		return true;
+
 	}
 
 	/**

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="txtArtist" type="id"/>
+    <item name="txtTitle" type="id"/>
+    <item name="txtDate" type="id"/>
+    <item name="txtTime" type="id"/>
+    <item name="txtSong" type="id"/>
+    <item name="txtGenre" type="id"/>
+    <item name="modImage" type="id"/>
+    <item name="txtMod" type="id"/>
+    <item name="editNick" type="id"/>
+    <item name="txtRegard" type="id"/>
+    <item name="editArtist" type="id"/>
+    <item name="editTitle" type="id"/>
+    <item name="editRegard" type="id"/>
+    <item name="txtWishcount" type="id"/>
+    <item name="btnSend" type="id"/>
+    <item name="btnHelp" type="id"/>
+
+</resources>
