@@ -40,7 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
-        android:layout_below="@+id/imageButton5" />
+        android:layout_below="@+id/imageButton5"
+        tools:listitem="@layout/song_hist" />
 
     <RelativeLayout
         android:id="@+id/buttonBar"
