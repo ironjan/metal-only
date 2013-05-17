@@ -134,7 +134,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 */
 	private void setUpGUIObjects() {
 		buttonStream = (ImageView) findViewById(R.id.buttonPlay);
-		buttonVolume = (ImageButton) findViewById(R.id.imageButton5);
+		buttonVolume = (ImageButton) findViewById(R.id.btnVol);
 		buttonCalendar = (ImageButton) findViewById(R.id.btnCalendar);
 		buttonWish = (ImageButton) findViewById(R.id.btnWish);
 		marqueeMod = (Marquee) findViewById(R.id.marqueeMod);

@@ -17,5 +17,6 @@
     <item name="txtWishcount" type="id"/>
     <item name="btnSend" type="id"/>
     <item name="btnHelp" type="id"/>
-
+    <item name="btnVol" type="id"/>
+    
 </resources>
