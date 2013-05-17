@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeMod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:shadowColor="#ff000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="4"
+        android:textStyle="bold" />
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeGenree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marqueeMod"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@id/imageButton5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_marginRight="@dimen/bigButton"
+        android:layout_toLeftOf="@id/buttonBar"
+        android:background="@drawable/transparentbutton"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/mo_speaker" />
+
+    <ListView
+        android:id="@id/listSongHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/imageButton5"
+        android:layout_toLeftOf="@+id/buttonBar"
+        tools:listitem="@layout/song_hist" />
+
+    <LinearLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="@dimen/bigButton"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/stripes_for_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/include_stream_control_buttons" />
+    </LinearLayout>
+
+</RelativeLayout>

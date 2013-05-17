@@ -26,8 +26,8 @@
 
     <ImageButton
         android:id="@+id/imageButton5"
-        android:layout_width="@dimen/streamPlayButtonSize"
-        android:layout_height="@dimen/streamPlayButtonSize"
+        android:layout_width="@dimen/streamOtherButtonSize"
+        android:layout_height="@dimen/streamOtherButtonSize"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/transparentbutton"
