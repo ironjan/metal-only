@@ -61,7 +61,8 @@
             android:hint="@string/value"
             android:inputType="numberDecimal"
             android:maxLines="1"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:text="" />
 
         <TextView
             android:id="@+id/txtExplanation"

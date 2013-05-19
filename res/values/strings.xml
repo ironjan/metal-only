@@ -69,7 +69,7 @@
     <string name="to">An:</string>
     <string name="paypaladdress">metalonly@gmx.de</string>
     <string name="from">Von:</string>
-    <string name="value">Betrag:</string>
+    <string name="value">Betrag in €:</string>
 
     <string-array name="from_array">
         <item>Anonym</item>
