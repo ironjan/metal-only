@@ -48,9 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/from"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp" />
+
+        <!-- imeActionId supplied because imeOptions does not set it... -->
 
         <EditText
             android:id="@+id/editDonationValue"
@@ -59,6 +62,9 @@
             android:layout_marginTop="8dp"
             android:digits="0123456789\\."
             android:hint="@string/value"
+            android:imeActionId="2"
+            android:imeActionLabel="@string/toPayPal"
+            android:imeOptions="actionGo"
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:minHeight="48dp"
@@ -77,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/next" />
+            android:text="@string/toPayPal" />
     </LinearLayout>
 
 </ScrollView>

@@ -16,11 +16,19 @@ public class PayPalURLGenerator {
 		// Vorname Nachname Spende METAL ONLY e.V.
 		// Anonym Spende METAL ONLY e.V.
 
+		final String correctedDonator;
+		if (donator.trim().length() == 0) {
+			correctedDonator = "ANONYM";
+		} else {
+			correctedDonator = donator;
+		}
+
 		String returnValue;
 		try {
 			final String encodedDonationValue = URLEncoder.encode(""
 					+ donationValue, "UTF-8");
-			final String encodedDonator = URLEncoder.encode(donator, "UTF-8");
+			final String encodedDonator = URLEncoder.encode(correctedDonator,
+					"UTF-8");
 
 			returnValue = "https://www.paypal.com/cgi-bin/webscr?business=metalonly@gmx.de&cmd=_xclick&currency_code=EUR&amount="
 					+ encodedDonationValue

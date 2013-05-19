@@ -70,6 +70,7 @@
     <string name="paypaladdress">metalonly@gmx.de</string>
     <string name="from">Von:</string>
     <string name="value">Betrag in €:</string>
+    <string name="toPayPal">zu PayPal</string>
 
     <string-array name="from_array">
         <item>Anonym</item>
@@ -81,7 +82,7 @@
     </string-array>
 
     <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
-    <string name="paypal_description2">Sie werden nach dem Klick auf Weiter auf die Website von PayPal weitergeleitet und aufgefordert Ihre Angaben zu überprüfen.</string>
+    <string name="paypal_description2">Um eine anonyme Spende zu machen, lassen sie das \'Von\'-Feld einfach leer. Auf der Website von PayPal können Sie Ihre Angaben erneut überprüfen.</string>
     <string name="notification">Hinweis</string>
     <string name="donation_enter_from">Wer spendet?</string>
     <string name="donation_enter_value">Welchen Betrag spenden?</string>
