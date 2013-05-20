@@ -107,9 +107,23 @@ public class PayPalDonationFragment extends SherlockFragment {
 		prefs = PreferenceManager
 				.getDefaultSharedPreferences(getSherlockActivity());
 		donator = prefs.getString(getString(R.string.paypal_key_sender), "");
-		donationValue = prefs.getFloat(getString(R.string.paypal_key_value),
-				-1.0F);
+		try {
+			donationValue = prefs.getFloat(
+					getString(R.string.paypal_key_value), -1.0F);
+		} catch (ClassCastException e) {
+			fetchDeprecatedDonationValuePref();
+		}
+	}
 
+	private void fetchDeprecatedDonationValuePref() {
+		// Because this pref was a String in earlier versions
+		try {
+			String donationValueDeprecated = prefs.getString(
+					getString(R.string.paypal_key_value), "-1.0");
+			donationValue = Float.valueOf(donationValueDeprecated).floatValue();
+		} catch (NumberFormatException ex) {
+			donationValue = -1.0F;
+		}
 	}
 
 	private void bindPrefValues() {
