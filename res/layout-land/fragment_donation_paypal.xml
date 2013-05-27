@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/donationReceiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:baselineAligned="true"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingLeft="4dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/to"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:text="@string/paypaladdress"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageButton
+                android:id="@id/btnHelp"
+                android:layout_width="@dimen/normalButton"
+                android:layout_height="@dimen/normalButton"
+                android:contentDescription="@string/help"
+                android:src="@drawable/ic_action_help_dark"
+                android:text="@string/help" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editDonator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editDonationValue"
+            android:layout_below="@+id/donationReceiver"
+            android:layout_marginTop="8dp"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minHeight="48dp" />
+
+        <!-- imeActionId supplied because imeOptions does not set it... -->
+
+        <EditText
+            android:id="@+id/editDonationValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editDonator"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/textView2"
+            android:digits="0123456789\\."
+            android:imeActionId="2"
+            android:imeActionLabel="@string/toPayPal"
+            android:imeOptions="actionGo|flagNoFullscreen"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/txtExplanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editDonationValue"
+            android:layout_marginTop="8dp"
+            android:padding="4dp"
+            android:text="@string/paypal_description2" />
+
+        <Button
+            android:id="@id/btnSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtExplanation"
+            android:layout_marginTop="8dp"
+            android:text="@string/toPayPal" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editDonator"
+            android:layout_alignBottom="@+id/editDonator"
+            android:layout_alignParentLeft="true"
+            android:text="@string/from"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/editDonationValue"
+            android:layout_alignBottom="@+id/editDonationValue"
+            android:layout_alignParentLeft="true"
+            android:text="@string/value"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </RelativeLayout>
+
+</ScrollView>
