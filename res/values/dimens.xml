@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="streamPlayButtonSize">72dp</dimen>
+    <dimen name="bigButton">72dp</dimen>
+    <dimen name="streamPlayButtonHeigth">@dimen/bigButton</dimen>
+    <!-- uses weigth to fill button bar -->
+    <dimen name="streamPlayButtonWidth">0dp</dimen>
     <dimen name="streamOtherButtonSize">56dp</dimen>
     <dimen name="streamButtonDividerMarginTop">8dp</dimen>
     <dimen name="streamButtonDividerMarginBottom">8dp</dimen>

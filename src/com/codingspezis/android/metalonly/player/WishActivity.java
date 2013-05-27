@@ -14,12 +14,13 @@ import android.annotation.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.support.v4.app.*;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.webkit.*;
 import android.widget.*;
 
-import com.codingspezis.android.metalonly.player.favorites.*;
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.MenuItem;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -27,7 +28,7 @@ import com.codingspezis.android.metalonly.player.wish.*;
  * to metal-only.de
  * 
  */
-public class WishActivity extends SubActivity implements OnClickListener {
+public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	// URL to wish script on metal-only.de
 	public static final String URL_WISHES = "http://metalonly.de/?action=wunschscript";
@@ -62,19 +63,24 @@ public class WishActivity extends SubActivity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.wishes);
+
+		setContentView(R.layout.activity_wishes);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+
 		settings = getSharedPreferences(getString(R.string.app_name),
 				Context.MODE_MULTI_PROCESS);
 
 		// input fields
-		editNick = (EditText) findViewById(R.id.nick);
+		editNick = (EditText) findViewById(R.id.editNick);
 		editNick.setText(settings.getString(KEY_SP_NICK, ""));
-		editArtist = (EditText) findViewById(R.id.artist);
-		editTitle = (EditText) findViewById(R.id.title);
-		editRegard = (EditText) findViewById(R.id.regard);
+		editArtist = (EditText) findViewById(R.id.editArtist);
+		editTitle = (EditText) findViewById(R.id.editTitle);
+		editRegard = (EditText) findViewById(R.id.editRegard);
 
-		buttonHelp = (Button) findViewById(R.id.help);
-		buttonSend = (Button) findViewById(R.id.send);
+		buttonHelp = (Button) findViewById(R.id.btnHelp);
+		buttonSend = (Button) findViewById(R.id.btnSend);
 		buttonHelp.setOnClickListener(this);
 		buttonSend.setOnClickListener(this);
 
@@ -88,7 +94,7 @@ public class WishActivity extends SubActivity implements OnClickListener {
 			editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
 		}
 
-		((TextView) findViewById(R.id.wishcount)).setText(numberOfWishes);
+		((TextView) findViewById(R.id.txtWishcount)).setText(numberOfWishes);
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);
@@ -172,7 +178,7 @@ public class WishActivity extends SubActivity implements OnClickListener {
 	private void showInfo() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle(R.string.notification);
-		final View v = getLayoutInflater().inflate(R.layout.text, null);
+		final View v = getLayoutInflater().inflate(R.layout.dialog_text, null);
 		TextView tv = (TextView) v.findViewById(R.id.text);
 		tv.setText(R.string.wish_explanation);
 		alert.setView(v);
@@ -245,5 +251,15 @@ public class WishActivity extends SubActivity implements OnClickListener {
 				});
 			}
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == com.actionbarsherlock.R.id.abs__home) {
+			Intent intent = new Intent(this, MainActivity.class);
+			NavUtils.navigateUpTo(this, intent);
+			return true;
+		}
+		return false;
 	}
 }

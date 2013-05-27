@@ -64,15 +64,18 @@ public class SongSaver {
 				+ KEY_COUNT, 0);
 		songList = new LinkedList<Song>();
 		for (int i = 0; i < numberOfSongs; i++) {
-			Song song = new Song();
-			song.interpret = sharedPreferences.getString(
+
+			String interpret = sharedPreferences.getString(
 					sharedPreferencesPrefix + KEY_INTERPRET + i, "");
-			song.title = sharedPreferences.getString(sharedPreferencesPrefix
+			String title = sharedPreferences.getString(sharedPreferencesPrefix
 					+ KEY_TITLE + i, "");
-			song.thumb = sharedPreferences.getString(sharedPreferencesPrefix
+			String thumb = sharedPreferences.getString(sharedPreferencesPrefix
 					+ KEY_THUMB + i, "");
-			song.date = sharedPreferences.getLong(sharedPreferencesPrefix
+			long date = sharedPreferences.getLong(sharedPreferencesPrefix
 					+ KEY_DATE + i, 0);
+
+			Song song = new Song(interpret, title, thumb, date);
+
 			if (!addSong(song)) {
 				break;
 			}
@@ -86,14 +89,15 @@ public class SongSaver {
 		if (somethingChanged()) {
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			for (int i = 0; i < songList.size(); i++) {
+				final Song song = songList.get(i);
 				editor.putString(sharedPreferencesPrefix + KEY_INTERPRET + i,
-						songList.get(i).interpret);
+						song.interpret);
 				editor.putString(sharedPreferencesPrefix + KEY_TITLE + i,
-						songList.get(i).title);
+						song.title);
 				editor.putString(sharedPreferencesPrefix + KEY_THUMB + i,
-						songList.get(i).thumb);
+						song.getThumb());
 				editor.putLong(sharedPreferencesPrefix + KEY_DATE + i,
-						songList.get(i).date);
+						song.date);
 			}
 			editor.putInt(sharedPreferencesPrefix + KEY_COUNT, songList.size());
 			editor.commit();

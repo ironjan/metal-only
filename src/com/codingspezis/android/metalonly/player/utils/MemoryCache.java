@@ -12,25 +12,24 @@ import android.util.*;
  */
 public class MemoryCache {
 
-	private static final String TAG = "MemoryCache";
+	private static final String TAG = MemoryCache.class.getSimpleName();
+
+	// Last argument true for LRU ordering
 	private final Map<String, Bitmap> cache = Collections
-			.synchronizedMap(new LinkedHashMap<String, Bitmap>(10, 1.5f, true));// Last
-																				// argument
-																				// true
-																				// for
-																				// LRU
-																				// ordering
-	private long size = 0;// current allocated size
-	private long limit = 1000000;// max memory in bytes
+			.synchronizedMap(new LinkedHashMap<String, Bitmap>(10, 1.5f, true));
+
+	private long allocatedSize = 0;// current allocated allocatedSize
+	private long maxMemoryInBytes = 1000000;// max memory in bytes
 
 	public MemoryCache() {
-		// use 25% of available heap size
+		// use 25% of available heap allocatedSize
 		setLimit(Runtime.getRuntime().maxMemory() / 4);
 	}
 
 	public void setLimit(long new_limit) {
-		limit = new_limit;
-		Log.i(TAG, "MemoryCache will use up to " + limit / 1024. / 1024. + "MB");
+		maxMemoryInBytes = new_limit;
+		Log.i(TAG, "MemoryCache will use up to " + maxMemoryInBytes / 1024.
+				/ 1024. + "MB");
 	}
 
 	public Bitmap get(String id) {
@@ -42,7 +41,7 @@ public class MemoryCache {
 			// http://code.google.com/p/osmdroid/issues/detail?id=78
 			return cache.get(id);
 		} catch (NullPointerException ex) {
-			ex.printStackTrace();
+			Log.e(TAG, ex.getMessage(), ex);
 			return null;
 		}
 	}
@@ -50,10 +49,10 @@ public class MemoryCache {
 	public void put(String id, Bitmap bitmap) {
 		try {
 			if (cache.containsKey(id)) {
-				size -= getSizeInBytes(cache.get(id));
+				allocatedSize -= getSizeInBytes(cache.get(id));
 			}
 			cache.put(id, bitmap);
-			size += getSizeInBytes(bitmap);
+			allocatedSize += getSizeInBytes(bitmap);
 			checkSize();
 		} catch (Throwable th) {
 			th.printStackTrace();
@@ -61,27 +60,23 @@ public class MemoryCache {
 	}
 
 	private void checkSize() {
-		Log.i(TAG, "cache size=" + size + " length=" + cache.size());
-		if (size > limit) {
-			Iterator<Entry<String, Bitmap>> iter = cache.entrySet().iterator();// least
-																				// recently
-																				// accessed
-																				// item
-																				// will
-																				// be
-																				// the
-																				// first
-																				// one
-																				// iterated
-			while (iter.hasNext()) {
-				Entry<String, Bitmap> entry = iter.next();
-				size -= getSizeInBytes(entry.getValue());
-				iter.remove();
-				if (size <= limit) {
+		Log.i(TAG,
+				"cache allocatedSize=" + allocatedSize + " length="
+						+ cache.size());
+		if (allocatedSize > maxMemoryInBytes) {
+			// least recently accessed item will be the first one iterated
+			Iterator<Entry<String, Bitmap>> iterator = cache.entrySet()
+					.iterator();
+
+			while (iterator.hasNext()) {
+				Entry<String, Bitmap> entry = iterator.next();
+				allocatedSize -= getSizeInBytes(entry.getValue());
+				iterator.remove();
+				if (allocatedSize <= maxMemoryInBytes) {
 					break;
 				}
 			}
-			Log.i(TAG, "Clean cache. New size " + cache.size());
+			Log.i(TAG, "Clean cache. New allocatedSize " + cache.size());
 		}
 	}
 
@@ -90,16 +85,17 @@ public class MemoryCache {
 			// NullPointerException sometimes happen here
 			// http://code.google.com/p/osmdroid/issues/detail?id=78
 			cache.clear();
-			size = 0;
+			allocatedSize = 0;
 		} catch (NullPointerException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	long getSizeInBytes(Bitmap bitmap) {
+	static long getSizeInBytes(Bitmap bitmap) {
 		if (bitmap == null) {
 			return 0;
 		}
+
 		return bitmap.getRowBytes() * bitmap.getHeight();
 	}
 }
