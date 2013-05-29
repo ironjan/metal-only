@@ -57,34 +57,30 @@ public class MetadataParser {
 	}
 
 	public Song toSong() {
-		Song song = new Song();
-		song.interpret = INTERPRET;
-		song.title = TITLE;
-		song.thumb = MODERATOR;
-		if (song.thumb.indexOf(" OnAir") > 0) {
-			song.thumb = song.thumb.substring(0, song.thumb.indexOf(" OnAir"))
-					.trim();
-		}
-		song.date = Calendar.getInstance().getTimeInMillis();
+
+		long date = Calendar.getInstance().getTimeInMillis();
+
+		MODERATOR.replace(" OnAir", "");
+
+		Song song = new Song(INTERPRET, TITLE, MODERATOR, date);
+
 		return song;
 	}
 
 	/**
 	 * checks string str for occurrence of '*'
 	 * 
-	 * @param str
+	 * @param toCount
 	 *            string to check
 	 * @return number of char '*' containing in str
 	 */
-	private int numberOfStars(String str) {
-		if (str.length() == 0) {
-			return 0;
-		}
-		if (str.charAt(0) == '*') {
-			return 1 + numberOfStars(str.substring(1));
-		} else {
-			return numberOfStars(str.substring(1));
-		}
+	private static int numberOfStars(String toCount) {
+		final String withoutStars = toCount.replaceAll("\\*", "");
+
+		final int lengthWithStars = toCount.length();
+		final int lengthWithoutStars = withoutStars.length();
+		return lengthWithStars - lengthWithoutStars;
+
 	}
 
 }

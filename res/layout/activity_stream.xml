@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeMod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btnVol"
+        android:gravity="center_horizontal"
+        android:shadowColor="#ff000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="4"
+        android:textStyle="bold" />
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeGenree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marqueeMod"
+        android:layout_toLeftOf="@id/btnVol"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@id/btnVol"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/mo_speaker" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonBar"
+        android:layout_below="@id/btnVol"
+        tools:listitem="@layout/view_list_item_song_hist" />
+
+    <LinearLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_stripes"
+        android:gravity="center_vertical" >
+
+        <include layout="@layout/include_stream_control_buttons" />
+    </LinearLayout>
+
+</RelativeLayout>

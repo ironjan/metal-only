@@ -1,7 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import java.util.*;
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
@@ -153,7 +151,6 @@ public class PlayerService extends Service {
 		Song song = (new MetadataParser(metadata)).toSong();
 		boolean canAdd = false;
 		if (song.isValid()) {
-			song.date = Calendar.getInstance().getTimeInMillis();
 			int index = historySaver.isAlreadyIn(song);
 			if (index == -1) {
 				canAdd = true;

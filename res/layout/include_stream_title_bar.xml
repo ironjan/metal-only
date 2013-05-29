@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/bg_stripes" >
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeMod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:shadowColor="#ff000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="4"
+        android:textStyle="bold" />
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeGenree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marqueeMod"
+        android:layout_toLeftOf="@+id/imageButton5"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="@dimen/streamOtherButtonSize"
+        android:layout_height="@dimen/streamOtherButtonSize"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/mo_speaker" />
+
+</merge>

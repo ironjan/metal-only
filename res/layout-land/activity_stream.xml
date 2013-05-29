@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeMod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btnVol"
+        android:gravity="center_horizontal"
+        android:shadowColor="#ff000000"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="4"
+        android:textStyle="bold" />
+
+    <com.codingspezis.android.metalonly.player.views.Marquee
+        android:id="@+id/marqueeGenree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marqueeMod"
+        android:layout_toLeftOf="@id/btnVol"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@id/btnVol"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/bigButton"
+        android:layout_toLeftOf="@id/buttonBar"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/mo_speaker" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnVol"
+        android:layout_toLeftOf="@+id/buttonBar" tools:listitem="@layout/view_list_item_song_hist"/>
+
+    <!-- fix layouting issue with include and relative layout -->
+    <!-- https://code.google.com/p/android/issues/detail?id=2863 -->
+
+    <LinearLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="@dimen/bigButton"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_stripes"
+        android:orientation="vertical" >
+
+        <include
+            android:id="@+id/streamTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/include_stream_control_buttons" />
+    </LinearLayout>
+
+</RelativeLayout>

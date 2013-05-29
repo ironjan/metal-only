@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <ImageButton
+        android:id="@+id/btnWish"
+        android:layout_width="@dimen/bigButton"
+        android:layout_height="@dimen/bigButton"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/empty"
+        android:cropToPadding="true"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mo_pen" />
+
+    <ImageView
+        android:id="@+id/buttonPlay"
+        android:layout_width="@dimen/streamPlayButtonWidth"
+        android:layout_height="@dimen/streamPlayButtonHeigth"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/play_paus"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mo_play5" />
+
+    <ImageButton
+        android:id="@+id/btnCalendar"
+        android:layout_width="@dimen/bigButton"
+        android:layout_height="@dimen/bigButton"
+        android:background="@drawable/bg_btn_transparent"
+        android:contentDescription="@string/empty"
+        android:cropToPadding="true"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mo_calendar" />
+
+</merge>

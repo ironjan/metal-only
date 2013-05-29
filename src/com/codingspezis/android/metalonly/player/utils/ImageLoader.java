@@ -51,7 +51,7 @@ public class ImageLoader {
 		executorService.submit(new PhotosLoader(p));
 	}
 
-	private synchronized Bitmap getBitmap(String moderator) {
+	synchronized Bitmap getBitmap(String moderator) {
 		// from internal private storage
 		Bitmap b = fileCache.decodeMod(moderator); // decodeFile(f);
 		if (b != null) {
@@ -74,7 +74,10 @@ public class ImageLoader {
 			OutputStream os = fileCache.getOutputStream(moderator); // new
 																	// FileOutputStream(f);
 			Utils.CopyStream(is, os);
+
+			is.close();
 			os.close();
+
 			bitmap = fileCache.decodeMod(moderator); // decodeFile(f);
 			return bitmap;
 		} catch (Throwable ex) {

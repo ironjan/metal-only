@@ -13,7 +13,7 @@
     <item android:id="@android:id/progress">
         <clip
             android:clipOrientation="vertical"
-            android:gravity="bottom" >
+            android:gravity="top" >
             <shape>
                 <gradient
                     android:angle="180"
