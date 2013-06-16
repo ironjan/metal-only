@@ -57,7 +57,6 @@ public class SongSaver {
 	/**
 	 * reads songs from storage
 	 * 
-	 * @return list of songs from storage
 	 */
 	private void readSongsFromStorage() {
 		int numberOfSongs = sharedPreferences.getInt(sharedPreferencesPrefix
