@@ -232,9 +232,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 					PayPalDonationActivity.class);
 			startActivity(paypalIntent);
 		} else if (item.getItemId() == R.id.mnu_info) {
-			Intent aboutIntent = new Intent(getApplicationContext(),
-					AboutActivity.class);
-			startActivity(aboutIntent);
+			AboutActivity_.intent(this).start();
 		} else {
 			return false;
 		}
