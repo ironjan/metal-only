@@ -23,7 +23,7 @@ public class SongAdapterFavorites extends BaseAdapter {
 	public static final String KEY_DATE = "MO_HK_DATE";
 
 	private final Activity activity;
-	private final ArrayList<HashMap<String, String>> data;
+	private final ArrayList<Song> data;
 	private final LayoutInflater inflater;
 
 	/**
@@ -33,9 +33,9 @@ public class SongAdapterFavorites extends BaseAdapter {
 	 * @param d
 	 *            data to display
 	 */
-	public SongAdapterFavorites(Activity a, ArrayList<HashMap<String, String>> d) {
+	public SongAdapterFavorites(Activity a, ArrayList<Song> songs) {
 		activity = a;
-		data = d;
+		data = songs;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
@@ -46,12 +46,9 @@ public class SongAdapterFavorites extends BaseAdapter {
 		if (convertView == null) {
 			view = inflater.inflate(R.layout.view_list_item_song_fav, null);
 		}
-		HashMap<String, String> song = new HashMap<String, String>();
-		song = data.get(position);
-		((TextView) view.findViewById(R.id.txtTitle)).setText(song
-				.get(KEY_TITLE));
-		((TextView) view.findViewById(R.id.txtArtist)).setText(song
-				.get(KEY_INTERPRET));
+		Song song = data.get(position);
+		((TextView) view.findViewById(R.id.txtTitle)).setText(song.title);
+		((TextView) view.findViewById(R.id.txtArtist)).setText(song.interpret);
 		return view;
 	}
 

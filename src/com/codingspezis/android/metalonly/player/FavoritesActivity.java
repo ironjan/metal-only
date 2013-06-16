@@ -96,16 +96,11 @@ public class FavoritesActivity extends SherlockListActivity implements
 	 */
 	private void displayFavorites() {
 		listView.removeAllViewsInLayout();
-		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		ArrayList<Song> songs = new ArrayList<Song>();
 		for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-			HashMap<String, String> dataEntry = new HashMap<String, String>(2);
-			dataEntry.put(SongAdapterFavorites.KEY_TITLE,
-					favoritesSaver.get(i).title);
-			dataEntry.put(SongAdapterFavorites.KEY_INTERPRET,
-					favoritesSaver.get(i).interpret);
-			data.add(dataEntry);
+			songs.add(favoritesSaver.get(i));
 		}
-		SongAdapterFavorites adapter = new SongAdapterFavorites(this, data);
+		SongAdapterFavorites adapter = new SongAdapterFavorites(this, songs);
 		listView.setAdapter(adapter);
 	}
 
