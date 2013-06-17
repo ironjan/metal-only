@@ -159,12 +159,13 @@
     <!-- about -->
     <string name="mailaddress_codingspezis">mail@codingspezis.com</string>
     <string name="url_codingspezis">http://www.codingspezis.com/</string>
-    <string name="url_metalonly">http://www.metal-only.de/</string>
+    <string name="aboutThisApp">Diese App bringt den Internetstrem von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
     <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
     <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
     <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
     <string name="url_lazylist">https://www.github.com/thest1/LazyList/</string>
     <string name="url_androidhive">http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/</string>
+    <string name="url_androidannotations">https://github.com/excilys/androidannotations/</string>
     <string name="about_category_app">App</string>
     <string name="about_name">Name:</string>
     <string name="about_version">Version:</string>
@@ -180,10 +181,11 @@
     <string name="about_aacdecoder">AAC Decoder for Android</string>
     <string name="about_lazylist">LazyList</string>
     <string name="about_sherlock">ActionBarSherlock</string>
+    <string name="about_androidannotations">androidannotations</string>
     <string name="about_tutorial">Android Custom ListView</string>
-    <string name="apl2">Apache License 2.0</string>
-    <string name="lgpl">GNU Lesser GPL</string>
-    <string name="mit">MIT Lizenz</string>
+    <string name="apl2">Apache 2.0</string>
+    <string name="lgpl">LGPL</string>
+    <string name="mit">MIT</string>
     <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
 
     <!-- plan -->

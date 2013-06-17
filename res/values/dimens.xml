@@ -9,5 +9,7 @@
     <dimen name="streamOtherButtonSize">56dp</dimen>
     <dimen name="streamButtonDividerMarginTop">8dp</dimen>
     <dimen name="streamButtonDividerMarginBottom">8dp</dimen>
+    <dimen name="elementMargin">8dp</dimen>
+    <dimen name="elementMarginDouble">16dp</dimen>
 
 </resources>

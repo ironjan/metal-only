@@ -59,7 +59,7 @@
             android:launchMode="singleTop" >
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".AboutActivity_"
             android:configChanges="orientation"
             android:label="@string/menu_info"
             android:launchMode="singleTop" >

@@ -4,12 +4,12 @@ import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
-import android.view.*;
-import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.*;
+import com.googlecode.androidannotations.annotations.*;
+import com.googlecode.androidannotations.annotations.res.*;
 
 /**
  * 
@@ -19,65 +19,41 @@ import com.actionbarsherlock.view.MenuItem;
  * @author codingspezis.com
  * 
  */
-public class AboutActivity extends SherlockActivity implements OnClickListener {
+@EActivity(R.layout.activity_about)
+public class AboutActivity extends SherlockActivity {
 
-	// metal only
-	private TextView buttonMetalOnly;
+	@StringRes
+	String mailaddress_codingspezis, app_name, app_version;
 
-	// codingspezis
-	private Button buttonCodingspezisMail;
-	private TextView buttonCodingspezisPage;
+	@ViewById
+	@FromHtml(R.string.aboutThisApp)
+	TextView textAboutApp;
 
-	// opencore
-	private TextView buttonOpencore;
-	private TextView buttonAPL2Opencore;
+	@ViewById
+	@FromHtml(R.string.url_opencore)
+	TextView textOpencoreLink;
 
-	// aacdecoder-android
-	private TextView buttonDecoder;
-	private TextView buttonLGPL;
+	@ViewById
+	@FromHtml(R.string.url_aacdecoder)
+	TextView textAacDecoderLink;
 
-	private TextView buttonSherlock;
-	private TextView buttonAPL2Sherlock;
+	@ViewById
+	@FromHtml(R.string.url_sherlock)
+	TextView textSherlockLink;
 
-	// lazylist
-	private TextView buttonLazyList;
-	private TextView buttonMIT;
+	@ViewById
+	@FromHtml(R.string.url_lazylist)
+	TextView textLazyListLink;
+
+	@ViewById
+	@FromHtml(R.string.url_androidannotations)
+	TextView textAndroidannotationsLink;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
-		setUpButtons();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-	}
-
-	/**
-	 * setup for button references and listeners
-	 */
-	private void setUpButtons() {
-		buttonMetalOnly = (TextView) findViewById(R.id.metalonly);
-		buttonMetalOnly.setOnClickListener(this);
-		buttonCodingspezisMail = (Button) findViewById(R.id.mailus);
-		buttonCodingspezisMail.setOnClickListener(this);
-		buttonCodingspezisPage = (TextView) findViewById(R.id.codingspezis);
-		buttonCodingspezisPage.setOnClickListener(this);
-		buttonOpencore = (TextView) findViewById(R.id.opencore);
-		buttonOpencore.setOnClickListener(this);
-		buttonAPL2Opencore = (TextView) findViewById(R.id.apl2_opencore);
-		buttonAPL2Opencore.setOnClickListener(this);
-		buttonDecoder = (TextView) findViewById(R.id.aacdecoder);
-		buttonDecoder.setOnClickListener(this);
-		buttonLGPL = (TextView) findViewById(R.id.lgpl);
-		buttonLGPL.setOnClickListener(this);
-		buttonSherlock = (TextView) findViewById(R.id.sherlock);
-		buttonSherlock.setOnClickListener(this);
-		buttonAPL2Sherlock = (TextView) findViewById(R.id.apl2_sherlock);
-		buttonAPL2Sherlock.setOnClickListener(this);
-		buttonLazyList = (TextView) findViewById(R.id.lazylist);
-		buttonLazyList.setOnClickListener(this);
-		buttonMIT = (TextView) findViewById(R.id.mit);
-		buttonMIT.setOnClickListener(this);
 	}
 
 	/**
@@ -118,6 +94,29 @@ public class AboutActivity extends SherlockActivity implements OnClickListener {
 		}
 	}
 
+	@Click(R.id.buttonFeedback)
+	void buttonFeedbackClicked() {
+		String subject = "[" + app_name + " " + app_version
+				+ "] Feedback, Fehler";
+		sendEmail(mailaddress_codingspezis, subject, "");
+	}
+
+	@Click({ R.id.textOpencoreLicenseApache, R.id.textSherlockLicenseApache,
+			R.id.textAndroidannotationsLicenseApache })
+	void displayApacheLicense() {
+		displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
+	}
+
+	@Click({ R.id.textLazyListLicenseMIT })
+	void displayMitLicense() {
+		displayLicense(LicenseActivity.KEY_BU_LICENSE_MIT);
+	}
+
+	@Click({ R.id.textAacDecoderLicenseLGPL })
+	void displayLgplLicense() {
+		displayLicense(LicenseActivity.KEY_BU_LICENSE_LGPL);
+	}
+
 	/**
 	 * displays specified license
 	 * 
@@ -131,34 +130,6 @@ public class AboutActivity extends SherlockActivity implements OnClickListener {
 		bundle.putString(LicenseActivity.KEY_BU_LICENSE_NAME, license);
 		licenseIntent.putExtras(bundle);
 		startActivity(licenseIntent);
-	}
-
-	@Override
-	public void onClick(View v) {
-		if (v == buttonMetalOnly) {
-			openWebsite(getString(R.string.url_metalonly));
-		}
-		if (v == buttonCodingspezisMail) {
-			sendEmail(getString(R.string.mailaddress_codingspezis), "", "");
-		} else if (v == buttonCodingspezisPage) {
-			openWebsite(getString(R.string.url_codingspezis));
-		} else if (v == buttonOpencore) {
-			openWebsite(getString(R.string.url_opencore));
-		} else if (v == buttonAPL2Opencore) {
-			displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
-		} else if (v == buttonDecoder) {
-			openWebsite(getString(R.string.url_aacdecoder));
-		} else if (v == buttonLGPL) {
-			displayLicense(LicenseActivity.KEY_BU_LICENSE_LGPL);
-		} else if (v == buttonSherlock) {
-			openWebsite(getString(R.string.url_sherlock));
-		} else if (v == buttonAPL2Sherlock) {
-			displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
-		} else if (v == buttonLazyList) {
-			openWebsite(getString(R.string.url_lazylist));
-		} else if (v == buttonMIT) {
-			displayLicense(LicenseActivity.KEY_BU_LICENSE_MIT);
-		}
 	}
 
 	@Override

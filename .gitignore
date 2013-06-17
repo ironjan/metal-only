@@ -29,3 +29,6 @@ proguard/
 *.iws
 .idea/
 
+.apt_generated
+.factorypath
+.settings
