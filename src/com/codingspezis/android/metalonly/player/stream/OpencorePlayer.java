@@ -51,6 +51,7 @@ class OpencorePlayer extends MultiPlayer {
 			public void run() {
 				Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 				OpencorePlayer.this.streamPlayerOpencore.wakeLock.acquire();
+				OpencorePlayer.this.streamPlayerOpencore.wifiLock.acquire();
 				while (OpencorePlayer.this.streamPlayerOpencore.shouldPlay) {
 					try {
 						play(url, expectedKBitSecRate);
@@ -71,6 +72,7 @@ class OpencorePlayer extends MultiPlayer {
 					}
 				}
 				OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
+				OpencorePlayer.this.streamPlayerOpencore.wifiLock.release();
 			}
 		}).start();
 	}

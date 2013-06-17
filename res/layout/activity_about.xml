@@ -99,7 +99,7 @@
             android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
-            android:textColor="@color/abs__holo_blue_light" />
+            android:textColor="@color/turkis" />
 
         <TextView
             android:id="@+id/textAacDecoderName"
@@ -134,7 +134,7 @@
             android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/lgpl"
-            android:textColor="@color/abs__holo_blue_light" />
+            android:textColor="@color/turkis" />
 
         <TextView
             android:id="@+id/textSherlockName"
@@ -170,7 +170,7 @@
             android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
-            android:textColor="@color/abs__holo_blue_light" />
+            android:textColor="@color/turkis" />
 
         <TextView
             android:id="@+id/textLazyListName"
@@ -206,7 +206,7 @@
             android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/mit"
-            android:textColor="@color/abs__holo_blue_light" />
+            android:textColor="@color/turkis" />
 
         <TextView
             android:id="@+id/textAndroidannotationsName"
@@ -243,7 +243,7 @@
             android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
-            android:textColor="@color/abs__holo_blue_light" />
+            android:textColor="@color/turkis" />
     </RelativeLayout>
 
 </ScrollView>

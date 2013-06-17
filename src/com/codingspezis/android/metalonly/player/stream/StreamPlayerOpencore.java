@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.*;
+import android.net.wifi.*;
 import android.os.*;
 
 import com.spoledge.aacdecoder.*;
@@ -18,7 +19,8 @@ public class StreamPlayerOpencore implements AudioStream {
 	private String url;
 
 	PowerManager.WakeLock wakeLock;
-
+	WifiManager.WifiLock  wifiLock;
+	
 	/**
 	 * constructor
 	 * 

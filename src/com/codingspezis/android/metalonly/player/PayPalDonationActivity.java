@@ -19,7 +19,7 @@ public class PayPalDonationActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.acticity_donation);
+		setContentView(R.layout.activity_donation);
 	}
 
 	@Override
