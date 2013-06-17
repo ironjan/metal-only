@@ -255,7 +255,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == com.actionbarsherlock.R.id.abs__home) {
+		if (item.getItemId() == android.R.id.home) {
 			Intent intent = new Intent(this, MainActivity.class);
 			NavUtils.navigateUpTo(this, intent);
 			return true;

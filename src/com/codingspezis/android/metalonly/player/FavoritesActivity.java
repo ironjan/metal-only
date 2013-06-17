@@ -230,7 +230,7 @@ public class FavoritesActivity extends SherlockListActivity implements
 		super.onOptionsItemSelected(item);
 
 		switch (item.getItemId()) {
-		case com.actionbarsherlock.R.id.abs__home:
+		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
 			NavUtils.navigateUpTo(this, intent);
 			return true;

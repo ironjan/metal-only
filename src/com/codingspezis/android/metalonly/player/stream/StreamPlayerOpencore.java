@@ -18,6 +18,7 @@ public class StreamPlayerOpencore implements AudioStream {
 	boolean shouldPlay = false;
 	private String url;
 
+	// locks
 	PowerManager.WakeLock wakeLock;
 	WifiManager.WifiLock  wifiLock;
 	
@@ -28,11 +29,21 @@ public class StreamPlayerOpencore implements AudioStream {
 	 *            stream URL
 	 */
 	public StreamPlayerOpencore(Context context) {
+		createLocks(context);
+		createPlayer();
+	}
+	
+	private void createLocks(Context context){
+		// wake
 		PowerManager pm = (PowerManager) context
 				.getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 				"WAKE_LOCK_STREAM_DECODER");
-		createPlayer();
+		// wifi
+		WifiManager wm = (WifiManager) context
+				.getSystemService(Context.WIFI_SERVICE);
+        wifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL,
+        		"WIFI_LOCK_STREAM_DECODER");
 	}
 
 	private void createPlayer() {

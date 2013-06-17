@@ -29,9 +29,9 @@ public class LicenseActivity extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		String license = "";
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
@@ -64,8 +64,8 @@ public class LicenseActivity extends SherlockActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == com.actionbarsherlock.R.id.abs__home) {
-			Intent intent = new Intent(this, MainActivity.class);
+		if (item.getItemId() == android.R.id.home) {
+			Intent intent = new Intent(this, LicenseActivity.class);
 			NavUtils.navigateUpTo(this, intent);
 			return true;
 		}
