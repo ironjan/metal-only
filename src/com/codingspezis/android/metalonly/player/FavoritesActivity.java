@@ -68,6 +68,7 @@ public class FavoritesActivity extends SherlockListActivity implements
 	public void onResume() {
 		super.onResume();
 		favoritesSaver.reload();
+		displayFavorites();
 	}
 
 	private void showAddSongDialog() {
