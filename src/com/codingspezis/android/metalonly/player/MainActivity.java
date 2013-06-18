@@ -43,8 +43,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public static final String showToastMessage = "MO_SHOW_TOAST";
 	// intent extra key
 	public static final String messageExtra = "MO_MESSAGE_EXTRA";
-	// intent return codes
-	public static final int INTENT_RETURN_FAV = 0;
 
 	// shared preferences keys
 	public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
@@ -62,8 +60,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 
 	// other
 	private MainBroadcastReceiver broadcastReceiver;
-	private SongSaver favoritesSaver;
 	private MetadataParser metadataParser;
+	private SongSaver favoritesSaver;
 	private SongSaver historySaver;
 
 	// other variables
@@ -87,6 +85,12 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	public void onPause() {
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		favoritesSaver.reload();
 	}
 
 	@Override
@@ -157,7 +161,7 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 * displays history songs on screen
 	 */
 	public void displaySongs() {
-		historySaver = new SongSaver(this, PlayerService.SP_HISTORY,
+		historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
 		ArrayList<Song> data = new ArrayList<Song>();
@@ -221,12 +225,9 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 					SettingsActivity.class);
 			startActivity(settingsIntent);
 		} else if (item.getItemId() == R.id.mnu_favorites) {
-			favoritesSaver.saveSongsToStorage(); // this shouldn't be needed
-													// because of onPause
-													// function
 			Intent favoritesIntent = new Intent(getApplicationContext(),
 					FavoritesActivity.class);
-			startActivityForResult(favoritesIntent, INTENT_RETURN_FAV);
+			startActivity(favoritesIntent);
 		} else if (item.getItemId() == R.id.mnu_donation) {
 			Intent paypalIntent = new Intent(getApplicationContext(),
 					PayPalDonationActivity.class);
@@ -237,15 +238,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == INTENT_RETURN_FAV) {
-			favoritesSaver.reload();
-			displayMetadata();
-			super.onResume();
-		}
 	}
 
 	@Override

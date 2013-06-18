@@ -29,8 +29,8 @@ public class PlayerService extends Service {
 	public static final String EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
 	public static final String EXTRA_META = "MO_EXTRA_META";
 
-	// shared preferences keys
-	public static final String SP_HISTORY = "MO_SP_HISTROY";
+	// JSON file name for favorites
+	public static final String JSON_FILE_HIST = "mo_hist.json";
 
 	// maximum number of songs in history
 	public static final int HISTORY_ENTRIES = 25;
@@ -64,7 +64,7 @@ public class PlayerService extends Service {
 		telephonyManager.listen(phoneStateListener,
 				PhoneStateListener.LISTEN_CALL_STATE);
 		streamWatcher = new StreamWatcher(this);
-		historySaver = new SongSaver(this, SP_HISTORY, HISTORY_ENTRIES);
+		historySaver = new SongSaver(this, JSON_FILE_HIST, HISTORY_ENTRIES);
 
 		registerReceiver(playerBCReceiver, new IntentFilter(INTENT_PLAY));
 		registerReceiver(playerBCReceiver, new IntentFilter(INTENT_STOP));

@@ -63,6 +63,12 @@ public class FavoritesActivity extends SherlockListActivity implements
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		favoritesSaver.reload();
+	}
 
 	private void showAddSongDialog() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
