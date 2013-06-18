@@ -79,16 +79,12 @@ public class AboutActivity extends SherlockActivity {
 	 *            text of mail
 	 */
 	private void sendEmail(String strTo, String strSubject, String strText) {
-		Intent emailIntent = new Intent(Intent.ACTION_SEND);
-		emailIntent.setType("text/plain");
-		emailIntent.setType("message/rfc822");
+		Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
 		emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { strTo });
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, strSubject);
 		emailIntent.putExtra(Intent.EXTRA_TEXT, strText);
 		try {
-			startActivity(Intent.createChooser(emailIntent, strTo)); // TODO:
-																		// change
-																		// this
+			startActivity(Intent.createChooser(emailIntent, strTo));
 		} catch (android.content.ActivityNotFoundException ex) {
 			MainActivity.toastMessage(this, getString(R.string.no_mail_app));
 		}
