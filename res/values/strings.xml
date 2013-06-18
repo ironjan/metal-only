@@ -116,7 +116,11 @@
 
     <!-- settings -->
     <string name="settings_key_rate">KEY_RATE</string>
+    <string name="settings_key_audio_buffer">KEY_AUDIO_BUFFER</string>
+    <string name="settings_key_decoding_buffer">KEY_DECODING_BUFFER</string>
+    
     <string name="settings_category_stream">Stream</string>
+    
     <string name="settings_rate">Übertragungsrate</string>
     <string name="settings_rate_summary"></string>
 
@@ -125,9 +129,9 @@
         <item>128 kb/s</item>
     </string-array>
 
-    <string name="stream32_info">Der 32 kb/s Stream von Metal Only verwendet das AAC+-Kompressionsverfahren. Da dieses &amp;uuml;ber eine externe Bibliothek decodiert wird, kann es bei dessen Wiedergabe auf manchen Ger&amp;auml;ten zu erh&amp;ouml;hter CPU-Auslastung kommen.</string>
-    <string name="settings_buffer">Stream-Puffer</string>
-    <string name="ms">ms</string>
+    <string name="settings_audio_buffer">Audio-Puffer</string>
+    <string name="settings_decoding_buffer">Decoding-Puffer</string>
+    <string name="settings_buffer_hint">Kapazität in ms:</string>
 
     <!-- favorites -->
     <string-array name="favorite_options_array">

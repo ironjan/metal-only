@@ -53,8 +53,22 @@ public class StreamPlayerOpencore implements AudioStream {
 		}
 		ocPlayer = new OpencorePlayer(this, callback); // playerCallback is
 														// defined bellow
+		
+		// ocPlayer.setAudioBufferCapacityMs(audioBufferCapacityMs)
+		// ocPlayer.setDecodeBufferCapacityMs(decodeBufferCapacityMs)
+		
 		ocPlayer.setMetadataEnabled(true);
 		ocPlayer.setMetadataCharEnc("ISO-8859-1");
+	}
+	
+	public void setAudioBufferCapacityMs(int ms){
+		if(ocPlayer != null)
+			ocPlayer.setAudioBufferCapacityMs(ms);
+	}
+
+	public void setDecodingBufferCapacityMs(int ms){
+		if(ocPlayer != null)
+			ocPlayer.setDecodeBufferCapacityMs(ms);
 	}
 
 	/**

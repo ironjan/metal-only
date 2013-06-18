@@ -8,6 +8,7 @@ import android.telephony.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
+import com.spoledge.aacdecoder.*;
 
 /**
  * 
@@ -85,17 +86,32 @@ public class PlayerService extends Service {
 	 * instantiates music stream with selected player class (from
 	 * SettingsActivity)
 	 */
+	@SuppressWarnings("boxing")
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	void instantiateSelectedPlayer() {
 		SharedPreferences prefs = getSharedPreferences(
 				getString(R.string.app_name), Context.MODE_MULTI_PROCESS);
+		// bitrate
 		String rate = prefs.getString(getString(R.string.settings_key_rate),
 				getResources().getStringArray(R.array.rate_label)[0]);
+		// buffer sizes
+		int ab = AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS;
+		int db = AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS;
+		try{
+			ab = Integer.valueOf(prefs.getString(getString(R.string.settings_key_audio_buffer),
+					String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS)));
+			db = Integer.valueOf(prefs.getString(getString(R.string.settings_key_decoding_buffer),
+					String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS)));
+		}catch(Exception e){
+			// nothing to be done here
+		}
 		if (rate.equals(getResources().getStringArray(R.array.rate_label)[0])) {
 			audioStream.setUrl(URL32);
 		} else {
 			audioStream.setUrl(URL128);
 		}
+		audioStream.setAudioBufferCapacityMs(ab);
+		audioStream.setDecodingBufferCapacityMs(db);
 	}
 
 	/**
