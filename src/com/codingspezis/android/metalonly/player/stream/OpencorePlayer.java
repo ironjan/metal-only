@@ -47,33 +47,23 @@ class OpencorePlayer extends MultiPlayer {
 	@Override
 	public void playAsync(final String url, final int expectedKBitSecRate) {
 		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
+            public void run() {
+            	Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
 				OpencorePlayer.this.streamPlayerOpencore.wakeLock.acquire();
 				OpencorePlayer.this.streamPlayerOpencore.wifiLock.acquire();
 				while (OpencorePlayer.this.streamPlayerOpencore.shouldPlay) {
-					try {
-						play(url, expectedKBitSecRate);
-					} catch (Exception e) {
-						// Log.e( LOG, "playAsync():", e);
-						if (e.getMessage() != null
-								&& e.getMessage().equals(
-										Decoder.WORKAROUND_EXCEPTION)) {
-							// reconnection max number?
-							Log.e("AACDecoder",
-									"stream could not be started -> trying again");
-						} else {
-							if (playerCallback != null) {
-								playerCallback.playerException(e);
-							}
-							break;
-						}
-					}
+	                try {
+	                    play( url, expectedKBitSecRate );
+	                }
+	                catch (Exception e) {
+	                    Log.e( "AACDecoder", "playAsync():", e);
+	                    if (playerCallback != null) playerCallback.playerException( e );
+	                    break;
+	                }
 				}
-				OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
+                OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
 				OpencorePlayer.this.streamPlayerOpencore.wifiLock.release();
-			}
-		}).start();
+            }
+        }).start();
 	}
 }

@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.*;
+import android.media.*;
 import android.net.wifi.*;
 import android.os.*;
 
@@ -53,6 +54,7 @@ public class StreamPlayerOpencore implements AudioStream {
 		ocPlayer = new OpencorePlayer(this, callback); // playerCallback is
 														// defined bellow
 		ocPlayer.setMetadataEnabled(true);
+		ocPlayer.setMetadataCharEnc("ISO-8859-1");
 	}
 
 	/**
@@ -129,6 +131,11 @@ public class StreamPlayerOpencore implements AudioStream {
 						"AAC+ Decoder Error " + arg0.getMessage(), false);
 			}
 		}
+
+		@Override
+		public void playerAudioTrackCreated(AudioTrack arg0) {
+		}
+		
 	};
 
 }
