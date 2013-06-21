@@ -1,7 +1,5 @@
-metal-only
-==========
-
 Metal Only Android App
+======================
 
 Diese App bringt den Internetstream von http://www.metal-only.de auf Android.
 Entwickelt wurde sie von den codingspezis (http://www.codingspezis.com).
