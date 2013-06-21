@@ -163,7 +163,7 @@
     <!-- about -->
     <string name="mailaddress_codingspezis">mail@codingspezis.com</string>
     <string name="url_codingspezis">http://www.codingspezis.com/</string>
-    <string name="aboutThisApp">Diese App bringt den Internetstrem von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
+    <string name="aboutThisApp">Diese App bringt den Internetstream von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
     <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
     <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
     <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
