@@ -82,7 +82,7 @@
     </string-array>
 
     <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
-    <string name="paypal_description2">Um eine anonyme Spende zu machen, lassen sie das \'Von\'-Feld einfach leer. Auf der Website von PayPal können Sie Ihre Angaben erneut überprüfen.</string>
+    <string name="paypal_description2">Um eine anonyme Spende zu machen, lassen Sie das \'Von\'-Feld einfach leer. Auf der Website von PayPal können Sie Ihre Angaben erneut überprüfen.</string>
     <string name="notification">Hinweis</string>
     <string name="donation_enter_from">Wer spendet?</string>
     <string name="donation_enter_value">Welchen Betrag spenden?</string>
@@ -163,7 +163,7 @@
     <!-- about -->
     <string name="mailaddress_codingspezis">mail@codingspezis.com</string>
     <string name="url_codingspezis">http://www.codingspezis.com/</string>
-    <string name="aboutThisApp">Diese App bringt den Internetstrem von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
+    <string name="aboutThisApp">Diese App bringt den Internetstream von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
     <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
     <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
     <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
