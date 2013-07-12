@@ -7,14 +7,12 @@ import java.util.*;
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.media.*;
 import android.net.*;
 import android.os.*;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
@@ -51,7 +49,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	private final MainActivity mainActivity = this;
 	private ListView listView;
 	private ImageView buttonStream;
-	private ImageButton buttonVolume;
 	private ImageButton buttonCalendar;
 	private ImageButton buttonWish;
 	private Marquee marqueeMod;
@@ -86,9 +83,9 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
 	}
-	
+
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
 		favoritesSaver.reload();
 	}
@@ -138,7 +135,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 	 */
 	private void setUpGUIObjects() {
 		buttonStream = (ImageView) findViewById(R.id.buttonPlay);
-		buttonVolume = (ImageButton) findViewById(R.id.btnVol);
 		buttonCalendar = (ImageButton) findViewById(R.id.btnCalendar);
 		buttonWish = (ImageButton) findViewById(R.id.btnWish);
 		marqueeMod = (Marquee) findViewById(R.id.marqueeMod);
@@ -147,7 +143,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 
 		buttonStream.setOnClickListener(this);
 
-		buttonVolume.setOnClickListener(this);
 		buttonCalendar.setOnClickListener(this);
 		buttonWish.setOnClickListener(this);
 		listView.setOnItemClickListener(this);
@@ -265,10 +260,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 				}
 			}
 		}
-		// volume
-		else if (arg0 == buttonVolume) {
-			showVolumeBar();
-		}
 		// plan
 		else if (arg0 == buttonCalendar) {
 			if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
@@ -317,38 +308,6 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 			}
 		});
 		wishChecker.start();
-	}
-
-	/**
-	 * generates an alert dialog and shows it to choose volume level
-	 */
-	private void showVolumeBar() {
-		final AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-		alert.setTitle(getString(R.string.volume));
-		final SeekBar input = new SeekBar(this);
-		input.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-		input.setProgress(audioManager
-				.getStreamVolume(AudioManager.STREAM_MUSIC));
-		input.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-						progress, 0);
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-		});
-		alert.setView(input);
-		alert.setPositiveButton(getString(R.string.ok), null);
-		alert.show();
 	}
 
 	/**

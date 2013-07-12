@@ -46,7 +46,7 @@ public class PayPalDonationFragment extends SherlockFragment {
 	}
 
 	private void fetchResources() {
-		actionLabel = getResources().getString(R.string.toPayPal);
+		actionLabel = getResources().getString(R.string.donation_toPaypal);
 	}
 
 	private void findViews(View view) {
