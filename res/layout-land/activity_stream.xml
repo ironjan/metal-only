@@ -42,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/btnVol"
-        android:layout_toLeftOf="@+id/buttonBar" tools:listitem="@layout/view_list_item_song_hist"/>
+        android:layout_toLeftOf="@+id/buttonBar"
+        tools:listitem="@layout/view_list_item_song_hist" />
 
     <!-- fix layouting issue with include and relative layout -->
     <!-- https://code.google.com/p/android/issues/detail?id=2863 -->
@@ -57,11 +58,37 @@
         android:background="@drawable/bg_stripes"
         android:orientation="vertical" >
 
-        <include
-            android:id="@+id/streamTitleBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/include_stream_control_buttons" />
+        <ImageButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_calendar" />
+
+        <ImageView
+            android:id="@+id/buttonPlay"
+            android:layout_width="@dimen/streamPlayButtonWidth"
+            android:layout_height="@dimen/streamPlayButtonHeigth"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/play_paus"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_play5" />
+
+        <ImageButton
+            android:id="@+id/btnWish"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_pen" />
     </LinearLayout>
 
 </RelativeLayout>

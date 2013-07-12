@@ -51,7 +51,37 @@
         android:background="@drawable/bg_stripes"
         android:gravity="center_vertical" >
 
-        <include layout="@layout/include_stream_control_buttons" />
+        <ImageButton
+            android:id="@+id/btnWish"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_pen" />
+
+        <ImageView
+            android:id="@+id/buttonPlay"
+            android:layout_width="@dimen/streamPlayButtonWidth"
+            android:layout_height="@dimen/streamPlayButtonHeigth"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/play_paus"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_play5" />
+
+        <ImageButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/empty"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_calendar" />
     </LinearLayout>
 
 </RelativeLayout>
