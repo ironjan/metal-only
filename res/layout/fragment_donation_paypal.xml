@@ -2,12 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:padding="@dimen/elementMargin" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/to"
+                android:text="@string/donation_receiver"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -30,13 +30,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:text="@string/paypaladdress"
+                android:text="@string/donation_receiverPaypal"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <ImageButton
                 android:id="@id/btnHelp"
                 android:layout_width="@dimen/normalButton"
                 android:layout_height="@dimen/normalButton"
+                android:background="@drawable/bg_btn_transparent"
                 android:contentDescription="@string/help"
                 android:src="@drawable/ic_action_help_dark"
                 android:text="@string/help" />
@@ -47,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/from"
+            android:hint="@string/donation_donator"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
@@ -61,9 +62,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:digits="0123456789\\."
-            android:hint="@string/value"
+            android:hint="@string/donation_value"
             android:imeActionId="2"
-            android:imeActionLabel="@string/toPayPal"
+            android:imeActionLabel="@string/donation_toPaypal"
             android:imeOptions="actionGo"
             android:inputType="numberDecimal"
             android:maxLines="1"
@@ -83,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/toPayPal" />
+            android:text="@string/donation_toPaypal" />
     </LinearLayout>
 
 </ScrollView>

@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:padding="@dimen/elementMargin" >
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
@@ -15,8 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/app_name"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -25,8 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textAppName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:layout_toRightOf="@+id/textAppName"
             android:text="@string/app_version"
@@ -38,8 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textAppName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:autoLink="web"
             android:text="@string/aboutThisApp" />
@@ -49,8 +44,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textAboutApp"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/about_mail" />
 
@@ -59,8 +52,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/buttonFeedback"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:src="@drawable/grey_horizontal_line"
             tools:ignore="ContentDescription" />
@@ -71,8 +62,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/divider"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_opencore"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -83,10 +72,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textOpencoreName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
+            android:singleLine="true"
             android:text="@string/url_opencore" />
 
         <TextView
@@ -95,8 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textOpencoreName"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
             android:textColor="@color/turkis" />
@@ -107,7 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textOpencoreLink"
-            android:layout_marginLeft="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_aacdecoder"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -118,10 +103,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textAacDecoderName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
+            android:singleLine="true"
             android:text="@string/url_aacdecoder" />
 
         <TextView
@@ -130,8 +114,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textAacDecoderName"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/lgpl"
             android:textColor="@color/turkis" />
@@ -142,8 +124,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textAacDecoderLink"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_sherlock"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -154,10 +134,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textSherlockName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
+            android:singleLine="true"
             android:text="@string/url_sherlock" />
 
         <TextView
@@ -166,8 +145,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textSherlockName"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
             android:textColor="@color/turkis" />
@@ -178,8 +155,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textSherlockLink"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_lazylist"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -190,8 +165,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textLazyListName"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
             android:text="@string/url_lazylist" />
@@ -202,8 +175,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textLazyListName"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/mit"
             android:textColor="@color/turkis" />
@@ -214,8 +185,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textLazyListLink"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_androidannotations"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -227,10 +196,9 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/textAndroidannotationsName"
             android:layout_marginBottom="@dimen/elementMargin"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
+            android:singleLine="true"
             android:text="@string/url_androidannotations" />
 
         <TextView
@@ -239,8 +207,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textAndroidannotationsName"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/elementMargin"
-            android:layout_marginRight="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
             android:textColor="@color/turkis" />
