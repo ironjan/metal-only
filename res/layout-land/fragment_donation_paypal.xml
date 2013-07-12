@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/to"
+                android:text="@string/donation_receiver"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:text="@string/paypaladdress"
+                android:text="@string/donation_receiverPaypal"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <ImageButton
@@ -67,7 +67,7 @@
             android:layout_toRightOf="@+id/textView2"
             android:digits="0123456789\\."
             android:imeActionId="2"
-            android:imeActionLabel="@string/toPayPal"
+            android:imeActionLabel="@string/donation_toPaypal"
             android:imeOptions="actionGo|flagNoFullscreen"
             android:inputType="numberDecimal"
             android:maxLines="1"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txtExplanation"
             android:layout_marginTop="8dp"
-            android:text="@string/toPayPal" />
+            android:text="@string/donation_toPaypal" />
 
         <TextView
             android:id="@+id/textView1"
@@ -97,7 +97,7 @@
             android:layout_alignBaseline="@+id/editDonator"
             android:layout_alignBottom="@+id/editDonator"
             android:layout_alignParentLeft="true"
-            android:text="@string/from"
+            android:text="@string/donation_donator"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_alignBaseline="@+id/editDonationValue"
             android:layout_alignBottom="@+id/editDonationValue"
             android:layout_alignParentLeft="true"
-            android:text="@string/value"
+            android:text="@string/donation_value"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 

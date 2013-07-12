@@ -66,11 +66,11 @@
 
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
-    <string name="to">An:</string>
-    <string name="paypaladdress">metalonly@gmx.de</string>
-    <string name="from">Von:</string>
-    <string name="value">Betrag in €:</string>
-    <string name="toPayPal">zu PayPal</string>
+    <string name="donation_receiver">An:</string>
+    <string name="donation_receiverPaypal">metalonly@gmx.de</string>
+    <string name="donation_donator">Von:</string>
+    <string name="donation_value">Betrag in €:</string>
+    <string name="donation_toPaypal">zu PayPal</string>
 
     <string-array name="from_array">
         <item>Anonym</item>
@@ -118,9 +118,7 @@
     <string name="settings_key_rate">KEY_RATE</string>
     <string name="settings_key_audio_buffer">KEY_AUDIO_BUFFER</string>
     <string name="settings_key_decoding_buffer">KEY_DECODING_BUFFER</string>
-    
     <string name="settings_category_stream">Stream</string>
-    
     <string name="settings_rate">Übertragungsrate</string>
     <string name="settings_rate_summary"></string>
 
