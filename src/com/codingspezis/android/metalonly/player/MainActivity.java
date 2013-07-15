@@ -287,6 +287,8 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 			public void onWishesChecked(AllowedActions allowedActions) {
 				if (allowedActions.moderated) {
 					if (allowedActions.wishes || allowedActions.regards) {
+//						allowedActions.wishes = false;
+//						allowedActions.regards = false;
 						Bundle bundle = new Bundle();
 						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
 								allowedActions.wishes);

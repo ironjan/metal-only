@@ -94,7 +94,8 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 			editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
 		}
 
-		((TextView) findViewById(R.id.txtWishcount)).setText(numberOfWishes);
+		TextView wishCount = (TextView) findViewById(R.id.txtWishcount);
+		wishCount.setText(numberOfWishes);
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);
@@ -102,11 +103,16 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 			editTitle.setText(R.string.no_wishes_short);
 			editTitle.setEnabled(false);
 			editTitle.setVisibility(View.GONE);
+			
+			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_wishes_short));
+			
 		}
 		if (!regard) {
 			editRegard.setText(R.string.no_regards);
 			editRegard.setEnabled(false);
 			editRegard.setVisibility(View.GONE);
+			
+			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_regards));
 		}
 	}
 
