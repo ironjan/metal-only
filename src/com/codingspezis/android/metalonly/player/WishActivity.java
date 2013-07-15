@@ -49,7 +49,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	// buttons
 	private Button buttonSend;
-	private Button buttonHelp;
+	private ImageButton buttonHelp;
 
 	// user input
 	private EditText editNick;
@@ -79,7 +79,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		editRegard = (EditText) findViewById(R.id.editRegard);
 
-		buttonHelp = (Button) findViewById(R.id.btnHelp);
+		buttonHelp = (ImageButton) findViewById(R.id.btnHelp);
 		buttonSend = (Button) findViewById(R.id.btnSend);
 		buttonHelp.setOnClickListener(this);
 		buttonSend.setOnClickListener(this);
@@ -98,12 +98,15 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);
+			editArtist.setVisibility(View.GONE);
 			editTitle.setText(R.string.no_wishes_short);
 			editTitle.setEnabled(false);
+			editTitle.setVisibility(View.GONE);
 		}
 		if (!regard) {
 			editRegard.setText(R.string.no_regards);
 			editRegard.setEnabled(false);
+			editRegard.setVisibility(View.GONE);
 		}
 	}
 

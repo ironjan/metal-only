@@ -285,27 +285,27 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 			@Override
 			public void onWishesChecked(AllowedActions allowedActions) {
-				// if (allowedActions.moderated) {
-				// if (allowedActions.wishes || allowedActions.regards) {
-				Bundle bundle = new Bundle();
-				bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-						allowedActions.wishes);
-				bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-						allowedActions.regards);
-				bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-						allowedActions.limit);
-				Intent wishIntent = new Intent(mainActivity, WishActivity.class);
-				wishIntent.putExtras(bundle);
-				mainActivity.startActivity(wishIntent);
-				// } else {
-				// alertMessage(mainActivity, mainActivity
-				// .getString(R.string.no_wishes_and_regards));
-				// }
-				// } else {
-				// alertMessage(mainActivity,
-				// mainActivity.getString(R.string.no_moderator));
-				// }
-			}
+				if (allowedActions.moderated) {
+					if (allowedActions.wishes || allowedActions.regards) {
+						Bundle bundle = new Bundle();
+						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
+								allowedActions.wishes);
+						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
+								allowedActions.regards);
+						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
+								allowedActions.limit);
+						Intent wishIntent = new Intent(mainActivity, WishActivity.class);
+						wishIntent.putExtras(bundle);
+						mainActivity.startActivity(wishIntent);
+					} else {
+						alertMessage(mainActivity, mainActivity
+						.getString(R.string.no_wishes_and_regards));
+					}
+				 } else {
+					 alertMessage(mainActivity,
+					 mainActivity.getString(R.string.no_moderator));
+				 }
+	  	 	}
 		});
 		wishChecker.start();
 	}
