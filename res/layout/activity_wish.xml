@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/elementMargin" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <!-- nick, song, regard input-->
+        <EditText
+            android:id="@+id/editNick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/wish_nick"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/editArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/artist"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/editTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/title"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLines="1"
+            android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/editRegard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/wish_regard"
+            android:imeOptions="actionNext"
+            android:inputType="textMultiLine"
+            android:minHeight="48dp" />
+
+		<!-- limitations text -->
+        <TextView
+            android:id="@id/txtWishcount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/empty"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <!-- buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@id/btnSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/wish_send"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btnHelp"
+                android:layout_width="@dimen/normalButton"
+                android:layout_height="@dimen/normalButton"
+                android:background="@drawable/bg_btn_transparent"
+                android:contentDescription="@string/help"
+                android:src="@drawable/ic_action_help_dark"
+                android:text="@string/help" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    
+
+</ScrollView>
