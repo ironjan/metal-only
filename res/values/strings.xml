@@ -64,6 +64,8 @@
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
 
+    <string name="menu_help">Hilfe</string>
+    
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
     <string name="donation_receiver">An:</string>

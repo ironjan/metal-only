@@ -20,7 +20,9 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -49,7 +51,6 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	// buttons
 	private Button buttonSend;
-	private ImageButton buttonHelp;
 
 	// user input
 	private EditText editNick;
@@ -58,7 +59,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 	private EditText editRegard;
 
 	private String numberOfWishes;
-
+	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		editRegard = (EditText) findViewById(R.id.editRegard);
 
-		buttonHelp = (ImageButton) findViewById(R.id.btnHelp);
 		buttonSend = (Button) findViewById(R.id.btnSend);
-		buttonHelp.setOnClickListener(this);
 		buttonSend.setOnClickListener(this);
 
 		// get parameters
@@ -176,8 +175,6 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 			} else {
 				(new GetSender()).start();
 			}
-		} else if (v == buttonHelp) {
-			showInfo();
 		}
 	}
 
@@ -263,12 +260,26 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// help button
+		MenuItem hlp = menu.add(0, R.id.mnu_help, 0, R.string.menu_help);
+		hlp.setIcon(R.drawable.ic_action_help_dark);
+		hlp.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		return true;
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
+		switch(item.getItemId()){
+		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
 			NavUtils.navigateUpTo(this, intent);
 			return true;
+		case R.id.mnu_help:
+			showInfo();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return false;
 	}
 }

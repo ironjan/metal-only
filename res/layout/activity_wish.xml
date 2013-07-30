@@ -66,27 +66,12 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <!-- buttons -->
-        <LinearLayout
+        <Button
+            android:id="@id/btnSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@id/btnSend"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/wish_send"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/btnHelp"
-                android:layout_width="@dimen/normalButton"
-                android:layout_height="@dimen/normalButton"
-                android:background="@drawable/bg_btn_transparent"
-                android:contentDescription="@string/help"
-                android:src="@drawable/ic_action_help_dark"
-                android:text="@string/help" />
-        </LinearLayout>
+            android:text="@string/wish_send" />
+        
     </LinearLayout>
     
     

@@ -33,14 +33,6 @@
                 android:text="@string/donation_receiverPaypal"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <ImageButton
-                android:id="@id/btnHelp"
-                android:layout_width="@dimen/normalButton"
-                android:layout_height="@dimen/normalButton"
-                android:background="@drawable/bg_btn_transparent"
-                android:contentDescription="@string/help"
-                android:src="@drawable/ic_action_help_dark"
-                android:text="@string/help" />
         </LinearLayout>
 
         <EditText
