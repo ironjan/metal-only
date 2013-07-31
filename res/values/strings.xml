@@ -45,25 +45,27 @@
     <string name="internet_timeout">Die Wiedergabe wurde unterbrochen, da momentan keine Internetverbindung existiert.</string>
 
     <!-- wish activity -->
-    <string name="wishes_regards">Wunsch / Gruß</string>
-    <string name="send">Senden</string>
-    <string name="regard">Gruß:</string>
-    <string name="nick">Nick:</string>
+    <string name="wish_regards">Wunsch / Gruß</string>
+    <string name="wish_send">Senden</string>
+    <string name="wish_regard">Gruß:</string>
+    <string name="wish_nick">Nick:</string>
+    <string name="artist">Artist:</string>
+    <string name="title">Titel:</string>
     <string name="sent">Erfolgreich gesendet</string>
     <string name="sending_error">Fehler beim Senden</string>
     <string name="impossible">Nicht möglich</string>
     <string name="no_wishes">Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich.</string>
-    <string name="no_wishes_short">Playlist voll</string>
+    <string name="no_wishes_short">Zur Zeit sind keine Wünsche möglich</string>
     <string name="no_regards">Zur Zeit sind keine Grüße möglich</string>
     <string name="no_wishes_and_regards">Zur Zeit sind keine Wünsche oder Grüße möglich.</string>
     <string name="wish_explanation">Wünsche und Grüße sind nur während der moderierten Sendezeit möglich. Das Team von Metal Only behält es sich vor, Wünsche nicht zu spielen und Grüße nicht vorzulesen, ohne eine Begründung dafür zu nennen. Kein Moderator ist dazu verpflichtet einen Gruß vorzulesen oder einen Wunsch zu erfüllen. Insbesondere gilt dies für Wünsche, die nicht den Genrevorgaben der Sendung entsprechen. Aufgrund der hohen Grußfrequenz entscheidet jeder Moderator selbst, welche Grüße vorgelesen werden. Dies ist nicht als Wertung des Grüßenden oder des Gegrüßten zu verstehen.</string>
     <string name="no_moderator">Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!</string>
     <string name="per_user">pro Hörer</string>
-    <string name="artist">Artist:</string>
-    <string name="title">Titel:</string>
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
 
+    <string name="menu_help">Hilfe</string>
+    
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
     <string name="donation_receiver">An:</string>

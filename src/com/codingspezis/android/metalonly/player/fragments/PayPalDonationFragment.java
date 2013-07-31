@@ -19,9 +19,7 @@ public class PayPalDonationFragment extends SherlockFragment {
 	private EditText editDonator, editDonationValue;
 
 	private Button btnSend;
-
-	ImageButton btnHelp;
-
+	
 	private SharedPreferences prefs;
 
 	private String donator;
@@ -54,21 +52,12 @@ public class PayPalDonationFragment extends SherlockFragment {
 		editDonationValue = (EditText) view
 				.findViewById(R.id.editDonationValue);
 		btnSend = (Button) view.findViewById(R.id.btnSend);
-		btnHelp = (ImageButton) view.findViewById(R.id.btnHelp);
 
 	}
 
 	private void bindActions() {
 		editDonationValue
 				.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
-
-		btnHelp.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showHelp();
-			}
-		});
 
 		btnSend.setOnClickListener(new View.OnClickListener() {
 
@@ -159,12 +148,6 @@ public class PayPalDonationFragment extends SherlockFragment {
 		} catch (NumberFormatException e) {
 			donationValue = -1.0F;
 		}
-	}
-
-	protected void showHelp() {
-		Uri metalOnly = Uri.parse("http://www.metal-only.de/?action=donation");
-		Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
-		startActivity(homepage);
 	}
 
 	@Override
