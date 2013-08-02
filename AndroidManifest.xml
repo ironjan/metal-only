@@ -44,7 +44,8 @@
             android:name=".PayPalDonationActivity"
             android:configChanges="orientation"
             android:label="@string/paypal"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateUnchanged" >
         </activity>
         <activity
             android:name=".SettingsActivity"
