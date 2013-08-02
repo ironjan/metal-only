@@ -2,12 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:padding="@dimen/elementMargin" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -35,13 +35,6 @@
                 android:text="@string/donation_receiverPaypal"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <ImageButton
-                android:id="@id/btnHelp"
-                android:layout_width="@dimen/normalButton"
-                android:layout_height="@dimen/normalButton"
-                android:contentDescription="@string/help"
-                android:src="@drawable/ic_action_help_dark"
-                android:text="@string/help" />
         </LinearLayout>
 
         <EditText

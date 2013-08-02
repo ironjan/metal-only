@@ -20,7 +20,9 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -49,7 +51,6 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	// buttons
 	private Button buttonSend;
-	private Button buttonHelp;
 
 	// user input
 	private EditText editNick;
@@ -58,13 +59,13 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 	private EditText editRegard;
 
 	private String numberOfWishes;
-
+	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_wishes);
+		setContentView(R.layout.activity_wish);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -79,9 +80,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		editRegard = (EditText) findViewById(R.id.editRegard);
 
-		buttonHelp = (Button) findViewById(R.id.btnHelp);
 		buttonSend = (Button) findViewById(R.id.btnSend);
-		buttonHelp.setOnClickListener(this);
 		buttonSend.setOnClickListener(this);
 
 		// get parameters
@@ -94,16 +93,25 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 			editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
 		}
 
-		((TextView) findViewById(R.id.txtWishcount)).setText(numberOfWishes);
+		TextView wishCount = (TextView) findViewById(R.id.txtWishcount);
+		wishCount.setText(numberOfWishes);
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);
+			editArtist.setVisibility(View.GONE);
 			editTitle.setText(R.string.no_wishes_short);
 			editTitle.setEnabled(false);
+			editTitle.setVisibility(View.GONE);
+			
+			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_wishes_short));
+			
 		}
 		if (!regard) {
 			editRegard.setText(R.string.no_regards);
 			editRegard.setEnabled(false);
+			editRegard.setVisibility(View.GONE);
+			
+			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_regards));
 		}
 	}
 
@@ -167,8 +175,6 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 			} else {
 				(new GetSender()).start();
 			}
-		} else if (v == buttonHelp) {
-			showInfo();
 		}
 	}
 
@@ -254,12 +260,26 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// help button
+		MenuItem hlp = menu.add(0, R.id.mnu_help, 0, R.string.menu_help);
+		hlp.setIcon(R.drawable.ic_action_help_dark);
+		hlp.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		return true;
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
+		switch(item.getItemId()){
+		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
 			NavUtils.navigateUpTo(this, intent);
 			return true;
+		case R.id.mnu_help:
+			showInfo();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return false;
 	}
 }

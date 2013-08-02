@@ -86,11 +86,11 @@ public class SettingsActivity extends PrefActivity implements
 				getDefaultOf(bitrate));
 		String audioBufferDefault = prefs.getString(getString(R.string.settings_key_audio_buffer),
 				getDefaultOf(audioBuffer));
-		if(audioBufferDefault.isEmpty()) // this should be impossible
+		if(audioBufferDefault.length() == 0) // this should be impossible
 			audioBufferDefault = getDefaultOf(audioBuffer);
 		String decodingBufferDefault = prefs.getString(getString(R.string.settings_key_decoding_buffer),
 				getDefaultOf(decodingBuffer));
-		if(decodingBufferDefault.isEmpty()) // this should be impossible
+		if(decodingBufferDefault.length() == 0) // this should be impossible
 			decodingBufferDefault = getDefaultOf(decodingBuffer);
 		bitrate.setSummary(bitrateDefault);
 		audioBuffer.setSummary(audioBufferDefault+" ms");

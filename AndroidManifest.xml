@@ -37,7 +37,7 @@
         <activity
             android:name=".WishActivity"
             android:configChanges="orientation"
-            android:label="@string/wishes_regards"
+            android:label="@string/wish_regards"
             android:launchMode="singleTop" >
         </activity>
         <activity
