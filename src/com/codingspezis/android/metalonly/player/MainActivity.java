@@ -34,7 +34,7 @@ import com.codingspezis.android.metalonly.player.wish.*;
  * TODO: better song saving
  * 
  */
-public class MainActivity extends SherlockActivity implements OnClickListener,
+public class MainActivity extends SherlockListActivity implements OnClickListener,
 		OnItemClickListener {
 
 	// intent keys
@@ -247,19 +247,11 @@ public class MainActivity extends SherlockActivity implements OnClickListener,
 		return super.onKeyUp(keyCode, event);
 	}
 
-	// button is not usable for MIN_BOTTON_DELAY msecs
-	static long lastButtonToggle = 0;
-	final static long MIN_BOTTON_DELAY = 1000; 
-	
 	/** handles button clicks **/
 	@Override
 	public void onClick(View arg0) {
-		
-		long currentTime = System.currentTimeMillis();
 		// stream start / stop
-		if (arg0 == buttonStream &&
-			currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
-			lastButtonToggle = System.currentTimeMillis();
+		if (arg0 == buttonStream) {
 			if (isShouldPlay()) {
 				stopListening();
 			} else {

@@ -25,6 +25,7 @@ public class AboutActivity extends SherlockActivity {
 	@StringRes
 	String mailaddress_codingspezis, app_name, app_version;
 
+	
 	@ViewById
 	@FromHtml(R.string.aboutThisApp)
 	TextView textAboutApp;
