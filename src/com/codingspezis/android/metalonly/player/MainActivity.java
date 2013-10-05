@@ -102,8 +102,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-				-1);
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
 		setMetadataParser(new MetadataParser("-"));
 	}
 
@@ -112,10 +111,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 */
 	private void setUpBroadcastReceiver() {
 		broadcastReceiver = new MainBroadcastReceiver(this);
-		registerReceiver(broadcastReceiver, new IntentFilter(
-				PlayerService.INTENT_STATUS));
-		registerReceiver(broadcastReceiver, new IntentFilter(
-				PlayerService.INTENT_METADATA));
+		registerReceiver(broadcastReceiver, new IntentFilter(PlayerService.INTENT_STATUS));
+		registerReceiver(broadcastReceiver, new IntentFilter(PlayerService.INTENT_METADATA));
 		registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
 	}
 
@@ -123,8 +120,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 * initializes player service and requests status
 	 */
 	private void setUpPlayerService() {
-		Intent playerStartIntent = new Intent(getApplicationContext(),
-				PlayerService.class);
+		Intent playerStartIntent = new Intent(getApplicationContext(), PlayerService.class);
 		startService(playerStartIntent);
 		Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
 		sendBroadcast(statusIntent);
@@ -192,11 +188,9 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
 		// favorites button
-		MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,
-				R.string.menu_favorites);
+		MenuItem fav = menu.add(0, R.id.mnu_favorites, 0, R.string.menu_favorites);
 		fav.setIcon(R.drawable.mo_star_b5);
-		fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
-				| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		// menu button
 		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
@@ -204,8 +198,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 		sub.add(0, R.id.mnu_donation, 0, R.string.menu_donation);
 		sub.add(0, R.id.mnu_info, 0, R.string.menu_info);
 		sub.getItem().setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_ALWAYS
-						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+				MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
 	}
 
@@ -216,16 +209,13 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if (item.getItemId() == R.id.mnu_settings) {
-			Intent settingsIntent = new Intent(getApplicationContext(),
-					SettingsActivity.class);
+			Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(settingsIntent);
 		} else if (item.getItemId() == R.id.mnu_favorites) {
-			Intent favoritesIntent = new Intent(getApplicationContext(),
-					FavoritesActivity.class);
+			Intent favoritesIntent = new Intent(getApplicationContext(), FavoritesActivity.class);
 			startActivity(favoritesIntent);
 		} else if (item.getItemId() == R.id.mnu_donation) {
-			Intent paypalIntent = new Intent(getApplicationContext(),
-					PayPalDonationActivity.class);
+			Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
 			startActivity(paypalIntent);
 		} else if (item.getItemId() == R.id.mnu_info) {
 			AboutActivity_.intent(this).start();
@@ -249,27 +239,36 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 
 	/** handles button clicks **/
 	@Override
-	public void onClick(View arg0) {
-		// stream start / stop
-		if (arg0 == buttonStream) {
-			if (isShouldPlay()) {
-				stopListening();
-			} else {
-				if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-					startListening();
-				}
-			}
+	public void onClick(View clickedView) {
+		if (clickedView == buttonStream) {
+			playButtonClicked();
 		}
-		// plan
-		else if (arg0 == buttonCalendar) {
-			if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-				startPlanActivity();
-			}
+		else if (clickedView == buttonCalendar) {
+			buttonCalendarClicked();
 		}
-		// wish
-		else if (arg0 == buttonWish) {
+		else if (clickedView == buttonWish) {
+			buttonWishClicked();
+		}
+	}
+
+	private void buttonWishClicked() {
+		if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+			startWishActivity();
+		}
+	}
+
+	private void buttonCalendarClicked() {
+		if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+			startPlanActivity();
+		}
+	}
+
+	private void playButtonClicked() {
+		if (isShouldPlay()) {
+			stopListening();
+		} else {
 			if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-				startWishActivity();
+				startListening();
 			}
 		}
 	}
@@ -287,27 +286,23 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			public void onWishesChecked(AllowedActions allowedActions) {
 				if (allowedActions.moderated) {
 					if (allowedActions.wishes || allowedActions.regards) {
-//						allowedActions.wishes = false;
-//						allowedActions.regards = false;
+						// allowedActions.wishes = false;
+						// allowedActions.regards = false;
 						Bundle bundle = new Bundle();
-						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-								allowedActions.wishes);
-						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-								allowedActions.regards);
-						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-								allowedActions.limit);
+						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, allowedActions.wishes);
+						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, allowedActions.regards);
+						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES, allowedActions.limit);
 						Intent wishIntent = new Intent(mainActivity, WishActivity.class);
 						wishIntent.putExtras(bundle);
 						mainActivity.startActivity(wishIntent);
 					} else {
-						alertMessage(mainActivity, mainActivity
-						.getString(R.string.no_wishes_and_regards));
+						alertMessage(mainActivity,
+								mainActivity.getString(R.string.no_wishes_and_regards));
 					}
-				 } else {
-					 alertMessage(mainActivity,
-					 mainActivity.getString(R.string.no_moderator));
-				 }
-	  	 	}
+				} else {
+					alertMessage(mainActivity, mainActivity.getString(R.string.no_moderator));
+				}
+			}
 		});
 		wishChecker.start();
 	}
@@ -362,13 +357,12 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		final int index = arg2;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setItems(R.array.history_options_array,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						handleAction(historySaver.size() - index - 1, which);
-					}
-				});
+		builder.setItems(R.array.history_options_array, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				handleAction(historySaver.size() - index - 1, which);
+			}
+		});
 		builder.show();
 	}
 
@@ -387,11 +381,9 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			if (favoritesSaver.isAlreadyIn(song) == -1) {
 				song.clearThumb();
 				favoritesSaver.addSong(song);
-				Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG).show();
 			}
 			break;
 		case 1: // YouTube
@@ -402,8 +394,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Uri url = Uri.parse("http://www.youtube.com/results?search_query="
-					+ searchStr);
+			Uri url = Uri.parse("http://www.youtube.com/results?search_query=" + searchStr);
 			Intent youtube = new Intent(Intent.ACTION_VIEW, url);
 			startActivity(youtube);
 			break;
@@ -413,8 +404,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			Intent share = new Intent(Intent.ACTION_SEND);
 			share.setType("text/plain");
 			share.putExtra(Intent.EXTRA_TEXT, message);
-			startActivity(Intent.createChooser(share, getResources()
-					.getStringArray(R.array.favorite_options_array)[2]));
+			startActivity(Intent.createChooser(share,
+					getResources().getStringArray(R.array.favorite_options_array)[2]));
 			break;
 		}
 	}

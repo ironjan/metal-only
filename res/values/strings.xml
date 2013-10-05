@@ -63,9 +63,8 @@
     <string name="per_user">pro Hörer</string>
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
-
     <string name="menu_help">Hilfe</string>
-    
+
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
     <string name="donation_receiver">An:</string>
@@ -211,5 +210,6 @@
     <string name="artistDummy">A very long dummy text for an artist\'s name</string>
     <string name="genreDummy">A very long dummy text for a show\'s genre</string>
     <string name="titleDummy">A very long dummy text for a song\'s or show\'s title</string>
+    <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
 
 </resources>
