@@ -34,7 +34,7 @@ import com.codingspezis.android.metalonly.player.wish.*;
  * TODO: better song saving
  * 
  */
-public class MainActivity extends SherlockActivity implements OnClickListener,
+public class MainActivity extends SherlockListActivity implements OnClickListener,
 		OnItemClickListener {
 
 	// intent keys
