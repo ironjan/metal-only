@@ -67,12 +67,14 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 	}
 
 	private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
+		ArrayList<Item> listItems = new ArrayList<Item>();
 		Calendar cal = new GregorianCalendar();
 
 		int day = 0;
 
-		ArrayList<Item> listItems = new ArrayList<Item>();
-		listItems.add(new SectionItem(days[day]));
+		SectionItem nextDaySection = new SectionItem(days[day]);
+
+		listItems.add(nextDaySection);
 
 		for (int i = 0; i < listEvents.size(); i++) {
 			PlanData d = listEvents.get(i);
@@ -80,8 +82,10 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 			if (hasNextListItem(listEvents, i)) {
 				PlanData nextItem = listEvents.get(i + 1);
 				if (notOnSameDay(d, nextItem)) {
-					listItems.add(new SectionItem(days[++day]));
-					if ((cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == day) {
+					day++;
+					listItems.add(nextDaySection);
+					int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+					if (day == dayOfWeek) {
 						final int pos = listItems.size() - 1;
 						getListView().setSelection(pos);
 					}
@@ -99,39 +103,48 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 		return i < listEvents.size() - 1;
 	}
 
+	String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
+
 	private ArrayList<PlanData> extractEvents(String site) {
-		StringTokenizer token = new StringTokenizer(site, "}");
-		String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
+		StringTokenizer tokenizer = new StringTokenizer(site, "}");
 
 		ArrayList<PlanData> listEvents = new ArrayList<PlanData>();
 
-		while (token.hasMoreTokens()) {
-			String tmp = token.nextToken();
-			PlanData tmpData = new PlanData();
-
-			try {
-				if (!((tmp.replaceAll(pattern, "$3").equals("MetalHead") || (tmp.replaceAll(
-						pattern, "$3").equals("frei"))))) {
-					GregorianCalendar tmpCal = new GregorianCalendar();
-					tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(tmp.replaceAll(pattern, "$1"))
-							.getTime());
-					tmpData = new PlanData(tmp.replaceAll(pattern, "$3"), tmp.replaceAll(pattern,
-							"$4"), tmp.replaceAll(pattern, "$5"));
-					tmpData.setStart(tmpCal);
-					tmpData.setDuration(Integer.parseInt(tmp.replaceAll(pattern, "$2")));
-					listEvents.add(tmpData);
-				}
-			} catch (Exception e) {
-				Log.e(TAG, e.getMessage(), e);
+		while (tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken();
+			PlanData planData = convertTokenToPlanEntry(token);
+			if (null != planData) {
+				listEvents.add(planData);
 			}
 		}
 		return listEvents;
 	}
 
+	private PlanData convertTokenToPlanEntry(String token) {
+		try {
+			boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
+			boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
+			boolean hasModerator = !(metalHeadIsMod || hasNoMod);
+			if (hasModerator) {
+				GregorianCalendar tmpCal = new GregorianCalendar();
+				tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(token.replaceAll(pattern, "$1"))
+						.getTime());
+				PlanData planData = new PlanData(token.replaceAll(pattern, "$3"), token.replaceAll(
+						pattern, "$4"), token.replaceAll(pattern, "$5"));
+				planData.setStart(tmpCal);
+				planData.setDuration(Integer.parseInt(token.replaceAll(pattern, "$2")));
+				return planData;
+			}
+		} catch (ParseException e) {
+			// drop entry with wrongly formatted date
+		}
+
+		return null;
+	}
+
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// final int index = arg2;
-		PlanAdapter adapter = (PlanAdapter) arg0.getAdapter();
+	public void onItemClick(AdapterView<?> adapterView, View arg1, int arg2, long arg3) {
+		PlanAdapter adapter = (PlanAdapter) adapterView.getAdapter();
 		final PlanData data = ((Item) adapter.getItem(arg2)).getPlanData();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setItems(R.array.plan_options_array, new DialogInterface.OnClickListener() {
@@ -139,24 +152,11 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case 0:
-					Intent intent = new Intent(Intent.ACTION_EDIT);
-					intent.setType("vnd.android.cursor.item/event");
-					intent.putExtra("title", "Metal Only");
-					intent.putExtra("description", data.getDescription());
-					intent.putExtra("beginTime", data.getStart().getTimeInMillis());
-					intent.putExtra("endTime", data.getEnd().getTimeInMillis());
-					startActivity(intent);
+					addEntryToCalendar(data);
 					break;
 				case 1:
-					String message = data.getDateString() + " " + data.getTimeString() + "\n"
-							+ data.getTitle() + "\n" + data.getMod() + "\n" + data.getGenre();
-					Intent share = new Intent(Intent.ACTION_SEND);
-					share.setType("text/plain");
-					share.putExtra(Intent.EXTRA_TEXT, message);
-					startActivity(Intent.createChooser(share,
-							getResources().getStringArray(R.array.plan_options_array)[1]));
+					shareEntry(data);
 					break;
-
 				}
 			}
 		});
@@ -171,5 +171,25 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 			return true;
 		}
 		return false;
+	}
+
+	private void addEntryToCalendar(final PlanData data) {
+		Intent intent = new Intent(Intent.ACTION_EDIT);
+		intent.setType("vnd.android.cursor.item/event");
+		intent.putExtra("title", "Metal Only");
+		intent.putExtra("description", data.getDescription());
+		intent.putExtra("beginTime", data.getStart().getTimeInMillis());
+		intent.putExtra("endTime", data.getEnd().getTimeInMillis());
+		startActivity(intent);
+	}
+
+	private void shareEntry(final PlanData data) {
+		String message = data.getDateString() + " " + data.getTimeString() + "\n"
+				+ data.getTitle() + "\n" + data.getMod() + "\n" + data.getGenre();
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(share,
+				getResources().getStringArray(R.array.plan_options_array)[1]));
 	}
 }
