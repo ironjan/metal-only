@@ -27,12 +27,16 @@ public final class PlanEntryClickListener implements DialogInterface.OnClickList
 
 	private void addEntryToCalendar(final PlanData data) {
 		Intent intent = new Intent(Intent.ACTION_EDIT);
+		createAddToCalenderIntent(data, intent);
+		context.startActivity(intent);
+	}
+
+	private void createAddToCalenderIntent(final PlanData data, Intent intent) {
 		intent.setType("vnd.android.cursor.item/event");
 		intent.putExtra("title", "Metal Only");
 		intent.putExtra("description", data.getDescription());
-		intent.putExtra("beginTime", data.getStart().getTimeInMillis());
-		intent.putExtra("endTime", data.getEnd().getTimeInMillis());
-		context.startActivity(intent);
+		intent.putExtra("beginTime", data.getStartTimeAsMillis());
+		intent.putExtra("endTime", data.getEndTimeAsMillis());
 	}
 
 	private void shareEntry(final PlanData data) {

@@ -71,6 +71,13 @@ public class PlanData {
 		return start;
 	}
 
+	public long getStartTimeAsMillis(){
+		return getStart().getTimeInMillis();
+	}
+	public long getEndTimeAsMillis(){
+		return getEnd().getTimeInMillis();
+	}
+	
 	public CharSequence getTimeString() {
 		return PlanActivity.DATE_FORMAT_TIME.format(start.getTime()) + " - "
 				+ PlanActivity.DATE_FORMAT_TIME.format(getEnd().getTime());
