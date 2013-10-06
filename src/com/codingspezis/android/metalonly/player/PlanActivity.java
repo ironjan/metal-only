@@ -2,16 +2,12 @@ package com.codingspezis.android.metalonly.player;
 
 import java.text.*;
 import java.util.*;
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
-import android.util.*;
-
 import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.res.*;
@@ -19,8 +15,6 @@ import com.googlecode.androidannotations.annotations.res.*;
 @EActivity(R.layout.activity_plan)
 @SuppressLint("SimpleDateFormat")
 public class PlanActivity extends SherlockListActivity {
-
-	private static final String TAG = PlanActivity.class.getSimpleName();
 
 	@StringRes
 	String plan;
@@ -33,37 +27,28 @@ public class PlanActivity extends SherlockListActivity {
 	public static final String KEY_SITE = "site";
 
 	public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
-			"{dd.MM.yy HH:mm");
-	public static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm");
+			"{dd.MM.yy HH:mm"), DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm"),
+			DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy"),
+			DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
 
-	public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
-
-	public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
-
-	String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
+	private static final String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		Log.v(TAG, "onCreate done");
 	}
 
 	@AfterInject
 	void afterInject() {
 		setTitle(plan);
-		Log.v(TAG, "title set");
 	}
 
 	@AfterViews
 	void afterViews() {
-		Log.v(TAG, "afterViews");
 		ArrayList<PlanData> listEvents = extractEvents(site);
-		Log.v(TAG, "extracted " + listEvents.size() + " events from size");
 		ArrayList<Item> listItems = convertToPlan(listEvents);
-		Log.v(TAG, listItems.size() + " were converted to plan entries");
-
 		PlanAdapter adapter = new PlanAdapter(this, listItems);
 		getListView().setAdapter(adapter);
 	}
@@ -122,13 +107,11 @@ public class PlanActivity extends SherlockListActivity {
 
 	private PlanData convertTokenToPlanEntry(String token) {
 		try {
-			boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
-			boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
-			boolean hasModerator = !(metalHeadIsMod || hasNoMod);
-			if (hasModerator) {
+			if (hasModerator(token)) {
 				GregorianCalendar tmpCal = new GregorianCalendar();
 				tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(token.replaceAll(pattern, "$1"))
 						.getTime());
+
 				PlanData planData = new PlanData(token.replaceAll(pattern, "$3"), token.replaceAll(
 						pattern, "$4"), token.replaceAll(pattern, "$5"));
 				planData.setStart(tmpCal);
@@ -142,6 +125,13 @@ public class PlanActivity extends SherlockListActivity {
 		return null;
 	}
 
+	private boolean hasModerator(String token) {
+		boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
+		boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
+		boolean hasModerator = !(metalHeadIsMod || hasNoMod);
+		return hasModerator;
+	}
+
 	@ItemClick(android.R.id.list)
 	void entryClicked(Object clickedObject) {
 		PlanData planData = (PlanData) clickedObject;
@@ -150,25 +140,11 @@ public class PlanActivity extends SherlockListActivity {
 		builder.show();
 	}
 
-	// @Override
-	// public void onItemClick(AdapterView<?> adapterView, View arg1, int arg2,
-	// long arg3) {
-	// PlanAdapter adapter = (PlanAdapter) adapterView.getAdapter();
-	// final PlanData data = ((Item) adapter.getItem(arg2)).getPlanData();
-	// AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	// builder.setItems(R.array.plan_options_array, new
-	// PlanEntryClickListener(data, this));
-	// builder.show();
-	// }
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			Intent intent = new Intent(this, MainActivity.class);
-			NavUtils.navigateUpTo(this, intent);
-			return true;
-		}
-		return false;
+	@SuppressLint("InlinedApi")
+	@OptionsItem(android.R.id.home)
+	void upButtonClicked() {
+		Intent intent = new Intent(this, MainActivity.class);
+		NavUtils.navigateUpTo(this, intent);
 	}
 
 }
