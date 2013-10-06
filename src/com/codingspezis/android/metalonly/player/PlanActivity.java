@@ -28,6 +28,9 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 	@StringRes
 	String plan;
 
+	@StringArrayRes
+	String[] days;
+
 	@Extra
 	String site;
 	public static final String KEY_SITE = "site";
@@ -40,7 +43,6 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 
 	public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,33 +53,50 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 	@AfterInject
 	void afterInject() {
 		setTitle(plan);
+	}
 
+	@AfterViews
+	void afterViews() {
 		ArrayList<PlanData> listEvents = extractEvents(site);
+		ArrayList<Item> listItems = convertToPlan(listEvents);
+
+		PlanAdapter adapter = new PlanAdapter(this, listItems);
+		getListView().setAdapter(adapter);
+		getListView().setOnItemClickListener(this);
+
+	}
+
+	private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
+		Calendar cal = new GregorianCalendar();
+
+		int day = 0;
 
 		ArrayList<Item> listItems = new ArrayList<Item>();
-		String[] days = getResources().getStringArray(R.array.days);
-		int day = 0;
 		listItems.add(new SectionItem(days[day]));
-		int pos = 0;
-		Calendar cal = new GregorianCalendar();
+
 		for (int i = 0; i < listEvents.size(); i++) {
 			PlanData d = listEvents.get(i);
 			listItems.add(new EntryItem(d));
-			if (i < listEvents.size() - 1) {
-				if (!d.sameDay(listEvents.get(i + 1))) {
+			if (hasNextListItem(listEvents, i)) {
+				PlanData nextItem = listEvents.get(i + 1);
+				if (notOnSameDay(d, nextItem)) {
 					listItems.add(new SectionItem(days[++day]));
 					if ((cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == day) {
-						pos = listItems.size() - 1;
+						final int pos = listItems.size() - 1;
+						getListView().setSelection(pos);
 					}
 				}
 			}
 		}
-		ListView listView = getListView();
-		PlanAdapter adapter = new PlanAdapter(this, listItems);
-		listView.setAdapter(adapter);
-		listView.setOnItemClickListener(this);
-		listView.setSelection(pos);
+		return listItems;
+	}
 
+	private boolean notOnSameDay(PlanData d, PlanData nextItem) {
+		return !d.sameDay(nextItem);
+	}
+
+	private boolean hasNextListItem(ArrayList<PlanData> listEvents, int i) {
+		return i < listEvents.size() - 1;
 	}
 
 	private ArrayList<PlanData> extractEvents(String site) {
