@@ -8,7 +8,6 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
-import android.util.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
@@ -42,6 +41,8 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 	public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
 
 	public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
+
+	String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -103,8 +104,6 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 		return i < listEvents.size() - 1;
 	}
 
-	String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
-
 	private ArrayList<PlanData> extractEvents(String site) {
 		StringTokenizer tokenizer = new StringTokenizer(site, "}");
 
@@ -147,19 +146,7 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 		PlanAdapter adapter = (PlanAdapter) adapterView.getAdapter();
 		final PlanData data = ((Item) adapter.getItem(arg2)).getPlanData();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setItems(R.array.plan_options_array, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch (which) {
-				case 0:
-					addEntryToCalendar(data);
-					break;
-				case 1:
-					shareEntry(data);
-					break;
-				}
-			}
-		});
+		builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(data, this));
 		builder.show();
 	}
 
@@ -173,23 +160,4 @@ public class PlanActivity extends SherlockListActivity implements OnItemClickLis
 		return false;
 	}
 
-	private void addEntryToCalendar(final PlanData data) {
-		Intent intent = new Intent(Intent.ACTION_EDIT);
-		intent.setType("vnd.android.cursor.item/event");
-		intent.putExtra("title", "Metal Only");
-		intent.putExtra("description", data.getDescription());
-		intent.putExtra("beginTime", data.getStart().getTimeInMillis());
-		intent.putExtra("endTime", data.getEnd().getTimeInMillis());
-		startActivity(intent);
-	}
-
-	private void shareEntry(final PlanData data) {
-		String message = data.getDateString() + " " + data.getTimeString() + "\n"
-				+ data.getTitle() + "\n" + data.getMod() + "\n" + data.getGenre();
-		Intent share = new Intent(Intent.ACTION_SEND);
-		share.setType("text/plain");
-		share.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(share,
-				getResources().getStringArray(R.array.plan_options_array)[1]));
-	}
 }
