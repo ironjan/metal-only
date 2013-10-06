@@ -10,9 +10,6 @@ import com.codingspezis.android.metalonly.player.siteparser.*;
 
 public class PlanGrabber {
 
-	/**
-	 * 
-	 */
 	private final MainActivity mainActivity;
 
 	private final Context context;

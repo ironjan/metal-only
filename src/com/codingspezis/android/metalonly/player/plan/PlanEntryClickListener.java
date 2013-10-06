@@ -4,7 +4,11 @@ import android.content.*;
 
 import com.codingspezis.android.metalonly.player.*;
 
+/**
+ * ClickListener for entries in the plan shown by {@link PlanActivity}
+ */
 public final class PlanEntryClickListener implements DialogInterface.OnClickListener {
+	
 	private final PlanData data;
 	private Context context;
 
