@@ -9,12 +9,6 @@ public class PlanData {
 	private Calendar start;
 	private int duration;
 
-	public PlanData() {
-		title = "";
-		mod = "";
-		genre = "";
-	}
-
 	public PlanData(String mod, String title, String genre) {
 		this.title = title;
 		this.genre = genre;
@@ -23,8 +17,7 @@ public class PlanData {
 
 	public CharSequence getDateString() {
 		CharSequence ret;
-		if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(
-				Calendar.DAY_OF_WEEK)
+		if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(Calendar.DAY_OF_WEEK)
 				|| getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
 			ret = PlanActivity.DATE_FORMAT_DATE.format(getStart().getTime());
 		} else {
@@ -34,6 +27,8 @@ public class PlanData {
 
 		return ret;
 	}
+
+	private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
 
 	public String getDescription() {
 		return getTitle() + "\n" + getMod() + "\n" + getGenre() + "\n";
@@ -58,17 +53,23 @@ public class PlanData {
 	}
 
 	public int getProgress() {
-
 		Calendar cal = new GregorianCalendar();
-		float timeToEnd = getEnd().getTimeInMillis()
-				- cal.getTimeInMillis();
-		float durationInMillis = getDuration() * 60 * 60 * 1000;
-		return (int) ((timeToEnd / durationInMillis) * 100);
+		float timeToEnd = getEnd().getTimeInMillis() - cal.getTimeInMillis();
+		float durationInMillis = getDuration() * HOUR_IN_MILLIS;
 
+		return (int) ((timeToEnd / durationInMillis) * 100);
 	}
 
 	public Calendar getStart() {
 		return start;
+	}
+
+	public long getStartTimeAsMillis() {
+		return getStart().getTimeInMillis();
+	}
+
+	public long getEndTimeAsMillis() {
+		return getEnd().getTimeInMillis();
 	}
 
 	public CharSequence getTimeString() {
@@ -80,9 +81,10 @@ public class PlanData {
 		return title;
 	}
 
-	public boolean sameDay(PlanData d1) {
-		return getStart().get(Calendar.DAY_OF_WEEK) == d1.getStart().get(
-				Calendar.DAY_OF_WEEK);
+	public boolean sameDay(PlanData other) {
+		int thisDay = getStart().get(Calendar.DAY_OF_WEEK);
+		int otherDay = other.getStart().get(Calendar.DAY_OF_WEEK);
+		return thisDay == otherDay;
 	}
 
 	public void setDuration(int duration) {

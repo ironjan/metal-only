@@ -10,9 +10,6 @@ import com.codingspezis.android.metalonly.player.siteparser.*;
 
 public class PlanGrabber {
 
-	/**
-	 * 
-	 */
 	private final MainActivity mainActivity;
 
 	private final Context context;
@@ -30,9 +27,7 @@ public class PlanGrabber {
 				}
 				Bundle bundle = new Bundle();
 				bundle.putString(PlanActivity.KEY_SITE, site);
-				Intent planIntent = new Intent(
-						PlanGrabber.this.mainActivity.getApplicationContext(),
-						PlanActivity.class);
+				Intent planIntent = PlanActivity_.intent(context.getApplicationContext()).get();
 				planIntent.putExtras(bundle);
 				PlanGrabber.this.mainActivity.startActivity(planIntent);
 			} catch (Exception e) {

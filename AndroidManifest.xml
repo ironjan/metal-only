@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlanActivity"
+            android:name=".PlanActivity_"
             android:launchMode="singleTask" >
         </activity>
         <activity
