@@ -29,13 +29,9 @@ import com.codingspezis.android.metalonly.player.wish.*;
 /**
  * main GUI activity
  * 
- * pre-refactoring: 490 loc 
  * 
- * post-refactoring: 490 loc 
- * 
- * TODO: better lazylist
- * TODO: check static string (e.g. PlanGrabber is useless) TODO: better song
- * saving
+ * TODO: better lazylist TODO: check static string (e.g. PlanGrabber is useless)
+ * TODO: better song saving
  * 
  */
 public class MainActivity extends SherlockListActivity implements OnClickListener,
@@ -241,11 +237,18 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 		return super.onKeyUp(keyCode, event);
 	}
 
+	// button is not usable for MIN_BOTTON_DELAY msecs
+	static long lastButtonToggle = 0;
+	final static long MIN_BOTTON_DELAY = 1000;
+
 	/** handles button clicks **/
 	@Override
 	public void onClick(View arg0) {
+
+		long currentTime = System.currentTimeMillis();
 		// stream start / stop
-		if (arg0 == buttonStream) {
+		if (arg0 == buttonStream && currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
+			lastButtonToggle = System.currentTimeMillis();
 			if (isShouldPlay()) {
 				stopListening();
 			} else {
