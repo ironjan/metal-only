@@ -2,7 +2,7 @@ package com.codingspezis.android.metalonly.player;
 
 import java.net.*;
 import java.util.*;
-
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
 import android.content.DialogInterface.OnClickListener;
@@ -12,7 +12,6 @@ import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -20,30 +19,26 @@ import com.actionbarsherlock.view.SubMenu;
 import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.wish.*;
+import com.googlecode.androidannotations.annotations.*;
 
 /**
  * FavoritesActivity
  * 
- * @version 09.01.2013
- * 
- *          this activity displays favorites and allows to handle them
+ * this activity displays favorites and allows to handle them
  * 
  */
-public class FavoritesActivity extends SherlockListActivity implements
-		OnItemClickListener {
+@EActivity(R.layout.activity_favorites)
+@OptionsMenu(R.menu.favoritesmenu)
+public class FavoritesActivity extends SherlockListActivity implements OnItemClickListener {
 
-	// JSON file name for favorites
 	public static final String JSON_FILE_FAV = "mo_fav.json";
 
-	// GUI
-	private ListView listView;
+	@ViewById
+	ListView list;
+
 	private Menu menu;
 
-	// data
 	private SongSaver favoritesSaver;
-
-	// me
-	private final FavoritesActivity me = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +48,8 @@ public class FavoritesActivity extends SherlockListActivity implements
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		favoritesSaver = new SongSaver(this, JSON_FILE_FAV, -1);
-		listView = getListView();
-		listView.setOnItemClickListener(this);
+		list = getListView();
+		list.setOnItemClickListener(this);
 		displayFavorites();
 	}
 
@@ -63,7 +58,7 @@ public class FavoritesActivity extends SherlockListActivity implements
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -71,11 +66,11 @@ public class FavoritesActivity extends SherlockListActivity implements
 		displayFavorites();
 	}
 
-	private void showAddSongDialog() {
+	@OptionsItem(R.id.mnu_add_manually)
+	void showAddSongDialog() {
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		alert.setTitle(R.string.menu_add_mannually);
-		final View v = getLayoutInflater().inflate(R.layout.dialog_add_song,
-				null);
+		final View v = getLayoutInflater().inflate(R.layout.dialog_add_song, null);
 		alert.setView(v);
 		alert.setNegativeButton(R.string.abort, null);
 		alert.setPositiveButton(R.string.ok, new OnClickListener() {
@@ -102,13 +97,13 @@ public class FavoritesActivity extends SherlockListActivity implements
 	 * displays favorites on screen
 	 */
 	private void displayFavorites() {
-		listView.removeAllViewsInLayout();
+		list.removeAllViewsInLayout();
 		ArrayList<Song> songs = new ArrayList<Song>();
 		for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
 			songs.add(favoritesSaver.get(i));
 		}
 		SongAdapterFavorites adapter = new SongAdapterFavorites(this, songs);
-		listView.setAdapter(adapter);
+		list.setAdapter(adapter);
 	}
 
 	/**
@@ -123,38 +118,30 @@ public class FavoritesActivity extends SherlockListActivity implements
 		switch (action) {
 		case 0: // wish
 			if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-				WishChecker wishChecker = new WishChecker(this,
-						WishActivity.URL_WISHES);
-				wishChecker
-						.setOnWishesCheckedListener(new OnWishesCheckedListener() {
-							@Override
-							public void onWishesChecked(
-									AllowedActions allowedActions) {
-								if (WishActivity.canWishOrDisplayNot(me,
-										allowedActions)) {
-									Bundle bundle = new Bundle();
-									bundle.putBoolean(
-											WishActivity.KEY_WISHES_ALLOWED,
-											allowedActions.wishes);
-									bundle.putBoolean(
-											WishActivity.KEY_REGARDS_ALLOWED,
-											allowedActions.regards);
-									bundle.putString(
-											WishActivity.KEY_NUMBER_OF_WISHES,
-											allowedActions.limit);
-									bundle.putString(
-											WishActivity.KEY_DEFAULT_INTERPRET,
-											favoritesSaver.get(index).interpret);
-									bundle.putString(
-											WishActivity.KEY_DEFAULT_TITLE,
-											favoritesSaver.get(index).title);
-									Intent wishIntent = new Intent(me,
-											WishActivity.class);
-									wishIntent.putExtras(bundle);
-									me.startActivity(wishIntent);
-								}
-							}
-						});
+				WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
+				wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
+					@Override
+					public void onWishesChecked(AllowedActions allowedActions) {
+						if (WishActivity
+								.canWishOrDisplayNot(FavoritesActivity.this, allowedActions)) {
+							Bundle bundle = new Bundle();
+							bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
+									allowedActions.wishes);
+							bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
+									allowedActions.regards);
+							bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
+									allowedActions.limit);
+							bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET,
+									favoritesSaver.get(index).interpret);
+							bundle.putString(WishActivity.KEY_DEFAULT_TITLE,
+									favoritesSaver.get(index).title);
+							Intent wishIntent = new Intent(FavoritesActivity.this,
+									WishActivity.class);
+							wishIntent.putExtras(bundle);
+							FavoritesActivity.this.startActivity(wishIntent);
+						}
+					}
+				});
 				wishChecker.start();
 			}
 			break;
@@ -166,8 +153,7 @@ public class FavoritesActivity extends SherlockListActivity implements
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Uri url = Uri.parse("http://www.youtube.com/results?search_query="
-					+ searchStr);
+			Uri url = Uri.parse("http://www.youtube.com/results?search_query=" + searchStr);
 			Intent youtube = new Intent(Intent.ACTION_VIEW, url);
 			startActivity(youtube);
 			break;
@@ -177,8 +163,8 @@ public class FavoritesActivity extends SherlockListActivity implements
 			Intent share = new Intent(Intent.ACTION_SEND);
 			share.setType("text/plain");
 			share.putExtra(Intent.EXTRA_TEXT, message);
-			startActivity(Intent.createChooser(share, getResources()
-					.getStringArray(R.array.favorite_options_array)[2]));
+			startActivity(Intent.createChooser(share,
+					getResources().getStringArray(R.array.favorite_options_array)[2]));
 			break;
 		case 3: // delete
 			favoritesSaver.removeAt(index);
@@ -190,31 +176,13 @@ public class FavoritesActivity extends SherlockListActivity implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		final int index = arg2;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setItems(R.array.favorite_options_array,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						handleAction(favoritesSaver.size() - index - 1, which);
-					}
-				});
+		builder.setItems(R.array.favorite_options_array, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				handleAction(favoritesSaver.size() - index - 1, which);
+			}
+		});
 		builder.show();
-	}
-
-	/**
-	 * generates options menu
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		this.menu = menu;
-		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
-		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
-		sub.add(0, R.id.mnu_add_manually, 0, R.string.menu_add_mannually);
-		sub.add(0, R.id.mnu_shareall, 0, R.string.menu_shareall);
-		sub.add(0, R.id.mnu_deleteall, 0, R.string.menu_deleteall);
-		sub.getItem().setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_ALWAYS
-						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-		return true;
 	}
 
 	@Override
@@ -229,48 +197,36 @@ public class FavoritesActivity extends SherlockListActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 
-	/**
-	 * handles menu button actions
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		super.onOptionsItemSelected(item);
-
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			Intent intent = new Intent(this, MainActivity.class);
-			NavUtils.navigateUpTo(this, intent);
-			return true;
-		case R.id.mnu_add_manually:
-			showAddSongDialog();
-			return true;
-		case R.id.mnu_shareall:
-			String message = "";
-			for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-				message += favoritesSaver.get(i).interpret + " - "
-						+ favoritesSaver.get(i).title + "\n";
+	@OptionsItem(R.id.mnu_deleteall)
+	void deleteAllClicked() {
+		askSureDelete(this, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				favoritesSaver.clear();
+				displayFavorites();
 			}
-			// open share dialog
-			Intent share = new Intent(Intent.ACTION_SEND);
-			share.setType("text/plain");
-			share.putExtra(Intent.EXTRA_TEXT, message);
-			startActivity(Intent.createChooser(share, getResources()
-					.getStringArray(R.array.favorite_options_array)[2]));
-			return true;
-		case R.id.mnu_deleteall:
-			askSureDelete(this, new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					favoritesSaver.clear();
-					displayFavorites();
-				}
-			}, null);
-			return true;
+		}, null);
+	}
 
-		default:
-			return false;
+	@OptionsItem(R.id.mnu_shareall)
+	void shareAllClicked() {
+		String message = "";
+		for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
+			message += favoritesSaver.get(i).interpret + " - " + favoritesSaver.get(i).title + "\n";
 		}
+		// open share dialog
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(share,
+				getResources().getStringArray(R.array.favorite_options_array)[2]));
+	}
 
+	@SuppressLint("InlinedApi")
+	@OptionsItem(android.R.id.home)
+	void upButtonClicked() {
+		Intent intent = new Intent(this, MainActivity.class);
+		NavUtils.navigateUpTo(this, intent);
 	}
 
 	/**
@@ -281,8 +237,7 @@ public class FavoritesActivity extends SherlockListActivity implements
 	 * @param no
 	 *            what is to do if user clicks no
 	 */
-	public static void askSureDelete(Context context, OnClickListener yes,
-			OnClickListener no) {
+	public static void askSureDelete(Context context, OnClickListener yes, OnClickListener no) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(context);
 		alert.setMessage(R.string.delete_sure);
 		alert.setNegativeButton(R.string.no, no);

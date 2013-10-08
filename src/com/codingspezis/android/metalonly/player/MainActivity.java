@@ -212,8 +212,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
 			startActivity(settingsIntent);
 		} else if (item.getItemId() == R.id.mnu_favorites) {
-			Intent favoritesIntent = new Intent(getApplicationContext(), FavoritesActivity.class);
-			startActivity(favoritesIntent);
+			FavoritesActivity_.intent(this).start();
 		} else if (item.getItemId() == R.id.mnu_donation) {
 			Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
 			startActivity(paypalIntent);

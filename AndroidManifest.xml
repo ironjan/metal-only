@@ -50,7 +50,7 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name=".FavoritesActivity"
+            android:name=".FavoritesActivity_"
             android:label="@string/menu_favorites"
             android:launchMode="singleTask" >
         </activity>
