@@ -212,5 +212,6 @@
     <string name="titleDummy">A very long dummy text for a song\'s or show\'s title</string>
     <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
     <string name="loading_plan">Plan wird geladen.</string>
+    <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 
 </resources>

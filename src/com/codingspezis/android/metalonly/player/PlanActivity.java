@@ -70,6 +70,7 @@ public class PlanActivity extends SherlockListActivity {
 				PlanData nextItem = listEvents.get(i + 1);
 				if (notOnSameDay(d, nextItem)) {
 					day++;
+					nextDaySection = new SectionItem(days[day]);
 					listItems.add(nextDaySection);
 					int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 					if (day == dayOfWeek) {
@@ -134,10 +135,16 @@ public class PlanActivity extends SherlockListActivity {
 
 	@ItemClick(android.R.id.list)
 	void entryClicked(Object clickedObject) {
-		PlanData planData = (PlanData) clickedObject;
+		try{
+		EntryItem entryItem = (EntryItem) clickedObject;
+		PlanData planData = entryItem.getPlanData();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(planData, this));
 		builder.show();
+		}
+		catch(ClassCastException e){
+			// don't need to do stuff
+		}
 	}
 
 	@SuppressLint("InlinedApi")
