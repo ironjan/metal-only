@@ -19,7 +19,7 @@ public class PlanAdapter extends BaseAdapter {
 
 	public PlanAdapter(Context context, ArrayList<Item> data) {
 		this.context = context;
-		
+
 		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		imageLoader = new ImageLoader(context.getApplicationContext());
@@ -47,7 +47,7 @@ public class PlanAdapter extends BaseAdapter {
 		final Item item = data.get(position);
 		if (item != null) {
 			if (item.isSection()) {
-				v = inflateSectionView(item);
+				v = inflateSectionView((SectionItem) item);
 			} else {
 				v = inflateEntryItemView(position);
 			}
@@ -63,20 +63,13 @@ public class PlanAdapter extends BaseAdapter {
 		return view;
 	}
 
-	private View inflateSectionView(final Item item) {
-		View v = inflate(R.drawable.plan_section);
-		v.setOnClickListener(null);
-		v.setOnLongClickListener(null);
-		v.setLongClickable(false);
-		final TextView sectionView = (TextView) v.findViewById(R.id.list_item_section_text);
-
-		SectionItem si = (SectionItem) item;
-		sectionView.setText(si.getTitle());
-		return v;
-	}
-
-	private View inflate(int layout) {
-		return inflater.inflate(layout, null);
+	private View inflateSectionView(final SectionItem item) {
+		SectionView view = SectionView_.build(context, null);
+		view.setOnClickListener(null);
+		view.setOnLongClickListener(null);
+		view.setLongClickable(false);
+		view.bind(item);
+		return view;
 	}
 
 }
