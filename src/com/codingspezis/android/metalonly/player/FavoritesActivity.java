@@ -29,7 +29,7 @@ import com.googlecode.androidannotations.annotations.*;
  */
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
-public class FavoritesActivity extends SherlockListActivity implements OnItemClickListener {
+public class FavoritesActivity extends SherlockListActivity {
 
 	public static final String JSON_FILE_FAV = "mo_fav.json";
 
@@ -49,7 +49,6 @@ public class FavoritesActivity extends SherlockListActivity implements OnItemCli
 
 		favoritesSaver = new SongSaver(this, JSON_FILE_FAV, -1);
 		list = getListView();
-		list.setOnItemClickListener(this);
 		displayFavorites();
 	}
 
@@ -172,14 +171,13 @@ public class FavoritesActivity extends SherlockListActivity implements OnItemCli
 		}
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		final int index = arg2;
+	@ItemClick(android.R.id.list)
+	public void listItemClicked(final int position) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setItems(R.array.favorite_options_array, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				handleAction(favoritesSaver.size() - index - 1, which);
+				handleAction(favoritesSaver.size() - position - 1, which);
 			}
 		});
 		builder.show();
