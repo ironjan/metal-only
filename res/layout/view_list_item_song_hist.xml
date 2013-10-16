@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/txtArtist"
-        android:layout_below="@id/txtArtist"
+		android:layout_alignBottom="@id/modImage"
         android:layout_toLeftOf="@id/txtTime"
         android:layout_toRightOf="@id/modImage"
         android:singleLine="true"
