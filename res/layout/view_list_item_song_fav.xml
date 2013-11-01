@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LinearLayout1"
     style="@attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
 
     <TextView
         android:id="@id/txtArtist"
@@ -12,9 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:singleLine="true"
         android:text="@string/artistDummy"
         android:textIsSelectable="false" />
@@ -25,15 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtArtist"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:singleLine="true"
         android:text="@string/titleDummy"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:textIsSelectable="false" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:layout_below="@id/txtTitle" />
 
 </RelativeLayout>

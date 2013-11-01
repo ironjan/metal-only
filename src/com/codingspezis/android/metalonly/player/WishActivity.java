@@ -56,7 +56,10 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 	private EditText editNick;
 	private EditText editArtist;
 	private EditText editTitle;
-	private EditText editRegard;
+	private EditText editRegard;	
+	private TextView textArtist;
+	private TextView textTitle;
+	private TextView textRegard;
 
 	private String numberOfWishes;
 	
@@ -79,7 +82,13 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		editArtist = (EditText) findViewById(R.id.editArtist);
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		editRegard = (EditText) findViewById(R.id.editRegard);
-
+		try{
+			textArtist = (TextView) findViewById(R.id.textArtist);
+			textTitle = (TextView) findViewById(R.id.textTitle);
+			textRegard = (TextView) findViewById(R.id.textRegard);
+		}catch(Exception e){
+			// no labels in portrait mode
+		}
 		buttonSend = (Button) findViewById(R.id.btnSend);
 		buttonSend.setOnClickListener(this);
 
@@ -98,10 +107,12 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		if (!wish) {
 			editArtist.setText(R.string.no_wishes_short);
 			editArtist.setEnabled(false);
-			editArtist.setVisibility(View.GONE);
+			setInvisible(editArtist);
+			setInvisible(textArtist);
 			editTitle.setText(R.string.no_wishes_short);
 			editTitle.setEnabled(false);
-			editTitle.setVisibility(View.GONE);
+			setInvisible(editTitle);
+			setInvisible(textTitle);
 			
 			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_wishes_short));
 			
@@ -109,7 +120,8 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		if (!regard) {
 			editRegard.setText(R.string.no_regards);
 			editRegard.setEnabled(false);
-			editRegard.setVisibility(View.GONE);
+			setInvisible(editRegard);
+			setInvisible(textRegard);
 			
 			wishCount.setText(wishCount.getText()+"\n"+getString(R.string.no_regards));
 		}
@@ -121,6 +133,11 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 		editor.putString(KEY_SP_NICK, editNick.getText().toString());
 		editor.commit();
 		super.onDestroy();
+	}
+	
+	private void setInvisible(View v){
+		if(v!=null)
+			v.setVisibility(View.GONE);
 	}
 
 	/**

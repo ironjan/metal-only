@@ -68,7 +68,7 @@
 	        android:layout_toLeftOf="@id/txtTime"
 	        android:singleLine="true"
 	        android:text="@string/titleDummy"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@android:color/white"
 	        android:textStyle="bold"
 	        android:typeface="sans"
 	        android:textIsSelectable="false" />
