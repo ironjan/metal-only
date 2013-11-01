@@ -5,7 +5,7 @@
     style="@attr/selectableItemBackground"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:minHeight="48dp">
+    android:minHeight="48dp" >
     
     <ImageView
         android:id="@id/modImage"
@@ -45,21 +45,23 @@
 	        android:layout_alignRight="@id/txtDate"
 	        android:layout_below="@id/txtDate"
 	        android:singleLine="true"
-	        android:text="@string/time" />
+	        android:text="@string/time"
+	        android:textIsSelectable="false" />
 	
 	    <TextView
 	        android:id="@id/txtArtist"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
 	        android:layout_toLeftOf="@id/txtDate"
 	        android:singleLine="true"
-	        android:text="@string/artistDummy" />
+	        android:text="@string/artistDummy"
+	        android:textIsSelectable="false" />
 	
 	    <TextView
 	        android:id="@id/txtTitle"
-	        android:layout_width="match_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignLeft="@id/txtArtist"
 			android:layout_below="@id/txtArtist"
@@ -68,7 +70,8 @@
 	        android:text="@string/titleDummy"
 	        android:textAppearance="?android:attr/textAppearanceMedium"
 	        android:textStyle="bold"
-	        android:typeface="sans" />
+	        android:typeface="sans"
+	        android:textIsSelectable="false" />
 	
     </RelativeLayout>
         
