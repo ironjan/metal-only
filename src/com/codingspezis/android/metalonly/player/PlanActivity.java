@@ -33,6 +33,8 @@ public class PlanActivity extends SherlockListActivity {
 
 	private static final String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
 
+	private int todayListStartIndex;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class PlanActivity extends SherlockListActivity {
 		ArrayList<Item> listItems = convertToPlan(listEvents);
 		PlanAdapter adapter = new PlanAdapter(this, listItems);
 		getListView().setAdapter(adapter);
+		setSelection(todayListStartIndex);
 	}
 
 	private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
@@ -70,6 +73,8 @@ public class PlanActivity extends SherlockListActivity {
 				PlanData nextItem = listEvents.get(i + 1);
 				if (notOnSameDay(d, nextItem)) {
 					day++;
+					if(isToday(day))
+						todayListStartIndex = listItems.size();
 					nextDaySection = new SectionItem(days[day]);
 					listItems.add(nextDaySection);
 					int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
@@ -81,6 +86,11 @@ public class PlanActivity extends SherlockListActivity {
 			}
 		}
 		return listItems;
+	}
+	
+	private boolean isToday(int dayIndex) {
+		Calendar cal = new GregorianCalendar();
+		return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == dayIndex;
 	}
 
 	private boolean notOnSameDay(PlanData d, PlanData nextItem) {
