@@ -1,6 +1,8 @@
 package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.*;
+import android.media.*;
+import android.media.AudioManager.OnAudioFocusChangeListener;
 
 /**
  * 
@@ -14,42 +16,61 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 	 */
 	private final PlayerService playerService;
 
+	private AudioManager audioManager;
+
 	/**
 	 * @param playerService
 	 */
 	PlayerBCReceiver(PlayerService playerService) {
 		this.playerService = playerService;
+		audioManager = (AudioManager) playerService
+				.getSystemService(Context.AUDIO_SERVICE);
+		
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// start stream
 		if (intent.getAction().equals(PlayerService.INTENT_PLAY)) {
-			if (this.playerService.audioStream != null) {
-				this.playerService.audioStream.stopPlaying();
-			}
-			this.playerService.instantiateSelectedPlayer();
-			this.playerService.streamPlaying = true;
-			this.playerService.audioStream
-					.setOnStreamListener(this.playerService.streamWatcher);
-			this.playerService.audioStream.startPlaying();
+			play();
 		}
-		// stop stream
 		else if (intent.getAction().equals(PlayerService.INTENT_STOP)) {
-			if (this.playerService.audioStream != null) {
-				this.playerService.audioStream.stopPlaying();
-			}
-			this.playerService.clear();
+			stop();
 		}
-		// playing request
 		else if (intent.getAction().equals(PlayerService.INTENT_STATUS_REQUEST)) {
-			this.playerService.sendPlayerStatus();
+			sendPlayerStatus();
 		}
-		// exit
 		else if (intent.getAction().equals(PlayerService.INTENT_EXIT)) {
-			if (!this.playerService.streamPlaying) {
-				this.playerService.stopSelf();
-			}
+			exit();
+		}
+	}
+
+	private void play() {
+		if (playerService.audioStream != null) {
+			playerService.audioStream.stopPlaying();
+		}
+
+		playerService.instantiateSelectedPlayer();
+		playerService.streamPlaying = true;
+		playerService.audioStream
+				.setOnStreamListener(playerService.streamWatcher);
+
+		playerService.audioStream.startPlaying();
+	}
+
+	private void stop() {
+		if (playerService.audioStream != null) {
+			playerService.audioStream.stopPlaying();
+		}
+		playerService.clear();
+	}
+
+	private void sendPlayerStatus() {
+		playerService.sendPlayerStatus();
+	}
+
+	private void exit() {
+		if (!playerService.streamPlaying) {
+			playerService.stopSelf();
 		}
 	}
 
