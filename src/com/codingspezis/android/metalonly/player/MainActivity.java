@@ -106,23 +106,25 @@ public class MainActivity extends SherlockListActivity implements
 				updateShowinfo(moderator, genre);
 			}
 
+			private void updateShowinfo(final String moderator,
+					final String genre) {
+				Runnable runnable = new Runnable() {
+
+					@Override
+					public void run() {
+						marqueeMod.setText(moderator);
+						marqueeGenre.setText(genre);
+					}
+				};
+				Handler mainHandler = new Handler(Looper.getMainLooper());
+				mainHandler.post(runnable);
+			}
 		};
 		new Thread(runnable).start();
 
 	}
 
-	private void updateShowinfo(final String moderator, final String genre) {
-		Runnable runnable = new Runnable() {
-
-			@Override
-			public void run() {
-				marqueeMod.setText(moderator);
-				marqueeGenre.setText(genre);
-			}
-		};
-		Handler mainHandler = new Handler(Looper.getMainLooper());
-		mainHandler.post(runnable);
-	}
+	
 
 	@Override
 	public void onDestroy() {
@@ -210,7 +212,7 @@ public class MainActivity extends SherlockListActivity implements
 	 * 
 	 * @param listening
 	 *            if this value is true the button shows stop from now on;
-	 *            otherwise play is shown
+	 *            otherwise play is false
 	 */
 	public void toggleStreamButton(boolean listening) {
 		if (listening) {
