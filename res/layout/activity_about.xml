@@ -210,6 +210,71 @@
             android:layout_marginTop="@dimen/elementMargin"
             android:text="@string/apl2"
             android:textColor="@color/turkis" />
+        
+          <TextView
+            android:id="@+id/textSpringName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textAndroidannotationsLink"
+            android:layout_marginTop="@dimen/elementMarginDouble"
+            android:text="@string/about_spring"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textSpringLink"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textSpringName"
+            android:layout_marginBottom="@dimen/elementMargin"
+            android:layout_marginTop="@dimen/elementMargin"
+            android:autoLink="web"
+            android:singleLine="true"
+            android:text="@string/url_spring" />
+
+        <TextView
+            android:id="@+id/textSpringLicenseApache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textSpringName"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/elementMargin"
+            android:text="@string/apl2"
+            android:textColor="@color/turkis" />
+        
+        
+          <TextView
+            android:id="@+id/textJacksonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textSpringLink"
+            android:layout_marginTop="@dimen/elementMarginDouble"
+            android:text="@string/about_jackson"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/textJacksonLink"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textJacksonName"
+            android:layout_marginBottom="@dimen/elementMargin"
+            android:layout_marginTop="@dimen/elementMargin"
+            android:autoLink="web"
+            android:singleLine="true"
+            android:text="@string/url_jackson" />
+
+        <TextView
+            android:id="@+id/textJacksonLicenseApache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textJacksonName"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/elementMargin"
+            android:text="@string/apl2"
+            android:textColor="@color/turkis" />
     </RelativeLayout>
 
 </ScrollView>

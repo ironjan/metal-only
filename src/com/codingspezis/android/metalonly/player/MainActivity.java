@@ -23,6 +23,7 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
@@ -34,8 +35,8 @@ import com.codingspezis.android.metalonly.player.wish.*;
  * TODO: better song saving
  * 
  */
-public class MainActivity extends SherlockListActivity implements OnClickListener,
-		OnItemClickListener {
+public class MainActivity extends SherlockListActivity implements
+		OnClickListener, OnItemClickListener {
 
 	// intent keys
 	public static final String showToastMessage = "MO_SHOW_TOAST";
@@ -44,6 +45,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 
 	// shared preferences keys
 	public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
+
+	private MetalOnlyAPIWrapper apiWrapper;
 
 	// GUI objects
 	private final MainActivity mainActivity = this;
@@ -88,6 +91,37 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public void onResume() {
 		super.onResume();
 		favoritesSaver.reload();
+		refreshShowInfo();
+	}
+
+	private void refreshShowInfo() {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				Stats stats = apiWrapper.getStats();
+				String moderator = stats.getModerator();
+				String genre = stats.getGenre();
+
+				updateShowinfo(moderator, genre);
+			}
+
+		};
+		new Thread(runnable).start();
+
+	}
+
+	private void updateShowinfo(final String moderator, final String genre) {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				marqueeMod.setText(moderator);
+				marqueeGenre.setText(genre);
+			}
+		};
+		Handler mainHandler = new Handler(Looper.getMainLooper());
+		mainHandler.post(runnable);
 	}
 
 	@Override
@@ -102,7 +136,9 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
+		apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
+		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
+				-1);
 		setMetadataParser(new MetadataParser("-"));
 	}
 
@@ -111,8 +147,10 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 */
 	private void setUpBroadcastReceiver() {
 		broadcastReceiver = new MainBroadcastReceiver(this);
-		registerReceiver(broadcastReceiver, new IntentFilter(PlayerService.INTENT_STATUS));
-		registerReceiver(broadcastReceiver, new IntentFilter(PlayerService.INTENT_METADATA));
+		registerReceiver(broadcastReceiver, new IntentFilter(
+				PlayerService.INTENT_STATUS));
+		registerReceiver(broadcastReceiver, new IntentFilter(
+				PlayerService.INTENT_METADATA));
 		registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
 	}
 
@@ -120,7 +158,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 * initializes player service and requests status
 	 */
 	private void setUpPlayerService() {
-		Intent playerStartIntent = new Intent(getApplicationContext(), PlayerService.class);
+		Intent playerStartIntent = new Intent(getApplicationContext(),
+				PlayerService.class);
 		startService(playerStartIntent);
 		Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
 		sendBroadcast(statusIntent);
@@ -176,7 +215,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public void toggleStreamButton(boolean listening) {
 		if (listening) {
 			buttonStream.setImageResource(R.drawable.mo_stop5);
-		} else {
+		}
+		else {
 			buttonStream.setImageResource(R.drawable.mo_play5);
 		}
 	}
@@ -188,9 +228,11 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public boolean onCreateOptionsMenu(Menu menu) {
 		this.menu = menu;
 		// favorites button
-		MenuItem fav = menu.add(0, R.id.mnu_favorites, 0, R.string.menu_favorites);
+		MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,
+				R.string.menu_favorites);
 		fav.setIcon(R.drawable.mo_star_b5);
-		fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+				| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		// menu button
 		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
@@ -198,7 +240,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 		sub.add(0, R.id.mnu_donation, 0, R.string.menu_donation);
 		sub.add(0, R.id.mnu_info, 0, R.string.menu_info);
 		sub.getItem().setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+				MenuItem.SHOW_AS_ACTION_ALWAYS
+						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
 	}
 
@@ -209,16 +252,22 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if (item.getItemId() == R.id.mnu_settings) {
-			Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+			Intent settingsIntent = new Intent(getApplicationContext(),
+					SettingsActivity.class);
 			startActivity(settingsIntent);
-		} else if (item.getItemId() == R.id.mnu_favorites) {
+		}
+		else if (item.getItemId() == R.id.mnu_favorites) {
 			FavoritesActivity_.intent(this).start();
-		} else if (item.getItemId() == R.id.mnu_donation) {
-			Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
+		}
+		else if (item.getItemId() == R.id.mnu_donation) {
+			Intent paypalIntent = new Intent(getApplicationContext(),
+					PayPalDonationActivity.class);
 			startActivity(paypalIntent);
-		} else if (item.getItemId() == R.id.mnu_info) {
+		}
+		else if (item.getItemId() == R.id.mnu_info) {
 			AboutActivity_.intent(this).start();
-		} else {
+		}
+		else {
 			return false;
 		}
 		return true;
@@ -246,11 +295,13 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 
 		long currentTime = System.currentTimeMillis();
 		// stream start / stop
-		if (arg0 == buttonStream && currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
+		if (arg0 == buttonStream
+				&& currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
 			lastButtonToggle = System.currentTimeMillis();
 			if (isShouldPlay()) {
 				stopListening();
-			} else {
+			}
+			else {
 				if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
 					startListening();
 				}
@@ -279,6 +330,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	private void startWishActivity() {
 		WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
+
 			@Override
 			public void onWishesChecked(AllowedActions allowedActions) {
 				if (allowedActions.moderated) {
@@ -286,18 +338,25 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 						// allowedActions.wishes = false;
 						// allowedActions.regards = false;
 						Bundle bundle = new Bundle();
-						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, allowedActions.wishes);
-						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, allowedActions.regards);
-						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES, allowedActions.limit);
-						Intent wishIntent = new Intent(mainActivity, WishActivity.class);
+						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
+								allowedActions.wishes);
+						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
+								allowedActions.regards);
+						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
+								allowedActions.limit);
+						Intent wishIntent = new Intent(mainActivity,
+								WishActivity.class);
 						wishIntent.putExtras(bundle);
 						mainActivity.startActivity(wishIntent);
-					} else {
-						alertMessage(mainActivity,
-								mainActivity.getString(R.string.no_wishes_and_regards));
 					}
-				} else {
-					alertMessage(mainActivity, mainActivity.getString(R.string.no_moderator));
+					else {
+						alertMessage(mainActivity, mainActivity
+								.getString(R.string.no_wishes_and_regards));
+					}
+				}
+				else {
+					alertMessage(mainActivity,
+							mainActivity.getString(R.string.no_moderator));
 				}
 			}
 		});
@@ -354,12 +413,14 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		final int index = arg2;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setItems(R.array.history_options_array, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				handleAction(historySaver.size() - index - 1, which);
-			}
-		});
+		builder.setItems(R.array.history_options_array,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						handleAction(historySaver.size() - index - 1, which);
+					}
+				});
 		builder.show();
 	}
 
@@ -378,9 +439,12 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			if (favoritesSaver.isAlreadyIn(song) == -1) {
 				song.clearThumb();
 				favoritesSaver.addSong(song);
-				Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
+						.show();
+			}
+			else {
+				Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
+						.show();
 			}
 			break;
 		case 1: // YouTube
@@ -391,7 +455,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Uri url = Uri.parse("http://www.youtube.com/results?search_query=" + searchStr);
+			Uri url = Uri.parse("http://www.youtube.com/results?search_query="
+					+ searchStr);
 			Intent youtube = new Intent(Intent.ACTION_VIEW, url);
 			startActivity(youtube);
 			break;
@@ -401,8 +466,8 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 			Intent share = new Intent(Intent.ACTION_SEND);
 			share.setType("text/plain");
 			share.putExtra(Intent.EXTRA_TEXT, message);
-			startActivity(Intent.createChooser(share,
-					getResources().getStringArray(R.array.favorite_options_array)[2]));
+			startActivity(Intent.createChooser(share, getResources()
+					.getStringArray(R.array.favorite_options_array)[2]));
 			break;
 		}
 	}
@@ -419,6 +484,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 */
 	public static void toastMessage(final Context context, final String msg) {
 		(new Handler(context.getMainLooper())).post(new Runnable() {
+
 			@Override
 			public void run() {
 				Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
@@ -433,6 +499,7 @@ public class MainActivity extends SherlockListActivity implements OnClickListene
 	 */
 	public static void alertMessage(final Context context, final String msg) {
 		(new Handler(context.getMainLooper())).post(new Runnable() {
+
 			@Override
 			public void run() {
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
