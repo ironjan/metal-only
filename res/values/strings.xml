@@ -203,6 +203,7 @@
     <string name="play_paus">Abspielen/Pause</string>
     <string name="date">Datum</string>
     <string name="time">Time</string>
+    <string name="moderator">Moderator</string>
     <string name="colon">:</string>
 
     <!-- Layouting texts -->
