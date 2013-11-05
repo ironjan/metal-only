@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.*;
+import android.util.Log;
 
 import com.codingspezis.android.metalonly.player.*;
 
@@ -26,6 +27,9 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		
+		Log.d("MainBCReceiver", "received intent: "+intent.getAction());
+		
 		// is playing?
 		if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
 			this.mainActivity
@@ -37,14 +41,13 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
 						.getStringExtra(PlayerService.EXTRA_META)));
 				this.mainActivity.displayMetadata();
 			} else {
-				this.mainActivity.stopListening();
 				this.mainActivity.toggleStreamButton(false);
 			}
 			// meta data
 		} else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
 			String metadata = intent.getStringExtra(PlayerService.EXTRA_META);
 			this.mainActivity.setMetadataParser(new MetadataParser(metadata));
-			this.mainActivity.displayMetadata();
+			this.mainActivity.refreshShowInfo();
 			this.mainActivity.displaySongs();
 		}
 	}

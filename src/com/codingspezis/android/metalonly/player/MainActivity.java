@@ -94,16 +94,20 @@ public class MainActivity extends SherlockListActivity implements
 		refreshShowInfo();
 	}
 
-	private void refreshShowInfo() {
+	public void refreshShowInfo() {
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
-				Stats stats = apiWrapper.getStats();
-				String moderator = stats.getModerator();
-				String genre = stats.getGenre();
+				try{
+					Stats stats = apiWrapper.getStats();
+					String moderator = stats.getModerator();
+					String genre = stats.getGenre();
+					updateShowinfo(moderator, genre);
 
-				updateShowinfo(moderator, genre);
+				}catch(NoInternetException e){
+					// do nothing  if there is no internet connection
+				}
 			}
 
 			private void updateShowinfo(final String moderator,
