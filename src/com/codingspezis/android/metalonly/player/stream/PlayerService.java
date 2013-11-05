@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
+import android.media.*;
 import android.os.*;
 import android.telephony.*;
 
@@ -36,8 +37,8 @@ public class PlayerService extends Service {
 	public static final int HISTORY_ENTRIES = 25;
 
 	// stream URLs
-	public static final String URL128 = "http://server1.blitz-stream.de:4400";
-	public static final String URL32 = "http://mobil.metal-only.de:8000";
+	private static final String URL128 = "http://server1.blitz-stream.de:4400";
+	private static final String URL32 = "http://mobil.metal-only.de:8000";
 
 	// private AudioStream audioStream;
 	StreamPlayerOpencore audioStream;
@@ -97,17 +98,24 @@ public class PlayerService extends Service {
 		// buffer sizes
 		int ab = AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS;
 		int db = AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS;
-		try{
-			ab = Integer.valueOf(prefs.getString(getString(R.string.settings_key_audio_buffer),
-					String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS)));
-			db = Integer.valueOf(prefs.getString(getString(R.string.settings_key_decoding_buffer),
-					String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS)));
-		}catch(Exception e){
+		try {
+			ab = Integer
+					.valueOf(prefs
+							.getString(
+									getString(R.string.settings_key_audio_buffer),
+									String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS)));
+			db = Integer
+					.valueOf(prefs
+							.getString(
+									getString(R.string.settings_key_decoding_buffer),
+									String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS)));
+		} catch (Exception e) {
 			// nothing to be done here
 		}
 		if (rate.equals(getResources().getStringArray(R.array.rate_label)[0])) {
 			audioStream.setUrl(URL32);
-		} else {
+		}
+		else {
 			audioStream.setUrl(URL128);
 		}
 		audioStream.setAudioBufferCapacityMs(ab);
@@ -170,7 +178,8 @@ public class PlayerService extends Service {
 			int index = historySaver.isAlreadyIn(song);
 			if (index == -1) {
 				canAdd = true;
-			} else {
+			}
+			else {
 				// add the current song to the history only if it was not played
 				// last 15 minutes
 				long timeDiff = song.date - historySaver.get(index).date;
@@ -194,7 +203,8 @@ public class PlayerService extends Service {
 		if (streamPlaying) {
 			tmpIntent.putExtra(EXTRA_CONNECTED, true);
 			tmpIntent.putExtra(EXTRA_META, streamWatcher.getMetadata());
-		} else {
+		}
+		else {
 			tmpIntent.putExtra(EXTRA_CONNECTED, false);
 			tmpIntent.putExtra(EXTRA_META, "");
 		}

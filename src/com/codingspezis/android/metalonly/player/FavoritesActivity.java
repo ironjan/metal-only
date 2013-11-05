@@ -2,6 +2,7 @@ package com.codingspezis.android.metalonly.player;
 
 import java.net.*;
 import java.util.*;
+
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
@@ -12,6 +13,7 @@ import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -30,6 +32,14 @@ import com.googlecode.androidannotations.annotations.*;
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
 public class FavoritesActivity extends SherlockListActivity {
+
+	private static final int ITEM_CLICK_ACTION_DELETE = 3;
+
+	private static final int ITEM_CLICK_ACTION_SHARE = 2;
+
+	private static final int ITEM_CLICK_ACTION_YOUTUBE = 1;
+
+	private static final int ITEM_CLICK_ACTION_WISH = 0;
 
 	public static final String JSON_FILE_FAV = "mo_fav.json";
 
@@ -115,60 +125,76 @@ public class FavoritesActivity extends SherlockListActivity {
 	 */
 	private void handleAction(final int index, int action) {
 		switch (action) {
-		case 0: // wish
-			if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-				WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
-				wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
-					@Override
-					public void onWishesChecked(AllowedActions allowedActions) {
-						if (WishActivity
-								.canWishOrDisplayNot(FavoritesActivity.this, allowedActions)) {
-							Bundle bundle = new Bundle();
-							bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-									allowedActions.wishes);
-							bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-									allowedActions.regards);
-							bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-									allowedActions.limit);
-							bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET,
-									favoritesSaver.get(index).interpret);
-							bundle.putString(WishActivity.KEY_DEFAULT_TITLE,
-									favoritesSaver.get(index).title);
-							Intent wishIntent = new Intent(FavoritesActivity.this,
-									WishActivity.class);
-							wishIntent.putExtras(bundle);
-							FavoritesActivity.this.startActivity(wishIntent);
-						}
-					}
-				});
-				wishChecker.start();
-			}
+		case ITEM_CLICK_ACTION_WISH: // wish
+			wishSong(index);
 			break;
-		case 1: // YouTube
-			String searchStr = favoritesSaver.get(index).interpret + " - "
-					+ favoritesSaver.get(index).title;
-			try {
-				searchStr = URLEncoder.encode(searchStr, "UTF-8");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			Uri url = Uri.parse("http://www.youtube.com/results?search_query=" + searchStr);
-			Intent youtube = new Intent(Intent.ACTION_VIEW, url);
-			startActivity(youtube);
+		case ITEM_CLICK_ACTION_YOUTUBE: // YouTube
+			searchSongOnYoutube(index);
 			break;
-		case 2: // share
-			String message = favoritesSaver.get(index).interpret + " - "
-					+ favoritesSaver.get(index).title;
-			Intent share = new Intent(Intent.ACTION_SEND);
-			share.setType("text/plain");
-			share.putExtra(Intent.EXTRA_TEXT, message);
-			startActivity(Intent.createChooser(share,
-					getResources().getStringArray(R.array.favorite_options_array)[2]));
+		case ITEM_CLICK_ACTION_SHARE: // share
+			shareSong(index);
 			break;
-		case 3: // delete
-			favoritesSaver.removeAt(index);
-			displayFavorites();
+		case ITEM_CLICK_ACTION_DELETE: // delete
+			deleteSong(index);
 		}
+	}
+
+	private void wishSong(final int index) {
+		if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+			WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
+			wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
+				@Override
+				public void onWishesChecked(AllowedActions allowedActions) {
+					if (WishActivity
+							.canWishOrDisplayNot(FavoritesActivity.this, allowedActions)) {
+						Bundle bundle = new Bundle();
+						bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
+								allowedActions.wishes);
+						bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
+								allowedActions.regards);
+						bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
+								allowedActions.limit);
+						bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET,
+								favoritesSaver.get(index).interpret);
+						bundle.putString(WishActivity.KEY_DEFAULT_TITLE,
+								favoritesSaver.get(index).title);
+						Intent wishIntent = new Intent(FavoritesActivity.this,
+								WishActivity.class);
+						wishIntent.putExtras(bundle);
+						FavoritesActivity.this.startActivity(wishIntent);
+					}
+				}
+			});
+			wishChecker.start();
+		}
+	}
+
+	private void searchSongOnYoutube(final int index) {
+		String searchStr = favoritesSaver.get(index).interpret + " - "
+				+ favoritesSaver.get(index).title;
+		try {
+			searchStr = URLEncoder.encode(searchStr, "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Uri url = Uri.parse("http://www.youtube.com/results?search_query=" + searchStr);
+		Intent youtube = new Intent(Intent.ACTION_VIEW, url);
+		startActivity(youtube);
+	}
+
+	private void shareSong(final int index) {
+		String message = favoritesSaver.get(index).interpret + " - "
+				+ favoritesSaver.get(index).title;
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setType("text/plain");
+		share.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(share,
+				getResources().getStringArray(R.array.favorite_options_array)[2]));
+	}
+
+	private void deleteSong(final int index) {
+		favoritesSaver.removeAt(index);
+		displayFavorites();
 	}
 
 	@ItemClick(android.R.id.list)
