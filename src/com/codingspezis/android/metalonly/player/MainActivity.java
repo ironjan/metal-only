@@ -406,8 +406,6 @@ public class MainActivity extends SherlockListActivity implements
 	 * clears the metadata display
 	 */
 	private void clearMetadata() {
-		marqueeGenre.setText("");
-		marqueeMod.setText("");
 		setMetadataParser(new MetadataParser("-"));
 	}
 
