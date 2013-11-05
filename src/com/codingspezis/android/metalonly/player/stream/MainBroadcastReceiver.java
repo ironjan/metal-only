@@ -47,7 +47,7 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
 		} else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
 			String metadata = intent.getStringExtra(PlayerService.EXTRA_META);
 			this.mainActivity.setMetadataParser(new MetadataParser(metadata));
-			this.mainActivity.displayMetadata();
+			this.mainActivity.refreshShowInfo();
 			this.mainActivity.displaySongs();
 		}
 	}
