@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.content.*;
 import android.media.*;
 import android.media.AudioManager.OnAudioFocusChangeListener;
+import android.util.Log;
 
 /**
  * 
@@ -49,6 +50,9 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
+		
+		Log.d("PayerBCReceiver", "received intent: "+action);
+		
 		if (action.equals(PlayerService.INTENT_PLAY)) {
 			play();
 			sendPlayerStatus();
