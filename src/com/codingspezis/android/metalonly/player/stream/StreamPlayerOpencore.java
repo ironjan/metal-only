@@ -162,9 +162,10 @@ public class StreamPlayerOpencore implements AudioStream {
 			if(exceptionCounter++ < CRITICAL_EXCEPTION_NUMBER){
 				if(shouldPlay){
 					// only make some toast and restart stream
-					streamListener.errorOccurred(context.getString(R.string.stream_restart), true);
+					String restartMessage = context.getString(R.string.stream_restart).replace("%s", Integer.toString(exceptionCounter));
+					streamListener.errorOccurred(restartMessage, true);
 					try{
-						Thread.sleep(1000);
+						Thread.sleep(1000*exceptionCounter);
 					}catch(InterruptedException e){}
 					startPlaying();
 					return;

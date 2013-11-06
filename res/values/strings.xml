@@ -43,7 +43,7 @@
     <string name="timeout">Zeitüberschreitung</string>
     <string name="playing">Stream wird jetzt wiedergegeben</string>
     <string name="internet_timeout">Die Wiedergabe wurde unterbrochen, da momentan keine Internetverbindung existiert.</string>
-    <string name="stream_restart">Ein Fehler trat auf - erneuter Wiedergabeversuch in einer Sekunde.</string>
+    <string name="stream_restart">Ein Fehler trat auf - erneuter Wiedergabeversuch in %s s.</string>
 
     <!-- wish activity -->
     <string name="wish_regards">Wunsch / Gruß</string>
