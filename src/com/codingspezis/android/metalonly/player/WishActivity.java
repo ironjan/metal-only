@@ -22,7 +22,6 @@ import android.widget.*;
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
@@ -63,7 +62,6 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
 
 	private String numberOfWishes;
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

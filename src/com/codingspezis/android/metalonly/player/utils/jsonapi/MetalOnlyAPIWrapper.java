@@ -1,7 +1,5 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import java.util.concurrent.*;
-
 import org.springframework.http.client.*;
 import org.springframework.web.client.*;
 

@@ -12,12 +12,9 @@ import android.os.*;
 import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.wish.*;

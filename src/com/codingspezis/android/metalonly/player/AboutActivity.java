@@ -58,18 +58,6 @@ public class AboutActivity extends SherlockActivity {
 	}
 
 	/**
-	 * sends system intent ACTION_VIEW (open browser)
-	 * 
-	 * @param URL
-	 *            browser opens this URL
-	 */
-	private void openWebsite(String URL) {
-		Uri metalOnly = Uri.parse(URL);
-		Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
-		startActivity(homepage);
-	}
-
-	/**
 	 * sends system intent ACTION_SEND (send mail)
 	 * 
 	 * @param strTo

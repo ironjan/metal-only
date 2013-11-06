@@ -6,14 +6,15 @@ import android.content.*;
 import android.view.*;
 import android.widget.*;
 
-import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.plan.views.*;
 import com.codingspezis.android.metalonly.player.utils.*;
 
 public class PlanAdapter extends BaseAdapter {
 
 	private final ArrayList<Item> data;
+	@SuppressWarnings("unused")
 	private static LayoutInflater inflater = null;
+	@SuppressWarnings("unused")
 	private final ImageLoader imageLoader;
 	private Context context;
 

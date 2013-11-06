@@ -1,9 +1,7 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.media.*;
 import android.os.*;
 import android.telephony.*;
 
@@ -88,7 +86,6 @@ public class PlayerService extends Service {
 	 * SettingsActivity)
 	 */
 	@SuppressWarnings("boxing")
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	void instantiateSelectedPlayer() {
 		SharedPreferences prefs = getSharedPreferences(
 				getString(R.string.app_name), Context.MODE_MULTI_PROCESS);
