@@ -81,6 +81,7 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 			playerService.audioStream
 					.setOnStreamListener(playerService.streamWatcher);
 
+			playerService.setForeground();
 			playerService.audioStream.startPlaying();
 		}
 		else {
