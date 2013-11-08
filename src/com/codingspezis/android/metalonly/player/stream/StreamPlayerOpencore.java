@@ -167,7 +167,7 @@ public class StreamPlayerOpencore implements AudioStream {
 					try{
 						Thread.sleep(1000*exceptionCounter);
 					}catch(InterruptedException e){}
-					startPlaying();
+					if(shouldPlay) startPlaying();
 					return;
 				}
 			}
