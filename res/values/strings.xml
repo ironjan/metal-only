@@ -3,7 +3,7 @@
 
     <!-- app -->
     <string name="app_name">Metal Only</string>
-    <string name="app_version">0.4.9 (Beta)</string>
+    <string name="app_version">0.4.10</string>
 
     <!-- menu -->
     <string name="menu">Menü</string>
