@@ -1,8 +1,9 @@
 Metal Only Android App
 ======================
 
-Diese App bringt den Internetstream von http://www.metal-only.de auf Android.
-Entwickelt wurde sie von den codingspezis (http://www.codingspezis.com).
+Diese App bringt den Internet Radio Stream von metal-only.de auf Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen oder Grüßen.
+
+Die App kann über Google Play [heruntergeladen][11] werden.
 
 Verwendete Software
 -------------------
@@ -12,7 +13,9 @@ Verwendete Software
 * [ActionBarSherlock][3] ([Apache 2.0][6])
 * [LazyList][4] ([MIT][7])
 * [androidannotations][5] ([Apache 2.0][6])
-
+* [Spring for Android][9] ([Apache 2.0][6])
+* [Jackson JSON Processor][10] ([Apache 2.0][6])
+ 
 [1]: https://android.googlesource.com/platform/external/opencore.git  "OpenCORE aacdec"
 [2]: http://www.code.google.com/p/aacdecoder-android/                 "AAC Decoder for Android"
 [3]: https://github.com/JakeWharton/ActionBarSherlock/                "ActionBarSherlock"
@@ -21,3 +24,6 @@ Verwendete Software
 [6]: http://www.apache.org/licenses/LICENSE-2.0.htlm                  "Apache 2.0"
 [7]: http://opensource.org/licenses/MIT                               "MIT"
 [8]: http://www.gnu.org/licenses/lgpl.html                            "LGPL"
+[9]: http://projects.spring.io/spring-android/                        "Spring for Android"
+[10]: http://wiki.fasterxml.com/JacksonHome                           "Jackson JSON Processor"
+[11]: https://play.google.com/store/apps/details?id=com.codingspezis.android.metalonly.player "Metal Only App"
