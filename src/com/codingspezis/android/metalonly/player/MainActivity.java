@@ -242,8 +242,8 @@ public class MainActivity extends SherlockListActivity implements
 		// menu button
 		SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
 		sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
-		sub.add(0, R.id.mnu_settings, 0, R.string.menu_settings);
 		sub.add(0, R.id.mnu_donation, 0, R.string.menu_donation);
+		sub.add(0, R.id.mnu_settings, 0, R.string.menu_settings);
 		sub.add(0, R.id.mnu_info, 0, R.string.menu_info);
 		sub.getItem().setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_ALWAYS

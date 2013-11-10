@@ -1,10 +1,13 @@
 package com.codingspezis.android.metalonly.player.stream;
 
+import java.util.Calendar;
+
 import android.content.*;
 import android.media.*;
 import android.net.wifi.*;
 import android.os.*;
 
+import com.codingspezis.android.metalonly.player.R;
 import com.spoledge.aacdecoder.*;
 
 /**
@@ -18,6 +21,7 @@ public class StreamPlayerOpencore implements AudioStream {
 	private OnStreamListener streamListener;
 	boolean shouldPlay = false;
 	private String url;
+	private Context context;
 
 	// locks
 	PowerManager.WakeLock wakeLock;
@@ -30,6 +34,7 @@ public class StreamPlayerOpencore implements AudioStream {
 	 *            stream URL
 	 */
 	public StreamPlayerOpencore(Context context) {
+		this.context=context;
 		createLocks(context);
 		createPlayer();
 	}
@@ -107,6 +112,13 @@ public class StreamPlayerOpencore implements AudioStream {
 	 * this is the callback object for instances of AACPlayerModified
 	 */
 	private final PlayerCallback callback = new PlayerCallback() {
+
+		public static final long CRITICAL_EXCEPTION_INTERVAL_MS = 1000 * 60;
+		public static final long CRITICAL_EXCEPTION_NUMBER      = 3;
+
+		private long lastExceptionWave = 0;
+		private int exceptionCounter = 0;
+
 		@Override
 		public void playerStarted() {
 			if (shouldPlay) {
@@ -140,9 +152,28 @@ public class StreamPlayerOpencore implements AudioStream {
 		@Override
 		public void playerException(Throwable arg0) {
 			createPlayer();
+			long currentTime = Calendar.getInstance().getTimeInMillis();
+			// was there an exception within the last minute?
+			if((currentTime-lastExceptionWave)>CRITICAL_EXCEPTION_INTERVAL_MS){
+				exceptionCounter=0;
+				lastExceptionWave=currentTime;
+			}
+			// were there less than 3 exceptions within the last minute?
+			if(exceptionCounter++ < CRITICAL_EXCEPTION_NUMBER){
+				if(shouldPlay){
+					// only make some toast and restart stream
+					String restartMessage = context.getString(R.string.stream_restart).replace("%s", Integer.toString(exceptionCounter));
+					streamListener.errorOccurred(restartMessage, true);
+					try{
+						Thread.sleep(1000*exceptionCounter);
+					}catch(InterruptedException e){}
+					if(shouldPlay) startPlaying();
+					return;
+				}
+			}
 			if (streamListener != null) {
 				streamListener.errorOccurred(
-						"AAC+ Decoder Error " + arg0.getMessage(), false);
+						"Decoder Fehler: " + arg0.getMessage(), false);
 			}
 		}
 

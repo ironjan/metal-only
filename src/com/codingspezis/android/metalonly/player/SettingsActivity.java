@@ -1,9 +1,7 @@
 package com.codingspezis.android.metalonly.player;
 
-import com.googlecode.androidannotations.annotations.*;
 import com.spoledge.aacdecoder.*;
 
-import android.annotation.*;
 import android.content.*;
 import android.os.*;
 import android.preference.*;

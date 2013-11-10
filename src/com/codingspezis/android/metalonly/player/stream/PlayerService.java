@@ -1,9 +1,7 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.media.*;
 import android.os.*;
 import android.telephony.*;
 
@@ -26,6 +24,10 @@ public class PlayerService extends Service {
 	public static final String INTENT_METADATA = "MO_INTENT_METADATA";
 	public static final String INTENT_EXIT = "MO_INTENT_EXIT";
 
+	// notification id
+	public static final int FOREGROUND_NOTIFICATION_ID = 1;
+	private NotificationManager notificationManager;
+
 	// broadcast extra keys
 	public static final String EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
 	public static final String EXTRA_META = "MO_EXTRA_META";
@@ -44,7 +46,7 @@ public class PlayerService extends Service {
 	StreamPlayerOpencore audioStream;
 
 	private PlayerBCReceiver playerBCReceiver;
-	private NotificationManager notificationManager;
+
 	private MyPhoneStateListener phoneStateListener;
 	private TelephonyManager telephonyManager;
 	StreamWatcher streamWatcher;
@@ -78,9 +80,29 @@ public class PlayerService extends Service {
 
 	@Override
 	public void onDestroy() {
-		notificationManager.cancel(1);
+		stopForeground(true);
 		unregisterReceiver(playerBCReceiver);
 		super.onDestroy();
+	}
+
+	@SuppressWarnings("deprecation")
+	private Notification generateNotification(String contentText){
+		CharSequence tickerText = getString(R.string.playing);
+		long when = System.currentTimeMillis();
+		CharSequence contentTitle = getString(R.string.app_name);
+		Intent notificationIntent = new Intent(this, MainActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
+		Notification not = new Notification(R.drawable.mo_notify, tickerText, when);
+		not.setLatestEventInfo(getApplicationContext(),
+				contentTitle,
+				contentText,
+				contentIntent);
+		not.flags = not.flags | Notification.FLAG_ONGOING_EVENT;
+		return not;
+	}
+
+	public void setForeground() {
+		startForeground(FOREGROUND_NOTIFICATION_ID, generateNotification(getString(R.string.playing)));
 	}
 
 	/**
@@ -88,7 +110,6 @@ public class PlayerService extends Service {
 	 * SettingsActivity)
 	 */
 	@SuppressWarnings("boxing")
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	void instantiateSelectedPlayer() {
 		SharedPreferences prefs = getSharedPreferences(
 				getString(R.string.app_name), Context.MODE_MULTI_PROCESS);
@@ -122,38 +143,8 @@ public class PlayerService extends Service {
 		audioStream.setDecodingBufferCapacityMs(db);
 	}
 
-	/**
-	 * generates a system notify
-	 * 
-	 * @param contentText
-	 *            text that should be displayed in the notify
-	 */
-	@SuppressWarnings("deprecation")
 	void notify(String contentText) {
-		if (audioStream != null && audioStream.isPlaying()) {
-			// text and icon
-			CharSequence tickerText = getResources()
-					.getString(R.string.playing);
-			long when = System.currentTimeMillis();
-			CharSequence contentTitle = getResources().getString(
-					R.string.app_name);
-			// intent
-			Intent notificationIntent = new Intent(getApplicationContext(),
-					MainActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(
-					getApplicationContext(), 0, notificationIntent, 0);
-			Notification notification = new Notification(R.drawable.mo_notify,
-					tickerText, when); // alternative Notivication.Builder
-			notification.setLatestEventInfo(getApplicationContext(),
-					contentTitle, contentText, contentIntent); // is not
-																// available in
-																// API level 7
-			// notification.flags = notification.flags |
-			// Notification.FLAG_NO_CLEAR;
-			notification.flags = notification.flags
-					| Notification.FLAG_ONGOING_EVENT;
-			notificationManager.notify(1, notification);
-		}
+		notificationManager.notify(FOREGROUND_NOTIFICATION_ID, generateNotification(contentText));
 	}
 
 	/**
@@ -161,7 +152,7 @@ public class PlayerService extends Service {
 	 */
 	void clear() {
 		streamPlaying = false;
-		notificationManager.cancel(1);
+		stopForeground(true);
 		streamWatcher.deleteMetadata();
 	}
 

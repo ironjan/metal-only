@@ -3,7 +3,7 @@
 
     <!-- app -->
     <string name="app_name">Metal Only</string>
-    <string name="app_version">0.4.9 (Beta)</string>
+    <string name="app_version">0.4.10</string>
 
     <!-- menu -->
     <string name="menu">Menü</string>
@@ -43,6 +43,7 @@
     <string name="timeout">Zeitüberschreitung</string>
     <string name="playing">Stream wird jetzt wiedergegeben</string>
     <string name="internet_timeout">Die Wiedergabe wurde unterbrochen, da momentan keine Internetverbindung existiert.</string>
+    <string name="stream_restart">Ein Fehler trat auf - erneuter Wiedergabeversuch in %s s.</string>
 
     <!-- wish activity -->
     <string name="wish_regards">Wunsch / Gruß</string>
