@@ -95,7 +95,6 @@ public class MainActivity extends SherlockListActivity implements
 	public void refreshShowInfo() {
 		Runnable runnable = new Runnable() {
 
-			@SuppressLint("DefaultLocale")
 			@Override
 			public void run() {
 				try{
@@ -103,7 +102,6 @@ public class MainActivity extends SherlockListActivity implements
 					String moderator = stats.getModerator();
 					String genre = stats.getGenre();
 					updateShowinfo(moderator, genre);
-					setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
 				}catch(NoInternetException e){
 					// do nothing  if there is no internet connection
 				}
@@ -113,10 +111,12 @@ public class MainActivity extends SherlockListActivity implements
 					final String genre) {
 				Runnable runnable = new Runnable() {
 
+					@SuppressLint("DefaultLocale")
 					@Override
 					public void run() {
 						marqueeMod.setText(moderator);
 						marqueeGenre.setText(genre);
+						setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
 					}
 				};
 				Handler mainHandler = new Handler(Looper.getMainLooper());
