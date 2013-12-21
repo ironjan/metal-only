@@ -87,7 +87,8 @@ public class AboutActivity extends SherlockActivity {
 	}
 
 	@Click({ R.id.textOpencoreLicenseApache, R.id.textSherlockLicenseApache,
-			R.id.textAndroidannotationsLicenseApache })
+			R.id.textAndroidannotationsLicenseApache, R.id.textSpringLicenseApache,
+			R.id.textJacksonLicenseApache })
 	void displayApacheLicense() {
 		displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
 	}

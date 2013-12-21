@@ -7,6 +7,9 @@ import java.util.*;
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.net.*;
 import android.os.*;
 import android.view.*;
@@ -29,11 +32,6 @@ import com.codingspezis.android.metalonly.player.wish.*;
 
 /**
  * main GUI activity
- * 
- * 
- * TODO: better lazylist TODO: check static string (e.g. PlanGrabber is useless)
- * TODO: better song saving
- * 
  */
 public class MainActivity extends SherlockListActivity implements
 		OnClickListener, OnItemClickListener {
@@ -104,7 +102,6 @@ public class MainActivity extends SherlockListActivity implements
 					String moderator = stats.getModerator();
 					String genre = stats.getGenre();
 					updateShowinfo(moderator, genre);
-
 				}catch(NoInternetException e){
 					// do nothing  if there is no internet connection
 				}
@@ -114,10 +111,12 @@ public class MainActivity extends SherlockListActivity implements
 					final String genre) {
 				Runnable runnable = new Runnable() {
 
+					@SuppressLint("DefaultLocale")
 					@Override
 					public void run() {
 						marqueeMod.setText(moderator);
 						marqueeGenre.setText(genre);
+						setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
 					}
 				};
 				Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -127,8 +126,6 @@ public class MainActivity extends SherlockListActivity implements
 		new Thread(runnable).start();
 
 	}
-
-	
 
 	@Override
 	public void onDestroy() {
@@ -191,6 +188,49 @@ public class MainActivity extends SherlockListActivity implements
 		toggleStreamButton(false);
 		displaySongs();
 		clearMetadata();
+	}
+
+	/**
+	 * sets the wish / regard button to en- or disabled
+	 */
+	private void setWishButtonEnabled(boolean enabled) {
+		ImageButton btnWish = (ImageButton)findViewById(R.id.btnWish);
+		setImageButtonEnabled(this, enabled, btnWish, R.drawable.mo_pen);
+	}
+
+	/**
+	 * THIS METHOD WAS FOUND AT:
+	 * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
+	 *
+	 * Sets the image button to the given state and grays-out the icon.
+	 *
+	 * @param enabled The state of the button
+	 * @param item The button item to modify
+	 * @param iconResId The button's icon ID
+	 */
+	private void setImageButtonEnabled(Context ctxt, boolean enabled, ImageButton item, int iconResId) {
+	    item.setEnabled(enabled);
+	    Drawable originalIcon = ctxt.getResources().getDrawable(iconResId);
+	    Drawable icon = enabled ? originalIcon : convertDrawableToGrayScale(originalIcon);
+	    item.setImageDrawable(icon);
+	}
+
+	/**
+	 * THIS METHOD WAS FOUND AT:
+	 * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
+	 *
+	 * Mutates and applies a filter that converts the given drawable to a Gray
+	 * image. This method may be used to simulate the color of disable icons in
+	 * Honeycomb's ActionBar.
+	 *
+	 * @return a mutated version of the given drawable with a color filter applied.
+	 */
+	private Drawable convertDrawableToGrayScale(Drawable drawable) {
+	    if (drawable == null)
+	        return null;
+	    Drawable res = drawable.mutate();
+	    res.setColorFilter(Color.GRAY, Mode.SRC_IN);
+	    return res;
 	}
 
 	/**
