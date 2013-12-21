@@ -187,6 +187,7 @@ public class MainActivity extends SherlockListActivity implements
 
 		toggleStreamButton(false);
 		displaySongs();
+		clearMetadata();
 	}
 
 	/**
@@ -426,6 +427,7 @@ public class MainActivity extends SherlockListActivity implements
 	public void stopListening() {
 		setSupportProgressBarIndeterminateVisibility(false);
 		setShouldPlay(false);
+		clearMetadata();
 		toggleStreamButton(false);
 		Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
 		sendBroadcast(tmpIntent);
@@ -442,6 +444,13 @@ public class MainActivity extends SherlockListActivity implements
 			marqueeGenre.setText(getMetadataParser().getGENRE());
 			marqueeMod.setText(getMetadataParser().getMODERATOR());
 		}
+	}
+
+	/**
+	 * clears the metadata display
+	 */
+	private void clearMetadata() {
+		setMetadataParser(new MetadataParser("-"));
 	}
 
 	@Override

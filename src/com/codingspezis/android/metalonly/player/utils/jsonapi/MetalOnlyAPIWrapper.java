@@ -24,8 +24,13 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 	ConnectivityManager cm;
 
 	@AfterInject
-	void changeTimeout() {
-		ClientHttpRequestFactory requestFactory = api.getRestTemplate()
+	void adaptSettings() {
+		changeTimeout();
+		disableKeepAlive();
+	}
+
+	private void changeTimeout() {
+		final ClientHttpRequestFactory requestFactory = api.getRestTemplate()
 				.getRequestFactory();
 		if (requestFactory instanceof SimpleClientHttpRequestFactory) {
 			Log.d("HTTP", "HttpUrlConnection is used");
@@ -41,6 +46,10 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 			((HttpComponentsClientHttpRequestFactory) requestFactory)
 					.setConnectTimeout(TIME_OUT);
 		}
+	}
+
+	private void disableKeepAlive() {
+		System.setProperty("http.keepAlive", "false");
 	}
 
 	@Override
@@ -73,19 +82,19 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 	 * @return <code>true</code> if the phone is connected to the Internet.
 	 */
 	public boolean hasConnection() {
-		NetworkInfo wifiNetwork = cm
+		final NetworkInfo wifiNetwork = cm
 				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (wifiNetwork != null && wifiNetwork.isConnected()) {
 			return true;
 		}
 
-		NetworkInfo mobileNetwork = cm
+		final NetworkInfo mobileNetwork = cm
 				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		if (mobileNetwork != null && mobileNetwork.isConnected()) {
 			return true;
 		}
 
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		if (activeNetwork != null && activeNetwork.isConnected()) {
 			return true;
 		}
@@ -107,7 +116,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 	 * Do not use.
 	 */
 	@Override
-	public void setRestTemplate(RestTemplate restTemplate) {
+	public void setRestTemplate(final RestTemplate restTemplate) {
 		Log.d(TAG,
 				"setRestTemplate in wrapper was called. This should not happen.");
 	}
