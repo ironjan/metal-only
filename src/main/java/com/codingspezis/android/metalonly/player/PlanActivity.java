@@ -9,8 +9,8 @@ import android.os.*;
 import android.support.v4.app.*;
 import com.actionbarsherlock.app.*;
 import com.codingspezis.android.metalonly.player.plan.*;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.res.*;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.res.*;
 
 @EActivity(R.layout.activity_plan)
 @SuppressLint("SimpleDateFormat")

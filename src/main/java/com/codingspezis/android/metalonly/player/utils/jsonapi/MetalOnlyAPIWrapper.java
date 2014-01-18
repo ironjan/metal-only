@@ -6,11 +6,11 @@ import org.springframework.web.client.*;
 import android.net.*;
 import android.util.*;
 
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.rest.*;
-import com.googlecode.androidannotations.api.*;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.rest.*;
+import org.androidannotations.*;
 
-@EBean(scope = Scope.Singleton)
+@EBean(scope = EBean.Scope.Singleton)
 public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 
 	private static final int TIME_OUT = 30 * 1000;

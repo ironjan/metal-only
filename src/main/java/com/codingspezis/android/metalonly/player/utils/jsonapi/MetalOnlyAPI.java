@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import org.springframework.http.converter.json.*;
 import org.springframework.web.client.*;
 
-import com.googlecode.androidannotations.annotations.rest.*;
+import org.androidannotations.annotations.rest.*;
 
 @Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = "http://metal-only.de/botcon/mob.php?action=")
 interface MetalOnlyAPI {

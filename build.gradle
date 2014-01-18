@@ -1,0 +1,104 @@
+def versionMajor = 0
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'http://repo1.maven.org/maven2' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.7.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
+}
+
+apply plugin: 'android'
+apply plugin: 'android-apt'
+
+configurations {
+    apt
+}
+
+
+def getSourceSetName(variant) {
+    return new File(variant.dirName).getName();
+}
+
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19"
+
+    packagingOptions {
+        // prevents Error: duplicate files during packaging of APK
+        // no wildcard support yet
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+    }
+
+    // This is important, it will run lint checks but won't abort build
+    lintOptions {
+        abortOnError false
+    }
+
+
+    defaultConfig {
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        minSdkVersion 8
+        targetSdkVersion 19
+
+        packageName "com.codingspezis.android.metalonly.player"
+    }
+
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+        }
+    }
+
+    buildTypes {
+        debug {
+            // buildConfigField "int", "SYNC_INTERVAL", "60" // 1 minute
+        }
+
+        release {
+            // buildConfigField "int", "SYNC_INTERVAL", "60 * 60 * 12" // 12 hours
+        }
+    }
+}
+
+dependencies {
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.android.support:support-v4:19.0.+'
+
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+
+
+//compile 'com.android.support:appcompat-v7:19.0.0'
+    //compile 'org.slf4j:slf4j-android:1.6.1-RC1'
+    //compile 'com.j256.ormlite:ormlite-android:4.47'
+
+    apt "org.androidannotations:androidannotations:3.0"
+    compile "org.androidannotations:androidannotations-api:3.0"
+
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(dir: 'libs', include: '*.so')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}

@@ -18,7 +18,7 @@ import com.actionbarsherlock.view.Menu;
 import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.wish.*;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 
 /**
  * FavoritesActivity

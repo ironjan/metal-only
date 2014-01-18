@@ -2,7 +2,7 @@ package com.codingspezis.android.metalonly.player.plan.views;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.plan.*;
-import com.googlecode.androidannotations.annotations.*;
+import org.androidannotations.annotations.*;
 
 import android.content.*;
 import android.util.*;

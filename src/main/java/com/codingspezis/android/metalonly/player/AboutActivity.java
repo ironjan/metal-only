@@ -8,8 +8,8 @@ import android.widget.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.*;
-import com.googlecode.androidannotations.annotations.*;
-import com.googlecode.androidannotations.annotations.res.*;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.res.*;
 
 /**
  * 
