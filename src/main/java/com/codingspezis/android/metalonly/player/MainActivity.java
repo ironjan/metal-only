@@ -1,21 +1,17 @@
 package com.codingspezis.android.metalonly.player;
 
-import java.net.*;
-import java.text.*;
-import java.util.*;
-
 import android.annotation.*;
 import android.app.*;
 import android.content.*;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
+import android.graphics.*;
+import android.graphics.PorterDuff.*;
+import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
 import android.view.*;
-import android.view.View.OnClickListener;
+import android.view.View.*;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
@@ -30,11 +26,19 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
+import org.slf4j.*;
+
+import java.net.*;
+import java.text.*;
+import java.util.*;
+
 /**
  * main GUI activity
  */
 public class MainActivity extends SherlockListActivity implements
 		OnClickListener, OnItemClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
 	// intent keys
 	public static final String showToastMessage = "MO_SHOW_TOAST";
@@ -67,6 +71,8 @@ public class MainActivity extends SherlockListActivity implements
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({})",savedInstanceState);
+
 		setTheme(R.style.Theme_Sherlock);
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -77,27 +83,38 @@ public class MainActivity extends SherlockListActivity implements
 		setUpPlayerService();
 		setUpDataObjects();
 		setUpGUIObjects();
+
+        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done",savedInstanceState);
 	}
 
 	@Override
 	public void onPause() {
+        if(BuildConfig.DEBUG) LOGGER.debug("onPause()");
 		favoritesSaver.saveSongsToStorage();
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
+        if(BuildConfig.DEBUG) LOGGER.debug("onResume()");
+
 		super.onResume();
 		favoritesSaver.reload();
 		refreshShowInfo();
 	}
 
 	public void refreshShowInfo() {
-		Runnable runnable = new Runnable() {
+        if(BuildConfig.DEBUG) LOGGER.debug("refreshShowInfo()");
+
+        Runnable runnable = new Runnable() {
+
+            private static final String TAG = "Runnable - refreshShowInfo()";
+            private final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
 			@Override
 			public void run() {
-				try{
+				if(BuildConfig.DEBUG) LOGGER.debug("run()");
+try{
 					Stats stats = apiWrapper.getStats();
 					String moderator = stats.getModerator();
 					String genre = stats.getGenre();
@@ -109,7 +126,9 @@ public class MainActivity extends SherlockListActivity implements
 
 			private void updateShowinfo(final String moderator,
 					final String genre) {
-				Runnable runnable = new Runnable() {
+                if(BuildConfig.DEBUG) LOGGER.debug("updateShowinfo({},{})",moderator, genre);
+
+                Runnable runnable = new Runnable() {
 
 					@SuppressLint("DefaultLocale")
 					@Override
@@ -129,7 +148,8 @@ public class MainActivity extends SherlockListActivity implements
 
 	@Override
 	public void onDestroy() {
-		Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
+        if(BuildConfig.DEBUG) LOGGER.debug("onDestroy()");
+        Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
 		sendBroadcast(tmpIntent);
 		unregisterReceiver(broadcastReceiver);
 		super.onDestroy();
@@ -139,7 +159,8 @@ public class MainActivity extends SherlockListActivity implements
 	 * sets up data objects
 	 */
 	private void setUpDataObjects() {
-		apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
+        if(BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
+        apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
 		favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
 				-1);
 		setMetadataParser(new MetadataParser("-"));
@@ -149,7 +170,8 @@ public class MainActivity extends SherlockListActivity implements
 	 * initializes main broadcast receiver with filters
 	 */
 	private void setUpBroadcastReceiver() {
-		broadcastReceiver = new MainBroadcastReceiver(this);
+        if(BuildConfig.DEBUG) LOGGER.debug("setUpBroadcastReceiver()");
+        broadcastReceiver = new MainBroadcastReceiver(this);
 		registerReceiver(broadcastReceiver, new IntentFilter(
 				PlayerService.INTENT_STATUS));
 		registerReceiver(broadcastReceiver, new IntentFilter(
@@ -161,7 +183,8 @@ public class MainActivity extends SherlockListActivity implements
 	 * initializes player service and requests status
 	 */
 	private void setUpPlayerService() {
-		Intent playerStartIntent = new Intent(getApplicationContext(),
+        if(BuildConfig.DEBUG) LOGGER.debug("setUpPlayerService()");
+        Intent playerStartIntent = new Intent(getApplicationContext(),
 				PlayerService.class);
 		startService(playerStartIntent);
 		Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
@@ -172,7 +195,8 @@ public class MainActivity extends SherlockListActivity implements
 	 * initializes GUI objects of main activity
 	 */
 	private void setUpGUIObjects() {
-		buttonStream = (ImageView) findViewById(R.id.buttonPlay);
+        if(BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
+        buttonStream = (ImageView) findViewById(R.id.buttonPlay);
 		buttonCalendar = (ImageButton) findViewById(R.id.btnCalendar);
 		buttonWish = (ImageButton) findViewById(R.id.btnWish);
 		marqueeMod = (Marquee) findViewById(R.id.marqueeMod);
@@ -188,15 +212,19 @@ public class MainActivity extends SherlockListActivity implements
 		toggleStreamButton(false);
 		displaySongs();
 		clearMetadata();
+        if(BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
 	}
 
 	/**
 	 * sets the wish / regard button to en- or disabled
 	 */
 	private void setWishButtonEnabled(boolean enabled) {
-		ImageButton btnWish = (ImageButton)findViewById(R.id.btnWish);
+        if(BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({})",enabled);
+
+        ImageButton btnWish = (ImageButton)findViewById(R.id.btnWish);
 		setImageButtonEnabled(this, enabled, btnWish, R.drawable.mo_pen);
-	}
+	        if(BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({}) done",enabled);
+}
 
 	/**
 	 * THIS METHOD WAS FOUND AT:
@@ -209,11 +237,14 @@ public class MainActivity extends SherlockListActivity implements
 	 * @param iconResId The button's icon ID
 	 */
 	private void setImageButtonEnabled(Context ctxt, boolean enabled, ImageButton item, int iconResId) {
-	    item.setEnabled(enabled);
+        if(BuildConfig.DEBUG) LOGGER.debug("setImageButtonEnabled({},{},{},{})", new Object[]{ctxt,enabled,item,iconResId});
+
+        item.setEnabled(enabled);
 	    Drawable originalIcon = ctxt.getResources().getDrawable(iconResId);
 	    Drawable icon = enabled ? originalIcon : convertDrawableToGrayScale(originalIcon);
 	    item.setImageDrawable(icon);
-	}
+	        if(BuildConfig.DEBUG) LOGGER.debug("setImageButtonEnabled({},{},{},{}) done", new Object[]{ctxt,enabled,item,iconResId});
+}
 
 	/**
 	 * THIS METHOD WAS FOUND AT:
@@ -226,18 +257,23 @@ public class MainActivity extends SherlockListActivity implements
 	 * @return a mutated version of the given drawable with a color filter applied.
 	 */
 	private Drawable convertDrawableToGrayScale(Drawable drawable) {
-	    if (drawable == null)
+        if(BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({})",drawable);
+
+        if (drawable == null)
 	        return null;
 	    Drawable res = drawable.mutate();
 	    res.setColorFilter(Color.GRAY, Mode.SRC_IN);
-	    return res;
+	        if(BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({}) done",drawable);
+    return res;
 	}
 
 	/**
 	 * displays history songs on screen
 	 */
 	public void displaySongs() {
-		historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
+        if(BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
+
+        historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
 				PlayerService.HISTORY_ENTRIES);
 		listView.removeAllViewsInLayout();
 		ArrayList<Song> data = new ArrayList<Song>();
@@ -249,7 +285,8 @@ public class MainActivity extends SherlockListActivity implements
 
 		SongAdapter adapter = new SongAdapter(this, data);
 		listView.setAdapter(adapter);
-	}
+	        if(BuildConfig.DEBUG) LOGGER.debug("displaySongs() done");
+}
 
 	/**
 	 * toggles background color of stream button
@@ -259,20 +296,25 @@ public class MainActivity extends SherlockListActivity implements
 	 *            otherwise play is false
 	 */
 	public void toggleStreamButton(boolean listening) {
-		if (listening) {
+        if(BuildConfig.DEBUG) LOGGER.debug("toggleStreamButton({})",listening);
+
+        if (listening) {
 			buttonStream.setImageResource(R.drawable.mo_stop5);
 		}
 		else {
 			buttonStream.setImageResource(R.drawable.mo_play5);
 		}
-	}
+	        if(BuildConfig.DEBUG) LOGGER.debug("toggleStreamButton({}) done",listening);
+}
 
 	/**
 	 * generates options menu
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		this.menu = menu;
+        if(BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({})",menu);
+
+        this.menu = menu;
 		// favorites button
 		MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,
 				R.string.menu_favorites);
@@ -288,7 +330,8 @@ public class MainActivity extends SherlockListActivity implements
 		sub.getItem().setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_ALWAYS
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-		return true;
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({}) done", menu);
+        return true;
 	}
 
 	/**
@@ -296,8 +339,10 @@ public class MainActivity extends SherlockListActivity implements
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+        if(BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({})",item);
 
-		if (item.getItemId() == R.id.mnu_settings) {
+
+        if (item.getItemId() == R.id.mnu_settings) {
 			Intent settingsIntent = new Intent(getApplicationContext(),
 					SettingsActivity.class);
 			startActivity(settingsIntent);
@@ -314,22 +359,27 @@ public class MainActivity extends SherlockListActivity implements
 			AboutActivity_.intent(this).start();
 		}
 		else {
+        if(BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({}) done",item);
 			return false;
 		}
+        if(BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({}) done",item);
 		return true;
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
+        if(BuildConfig.DEBUG) LOGGER.debug("onKeyUp({},{})",keyCode,event);
+
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
 			if (event.getAction() == KeyEvent.ACTION_UP && menu != null
 					&& menu.findItem(R.id.mnu_sub) != null) {
 				menu.performIdentifierAction(R.id.mnu_sub, 0);
 				return true;
 			}
-		}
-		return super.onKeyUp(keyCode, event);
-	}
+		}	        if(BuildConfig.DEBUG) LOGGER.debug("onKeyUp({},{}) done",keyCode,event);
+
+        return super.onKeyUp(keyCode, event);
+}
 
 	// button is not usable for MIN_BOTTON_DELAY msecs
 	static long lastButtonToggle = 0;
@@ -338,8 +388,10 @@ public class MainActivity extends SherlockListActivity implements
 	/** handles button clicks **/
 	@Override
 	public void onClick(View arg0) {
+        if(BuildConfig.DEBUG) LOGGER.debug("onClick({})", arg0);
 
-		long currentTime = System.currentTimeMillis();
+
+        long currentTime = System.currentTimeMillis();
 		// stream start / stop
 		if (arg0 == buttonStream
 				&& currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
@@ -365,16 +417,22 @@ public class MainActivity extends SherlockListActivity implements
 				startWishActivity();
 			}
 		}
-	}
+	        if(BuildConfig.DEBUG) LOGGER.debug("onClick({}) done", arg0);
+}
 
 	private void startPlanActivity() {
-		PlanGrabber pg = new PlanGrabber(this, this,
+        if(BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
+
+        PlanGrabber pg = new PlanGrabber(this, this,
 				"http://www.metal-only.de/botcon/mob.php?action=plan");
-		pg.start();
+		pg.start(); if(BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
+
 	}
 
 	private void startWishActivity() {
-		WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
+        if(BuildConfig.DEBUG) LOGGER.debug("startWishActivity()");
+
+        WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
 		wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 
 			@Override
@@ -407,55 +465,69 @@ public class MainActivity extends SherlockListActivity implements
 			}
 		});
 		wishChecker.start();
-	}
+	if(BuildConfig.DEBUG) LOGGER.debug("startWishActivity() done");
+}
 
 	/**
 	 * sets listening to true sends start intent to PlayerService shows
 	 * connecting dialog
 	 */
 	private void startListening() {
-		setSupportProgressBarIndeterminateVisibility(true);
+        if(BuildConfig.DEBUG) LOGGER.debug("startListening()");
+
+        setSupportProgressBarIndeterminateVisibility(true);
 		setShouldPlay(true);
 		toggleStreamButton(true);
 		Intent tmpIntent = new Intent(PlayerService.INTENT_PLAY);
 		sendBroadcast(tmpIntent);
-	}
+	if(BuildConfig.DEBUG) LOGGER.debug("startListening()");
+}
 
 	/**
 	 * sets listening to false sends stop intent to PlayerService
 	 */
 	public void stopListening() {
-		setSupportProgressBarIndeterminateVisibility(false);
+        if(BuildConfig.DEBUG) LOGGER.debug("stopListening()");
+
+        setSupportProgressBarIndeterminateVisibility(false);
 		setShouldPlay(false);
 		clearMetadata();
 		toggleStreamButton(false);
 		Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
-		sendBroadcast(tmpIntent);
+		sendBroadcast(tmpIntent);if(BuildConfig.DEBUG) LOGGER.debug("stopListening() done");
+
+
 	}
 
 	/**
 	 * displays meta data
 	 * 
-	 * @param metadata
-	 *            data to display
 	 */
 	public void displayMetadata() {
-		if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
+        if(BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
+
+        if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
 			marqueeGenre.setText(getMetadataParser().getGENRE());
 			marqueeMod.setText(getMetadataParser().getMODERATOR());
-		}
+		} if(BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
+
 	}
 
 	/**
 	 * clears the metadata display
 	 */
 	private void clearMetadata() {
-		setMetadataParser(new MetadataParser("-"));
-	}
+        if(BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
+
+        setMetadataParser(new MetadataParser("-"));
+	 if(BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
+}
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		final int index = arg2;
+        if(BuildConfig.DEBUG) LOGGER.debug("onItemClick(...)");
+
+        final int index = arg2;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setItems(R.array.history_options_array,
 				new DialogInterface.OnClickListener() {
@@ -466,7 +538,8 @@ public class MainActivity extends SherlockListActivity implements
 					}
 				});
 		builder.show();
-	}
+	 if(BuildConfig.DEBUG) LOGGER.debug("onItemClick(...) done");
+}
 
 	/**
 	 * handles an action on an index
@@ -477,7 +550,9 @@ public class MainActivity extends SherlockListActivity implements
 	 *            action to handle
 	 */
 	private void handleAction(final int index, int action) {
-		switch (action) {
+        if(BuildConfig.DEBUG) LOGGER.debug("handleAction({},{})",index,action);
+
+        switch (action) {
 		case 0: // add to favorites
 			Song song = historySaver.get(index);
 			if (favoritesSaver.isAlreadyIn(song) == -1) {
@@ -513,13 +588,10 @@ public class MainActivity extends SherlockListActivity implements
 			startActivity(Intent.createChooser(share, getResources()
 					.getStringArray(R.array.favorite_options_array)[2]));
 			break;
-		}
-	}
+}		if(BuildConfig.DEBUG) LOGGER.debug("handleAction({},{}) done",index,action);
 
-	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * static methods * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * * * * * * * *
-	 */
+    }
+
 
 	/**
 	 * 
@@ -527,14 +599,17 @@ public class MainActivity extends SherlockListActivity implements
 	 * @param msg
 	 */
 	public static void toastMessage(final Context context, final String msg) {
-		(new Handler(context.getMainLooper())).post(new Runnable() {
+        if(BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})",context,msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
 
 			@Override
 			public void run() {
 				Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
 			}
 		});
-	}
+	if(BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done",context,msg);
+}
 
 	/**
 	 * 
@@ -542,7 +617,9 @@ public class MainActivity extends SherlockListActivity implements
 	 * @param msg
 	 */
 	public static void alertMessage(final Context context, final String msg) {
-		(new Handler(context.getMainLooper())).post(new Runnable() {
+        if(BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})",context,msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
 
 			@Override
 			public void run() {
@@ -552,7 +629,8 @@ public class MainActivity extends SherlockListActivity implements
 				alert.show();
 			}
 		});
-	}
+	if(BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done",context,msg);
+}
 
 	/**
 	 * converts timeMillis to a printable string
@@ -563,7 +641,7 @@ public class MainActivity extends SherlockListActivity implements
 	 */
 	@SuppressLint("SimpleDateFormat")
 	public static String longToDateString(long timeMillis) {
-		Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(timeMillis);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm-dd.MM.yy");
 		return sdf.format(calendar.getTime());

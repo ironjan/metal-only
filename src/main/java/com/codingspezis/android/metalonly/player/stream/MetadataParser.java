@@ -1,86 +1,108 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import java.util.*;
-
+import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
 
+import org.slf4j.*;
+
+import java.util.*;
+
 /**
- * 
  * parses interpret title genre and moderator from meta data
- * 
  */
 public class MetadataParser {
 
-	private String INTERPRET;
-	private String TITLE;
-	private String GENRE;
-	private String MODERATOR;
+    private String INTERPRET;
+    private String TITLE;
+    private String GENRE;
+    private String MODERATOR;
 
-	public MetadataParser(String data) {
-		try {
-			if (numberOfStars(data) >= 3) {
-				String[] slices = data.split("\\*");
-				MODERATOR = slices[1].trim();
-				GENRE = slices[2].trim();
-				data = slices[0].trim();
-			} else {
-				MODERATOR = "MetalHead OnAir";
-				GENRE = "Mixed Metal";
-			}
-		} catch (Exception e) {
-			MODERATOR = "";
-			GENRE = "";
-		}
-		try {
-			INTERPRET = data.substring(0, data.indexOf(" - ")).trim();
-			TITLE = data.substring(data.indexOf(" - ") + 2).trim();
-		} catch (Exception e) {
-			INTERPRET = "";
-			TITLE = "";
-		}
-	}
+    private static final String TAG = MetadataParser.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
-	public String getINTERPRET() {
-		return INTERPRET;
-	}
+    public MetadataParser(String data) {
+        try {
+            if (numberOfStars(data) >= 3) {
+                String[] slices = data.split("\\*");
+                MODERATOR = slices[1].trim();
+                GENRE = slices[2].trim();
+                data = slices[0].trim();
+            } else {
+                MODERATOR = "MetalHead OnAir";
+                GENRE = "Mixed Metal";
+            }
+        } catch (Exception e) {
+            MODERATOR = "";
+            GENRE = "";
+        }
+        try {
+            INTERPRET = data.substring(0, data.indexOf(" - ")).trim();
+            TITLE = data.substring(data.indexOf(" - ") + 2).trim();
+        } catch (Exception e) {
+            INTERPRET = "";
+            TITLE = "";
+        }
 
-	public String getTITLE() {
-		return TITLE;
-	}
+        if (BuildConfig.DEBUG) LOGGER.debug("Created: {} from MetadataParser({})", this, data);
+    }
 
-	public String getGENRE() {
-		return GENRE;
-	}
+    public String getINTERPRET() {
+        return INTERPRET;
+    }
 
-	public String getMODERATOR() {
-		return MODERATOR;
-	}
+    public String getTITLE() {
+        return TITLE;
+    }
 
-	public Song toSong() {
+    public String getGENRE() {
+        return GENRE;
+    }
 
-		long date = Calendar.getInstance().getTimeInMillis();
+    public String getMODERATOR() {
+        return MODERATOR;
+    }
 
-		MODERATOR.replace(" OnAir", "");
+    public Song toSong() {
 
-		Song song = new Song(INTERPRET, TITLE, MODERATOR, date);
+        if (BuildConfig.DEBUG) LOGGER.debug("toSong()");
+        long date = Calendar.getInstance().getTimeInMillis();
 
-		return song;
-	}
+        MODERATOR.replace(" OnAir", "");
 
-	/**
-	 * checks string str for occurrence of '*'
-	 * 
-	 * @param toCount
-	 *            string to check
-	 * @return number of char '*' containing in str
-	 */
-	private static int numberOfStars(String toCount) {
-		final String withoutStars = toCount.replaceAll("\\*", "");
+        Song song = new Song(INTERPRET, TITLE, MODERATOR, date);
+        if (BuildConfig.DEBUG) LOGGER.debug("toSong() -> {}", song);
 
-		final int lengthWithStars = toCount.length();
-		final int lengthWithoutStars = withoutStars.length();
-		return lengthWithStars - lengthWithoutStars;
+        return song;
+    }
 
-	}
+    /**
+     * checks string str for occurrence of '*'
+     *
+     * @param toCount string to check
+     * @return number of char '*' containing in str
+     */
+    private static int numberOfStars(String toCount) {
+        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({})", toCount);
 
+        final String withoutStars = toCount.replaceAll("\\*", "");
+
+        final int lengthWithStars = toCount.length();
+        final int lengthWithoutStars = withoutStars.length();
+
+        final int result = lengthWithStars - lengthWithoutStars;
+        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({}) -> ", toCount, result);
+
+        return result;
+
+    }
+
+    @Override
+    public String toString() {
+        return "MetadataParser{" +
+                "INTERPRET='" + INTERPRET + '\'' +
+                ", TITLE='" + TITLE + '\'' +
+                ", GENRE='" + GENRE + '\'' +
+                ", MODERATOR='" + MODERATOR + '\'' +
+                '}';
+    }
 }

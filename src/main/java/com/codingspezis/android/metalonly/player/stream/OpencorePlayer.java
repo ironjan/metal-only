@@ -1,12 +1,12 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import java.io.*;
-
 import android.os.Process;
 import android.util.*;
 
 import com.codingspezis.android.metalonly.player.stream.exceptions.*;
 import com.spoledge.aacdecoder.*;
+
+import java.io.*;
 
 /**
  * adds isPlaying functionality to MultiPlayer sets priority higher
@@ -24,7 +24,6 @@ class OpencorePlayer extends MultiPlayer {
 	/**
 	 * same as super(cb)
 	 * 
-	 * @see AACPlaye(PlayerCallback cb)
 	 * @param cb
 	 *            the callback, can be null
 	 * @param streamPlayerOpencore

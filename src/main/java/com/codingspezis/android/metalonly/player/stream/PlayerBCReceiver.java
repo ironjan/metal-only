@@ -2,108 +2,119 @@ package com.codingspezis.android.metalonly.player.stream;
 
 import android.content.*;
 import android.media.*;
-import android.media.AudioManager.OnAudioFocusChangeListener;
-import android.util.Log;
+import android.media.AudioManager.*;
+import android.util.*;
+
+import com.codingspezis.android.metalonly.player.*;
+
+import org.slf4j.*;
 
 /**
- * 
  * broadcast receiver that handles messages for this service
- * 
  */
 public class PlayerBCReceiver extends BroadcastReceiver {
 
-	/**
-	 * 
-	 */
-	private final PlayerService playerService;
+    private static final String TAG = PlayerBCReceiver.class.getSimpleName();
+    private final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
-	AudioManager audioManager;
+    private final PlayerService playerService;
 
-	private OnAudioFocusChangeListener afChangeListener;
+    AudioManager audioManager;
 
-	/**
-	 * @param playerService
-	 */
-	PlayerBCReceiver(PlayerService playerService) {
-		this.playerService = playerService;
-		audioManager = (AudioManager) playerService
-				.getSystemService(Context.AUDIO_SERVICE);
+    private OnAudioFocusChangeListener afChangeListener;
 
-		afChangeListener = new OnAudioFocusChangeListener() {
+    /**
+     * @param playerService
+     */
+    PlayerBCReceiver(PlayerService playerService) {
+        this.playerService = playerService;
+        audioManager = (AudioManager) playerService
+                .getSystemService(Context.AUDIO_SERVICE);
 
-			@Override
-			public void onAudioFocusChange(int focusChange) {
-				if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-					stop();
-				}
-				else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
-					play();
-				}
-				else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-					audioManager.abandonAudioFocus(this);
-					stop();
-				}
-			}
-		};
-	}
+        afChangeListener = new OnAudioFocusChangeListener() {
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		String action = intent.getAction();
-		
-		Log.d("PayerBCReceiver", "received intent: "+action);
-		
-		if (action.equals(PlayerService.INTENT_PLAY)) {
-			play();
-			sendPlayerStatus();
-		}
-		else if (action.equals(PlayerService.INTENT_STOP)) {
-			stop();
-			sendPlayerStatus();
-		}
-		else if (action.equals(PlayerService.INTENT_STATUS_REQUEST)) {
-			sendPlayerStatus();
-		}
-		else if (action.equals(PlayerService.INTENT_EXIT)) {
-			exit();
-		}
-	}
+            @Override
+            public void onAudioFocusChange(int focusChange) {
+                if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                    if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_LOSS_TRANSIENT");
+                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                    if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_GAIN");
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                    if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_LOSS");
+                    audioManager.abandonAudioFocus(this);
+                    stop();
+                }
+            }
+        };
 
-	void play() {
-		stop();
+        if (BuildConfig.DEBUG) LOGGER.debug("PlayerBCReceiver({}) created", playerService);
+    }
 
-		int result = audioManager.requestAudioFocus(afChangeListener,
-				AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{})", context, intent);
 
-		if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == result) {
-			playerService.instantiateSelectedPlayer();
-			playerService.streamPlaying = true;
-			playerService.audioStream
-					.setOnStreamListener(playerService.streamWatcher);
+        String action = intent.getAction();
 
-			playerService.setForeground();
-			playerService.audioStream.startPlaying();
-		}
-		else {
-			stop();
-		}
-	}
+        Log.d("PayerBCReceiver", "received intent: " + action);
 
-	void stop() {
-		if (playerService.audioStream != null) {
-			playerService.audioStream.stopPlaying();
-		}
-		playerService.clear();
-	}
+        if (action.equals(PlayerService.INTENT_PLAY)) {
+            play();
+            sendPlayerStatus();
+        } else if (action.equals(PlayerService.INTENT_STOP)) {
+            stop();
+            sendPlayerStatus();
+        } else if (action.equals(PlayerService.INTENT_STATUS_REQUEST)) {
+            sendPlayerStatus();
+        } else if (action.equals(PlayerService.INTENT_EXIT)) {
+            exit();
+        }
 
-	private void sendPlayerStatus() {
-		playerService.sendPlayerStatus();
-	}
+        if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{}) done", context, intent);
+    }
 
-	private void exit() {
-		if (!playerService.streamPlaying) {
-			playerService.stopSelf();
-		}
-	}
+    void play() {
+        if (BuildConfig.DEBUG) LOGGER.debug("play()");
+        stop();
+
+        int result = audioManager.requestAudioFocus(afChangeListener,
+                AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+
+        if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == result) {
+            playerService.instantiateSelectedPlayer();
+            playerService.streamPlaying = true;
+            playerService.audioStream
+                    .setOnStreamListener(playerService.streamWatcher);
+
+            playerService.setForeground();
+            playerService.audioStream.startPlaying();
+        } else {
+            stop();
+        }
+        if (BuildConfig.DEBUG) LOGGER.debug("play() done");
+    }
+
+    void stop() {
+        if (BuildConfig.DEBUG) LOGGER.debug("stop()");
+        if (playerService.audioStream != null) {
+            playerService.audioStream.stopPlaying();
+        }
+        playerService.clear();
+        if (BuildConfig.DEBUG) LOGGER.debug("stop() done");
+    }
+
+    private void sendPlayerStatus() {
+        if (BuildConfig.DEBUG) LOGGER.debug("sendPlayerStatus()");
+        playerService.sendPlayerStatus();
+        if (BuildConfig.DEBUG) LOGGER.debug("sendPlayerStatus() done");
+    }
+
+    private void exit() {
+        if (BuildConfig.DEBUG) LOGGER.debug("exit()");
+        if (!playerService.streamPlaying) {
+            playerService.stopSelf();
+        }
+        if (BuildConfig.DEBUG) LOGGER.debug("exit() done");
+    }
 
 }
