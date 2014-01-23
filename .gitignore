@@ -34,3 +34,4 @@ proguard/
 .factorypath
 .settings
 abrt_checker_*
+.gradle/
