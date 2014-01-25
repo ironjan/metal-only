@@ -83,6 +83,7 @@ android {
     if(project.hasProperty("metalonly.signing")
       && new File(project.property("metalonly.signing") + ".gradle").exists()) {
       apply from: project.property("metalonly.signing") + ".gradle";
+    }
 }
 
 dependencies {
