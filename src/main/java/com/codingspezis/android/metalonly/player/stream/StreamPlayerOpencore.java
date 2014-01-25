@@ -1,14 +1,14 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import java.util.Calendar;
-
 import android.content.*;
 import android.media.*;
 import android.net.wifi.*;
 import android.os.*;
 
-import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.*;
 import com.spoledge.aacdecoder.*;
+
+import java.util.*;
 
 /**
  * 
@@ -30,8 +30,6 @@ public class StreamPlayerOpencore implements AudioStream {
 	/**
 	 * constructor
 	 * 
-	 * @param url
-	 *            stream URL
 	 */
 	public StreamPlayerOpencore(Context context) {
 		this.context=context;

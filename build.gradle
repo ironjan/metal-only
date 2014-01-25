@@ -22,6 +22,7 @@ repositories {
 
 apply plugin: 'android'
 apply plugin: 'android-apt'
+apply plugin: 'project-report'
 
 configurations {
     apt
@@ -78,26 +79,26 @@ android {
             // buildConfigField "int", "SYNC_INTERVAL", "60 * 60 * 12" // 12 hours
         }
     }
+    
+    if(project.hasProperty("metalonly.signing")
+      && new File(project.property("metalonly.signing") + ".gradle").exists()) {
+      apply from: project.property("metalonly.signing") + ".gradle";
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:19.0.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:19.0.+'
+
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
 
     compile 'org.slf4j:slf4j-android:1.6.1-RC1'
 
-    //compile 'com.android.support:appcompat-v7:19.0.0'
-    //compile 'org.slf4j:slf4j-android:1.6.1-RC1'
-    //compile 'com.j256.ormlite:ormlite-android:4.47'
-
     apt "org.androidannotations:androidannotations:3.0"
     compile "org.androidannotations:androidannotations-api:3.0"
 
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile fileTree(dir: 'libs', include: '*.so')
 }
 
 task wrapper(type: Wrapper) {

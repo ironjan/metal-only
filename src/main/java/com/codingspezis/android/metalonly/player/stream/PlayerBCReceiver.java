@@ -22,6 +22,7 @@ public class PlayerBCReceiver extends BroadcastReceiver {
     AudioManager audioManager;
 
     private OnAudioFocusChangeListener afChangeListener;
+    private boolean mPaused = false;
 
     /**
      * @param playerService
@@ -37,8 +38,10 @@ public class PlayerBCReceiver extends BroadcastReceiver {
             public void onAudioFocusChange(int focusChange) {
                 if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
                     if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_LOSS_TRANSIENT");
+                    pause();
                 } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
                     if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_GAIN");
+                    continueAfterPause();
                 } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
                     if (BuildConfig.DEBUG) LOGGER.debug("!AUDIOFOCUS_LOSS");
                     audioManager.abandonAudioFocus(this);
@@ -48,6 +51,17 @@ public class PlayerBCReceiver extends BroadcastReceiver {
         };
 
         if (BuildConfig.DEBUG) LOGGER.debug("PlayerBCReceiver({}) created", playerService);
+    }
+
+    private void continueAfterPause() {
+        if (BuildConfig.DEBUG) LOGGER.debug("pauseEnd()");
+
+        if (mPaused) {
+            play();
+            mPaused = false;
+        }
+
+        if (BuildConfig.DEBUG) LOGGER.debug("pauseEnd() done");
     }
 
     @Override
@@ -102,6 +116,19 @@ public class PlayerBCReceiver extends BroadcastReceiver {
         playerService.clear();
         if (BuildConfig.DEBUG) LOGGER.debug("stop() done");
     }
+
+    void pause() {
+        if (BuildConfig.DEBUG) LOGGER.debug("pause()");
+
+        if (playerService.streamPlaying) {
+            mPaused = true;
+            stop();
+        }
+
+        playerService.clear();
+        if (BuildConfig.DEBUG) LOGGER.debug("pause() done");
+    }
+
 
     private void sendPlayerStatus() {
         if (BuildConfig.DEBUG) LOGGER.debug("sendPlayerStatus()");
