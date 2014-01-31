@@ -27,7 +27,7 @@
             android:layout_alignBaseline="@+id/textAppName"
             android:layout_marginTop="@dimen/elementMargin"
             android:layout_toRightOf="@+id/textAppName"
-            android:text="@string/app_version"
+            android:text="@string/empty"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
