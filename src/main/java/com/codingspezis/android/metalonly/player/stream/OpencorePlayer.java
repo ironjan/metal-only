@@ -120,7 +120,7 @@ class OpencorePlayer extends MultiPlayer {
         try {
             Decoder.Info info = decoder.start( reader );
 
-            // *** start of modification *** 
+            // *** start of modification ***
             int sr = info.getSampleRate();
             int nc = info.getChannels();
             
@@ -130,6 +130,8 @@ class OpencorePlayer extends MultiPlayer {
             	throw new WrongSampleRateException(sr);
             }
             // *** end of modification ***
+
+            Log.d( LOG, "play(): samplerate=" + info.getSampleRate() + ", channels=" + info.getChannels());
 
             profSampleRate = info.getSampleRate() * info.getChannels();
 
@@ -142,12 +144,20 @@ class OpencorePlayer extends MultiPlayer {
             //   - one is used by the PCMFeeder
             //   - one is enqueued / passed to PCMFeeder - non-blocking op
             short[][] decodeBuffers = createDecodeBuffers( 3, info );
-            short[] decodeBuffer = decodeBuffers[0]; 
+            short[] decodeBuffer = decodeBuffers[0];
             int decodeBufferIndex = 0;
 
             pcmfeed = createPCMFeed( info );
             pcmfeedThread = new Thread( pcmfeed );
             pcmfeedThread.start();
+
+            if (info.getFirstSamples() != null) {
+                short[] firstSamples = info.getFirstSamples();
+                Log.d( LOG, "First samples length: " + firstSamples.length );
+
+                pcmfeed.feed( firstSamples, firstSamples.length );
+                info.setFirstSamples( null );
+            }
 
             do {
                 long tsStart = System.currentTimeMillis();
@@ -175,9 +185,10 @@ class OpencorePlayer extends MultiPlayer {
             } while (!stopped);
         }
         finally {
+            boolean stopImmediatelly = stopped;
             stopped = true;
 
-            if (pcmfeed != null) pcmfeed.stop();
+            if (pcmfeed != null) pcmfeed.stop( !stopImmediatelly );
             decoder.stop();
             reader.stop();
 
@@ -198,5 +209,6 @@ class OpencorePlayer extends MultiPlayer {
 
             if (playerCallback != null) playerCallback.playerStopped( perf );
         }
+
     }
 }
