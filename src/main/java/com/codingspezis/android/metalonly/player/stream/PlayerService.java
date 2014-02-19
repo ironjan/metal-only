@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.telephony.*;
+import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
@@ -76,7 +77,21 @@ public class PlayerService extends Service {
 		registerReceiver(playerBCReceiver, new IntentFilter(INTENT_EXIT));
 
 		audioStream = new StreamPlayerOpencore(this);
-	}
+
+        // register the IcyURLStreamHandler for android 4.4
+        try {
+            java.net.URL.setURLStreamHandlerFactory( new java.net.URLStreamHandlerFactory(){
+                public java.net.URLStreamHandler createURLStreamHandler( String protocol ) {
+                    Log.d( "PlayerService", "Asking for stream handler for protocol: '" + protocol + "'" );
+                    if ("icy".equals( protocol )) return new com.spoledge.aacdecoder.IcyURLStreamHandler();
+                    return null;
+                }
+            });
+        }
+        catch (Throwable t) {
+            Log.w( "PlayerService", "Cannot set the ICY URLStreamHandler - maybe already set ? - " + t );
+        }
+    }
 
 	@Override
 	public void onDestroy() {
