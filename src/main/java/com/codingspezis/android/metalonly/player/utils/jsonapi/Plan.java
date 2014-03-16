@@ -17,14 +17,14 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * </pre>
  */
 public class Plan {
-	PlanEntry[] plan;
+    PlanEntry[] plan = {};
 
-	public PlanEntry[] getPlan() {
-		return plan;
-	}
+    public PlanEntry[] getPlan() {
+        return plan;
+    }
 
-	public void setPlan(PlanEntry[] plan) {
-		this.plan = plan;
-	}
+    public void setPlan(PlanEntry[] plan) {
+        this.plan = plan;
+    }
 
 }

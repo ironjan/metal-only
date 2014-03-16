@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 /**
  * <pre>
  * {
- *  "stats": 
+ *  "stats":
  *   {
  *    "moderated": false,
  *    "moderator": "MetalHead",
@@ -25,26 +25,25 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  *   ]
  * }
  * </pre>
- * 
  */
 public class PlanWithStats {
-	Stats stats;
-	PlanEntry[] plan;
+    Stats stats = new Stats();
+    PlanEntry[] plan = {};
 
-	public Stats getStats() {
-		return stats;
-	}
+    public Stats getStats() {
+        return stats;
+    }
 
-	public PlanEntry[] getPlan() {
-		return plan;
-	}
+    public PlanEntry[] getPlan() {
+        return plan;
+    }
 
-	public void setStats(Stats stats) {
-		this.stats = stats;
-	}
+    public void setStats(Stats stats) {
+        this.stats = stats;
+    }
 
-	public void setPlan(PlanEntry[] plan) {
-		this.plan = plan;
-	}
+    public void setPlan(PlanEntry[] plan) {
+        this.plan = plan;
+    }
 
 }
