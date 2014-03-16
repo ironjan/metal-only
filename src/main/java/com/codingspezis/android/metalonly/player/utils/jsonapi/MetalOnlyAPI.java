@@ -1,23 +1,22 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import org.springframework.http.converter.json.*;
-import org.springframework.web.client.*;
-
 import org.androidannotations.annotations.rest.*;
+import org.androidannotations.api.rest.*;
+import org.springframework.http.converter.json.*;
 
 @Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = "http://metal-only.de/botcon/mob.php?action=")
-interface MetalOnlyAPI {
+interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
-	@Get("stats")
-	Stats getStats();
+    @Get("stats")
+    @Accept(MediaType.APPLICATION_JSON)
+    Stats getStats();
 
-	@Get("plannew")
-	Plan getPlan();
+    @Get("plannew")
+    @Accept(MediaType.APPLICATION_JSON)
+    Plan getPlan();
 
-	@Get("all")
-	PlanWithStats getPlanWithStats();
+    @Get("all")
+    @Accept(MediaType.APPLICATION_JSON)
+    PlanWithStats getPlanWithStats();
 
-	RestTemplate getRestTemplate();
-
-	void setRestTemplate(RestTemplate restTemplate);
 }
