@@ -1,6 +1,6 @@
-def versionMajor = 0
-def versionMinor = 4
-def versionPatch = 12
+def versionMajor = 0 // incompatible API changes
+def versionMinor = 4 // added functionality in a backwards-compatible manner
+def versionPatch = 12 // backwards-compatible bug fixes
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 buildscript {
@@ -54,7 +54,7 @@ android {
 
 
     defaultConfig {
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         minSdkVersion 9
