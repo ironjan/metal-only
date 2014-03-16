@@ -57,7 +57,7 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 19
 
         packageName "com.codingspezis.android.metalonly.player"
