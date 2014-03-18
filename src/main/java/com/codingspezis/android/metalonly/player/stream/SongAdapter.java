@@ -22,12 +22,6 @@ public class SongAdapter extends BaseAdapter {
     private final LayoutInflater inflater;
     private final ImageLoader imageLoader;
 
-    /**
-     * constructor
-     *
-     * @param a
-     * @param d data to display
-     */
     public SongAdapter(Activity a, ArrayList<Song> d) {
         activity = a;
         data = d;

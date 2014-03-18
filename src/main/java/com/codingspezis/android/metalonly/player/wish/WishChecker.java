@@ -78,17 +78,9 @@ public class WishChecker {
 
 	};
 
-	/**
-	 * constructor
-	 * 
-	 * @param parent
-	 *            parent activity
-	 * @param url
-	 *            url for request
-	 */
-	public WishChecker(Context context, String URL) {
-		grabber = new HTTPGrabber(context, URL, grabberListener);
-	}
+    public WishChecker(Context context, String URL) {
+        grabber = new HTTPGrabber(context, URL, grabberListener);
+    }
 
 	public void start() {
 		grabber.start();

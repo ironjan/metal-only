@@ -5,6 +5,9 @@ Diese App bringt den Internet Radio Stream von metal-only.de auf Android, wo man
 
 Die App kann über Google Play [heruntergeladen][11] werden.
 
+Versionierung nach Semantic Versioning 2.0.0 
+(http://semver.org/).
+
 Verwendete Software
 -------------------
 

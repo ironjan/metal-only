@@ -1,7 +1,8 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.fasterxml.jackson.annotation.*;
+
 /**
- * 
  * <pre>
  * {
  *     "moderated": false,
@@ -15,82 +16,73 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * </pre>
  */
 public class Stats {
-	private static final String WISH_GREET_FULL = "1";
-	private String moderator, sendung, wunschvoll, grussvoll, wunschlimit,
-			grusslimit;
-	private boolean moderated;
-	private String genre;
 
-	public void setModerator(String moderator) {
-		this.moderator = moderator;
-	}
+    private static final String WISH_GREET_FULL = "1";
+    private String moderator = "";
+    private String sendung = "";
+    private boolean canWish = false;
+    private boolean canGreet = false;
+    private boolean moderated = false;
+    private int wishLimit = 0;
+    private int greetingLimit = 0;
+    private String genre = "";
 
-	public void setSendung(String sendung) {
-		this.sendung = sendung;
-	}
+    @JsonProperty("moderator")
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
+    }
 
-	public void setWunschvoll(String wunschvoll) {
-		this.wunschvoll = wunschvoll;
-	}
+    @JsonProperty("sendung")
+    public void setSendung(String sendung) {
+        this.sendung = sendung;
+    }
 
-	public void setGrussvoll(String grussvoll) {
-		this.grussvoll = grussvoll;
-	}
+    @JsonProperty("wunschvoll")
+    public void setCanWish(String wunschvollString) {
+        this.canWish = !(WISH_GREET_FULL.equals(wunschvollString));
+    }
 
-	public void setWunschlimit(String wunschlimit) {
-		this.wunschlimit = wunschlimit;
-	}
+    @JsonProperty("grussvoll")
+    public void setCanGreet(String grussvoll) {
+        this.canGreet = !(WISH_GREET_FULL.equals(grussvoll));
+    }
 
-	public void setGrusslimit(String grusslimit) {
-		this.grusslimit = grusslimit;
-	}
+    @JsonProperty("wunschlimit")
+    public void setWishLimit(String wishLimit) {
+        try {
+            this.wishLimit = Integer.parseInt(wishLimit);
+        } catch (NumberFormatException e) {
+            this.wishLimit = 0;
+        }
+    }
 
-	public void setModerated(boolean moderated) {
-		this.moderated = moderated;
-	}
+    @JsonProperty("grusslimit")
+    public void setGreetingLimit(String greetingLimit) {
+        try {
+            this.greetingLimit = Integer.parseInt(greetingLimit);
+        } catch (NumberFormatException e) {
+            this.greetingLimit = 0;
+        }
+    }
 
-	public String getModerator() {
-		return moderator;
-	}
+    @JsonProperty("moderated")
+    public void setModerated(boolean moderated) {
+        this.moderated = moderated;
+    }
 
-	public String getSendung() {
-		return sendung;
-	}
+    public String getModerator() {
+        return moderator;
+    }
 
-	public boolean canWish() {
-		return !(WISH_GREET_FULL.equals(wunschvoll));
-	}
 
-	public boolean canGreet() {
-		return !(WISH_GREET_FULL.equals(grussvoll));
-	}
+    public String getGenre() {
+        if (null == genre) {
+            int startGenre = sendung.indexOf("(") + 1;
+            int endGenre = sendung.indexOf(")");
+            genre = sendung.substring(startGenre, endGenre);
+        }
+        return genre;
+    }
 
-	public int getWunschlimit() {
-		try {
-			return Integer.parseInt(wunschlimit);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
-
-	public int getGrusslimit() {
-		try {
-			return Integer.parseInt(grusslimit);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
-
-	public String getGenre(){
-		if(null == genre){
-			int startGenre = sendung.indexOf("(") + 1;
-			int endGenre = sendung.indexOf(")");
-			genre = sendung.substring(startGenre, endGenre);
-		}
-		return genre;
-	}
-	public boolean isModerated() {
-		return moderated;
-	}
 
 }
