@@ -36,7 +36,7 @@ public class FileCache {
 	 * 
 	 * @param context
 	 *            context of private storage
-	 * @param fileName
+     *            @param moderator  The moderator's name
 	 * @return file name of thumb if exists - null otherwise
 	 */
 	public static String hasThumb(Context context, String moderator) {
