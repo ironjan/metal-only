@@ -1,8 +1,11 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 
-public class NoInternetException extends RuntimeException{
+/**
+ * Thrown when a MetalOnlyAPIWrapper method is called without having a (stable) internet connection
+ */
+public class NoInternetException extends RuntimeException {
 
-	private static final long serialVersionUID = -1724064520851802216L;
+    private static final long serialVersionUID = -1724064520851802216L;
 
 }

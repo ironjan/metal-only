@@ -9,6 +9,9 @@ import org.androidannotations.api.rest.*;
 import org.springframework.http.client.*;
 import org.springframework.web.client.*;
 
+/**
+ * A wrapper aroung the Rest-Api implementation to catch exceptions etc.
+ */
 @EBean(scope = EBean.Scope.Singleton)
 public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 
