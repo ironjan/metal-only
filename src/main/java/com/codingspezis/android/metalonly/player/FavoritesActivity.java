@@ -1,25 +1,37 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.content.DialogInterface.*;
-import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
-import android.view.*;
-import android.widget.*;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ListView;
 
-import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
-import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.siteparser.*;
-import com.codingspezis.android.metalonly.player.wish.*;
+import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.favorites.SongAdapterFavorites;
+import com.codingspezis.android.metalonly.player.favorites.SongSaver;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.wish.AllowedActions;
+import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
+import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
 
-import java.net.*;
-import java.util.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * FavoritesActivity
@@ -28,6 +40,7 @@ import java.util.*;
  */
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
+@SuppressLint("Registered")
 public class FavoritesActivity extends SherlockListActivity {
 
     private static final int ITEM_CLICK_ACTION_DELETE = 3;

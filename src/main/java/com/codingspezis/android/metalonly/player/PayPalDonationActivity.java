@@ -1,12 +1,13 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.content.*;
-import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * with this activity users can make paypal donations to metal only
@@ -25,6 +26,7 @@ public class PayPalDonationActivity extends SherlockFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // help button
+        // TODO use help menu resource
         MenuItem hlp = menu.add(0, R.id.mnu_help, 0, R.string.menu_help);
         hlp.setIcon(R.drawable.ic_action_web_site);
         hlp.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);

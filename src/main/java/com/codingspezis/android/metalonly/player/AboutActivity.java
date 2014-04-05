@@ -1,16 +1,22 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.content.*;
-import android.content.pm.PackageInfo;
-import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
-import android.widget.*;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.widget.TextView;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
-import org.androidannotations.annotations.*;
-import org.androidannotations.annotations.res.*;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FromHtml;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 
 /**
  * 
@@ -21,6 +27,7 @@ import org.androidannotations.annotations.res.*;
  * 
  */
 @EActivity(R.layout.activity_about)
+@SuppressLint("Registered")
 public class AboutActivity extends SherlockActivity {
 
 	@StringRes

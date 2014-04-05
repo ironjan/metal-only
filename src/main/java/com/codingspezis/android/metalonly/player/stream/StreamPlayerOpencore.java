@@ -1,14 +1,15 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
-import android.media.*;
-import android.net.wifi.*;
-import android.os.*;
+import android.content.Context;
+import android.media.AudioTrack;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
+import android.util.Log;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.spoledge.aacdecoder.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.spoledge.aacdecoder.PlayerCallback;
 
-import java.util.*;
+import java.util.Calendar;
 
 /**
  * stream player that is using opencore port aacdecoder-android
@@ -157,6 +158,7 @@ public class StreamPlayerOpencore implements AudioStream {
                     try {
                         Thread.sleep(1000 * exceptionCounter);
                     } catch (InterruptedException e) {
+                        Log.e(StreamPlayerOpencore.class.getSimpleName(), e.getMessage(), e);
                     }
                     if (shouldPlay) startPlaying();
                     return;
