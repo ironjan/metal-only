@@ -1,15 +1,15 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.Context;
-import android.media.AudioTrack;
-import android.net.wifi.WifiManager;
-import android.os.PowerManager;
-import android.util.Log;
+import android.content.*;
+import android.media.*;
+import android.net.wifi.*;
+import android.os.*;
+import android.util.*;
 
-import com.codingspezis.android.metalonly.player.R;
-import com.spoledge.aacdecoder.PlayerCallback;
+import com.codingspezis.android.metalonly.player.*;
+import com.spoledge.aacdecoder.*;
 
-import java.util.Calendar;
+import java.util.*;
 
 /**
  * stream player that is using opencore port aacdecoder-android

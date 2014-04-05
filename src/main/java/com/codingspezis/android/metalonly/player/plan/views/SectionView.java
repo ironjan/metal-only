@@ -1,12 +1,13 @@
 package com.codingspezis.android.metalonly.player.plan.views;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.plan.*;
-import org.androidannotations.annotations.*;
-
 import android.content.*;
 import android.util.*;
 import android.widget.*;
+
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.plan.*;
+
+import org.androidannotations.annotations.*;
 
 @EViewGroup(R.layout.view_plan_section)
 public class SectionView extends LinearLayout {

@@ -1,34 +1,19 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.os.*;
+import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.codingspezis.android.metalonly.player.plan.EntryItem;
-import com.codingspezis.android.metalonly.player.plan.Item;
-import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
-import com.codingspezis.android.metalonly.player.plan.PlanData;
-import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
-import com.codingspezis.android.metalonly.player.plan.SectionItem;
+import com.actionbarsherlock.app.*;
+import com.codingspezis.android.metalonly.player.plan.*;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.res.StringArrayRes;
-import org.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.res.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
+import java.text.*;
+import java.util.*;
 
 
 @EActivity(R.layout.activity_plan)

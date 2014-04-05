@@ -1,10 +1,10 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 import android.graphics.*;
 import android.util.*;
+
+import java.util.*;
+import java.util.Map.*;
 
 /**
  * this class comes in the original form from:

@@ -1,14 +1,14 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import java.io.*;
-import java.util.*;
-
 import android.content.*;
-import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.*;
 import android.graphics.*;
 import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * this class comes in the original form from:

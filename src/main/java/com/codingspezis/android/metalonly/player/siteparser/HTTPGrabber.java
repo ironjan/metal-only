@@ -1,16 +1,16 @@
 package com.codingspezis.android.metalonly.player.siteparser;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
 import android.app.*;
 import android.content.*;
-import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.*;
 import android.net.*;
 import android.os.*;
 
 import com.codingspezis.android.metalonly.player.*;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  * 

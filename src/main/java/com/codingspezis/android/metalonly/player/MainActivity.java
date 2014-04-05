@@ -1,57 +1,36 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.graphics.PorterDuff.*;
+import android.graphics.drawable.*;
+import android.net.*;
+import android.os.*;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
+import android.widget.AdapterView.*;
 
-import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
-import com.codingspezis.android.metalonly.player.favorites.Song;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver;
-import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
-import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
-import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
-import com.codingspezis.android.metalonly.player.stream.MetadataParser;
-import com.codingspezis.android.metalonly.player.stream.PlayerService;
-import com.codingspezis.android.metalonly.player.stream.SongAdapter;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper_;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.views.Marquee;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
-import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
-import com.codingspezis.android.metalonly.player.wish.WishChecker;
+import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.plan.*;
+import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
+import com.codingspezis.android.metalonly.player.views.*;
+import com.codingspezis.android.metalonly.player.wish.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.net.*;
+import java.text.*;
+import java.util.*;
 
 /**
  * main GUI activity

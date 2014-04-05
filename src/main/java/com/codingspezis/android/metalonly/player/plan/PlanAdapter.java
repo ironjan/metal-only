@@ -1,13 +1,13 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import java.util.*;
-
 import android.content.*;
 import android.view.*;
 import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.plan.views.*;
 import com.codingspezis.android.metalonly.player.utils.*;
+
+import java.util.*;
 
 public class PlanAdapter extends BaseAdapter {
 

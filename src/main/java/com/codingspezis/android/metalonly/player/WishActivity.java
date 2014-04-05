@@ -1,22 +1,17 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
+import android.app.*;
+import android.content.*;
+import android.os.*;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
-import android.widget.FrameLayout;
+import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-import com.codingspezis.android.metalonly.player.fragments.WishFragment;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
+import com.codingspezis.android.metalonly.player.fragments.*;
+import com.codingspezis.android.metalonly.player.wish.*;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.ViewById;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
 /**
  * activity that is showing a GUI for entering and sending wishes and/or regards

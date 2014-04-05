@@ -2,7 +2,7 @@ package com.codingspezis.android.metalonly.player.utils;
 
 import android.graphics.*;
 
-import com.codingspezis.android.metalonly.player.utils.ImageLoader.PhotoToLoad;
+import com.codingspezis.android.metalonly.player.utils.ImageLoader.*;
 
 //Used to display bitmap in the UI thread
 class BitmapDisplayer implements Runnable {

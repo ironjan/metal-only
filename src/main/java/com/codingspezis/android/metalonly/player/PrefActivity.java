@@ -1,10 +1,10 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
+import android.annotation.*;
+import android.os.*;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
 
 
 @SuppressLint("Registered")

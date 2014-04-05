@@ -1,7 +1,7 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
 import android.content.*;
-import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.*;
 import android.net.*;
 import android.os.*;
 import android.preference.*;

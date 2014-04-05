@@ -1,13 +1,12 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.content.*;
+import android.net.*;
+import android.os.*;
+import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.view.*;
 
 /**
  * with this activity users can make paypal donations to metal only
