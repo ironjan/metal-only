@@ -20,31 +20,23 @@ import org.apache.http.message.*;
 import org.apache.http.protocol.*;
 import org.slf4j.*;
 
+import java.io.*;
 import java.util.*;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
 public class WishFragment extends SherlockFragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
-
-    // URL to wish script on metal-only.de
-    public static final String URL_WISHES = "http://metalonly.de/?action=wunschscript";
-
     // intent keys
-    public static final String KEY_WISHES_ALLOWED = "MO_WISHES_ALLOWED";
-    public static final String KEY_REGARDS_ALLOWED = "MO_REGARDS_ALLOWED";
-    public static final String KEY_NUMBER_OF_WISHES = "MO_NUMBER_OF_WISHES";
-    public static final String KEY_DEFAULT_INTERPRET = "MO_DEFAULT_INTERPRET";
-    public static final String KEY_DEFAULT_TITLE = "MO_DEFAULT_TITLE";
-
+    private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;
+    private static final String KEY_REGARDS_ALLOWED = WishActivity.KEY_REGARDS_ALLOWED;
+    private static final String KEY_NUMBER_OF_WISHES = WishActivity.KEY_NUMBER_OF_WISHES;
+    private static final String KEY_DEFAULT_INTERPRET = WishActivity.KEY_DEFAULT_INTERPRET;
+    private static final String KEY_DEFAULT_TITLE = WishActivity.KEY_DEFAULT_TITLE;
     // shared preferences keys
-    public static final String KEY_SP_NICK = "moa_nickname";
-
-    boolean wish, regard;
-
+    private static final String KEY_SP_NICK = "moa_nickname";
     @ViewById(R.id.btnSend)
     Button buttonSend;
-
     @ViewById
     EditText editNick,
             editArtist,
@@ -54,28 +46,52 @@ public class WishFragment extends SherlockFragment {
     TextView textArtist,
             textTitle,
             textRegard;
-
-    private String numberOfWishes;
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
+    private boolean wish, regard;
+    private String numberOfWishes;
+    public WishFragment() {
+    }
+
+    private static void setInvisible(View v) {
+        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({})", v);
+
+        if (null != v) {
+            v.setVisibility(View.GONE);
+        }
+
+        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({}) done", v);
+    }
+
+    @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
+    public static WishFragment newInstance(Bundle bundle) {
+        if (BuildConfig.DEBUG) LOGGER.debug("newInstance({})", bundle);
+
+        WishFragment wishFragment = new WishFragment_();
+        wishFragment.setArguments(bundle);
+
+        if (BuildConfig.DEBUG) LOGGER.debug("newInstance({}) done", bundle);
+        return wishFragment;
+    }
 
     @AfterViews
-    public void init() {
-        if(BuildConfig.DEBUG) LOGGER.debug("init()");
+    void init() {
+        if (BuildConfig.DEBUG) LOGGER.debug("init()");
 
-            SharedPreferences settings = getActivity().getSharedPreferences(getString(R.string.app_name),
+        final String app_name = getString(R.string.app_name);
+        final SharedPreferences settings = getActivity().getSharedPreferences(app_name,
                 Context.MODE_MULTI_PROCESS);
 
         // input fields
-        editNick.setText(settings.getString(KEY_SP_NICK, ""));
+        final String nickName = settings.getString(KEY_SP_NICK, "");
+        editNick.setText(nickName);
 
 
         // get parameters
-        final Bundle bundle = getArguments();
+        Bundle bundle = getArguments();
 
 
-
-        if (bundle != null) {
+        if (null != bundle) {
             wish = bundle.getBoolean(KEY_WISHES_ALLOWED, false);
             regard = bundle.getBoolean(KEY_REGARDS_ALLOWED, false);
             numberOfWishes = bundle.getString(KEY_NUMBER_OF_WISHES);
@@ -106,34 +122,26 @@ public class WishFragment extends SherlockFragment {
             wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_regards));
         }
 
-        if(BuildConfig.DEBUG) LOGGER.debug("init() done");
+        if (BuildConfig.DEBUG) LOGGER.debug("init() done");
 
     }
 
     @Override
     public void onPause() {
-        if(BuildConfig.DEBUG) LOGGER.debug("onPause()");
+        if (BuildConfig.DEBUG) LOGGER.debug("onPause()");
 
-        SharedPreferences settings = getActivity().getSharedPreferences(getString(R.string.app_name),
+        final String app_name = getString(R.string.app_name);
+        SharedPreferences settings = getActivity().getSharedPreferences(app_name,
                 Context.MODE_MULTI_PROCESS);
 
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(KEY_SP_NICK, editNick.getText().toString());
+        final String nickName = editNick.getText().toString();
+        editor.putString(KEY_SP_NICK, nickName);
         editor.commit();
         super.onPause();
 
-        if(BuildConfig.DEBUG) LOGGER.debug("onPause() done");
+        if (BuildConfig.DEBUG) LOGGER.debug("onPause() done");
     }
-
-    private void setInvisible(View v) {
-        if(BuildConfig.DEBUG) LOGGER.debug("setInvisible({})",v);
-
-        if (v != null)
-            v.setVisibility(View.GONE);
-
-        if(BuildConfig.DEBUG) LOGGER.debug("setInvisible({}) done",v);
-    }
-
 
     /**
      * checks edit text objects for valid data
@@ -141,35 +149,38 @@ public class WishFragment extends SherlockFragment {
      * @return true if input is valid - false otherwise
      */
     private boolean haveValidData() {
-        if(BuildConfig.DEBUG) LOGGER.debug("haveValidData()");
+        if (BuildConfig.DEBUG) LOGGER.debug("haveValidData()");
 
         boolean haveNick = !TextUtils.isEmpty(editNick.getText());
-        boolean haveWish = !TextUtils.isEmpty(editArtist.getText())
-                && !TextUtils.isEmpty(editTitle.getText()) && editArtist.isEnabled()
+        final boolean artistEnabledAndHasText = !TextUtils.isEmpty(editArtist.getText()) && editArtist.isEnabled();
+        final boolean titleEnabledAndHasText = !TextUtils.isEmpty(editTitle.getText())
                 && editTitle.isEnabled();
+        boolean haveWish = artistEnabledAndHasText
+                && titleEnabledAndHasText;
         boolean haveRegard = !TextUtils.isEmpty(editRegard.getText())
                 && editRegard.isEnabled();
 
-        final boolean isValidData = haveNick && (haveWish || haveRegard);
+        boolean isValidData = haveNick && (haveWish || haveRegard);
 
-        if(BuildConfig.DEBUG) LOGGER.debug("haveValidData() -> {}",isValidData);
+        if (BuildConfig.DEBUG) LOGGER.debug("haveValidData() -> {}", isValidData);
         return isValidData;
     }
 
     @Click(R.id.btnSend)
     void sendButtonClicked() {
-        if(BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
+        if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
-        if (!haveValidData()) {
-            if(BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: invalid data");
-            notifyUser(R.string.invalid_input);
-        } else {
-            if(BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: valid data, sending");
+        if (haveValidData()) {
+            if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: valid data, sending");
             (new GetSender()).start();
+
+        } else {
+            if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: invalid data");
+            notifyUser(R.string.invalid_input);
         }
 
 
-        if(BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked() done");
+        if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked() done");
     }
 
     @UiThread
@@ -191,11 +202,11 @@ public class WishFragment extends SherlockFragment {
      */
     @OptionsItem(R.id.mnu_help)
     void showInfo() {
-        if(BuildConfig.DEBUG) LOGGER.debug("showInfo()");
+        if (BuildConfig.DEBUG) LOGGER.debug("showInfo()");
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(R.string.notification);
-        final View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_text, null);
+        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_text, null);
         TextView tv = (TextView) v.findViewById(R.id.text);
         tv.setText(R.string.wish_explanation);
         alert.setView(v);
@@ -203,17 +214,7 @@ public class WishFragment extends SherlockFragment {
         alert.show();
 
 
-        if(BuildConfig.DEBUG) LOGGER.debug("showInfo() done");
-    }
-
-    public static WishFragment newInstance(Bundle bundle) {
-        if(BuildConfig.DEBUG) LOGGER.debug("newInstance({})", bundle);
-
-        WishFragment wishFragment = new WishFragment_();
-        wishFragment.setArguments(bundle);
-
-        if(BuildConfig.DEBUG) LOGGER.debug("newInstance({}) done", bundle);
-        return wishFragment;
+        if (BuildConfig.DEBUG) LOGGER.debug("showInfo() done");
     }
 
     /**
@@ -222,20 +223,21 @@ public class WishFragment extends SherlockFragment {
     private class GetSender extends Thread {
 
         private final Logger SENDER_LOGGER = LoggerFactory.getLogger(GetSender.class.getSimpleName());
-        
+
         // TODO move this to own class
+        @SuppressWarnings("RefusedBequest")
         @Override
         public void run() {
-            if(BuildConfig.DEBUG) SENDER_LOGGER.debug("run()");
+            if (BuildConfig.DEBUG) SENDER_LOGGER.debug("run()");
 
             // TODO refactor this method
             // generate url
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(
                     "http://www.metal-only.de/?action=wunschscript&do=save");
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            List<NameValuePair> pairs = new ArrayList<NameValuePair>(4);
             // add post values
-            
+
             if (!TextUtils.isEmpty(editNick.getText())) {
                 pairs.add(new BasicNameValuePair("nick", editNick.getText()
                         .toString()));
@@ -265,18 +267,20 @@ public class WishFragment extends SherlockFragment {
                 HttpResponse response = client.execute(post);
                 if (!response.getStatusLine().toString()
                         .equals("HTTP/1.1 200 OK")) {
-                    Exception e = new Exception(
-                            getString(R.string.sending_error));
-                    throw e;
+                    notifyUser(R.string.sent);
+                    getActivity().finish();
+                } else {
+                    notifyUser(R.string.sending_error);
                 }
-                notifyUser(R.string.sent);
-                getActivity().finish();
-
-            } catch (final Exception e) {
-                notifyUser(e.toString());
+            } catch (ClientProtocolException e) {
+                notifyUser(e.getMessage());
+            } catch (UnsupportedEncodingException e) {
+                notifyUser(e.getMessage());
+            } catch (IOException e) {
+                notifyUser(e.getMessage());
             }
 
-            if(BuildConfig.DEBUG) SENDER_LOGGER.debug("run() done");
+            if (BuildConfig.DEBUG) SENDER_LOGGER.debug("run() done");
         }
     }
 
