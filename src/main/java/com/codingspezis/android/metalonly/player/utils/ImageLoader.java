@@ -1,16 +1,16 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
-
 import android.content.*;
 import android.graphics.*;
 import android.os.*;
 import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.*;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * this class comes in the original form from:

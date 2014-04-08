@@ -316,6 +316,7 @@ public class MainActivity extends SherlockListActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({})", menu);
 
+        // TODO extract to menu resource
         this.menu = menu;
         // favorites button
         MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,

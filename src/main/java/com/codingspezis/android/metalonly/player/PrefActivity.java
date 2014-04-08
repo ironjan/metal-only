@@ -1,11 +1,13 @@
 package com.codingspezis.android.metalonly.player;
 
+import android.annotation.*;
 import android.os.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.*;
 
 
+@SuppressLint("Registered")
 public class PrefActivity extends SherlockPreferenceActivity {
 
     @Override

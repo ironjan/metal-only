@@ -4,6 +4,7 @@ import android.content.*;
 import android.media.*;
 import android.net.wifi.*;
 import android.os.*;
+import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.spoledge.aacdecoder.*;
@@ -157,6 +158,7 @@ public class StreamPlayerOpencore implements AudioStream {
                     try {
                         Thread.sleep(1000 * exceptionCounter);
                     } catch (InterruptedException e) {
+                        Log.e(StreamPlayerOpencore.class.getSimpleName(), e.getMessage(), e);
                     }
                     if (shouldPlay) startPlaying();
                     return;

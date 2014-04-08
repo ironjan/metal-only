@@ -3,32 +3,23 @@ package com.codingspezis.android.metalonly.player;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.*;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
 
 import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.*;
+import com.codingspezis.android.metalonly.player.fragments.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.client.entity.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.impl.client.*;
-import org.apache.http.message.*;
-import org.apache.http.protocol.*;
-
-import java.util.*;
+import org.slf4j.*;
 
 /**
  * activity that is showing a GUI for entering and sending wishes and/or regards
  * to metal-only.de
  * TODO use androidannotations
  */
-public class WishActivity extends SherlockActivity implements OnClickListener {
+
+public class WishActivity extends SherlockFragmentActivity {
 
     // URL to wish script on metal-only.de
     public static final String URL_WISHES = "http://metalonly.de/?action=wunschscript";
@@ -40,102 +31,46 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
     public static final String KEY_DEFAULT_INTERPRET = "MO_DEFAULT_INTERPRET";
     public static final String KEY_DEFAULT_TITLE = "MO_DEFAULT_TITLE";
 
-    // shared preferences keys
-    public static final String KEY_SP_NICK = "moa_nickname";
-
-    boolean wish, regard;
-
-    private SharedPreferences settings;
-
-    // buttons
-    private Button buttonSend;
-
-    // user input
-    private EditText editNick;
-    private EditText editArtist;
-    private EditText editTitle;
-    private EditText editRegard;
-    private TextView textArtist;
-    private TextView textTitle;
-    private TextView textRegard;
-
-    private String numberOfWishes;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(WishActivity.class.getSimpleName());
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        // TODO refactor this method
+    protected void onCreate(Bundle savedInstanceState) {
+        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_wish);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
-        settings = getSharedPreferences(getString(R.string.app_name),
-                Context.MODE_MULTI_PROCESS);
+        showContentFragment();
 
-        // input fields
-        editNick = (EditText) findViewById(R.id.editNick);
-        editNick.setText(settings.getString(KEY_SP_NICK, ""));
-        editArtist = (EditText) findViewById(R.id.editArtist);
-        editTitle = (EditText) findViewById(R.id.editTitle);
-        editRegard = (EditText) findViewById(R.id.editRegard);
-        try {
-            textArtist = (TextView) findViewById(R.id.textArtist);
-            textTitle = (TextView) findViewById(R.id.textTitle);
-            textRegard = (TextView) findViewById(R.id.textRegard);
-        } catch (Exception e) {
-            // no labels in portrait mode
-        }
-        buttonSend = (Button) findViewById(R.id.btnSend);
-        buttonSend.setOnClickListener(this);
-
-        // get parameters
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            wish = bundle.getBoolean(KEY_WISHES_ALLOWED, false);
-            regard = bundle.getBoolean(KEY_REGARDS_ALLOWED, false);
-            numberOfWishes = bundle.getString(KEY_NUMBER_OF_WISHES);
-            editArtist.setText(bundle.getString(KEY_DEFAULT_INTERPRET));
-            editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
-        }
-
-        TextView wishCount = (TextView) findViewById(R.id.txtWishcount);
-        wishCount.setText(numberOfWishes);
-        if (!wish) {
-            editArtist.setText(R.string.no_wishes_short);
-            editArtist.setEnabled(false);
-            setInvisible(editArtist);
-            setInvisible(textArtist);
-            editTitle.setText(R.string.no_wishes_short);
-            editTitle.setEnabled(false);
-            setInvisible(editTitle);
-            setInvisible(textTitle);
-
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_wishes_short));
-
-        }
-        if (!regard) {
-            editRegard.setText(R.string.no_regards);
-            editRegard.setEnabled(false);
-            setInvisible(editRegard);
-            setInvisible(textRegard);
-
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_regards));
-        }
+        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
+
+    private void showContentFragment() {
+        if(BuildConfig.DEBUG) LOGGER.debug("showContentFragment()");
+
+        Bundle bundle = getIntent().getExtras();
+        WishFragment fragment = WishFragment.newInstance(bundle);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(android.R.id.content, fragment);
+        ft.commit();
+
+        if(BuildConfig.DEBUG) LOGGER.debug("showContentFragment() done");
+    }
+
 
     @Override
-    public void onDestroy() {
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(KEY_SP_NICK, editNick.getText().toString());
-        editor.commit();
-        super.onDestroy();
-    }
-
-    private void setInvisible(View v) {
-        if (v != null)
-            v.setVisibility(View.GONE);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(BuildConfig.DEBUG) LOGGER.debug("");
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                NavUtils.navigateUpTo(this, intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -146,6 +81,7 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
      */
     public static boolean canWishOrDisplayNot(Activity activity,
                                               AllowedActions allowedActions) {
+        if(BuildConfig.DEBUG) LOGGER.debug("");
         if (!allowedActions.moderated) {
             MainActivity.alertMessage(activity,
                     activity.getString(R.string.no_moderator));
@@ -158,144 +94,4 @@ public class WishActivity extends SherlockActivity implements OnClickListener {
         return true;
     }
 
-    /**
-     * checks edit text objects for valid data
-     *
-     * @return true if input is valid - false otherwise
-     */
-    private boolean haveValidData() {
-        boolean haveNick = editNick.getText().length() != 0;
-        boolean haveWish = editArtist.getText().length() != 0
-                && editTitle.getText().length() != 0 && editArtist.isEnabled()
-                && editTitle.isEnabled();
-        boolean haveRegard = editRegard.getText().length() != 0
-                && editRegard.isEnabled();
-        return haveNick && (haveWish || haveRegard);
-    }
-
-    @Override
-    public void onClick(View v) {
-        // send
-        if (v == buttonSend) {
-            if (!haveValidData()) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                R.string.invalid_input, Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
-            } else {
-                (new GetSender()).start();
-            }
-        }
-    }
-
-    /**
-     * shows info
-     */
-    private void showInfo() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(R.string.notification);
-        final View v = getLayoutInflater().inflate(R.layout.dialog_text, null);
-        TextView tv = (TextView) v.findViewById(R.id.text);
-        tv.setText(R.string.wish_explanation);
-        alert.setView(v);
-        alert.setPositiveButton(R.string.ok, null);
-        alert.show();
-    }
-
-    /**
-     * GetSender
-     */
-    private class GetSender extends Thread {
-        // TODO move this to own class
-        @Override
-        public void run() {
-            // TODO refactor this method
-            // generate url
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(
-                    "http://www.metal-only.de/?action=wunschscript&do=save");
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-            // add post values
-            if (!editNick.getText().toString().equals("")) {
-                pairs.add(new BasicNameValuePair("nick", editNick.getText()
-                        .toString()));
-            }
-            if (!editArtist.getText().toString().equals("")
-                    && editArtist.isEnabled()) {
-                pairs.add(new BasicNameValuePair("artist", editArtist.getText()
-                        .toString()));
-            }
-            if (!editTitle.getText().toString().equals("")
-                    && editTitle.isEnabled()) {
-                pairs.add(new BasicNameValuePair("song", editTitle.getText()
-                        .toString()));
-            }
-            if (!editRegard.getText().toString().equals("")) {
-                pairs.add(new BasicNameValuePair("greet", editRegard.getText()
-                        .toString()));
-            }
-
-            try {
-                // generate entity
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs,
-                        "UTF-8");
-                entity.setContentEncoding(HTTP.UTF_8);
-                // send post
-                post.setEntity(entity);
-                HttpResponse response = client.execute(post);
-                if (!response.getStatusLine().toString()
-                        .equals("HTTP/1.1 200 OK")) {
-                    Exception e = new Exception(
-                            getString(R.string.sending_error));
-                    throw e;
-                }
-                // success message
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), R.string.sent,
-                                Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
-            } catch (final Exception e) {
-                // display http error message
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), e.toString(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // help button
-        MenuItem hlp = menu.add(0, R.id.mnu_help, 0, R.string.menu_help);
-        hlp.setIcon(R.drawable.ic_action_help_dark);
-        hlp.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                NavUtils.navigateUpTo(this, intent);
-                return true;
-            case R.id.mnu_help:
-                showInfo();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }

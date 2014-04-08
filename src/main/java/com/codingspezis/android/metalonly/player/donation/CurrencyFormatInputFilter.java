@@ -1,8 +1,8 @@
 package com.codingspezis.android.metalonly.player.donation;
 
-import java.util.regex.*;
-
 import android.text.*;
+
+import java.util.regex.*;
 
 /**
  * Filters EditText input so, that only correct values for money are accepted.

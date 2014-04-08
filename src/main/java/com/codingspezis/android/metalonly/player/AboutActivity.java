@@ -1,7 +1,7 @@
 package com.codingspezis.android.metalonly.player;
 
+import android.annotation.*;
 import android.content.*;
-import android.content.pm.PackageInfo;
 import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
@@ -9,6 +9,7 @@ import android.widget.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.*;
+
 import org.androidannotations.annotations.*;
 import org.androidannotations.annotations.res.*;
 
@@ -21,6 +22,7 @@ import org.androidannotations.annotations.res.*;
  * 
  */
 @EActivity(R.layout.activity_about)
+@SuppressLint("Registered")
 public class AboutActivity extends SherlockActivity {
 
 	@StringRes

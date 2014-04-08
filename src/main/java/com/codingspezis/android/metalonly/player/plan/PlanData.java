@@ -1,8 +1,8 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import java.util.*;
-
 import com.codingspezis.android.metalonly.player.*;
+
+import java.util.*;
 
 public class PlanData {
 	private final String mod, genre, title;

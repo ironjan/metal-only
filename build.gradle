@@ -1,7 +1,7 @@
 def versionMajor = 0 // incompatible API changes
 def versionMinor = 4 // added functionality in a backwards-compatible manner
 def versionPatch = 13 // backwards-compatible bug fixes
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
 buildscript {
     repositories {
@@ -87,7 +87,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v4:19.1.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
 
 
