@@ -74,33 +74,19 @@ class OpencorePlayer extends MultiPlayer {
         PCMFeed pcmfeed = null;
         Thread pcmfeedThread = null;
 
-        // profiling info
-        long profMs = 0;
-        long profSamples = 0;
-        long profSampleRate = 0;
-        int profCount = 0;
+        final OpencorePlayerProfilingInfo profilingInfo = new OpencorePlayerProfilingInfo();
 
         try {
             Decoder.Info info = decoder.start(reader);
 
-            // *** start of modification ***
-            int sr = info.getSampleRate();
-            int nc = info.getChannels();
+            checkSampleRate(info);
+            checkNumberOfChannels(info);
 
-            Log.d(LOG, "play(): samplerate=" + sr + ", channels=" + nc);
+            final int sampleRate = info.getSampleRate();
+            final int channels = info.getChannels();
+            Log.d(LOG, "play(): samplerate=" + sampleRate + ", channels=" + channels);
+            profilingInfo.profSampleRate = sampleRate * channels;
 
-            if (sr != NECESSARY_SAMPLE_RATE || nc != NECESSARY_CHANNELS) {
-                throw new WrongSampleRateException(sr);
-            }
-            // *** end of modification ***
-
-            Log.d(LOG, "play(): samplerate=" + info.getSampleRate() + ", channels=" + info.getChannels());
-
-            profSampleRate = info.getSampleRate() * info.getChannels();
-
-            if (info.getChannels() > 2) {
-                throw new RuntimeException("Too many channels detected: " + info.getChannels());
-            }
 
             // 3 buffers for result samples:
             //   - one is used by decoder
@@ -128,9 +114,9 @@ class OpencorePlayer extends MultiPlayer {
                 info = decoder.decode(decodeBuffer, decodeBuffer.length);
                 int nsamp = info.getRoundSamples();
 
-                profMs += System.currentTimeMillis() - tsStart;
-                profSamples += nsamp;
-                profCount++;
+                profilingInfo.profMs += System.currentTimeMillis() - tsStart;
+                profilingInfo.profSamples += nsamp;
+                profilingInfo.profCount++;
 
                 Log.d(LOG, "play(): decoded " + nsamp + " samples");
 
@@ -146,6 +132,9 @@ class OpencorePlayer extends MultiPlayer {
 
                 decodeBuffer = decodeBuffers[++decodeBufferIndex % 3];
             } while (!stopped);
+        } catch (PlayerException e) {
+            // TODO handle exception
+            e.printStackTrace();
         } finally {
             boolean stopImmediatelly = stopped;
             stopped = true;
@@ -154,25 +143,38 @@ class OpencorePlayer extends MultiPlayer {
             decoder.stop();
             reader.stop();
 
-            int perf = 0;
+            Log.i(LOG, "play(): average decoding time: " + profilingInfo.getAverageDecodingTime() + " ms");
 
-            if (profCount > 0)
-                Log.i(LOG, "play(): average decoding time: " + profMs / profCount + " ms");
+            final double decodingPerformance = profilingInfo.getDecodingPerformance();
 
-            if (profMs > 0) {
-                perf = (int) ((1000 * profSamples / profMs - profSampleRate) * 100 / profSampleRate);
-
-                Log.i(LOG, "play(): average rate (samples/sec): audio=" + profSampleRate
-                        + ", decoding=" + (1000 * profSamples / profMs)
-                        + ", audio/decoding= " + perf
-                        + " %  (the higher, the better; negative means that decoding is slower than needed by audio)");
-            }
+            Log.i(LOG, "play(): average rate (samples/sec): audio=" + profilingInfo.profSampleRate
+                    + ", decoding=" + decodingPerformance
+                    + ", audio/decoding= " + (int) profilingInfo.getOverallPerformance()
+                    + " %  (the higher, the better; negative means that decoding is slower than needed by audio)");
 
             if (pcmfeedThread != null) pcmfeedThread.join();
 
-            if (playerCallback != null) playerCallback.playerStopped(perf);
+            if (playerCallback != null) playerCallback.playerStopped((int) profilingInfo.getOverallPerformance());
         }
 
+    }
+
+    private void checkNumberOfChannels(Decoder.Info info) throws WrongChannelCountException {
+        final int channels = info.getChannels();
+        if (channels > 2) {
+            throw new WrongChannelCountException("Too many channels detected: " + channels);
+        }
+    }
+
+    private void checkSampleRate(Decoder.Info info) throws WrongSampleRateException {
+        int sampleRate = info.getSampleRate();
+        int numberOfChannels = info.getChannels();
+
+        Log.d(LOG, "play(): samplerate=" + sampleRate + ", channels=" + numberOfChannels);
+
+        if (sampleRate != NECESSARY_SAMPLE_RATE || numberOfChannels != NECESSARY_CHANNELS) {
+            throw new WrongSampleRateException(sampleRate);
+        }
     }
 
 }
