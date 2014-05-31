@@ -143,20 +143,30 @@ class OpencorePlayer extends MultiPlayer {
             decoder.stop();
             reader.stop();
 
-            Log.i(LOG, "play(): average decoding time: " + profilingInfo.getAverageDecodingTime() + " ms");
-
-            final double decodingPerformance = profilingInfo.getDecodingPerformance();
-
-            Log.i(LOG, "play(): average rate (samples/sec): audio=" + profilingInfo.profSampleRate
-                    + ", decoding=" + decodingPerformance
-                    + ", audio/decoding= " + (int) profilingInfo.getOverallPerformance()
-                    + " %  (the higher, the better; negative means that decoding is slower than needed by audio)");
+            logProfilingInfo(profilingInfo);
 
             if (pcmfeedThread != null) pcmfeedThread.join();
 
-            if (playerCallback != null) playerCallback.playerStopped((int) profilingInfo.getOverallPerformance());
+            getPlayerCallback().playerStopped((int) profilingInfo.getOverallPerformance());
         }
 
+    }
+
+    @Override
+    public PlayerCallback getPlayerCallback() {
+        if(super.playerCallback != null){
+            return super.playerCallback;
+        }
+        return new DummyPlayerCallback();
+    }
+
+    private void logProfilingInfo(OpencorePlayerProfilingInfo profilingInfo) {
+        Log.i(LOG, "play(): average decoding time: " + profilingInfo.getAverageDecodingTime() + " ms");
+
+        Log.i(LOG, "play(): average rate (samples/sec): audio=" + profilingInfo.profSampleRate
+                + ", decoding=" + profilingInfo.getDecodingPerformance()
+                + ", audio/decoding= " + (int) profilingInfo.getOverallPerformance()
+                + " %  (the higher, the better; negative means that decoding is slower than needed by audio)");
     }
 
     private void checkNumberOfChannels(Decoder.Info info) throws WrongChannelCountException {
