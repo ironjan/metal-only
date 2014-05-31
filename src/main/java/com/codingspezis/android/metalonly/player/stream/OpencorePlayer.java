@@ -120,8 +120,10 @@ class OpencorePlayer extends MultiPlayer {
 
                 Log.d(LOG, "play(): decoded " + nsamp + " samples");
 
-                if (nsamp == 0 || stopped) break;
-                if (!pcmfeed.feed(decodeBuffer, nsamp) || stopped) break;
+                boolean shouldBreak = stopped
+                        || (nsamp == 0)
+                        || !pcmfeed.feed(decodeBuffer, nsamp);
+                if (shouldBreak) break;
 
                 int kBitSecRate = computeAvgKBitSecRate(info);
                 if (Math.abs(expectedKBitSecRate - kBitSecRate) > 1) {
@@ -154,7 +156,7 @@ class OpencorePlayer extends MultiPlayer {
 
     @Override
     public PlayerCallback getPlayerCallback() {
-        if(super.playerCallback != null){
+        if (super.playerCallback != null) {
             return super.playerCallback;
         }
         return new DummyPlayerCallback();
