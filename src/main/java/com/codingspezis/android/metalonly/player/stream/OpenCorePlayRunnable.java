@@ -1,19 +1,22 @@
 package com.codingspezis.android.metalonly.player.stream;
 
 import android.media.*;
-import android.os.*;
 import android.os.Process;
 import android.util.*;
 
 import com.codingspezis.android.metalonly.player.stream.exceptions.*;
 import com.spoledge.aacdecoder.*;
 
+/**
+ * A Runnable that executes a play loop using OpencorePlayer.
+ */
 class OpenCorePlayRunnable implements Runnable {
     private static final String TAG = OpenCorePlayRunnable.class.getSimpleName();
 
     private OpencorePlayer opencorePlayer;
     private final String url;
     private final int expectedKBitSecRate;
+    private int samplerateRestarts = 0;
 
     public OpenCorePlayRunnable(OpencorePlayer opencorePlayer, String url, int expectedKBitSecRate) {
         this.opencorePlayer = opencorePlayer;
@@ -25,30 +28,63 @@ class OpenCorePlayRunnable implements Runnable {
     @SuppressWarnings("synthetic-access")
     public void run() {
         android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-        opencorePlayer.streamPlayerOpencore.wakeLock.acquire();
-        opencorePlayer.streamPlayerOpencore.wifiLock.acquire();
+        acquireLocks();
         try {
-            int samplerateRestarts = 0;
-            WrongSampleRateException lastWrongSampleRateException = null;
-            while (opencorePlayer.streamPlayerOpencore.shouldPlay && samplerateRestarts < 10) {
-                try {
-                    opencorePlayer.play(url, expectedKBitSecRate);
-                } catch (WrongSampleRateException wsbe) {
-                    // ignore exception 10 times, then fail
-                    Log.e(TAG, "playAsync(): " + wsbe.getMessage());
-                    Log.e(TAG, "playAsync(): restarting playback #" + (++samplerateRestarts));
-                    sleep500ms();
-                }
-            }
-            if(lastWrongSampleRateException != null){
-                getPlayerCallback().playerException(lastWrongSampleRateException);
-            }
+            startPlayLoop();
         } catch (Exception e) {
             Log.e(TAG, "playAsync():", e);
             getPlayerCallback().playerException(e);
         }
+        releaseLocks();
+    }
+
+    private void acquireLocks() {
+        opencorePlayer.streamPlayerOpencore.wakeLock.acquire();
+        opencorePlayer.streamPlayerOpencore.wifiLock.acquire();
+    }
+
+    private void releaseLocks() {
         opencorePlayer.streamPlayerOpencore.wakeLock.release();
         opencorePlayer.streamPlayerOpencore.wifiLock.release();
+    }
+
+    /**
+     * Starts the play loop.
+     *
+     * @throws Exception Either a WrongSampleRateException which could not be ignored
+     *                   or another unspecified Exception from OpenCorePlayer
+     */
+    private void startPlayLoop() throws Exception {
+        try {
+            executePlayLoop();
+        } catch (WrongSampleRateException e) {
+            handleWrongSampleRateException(e);
+        }
+    }
+
+    /**
+     * The exception is ignored ten times; after that it is rethrown.
+     *
+     * @param wrongSampleRateException the WrongSampleRateException
+     * @throws Exception the WrongSampleRateException which was repeated too often
+     */
+    private void handleWrongSampleRateException(WrongSampleRateException wrongSampleRateException) throws Exception {
+        samplerateRestarts++;
+        Log.e(TAG, "playAsync(): " + wrongSampleRateException.getMessage());
+        Log.e(TAG, "playAsync(): restarting playback #" + samplerateRestarts);
+        sleep500ms();
+
+        if (samplerateRestarts <= 10) {
+            startPlayLoop();
+        } else {
+            throw wrongSampleRateException;
+        }
+    }
+
+    private void executePlayLoop() throws Exception {
+        while (opencorePlayer.streamPlayerOpencore.shouldPlay) {
+            opencorePlayer.play(url, expectedKBitSecRate);
+        }
     }
 
     private void sleep500ms() {
