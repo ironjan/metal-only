@@ -1,6 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.media.*;
 import android.os.Process;
 import android.util.*;
 
@@ -51,10 +50,10 @@ class OpenCorePlayRunnable implements Runnable {
     /**
      * Starts the play loop.
      *
-     * @throws Exception Either a WrongSampleRateException which could not be ignored
-     *                   or another unspecified Exception from OpenCorePlayer
+     * @throws Exception  unspecified Exception from OpenCorePlayer
+     * @throws PlayerException a WrongSampleRateException which could not be ignored
      */
-    private void startPlayLoop() throws Exception {
+    private void startPlayLoop() throws Exception, PlayerException {
         try {
             executePlayLoop();
         } catch (WrongSampleRateException e) {
@@ -66,9 +65,10 @@ class OpenCorePlayRunnable implements Runnable {
      * The exception is ignored ten times; after that it is rethrown.
      *
      * @param wrongSampleRateException the WrongSampleRateException
-     * @throws Exception the WrongSampleRateException which was repeated too often
+     * @throws Exception Arbitrary exception thrown by Opencore
+     * @throws  PlayerException the WrongSampleRateException which was repeated too often
      */
-    private void handleWrongSampleRateException(WrongSampleRateException wrongSampleRateException) throws Exception {
+    private void handleWrongSampleRateException(WrongSampleRateException wrongSampleRateException) throws Exception, PlayerException {
         samplerateRestarts++;
         Log.e(TAG, "playAsync(): " + wrongSampleRateException.getMessage());
         Log.e(TAG, "playAsync(): restarting playback #" + samplerateRestarts);
@@ -77,11 +77,11 @@ class OpenCorePlayRunnable implements Runnable {
         if (samplerateRestarts <= 10) {
             startPlayLoop();
         } else {
-            throw wrongSampleRateException;
+            throw new PlayerException("Too many WrongSampleRateExceptions",wrongSampleRateException);
         }
     }
 
-    private void executePlayLoop() throws Exception {
+    private void executePlayLoop() throws WrongSampleRateException, Exception {
         while (opencorePlayer.streamPlayerOpencore.shouldPlay) {
             opencorePlayer.play(url, expectedKBitSecRate);
         }
@@ -104,29 +104,6 @@ class OpenCorePlayRunnable implements Runnable {
         return sDummyCallback;
     }
 
-    PlayerCallback sDummyCallback = new PlayerCallback() {
-        @Override
-        public void playerStarted() {
-        }
+    PlayerCallback sDummyCallback = new DummyPlayerCallback();
 
-        @Override
-        public void playerPCMFeedBuffer(boolean b, int i, int i2) {
-        }
-
-        @Override
-        public void playerStopped(int i) {
-        }
-
-        @Override
-        public void playerException(Throwable throwable) {
-        }
-
-        @Override
-        public void playerMetadata(String s, String s2) {
-        }
-
-        @Override
-        public void playerAudioTrackCreated(AudioTrack audioTrack) {
-        }
-    };
 }
