@@ -1,6 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.os.Process;
 import android.util.*;
 
 import com.codingspezis.android.metalonly.player.stream.exceptions.*;
@@ -47,41 +46,7 @@ class OpencorePlayer extends MultiPlayer {
      */
     @Override
     public void playAsync(final String url, final int expectedKBitSecRate) {
-        // TODO refactor this method
-        new Thread(new Runnable() {
-            @Override
-            @SuppressWarnings("synthetic-access")
-            public void run() {
-                Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-                OpencorePlayer.this.streamPlayerOpencore.wakeLock.acquire();
-                OpencorePlayer.this.streamPlayerOpencore.wifiLock.acquire();
-                int samplerateRestarts = 0;
-                while (OpencorePlayer.this.streamPlayerOpencore.shouldPlay) {
-                    try {
-                        play(url, expectedKBitSecRate);
-                    } catch (WrongSampleRateException wsbe) {
-                        Log.e(LOG, "playAsync(): " + wsbe.getMessage());
-                        if (samplerateRestarts >= 10) { // ^= 5 sec
-                            if (playerCallback != null) playerCallback.playerException(wsbe);
-                            break;
-                        }
-                        Log.e(LOG, "playAsync(): restarting playback #" + (++samplerateRestarts));
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    } catch (Exception e) {
-                        Log.e(LOG, "playAsync():", e);
-                        if (playerCallback != null) playerCallback.playerException(e);
-                        break;
-                    }
-                }
-                OpencorePlayer.this.streamPlayerOpencore.wakeLock.release();
-                OpencorePlayer.this.streamPlayerOpencore.wifiLock.release();
-            }
-        }).start();
+        new Thread(new OpenCorePlayRunnable(this, url, expectedKBitSecRate)).start();
     }
 
     // needed in the following method
@@ -209,4 +174,5 @@ class OpencorePlayer extends MultiPlayer {
         }
 
     }
+
 }
