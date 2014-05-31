@@ -17,7 +17,7 @@ import java.util.*;
 
 
 @EActivity(R.layout.activity_plan)
-@SuppressLint({"SimpleDateFormat","Registered"})
+@SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanActivity extends SherlockListActivity {
 
     @StringRes

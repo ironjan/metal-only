@@ -50,6 +50,7 @@ public class WishFragment extends SherlockFragment {
     TextView wishCount;
     private boolean wish, regard;
     private String numberOfWishes;
+
     public WishFragment() {
     }
 

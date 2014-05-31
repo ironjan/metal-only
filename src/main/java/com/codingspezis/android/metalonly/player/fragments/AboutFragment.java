@@ -2,13 +2,10 @@ package com.codingspezis.android.metalonly.player.fragments;
 
 import android.content.*;
 import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
 import android.text.method.*;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.*;
 
 import org.androidannotations.annotations.*;

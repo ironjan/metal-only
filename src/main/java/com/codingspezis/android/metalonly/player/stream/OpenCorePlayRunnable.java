@@ -50,7 +50,7 @@ class OpenCorePlayRunnable implements Runnable {
     /**
      * Starts the play loop.
      *
-     * @throws Exception  unspecified Exception from OpenCorePlayer
+     * @throws Exception       unspecified Exception from OpenCorePlayer
      * @throws PlayerException a WrongSampleRateException which could not be ignored
      */
     private void startPlayLoop() throws Exception, PlayerException {
@@ -65,8 +65,8 @@ class OpenCorePlayRunnable implements Runnable {
      * The exception is ignored ten times; after that it is rethrown.
      *
      * @param wrongSampleRateException the WrongSampleRateException
-     * @throws Exception Arbitrary exception thrown by Opencore
-     * @throws  PlayerException the WrongSampleRateException which was repeated too often
+     * @throws Exception       Arbitrary exception thrown by Opencore
+     * @throws PlayerException the WrongSampleRateException which was repeated too often
      */
     private void handleWrongSampleRateException(WrongSampleRateException wrongSampleRateException) throws Exception, PlayerException {
         samplerateRestarts++;
@@ -77,7 +77,7 @@ class OpenCorePlayRunnable implements Runnable {
         if (samplerateRestarts <= 10) {
             startPlayLoop();
         } else {
-            throw new PlayerException("Too many WrongSampleRateExceptions",wrongSampleRateException);
+            throw new PlayerException("Too many WrongSampleRateExceptions", wrongSampleRateException);
         }
     }
 
