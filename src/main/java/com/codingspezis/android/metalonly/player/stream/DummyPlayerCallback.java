@@ -4,6 +4,9 @@ import android.media.*;
 
 import com.spoledge.aacdecoder.*;
 
+/**
+ * A class implementing a PlayerCallback with stubs
+ */
 class DummyPlayerCallback implements PlayerCallback {
     @Override
     public void playerStarted() {

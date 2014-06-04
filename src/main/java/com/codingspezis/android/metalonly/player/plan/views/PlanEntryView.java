@@ -30,13 +30,12 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Plan
     }
 
     @Override
-    public void bind(PlanData tmpData) {
-        txtTitle.setText(tmpData.getTitle());
-        txtMod.setText(tmpData.getMod());
-        txtTime.setText(tmpData.getTimeString());
-        txtGenre.setText(tmpData.getGenre());
-        imageLoader.DisplayImage(tmpData.getMod(), modImage);
-        progress.setProgress(100 - tmpData.getProgress());
-
+    public void bind(PlanData planData) {
+        txtTitle.setText(planData.getTitle());
+        txtMod.setText(planData.getMod());
+        txtTime.setText(planData.getTimeString());
+        txtGenre.setText(planData.getGenre());
+        imageLoader.DisplayImage(planData.getMod(), modImage);
+        progress.setProgress(100 - planData.getProgress());
     }
 }
