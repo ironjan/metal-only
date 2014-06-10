@@ -6,7 +6,6 @@ package com.codingspezis.android.metalonly.player.stream.exceptions;
 @SuppressWarnings("serial")
 public class WrongSampleRateException extends PlayerException {
 
-    private int rate;
 
     public WrongSampleRateException(int rate) {
         super("Wrong sample rate detected: " + rate);
