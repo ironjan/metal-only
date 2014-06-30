@@ -18,7 +18,7 @@ public class StreamPlayerOpencore implements AudioStream {
 
     private OpencorePlayer ocPlayer;
     private OnStreamListener streamListener;
-    volatile  boolean shouldPlay = false;
+    boolean shouldPlay = false;
     private String url;
     private Context context;
 
