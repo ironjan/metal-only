@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- menu -->
+    <string name="menu">Menu</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_history">History</string>
+    <string name="menu_donation">Donation</string>
+    <string name="menu_info">Info</string>
+
+    <!-- errors -->
+    <string name="error_initialize_player">Error when creating player</string>
+    <string name="error_player32">AAC+ Decoder-Error</string>
+
+    <!-- standard text -->
+    <string name="ok">OK</string>
+    <string name="abort">Cancel</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="empty"></string>
+    <string name="attention">Attention</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
+    <!-- days of week -->
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <!-- stream -->
+    <string name="connecting">Connecting</string>
+    <string name="timeout">Timeout</string>
+    <string name="playing">Playing stream</string>
+    <string name="internet_timeout">Stopped playing (no internet connection)</string>
+    <string name="stream_restart">An erro occurred - retry %s s.</string>
+
+    <!-- wish activity -->
+    <string name="wish_regards">Wish / Greet</string>
+    <string name="wish_send">Send</string>
+    <string name="wish_regard">Greeting:</string>
+    <string name="wish_nick">Nick:</string>
+    <string name="artist">Artist:</string>
+    <string name="title">Title:</string>
+    <string name="sent">Sent</string>
+    <string name="sending_error">Sending error</string>
+    <string name="impossible">not possible</string>
+    <string name="no_wishes">Sorry, the playlist is filled completely. You cannot submit any wishes.</string>
+    <string name="no_wishes_short">No wishes right now</string>
+    <string name="no_regards">No greetings right now</string>
+    <string name="no_wishes_and_regards">No wishes and no greetings right now</string>
+    <string name="wish_explanation">Sending wishes and greetings is only possible in moderated shows. Keep in mind that metal-only is a German internet radio - greetings should be in German. The translation of this app has been the choice of the developers.\nThe team of Metal Only may choose not to play your wishes or not to read your greetings without any explanations. No moderator is obligated to read you greeting, nor to play your wishes. Wishes that do not match the genre of the show will be dropped. Because there are many greetings, every moderator decides which greetings are read aloud. This is no discrimination against the sender, nor against the receiver of your greetings.</string>
+    <string name="no_moderator">Wishing and greeting is only possible in moderated shows</string>
+    <string name="per_user">per listener</string>
+    <string name="invalid_input">Input incomplete</string>
+    <string name="communicating">Communicating with server...</string>
+    <string name="menu_help">Help</string>
+
+    <!-- paypal donation -->
+    <string name="paypal">Donation via PayPal</string>
+    <string name="donation_receiver">To:</string>
+    <string name="donation_donator">From:</string>
+    <string name="donation_value">Value in €:</string>
+    <string name="donation_toPaypal">to PayPal</string>
+
+    <string-array name="from_array">
+        <item>Anonymous</item>
+    </string-array>
+
+    <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
+    <string name="paypal_description2">Um eine anonyme Spende zu machen, lassen Sie das \'Von\'-Feld einfach leer. Auf der Website von PayPal können Sie Ihre Angaben erneut überprüfen.</string>
+    <string name="notification">Hint</string>
+    <string name="donation_enter_from">Donator?</string>
+    <string name="donation_enter_value">How much to donate?</string>
+    <string name="help">Help</string>
+    <string name="paypal_receiver">Receiver</string>
+    <string name="paypal_sender">Donator</string>
+    <string name="paypal_sender_dialog">Donator's name</string>
+    <string name="paypal_value">Value</string>
+    <string name="paypal_value_dialog">How much to donate (in €)?</string>
+    <string name="paypal_send">Next</string>
+    <string name="paypal_send_sum">Go to PayPal website</string>
+    <string name="paypal_info">Account information</string>
+    <string name="paypal_info_sum">General information about donations (German)</string>
+    <string name="paypal_default_sender">Anonymous</string>
+    <string name="paypal_category_inoformation">Info</string>
+    <string name="paypal_category_paypal">Donation via PayPal</string>
+
+    <!-- SpinnerOwnValue -->
+    <string name="other">Other</string>
+    <string name="choose_other">Choose other:</string>
+
+    <!-- no internet -->
+    <string name="no_internet">No internet connection</string>
+    <string name="open_internet_settings">No internet connection. Open network settings?</string>
+
+    <!-- settings -->
+    <string name="settings_category_stream">Stream</string>
+    <string name="settings_rate">Streaming rate</string>
+    <string name="settings_rate_summary"></string>
+
+
+    <string name="settings_audio_buffer">Audio buffer</string>
+    <string name="settings_decoding_buffer">Decoding buffer</string>
+    <string name="settings_buffer_hint">Capacity in ms:</string>
+
+    <!-- favorites -->
+    <string-array name="favorite_options_array">
+        <item>Wish</item>
+        <item>Search on YouTube</item>
+        <item>Share</item>
+        <item>Delete</item>
+    </string-array>
+
+    <string name="menu_deleteall">Delete all</string>
+    <string name="menu_shareall">Share all</string>
+    <string name="menu_add_mannually">Add to favorites</string>
+    <string name="delete_sure">Delete ALL?</string>
+
+    <!-- other features -->
+    <string name="plan">Plan</string>
+    <string name="volume">Volume</string>
+
+    <!-- history -->
+    <string-array name="history_options_array">
+        <item>Add to favorites</item>
+        <item>Search on YouTube</item>
+        <item>Share</item>
+    </string-array>
+
+    <string name="fav_added">Added</string>
+    <string name="fav_already_in">Already favorited</string>
+
+    <!-- plan -->
+    <string-array name="plan_options_array">
+        <item>Add to calendar</item>
+        <item>Share</item>
+    </string-array>
+
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="play_paus">Play/Pause</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="moderator">Moderator</string>
+
+</resources>
