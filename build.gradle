@@ -1,7 +1,7 @@
 def versionMajor = 0 // incompatible API changes
-def versionMinor = 5 // added functionality in a backwards-compatible manner
-def versionPatch = 0 // backwards-compatible bug fixes
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+def versionMinor = 4 // added functionality in a backwards-compatible manner
+def versionPatch = 13 // backwards-compatible bug fixes
+def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 
 buildscript {
     repositories {
@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.0'
+        classpath 'com.android.tools.build:gradle:0.9.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
     }
 }
@@ -36,7 +36,7 @@ def getSourceSetName(variant) {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    buildToolsVersion "19"
 
     packagingOptions {
         // prevents Error: duplicate files during packaging of APK
@@ -60,7 +60,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 19
 
-        applicationId "com.codingspezis.android.metalonly.player"
+        packageName "com.codingspezis.android.metalonly.player"
     }
 
 
@@ -103,5 +103,5 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
+    gradleVersion = '1.9'
 }
