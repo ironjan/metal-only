@@ -73,15 +73,15 @@
         <item>Anonymous</item>
     </string-array>
 
-    <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
-    <string name="paypal_description2">Um eine anonyme Spende zu machen, lassen Sie das \'Von\'-Feld einfach leer. Auf der Website von PayPal können Sie Ihre Angaben erneut überprüfen.</string>
+    <string name="paypal_description1">&lt;p&gt;You can donate to Metal Only via PayPal (A registration at PayPal is not necessary).&lt;br&gt;Infos and account info are avaialbe at &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt; (German).&lt;/p&gt;</string>
+    <string name="paypal_description2">To donate anonymously, just leave the \'From\'-value blank. You can check the inputs again on the PayPal website.</string>
     <string name="notification">Hint</string>
     <string name="donation_enter_from">Donator?</string>
     <string name="donation_enter_value">How much to donate?</string>
     <string name="help">Help</string>
     <string name="paypal_receiver">Receiver</string>
     <string name="paypal_sender">Donator</string>
-    <string name="paypal_sender_dialog">Donator's name</string>
+    <string name="paypal_sender_dialog">Donator\'s name</string>
     <string name="paypal_value">Value</string>
     <string name="paypal_value_dialog">How much to donate (in €)?</string>
     <string name="paypal_send">Next</string>

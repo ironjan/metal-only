@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- about -->
     <string name="mailaddress_codingspezis" translateable="false">mail@codingspezis.com</string>
     <string name="url_codingspezis" translateable="false">http://www.codingspezis.com/</string>
     <string name="aboutThisApp">Diese App bringt den Internetstream von &lt;a href="http://www.metal-only.de>metal-only&lt;/a> auf Android.&lt;br/>
