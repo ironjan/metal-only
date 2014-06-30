@@ -18,16 +18,6 @@ Entwickelt wird sie hauptsächlich von den &lt;a href="http://www.codingspezis.c
     <string name="about_category_libs">Verwendete Bibliotheken</string>
     <string name="about_link">Link:</string>
     <string name="about_license">Lizenz:</string>
-
-    <string name="libraries" translateable="false">* &lt;a href="https://android.googlesource.com/platform/external/opencore.git">OpenCORE aacdec&lt;/a>, &lt;a href="https://android.googlesource.com/platform/external/opencore.git/+/master/NOTICE">Apache 2.0&lt;/a>&lt;br/>
-* &lt;a href="https://code.google.com/p/aacdecoder-android/">AAC Decoder for Android&lt;/a>, &lt;a href="http://www.gnu.org/licenses/lgpl.html">LGPL&lt;/a>&lt;br/>
-* &lt;a href="https://github.com/JakeWharton/ActionBarSherlock">ActionBarSherlock&lt;/a>, &lt;a href="https://github.com/JakeWharton/ActionBarSherlock/blob/master/LICENSE.txt">Apache 2.0&lt;/a>&lt;br/>
-* &lt;a href="https://www.github.com/thest1/LazyList">LazyList&lt;/a>, &lt;a href="https://github.com/thest1/LazyList/blob/master/LICENSE">MIT License&lt;/a>&lt;br/>
-* &lt;a href="https://github.com/excilys/androidannotations">androidannotations&lt;/a>, &lt;a href="https://github.com/excilys/androidannotations/blob/develop/LICENSE.txt">Apache 2.0&lt;/a>&lt;br/>
-* &lt;a href="http://www.springsource.org/spring-android">Spring for Android&lt;/a>, &lt;a href="https://github.com/spring-projects/spring-android/blob/master/LICENSE">Apache 2.0&lt;/a>&lt;br/>
-* &lt;a href="http://wiki.fasterxml.com/JacksonHome">Jackson JSON Processor&lt;/a>, &lt;a href="http://wiki.fasterxml.com/JacksonLicensing">Apache 2.0&lt;/a>&lt;br/></string>
-
-
     <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
 
 </resources>
