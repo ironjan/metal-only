@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textAacDecoderLink"
+            android:layout_below="@+id/divider"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:text="@string/about_sherlock"
             android:textAppearance="?android:attr/textAppearanceMedium" />
