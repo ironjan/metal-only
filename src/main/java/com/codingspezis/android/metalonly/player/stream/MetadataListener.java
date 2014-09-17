@@ -13,7 +13,7 @@ public class MetadataListener implements Runnable {
     private OnMetadataReceivedListener onMetadataReceivedListener;
     private boolean active;
 
-    private static final int REFRESH_INTERVAL = 10 * 1000;
+    private static final int REFRESH_INTERVAL = 20 * 1000;
     private boolean err;
     /**
      * constructor
@@ -53,8 +53,8 @@ public class MetadataListener implements Runnable {
         active = true;
         String metadata;
         while(active && !err) {
-            System.out.println("TRYING TO RECEIVE METADATA");
             try {
+                icyStreamMeta.refreshMeta();
                 metadata = icyStreamMeta.getStreamTitle();
                 if (onMetadataReceivedListener != null)
                     onMetadataReceivedListener.onMetadataReceived(metadata);
