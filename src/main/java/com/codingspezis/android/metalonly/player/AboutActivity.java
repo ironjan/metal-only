@@ -28,18 +28,9 @@ public class AboutActivity extends SherlockActivity {
 	@StringRes
 	String mailaddress_codingspezis, app_name;
 
-
 	@ViewById
 	@FromHtml(R.string.aboutThisApp)
 	TextView textAboutApp;
-
-	@ViewById
-	@FromHtml(R.string.url_opencore)
-	TextView textOpencoreLink;
-
-	@ViewById
-	@FromHtml(R.string.url_aacdecoder)
-	TextView textAacDecoderLink;
 
 	@ViewById
 	@FromHtml(R.string.url_sherlock)
@@ -92,9 +83,8 @@ public class AboutActivity extends SherlockActivity {
 		sendEmail(mailaddress_codingspezis, subject, "");
 	}
 
-	@Click({ R.id.textOpencoreLicenseApache, R.id.textSherlockLicenseApache,
-			R.id.textAndroidannotationsLicenseApache, R.id.textSpringLicenseApache,
-			R.id.textJacksonLicenseApache })
+	@Click({R.id.textSherlockLicenseApache, R.id.textAndroidannotationsLicenseApache,
+            R.id.textSpringLicenseApache, R.id.textJacksonLicenseApache})
 	void displayApacheLicense() {
 		displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
 	}
@@ -104,11 +94,6 @@ public class AboutActivity extends SherlockActivity {
 		displayLicense(LicenseActivity.KEY_BU_LICENSE_MIT);
 	}
 
-	@Click({ R.id.textAacDecoderLicenseLGPL })
-	void displayLgplLicense() {
-		displayLicense(LicenseActivity.KEY_BU_LICENSE_LGPL);
-	}
-
 	/**
 	 * displays specified license
 	 * 
@@ -116,8 +101,7 @@ public class AboutActivity extends SherlockActivity {
 	 *            license to display
 	 */
 	private void displayLicense(String license) {
-		Intent licenseIntent = new Intent(getApplicationContext(),
-				LicenseActivity.class);
+		Intent licenseIntent = new Intent(getApplicationContext(), LicenseActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putString(LicenseActivity.KEY_BU_LICENSE_NAME, license);
 		licenseIntent.putExtras(bundle);

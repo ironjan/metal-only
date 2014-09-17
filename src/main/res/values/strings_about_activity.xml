@@ -17,14 +17,6 @@
     <string name="about_link">Link:</string>
     <string name="about_license">Lizenz:</string>
 
-    <!-- open core -->
-    <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
-    <string name="about_opencore">OpenCORE aacdec</string>
-
-    <!-- aac decoder -->
-    <string name="about_aacdecoder">AAC Decoder for Android</string>
-    <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
-
     <!-- actionbarsherlock -->
     <string name="about_sherlock">ActionBarSherlock</string>
     <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>

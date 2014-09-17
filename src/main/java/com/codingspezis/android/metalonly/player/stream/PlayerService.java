@@ -8,7 +8,6 @@ import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.spoledge.aacdecoder.*;
 
 /**
  * service that is managing stream player
@@ -37,12 +36,8 @@ public class PlayerService extends Service {
     // maximum number of songs in history
     public static final int HISTORY_ENTRIES = 25;
 
-    // stream URLs
-    private static final String URL128 = "http://server1.blitz-stream.de:4400";
-    private static final String URL32 = "http://mobil.metal-only.de:8000";
-
-    // private AudioStream audioStream;
-    StreamPlayerOpencore audioStream;
+    // public AudioStream audioStream;
+    public AudioStream audioStream;
 
     private PlayerBCReceiver playerBCReceiver;
 
@@ -74,21 +69,7 @@ public class PlayerService extends Service {
                 INTENT_STATUS_REQUEST));
         registerReceiver(playerBCReceiver, new IntentFilter(INTENT_EXIT));
 
-        audioStream = new StreamPlayerOpencore(this);
-
-        // register the IcyURLStreamHandler for android 4.4
-        try {
-            java.net.URL.setURLStreamHandlerFactory(new java.net.URLStreamHandlerFactory() {
-                public java.net.URLStreamHandler createURLStreamHandler(String protocol) {
-                    Log.d("PlayerService", "Asking for stream handler for protocol: '" + protocol + "'");
-                    if ("icy".equals(protocol))
-                        return new com.spoledge.aacdecoder.IcyURLStreamHandler();
-                    return null;
-                }
-            });
-        } catch (Throwable t) {
-            Log.w("PlayerService", "Cannot set the ICY URLStreamHandler - maybe already set ? - " + t);
-        }
+        audioStream = new StreamPlayerInternal(this);
     }
 
     @Override
@@ -124,35 +105,7 @@ public class PlayerService extends Service {
      */
     @SuppressWarnings("boxing")
     void instantiateSelectedPlayer() {
-        SharedPreferences prefs = getSharedPreferences(
-                getString(R.string.app_name), Context.MODE_MULTI_PROCESS);
-        // bitrate
-        String rate = prefs.getString(getString(R.string.settings_key_rate),
-                getResources().getStringArray(R.array.rate_label)[0]);
-        // buffer sizes
-        int ab = AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS;
-        int db = AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS;
-        try {
-            ab = Integer
-                    .valueOf(prefs
-                            .getString(
-                                    getString(R.string.settings_key_audio_buffer),
-                                    String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS)));
-            db = Integer
-                    .valueOf(prefs
-                            .getString(
-                                    getString(R.string.settings_key_decoding_buffer),
-                                    String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS)));
-        } catch (Exception e) {
-            // nothing to be done here
-        }
-        if (rate.equals(getResources().getStringArray(R.array.rate_label)[0])) {
-            audioStream.setUrl(URL32);
-        } else {
-            audioStream.setUrl(URL128);
-        }
-        audioStream.setAudioBufferCapacityMs(ab);
-        audioStream.setDecodingBufferCapacityMs(db);
+        // TODO: change me
     }
 
     void notify(String contentText) {

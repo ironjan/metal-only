@@ -14,7 +14,6 @@
 
     <!-- errors -->
     <string name="error_initialize_player">Fehler beim Erstellen des Players</string>
-    <string name="error_player32">AAC+ Decoder-Fehler</string>
 
     <!-- standard text -->
     <string name="ok">OK</string>

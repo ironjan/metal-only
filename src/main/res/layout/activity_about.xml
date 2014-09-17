@@ -58,68 +58,6 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/textOpencoreName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/divider"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_opencore"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textOpencoreLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textOpencoreName"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_opencore" />
-
-        <TextView
-            android:id="@+id/textOpencoreLicenseApache"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textOpencoreName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/apl2"
-            android:textColor="@color/turkis" />
-
-        <TextView
-            android:id="@+id/textAacDecoderName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textOpencoreLink"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_aacdecoder"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textAacDecoderLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textAacDecoderName"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_aacdecoder" />
-
-        <TextView
-            android:id="@+id/textAacDecoderLicenseLGPL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textAacDecoderName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/lgpl"
-            android:textColor="@color/turkis" />
-
-        <TextView
             android:id="@+id/textSherlockName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

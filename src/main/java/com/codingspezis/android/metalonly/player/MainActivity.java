@@ -346,11 +346,7 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({})", item);
 
 
-        if (item.getItemId() == R.id.mnu_settings) {
-            Intent settingsIntent = new Intent(getApplicationContext(),
-                    SettingsActivity.class);
-            startActivity(settingsIntent);
-        } else if (item.getItemId() == R.id.mnu_favorites) {
+        if (item.getItemId() == R.id.mnu_favorites) {
             FavoritesActivity_.intent(this).start();
         } else if (item.getItemId() == R.id.mnu_donation) {
             Intent paypalIntent = new Intent(getApplicationContext(),
