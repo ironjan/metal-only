@@ -11,9 +11,6 @@
     	android:id="@+id/mnu_donation"
         android:title="@string/menu_donation" />
     <item
-    	android:id="@+id/mnu_settings"
-        android:title="@string/menu_settings" />
-    <item
     	android:id="@+id/mnu_info"
         android:title="@string/menu_info" />
 
