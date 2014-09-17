@@ -72,7 +72,7 @@ public class ThreadedLicenseReader extends Thread {
                     .openRawResource(R.raw.lgpl);
         } else if (LicenseActivity.KEY_BU_LICENSE_MIT.equals(license)) {
             in = this.licenseActivity.getResources().openRawResource(
-                    R.raw.apache);
+                    R.raw.mit);
         } else {
             throw new IllegalArgumentException(
                     "Argument has to be one of: \"apache\",\"lgpl\",\"mit\"");
