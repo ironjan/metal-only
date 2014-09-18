@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public class StreamPlayerInternal implements AudioStream {
 
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private Context context;
 
     private OnStreamListener onStreamListener;
@@ -131,11 +131,15 @@ public class StreamPlayerInternal implements AudioStream {
      * @return true if decoding and playing is still running
      */
     public boolean isPlaying() {
+        return IsPlaying();
+    }
+
+    public static boolean IsPlaying() {
         return mediaPlayer.isPlaying();
     }
 
     /**
-     * sets listener for handle meta data etc.
+     * sets listener for handle meta data etc. unnecessary
      *
      * @param streamListener listener to set
      */

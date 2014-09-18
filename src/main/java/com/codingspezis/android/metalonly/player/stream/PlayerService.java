@@ -99,15 +99,6 @@ public class PlayerService extends Service {
         startForeground(FOREGROUND_NOTIFICATION_ID, generateNotification(getString(R.string.playing)));
     }
 
-    /**
-     * instantiates music stream with selected player class (from
-     * SettingsActivity)
-     */
-    @SuppressWarnings("boxing")
-    void instantiateSelectedPlayer() {
-        // TODO: change me
-    }
-
     void notify(String contentText) {
         notificationManager.notify(FOREGROUND_NOTIFICATION_ID, generateNotification(contentText));
     }
