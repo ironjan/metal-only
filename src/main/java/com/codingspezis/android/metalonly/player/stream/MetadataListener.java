@@ -46,7 +46,7 @@ public class MetadataListener implements Runnable {
     }
 
     /**
-     * gets meta data every 10 seconds
+     * gets meta data every REFRESH_INTERVAL milliseconds
      */
     @ Override
     public void run() {
