@@ -123,6 +123,7 @@ public class StreamPlayerInternal implements AudioStream {
      * stops decoding and playing stream
      */
     public void stopPlaying() {
+        metadataListener.stop();
         mediaPlayer.stop();
     }
 

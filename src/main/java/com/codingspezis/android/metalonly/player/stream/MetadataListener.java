@@ -56,10 +56,10 @@ public class MetadataListener implements Runnable {
             try {
                 icyStreamMeta.refreshMeta();
                 metadata = icyStreamMeta.getStreamTitle();
-                if (onMetadataReceivedListener != null)
+                if (onMetadataReceivedListener != null && active)
                     onMetadataReceivedListener.onMetadataReceived(metadata);
             } catch(IOException e) {
-                if (onMetadataReceivedListener != null)
+                if (onMetadataReceivedListener != null && active)
                     onMetadataReceivedListener.onMetadataError(e);
             }
             try {
