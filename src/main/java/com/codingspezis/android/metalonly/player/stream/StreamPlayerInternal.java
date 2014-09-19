@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import com.codingspezis.android.metalonly.player.R;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 /**
  * Created by r on 17.09.14.
@@ -18,6 +19,7 @@ public class StreamPlayerInternal implements AudioStream {
 
     private OnStreamListener onStreamListener;
     private MetadataListener metadataListener;
+    private TimeoutListener  timeoutListener;
 
     // stream URL
     public static final String URL128 = "http://server1.blitz-stream.de:4400";
@@ -29,20 +31,44 @@ public class StreamPlayerInternal implements AudioStream {
     public StreamPlayerInternal(Context context) {
         this.context = context;
         setupMetadataListener();
+        setupTimeoutListener();
         createPlayer();
     }
 
+    /**
+     * sets up the metadata listener
+     */
     private void setupMetadataListener() {
         metadataListener = new MetadataListener();
         metadataListener.setOnMetadataReceivedListener(new OnMetadataReceivedListener() {
             @Override
             public void onMetadataReceived(String metadata) {
-                if(onStreamListener != null)
+                if (onStreamListener != null)
                     onStreamListener.metadataReceived(metadata);
             }
+
             @Override
             public void onMetadataError(Exception exception) {
                 // TODO: make some noise
+            }
+        });
+    }
+
+    /**
+     * sets up the timeout listener
+     */
+    private void setupTimeoutListener() {
+        timeoutListener = new TimeoutListener();
+        timeoutListener.setOnTimeoutListener(new OnTimeoutListener() {
+            private long lastTimeout;
+            private static final long TIMEOUT_LIMIT = 30 * 1000; // 30 sec
+            @Override
+            public void onTimeout() {
+                long currentTimeout = Calendar.getInstance().getTimeInMillis();
+                // do not allow more than one reconnect within TIMEOUT_LIMIT milliseconds
+                if((currentTimeout - lastTimeout) > TIMEOUT_LIMIT) {
+                    startPlaying();
+                }
             }
         });
     }
@@ -58,6 +84,10 @@ public class StreamPlayerInternal implements AudioStream {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(onPreparedListener);
         mediaPlayer.setOnErrorListener(onErrorListener);
+
+        // TODO: check this
+        // mediaPlayer.setWakeMode();
+
     }
 
     /**
@@ -70,6 +100,7 @@ public class StreamPlayerInternal implements AudioStream {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setDataSource(URL128);
         metadataListener.stop();
+        timeoutListener.stop();
     }
 
     /**
@@ -82,6 +113,7 @@ public class StreamPlayerInternal implements AudioStream {
                 onStreamListener.streamConnected();
             mediaPlayer.start();
             new Thread(metadataListener).start();
+            new Thread(timeoutListener).start();
         }
     };
 
@@ -124,24 +156,31 @@ public class StreamPlayerInternal implements AudioStream {
      */
     public void stopPlaying() {
         metadataListener.stop();
+        timeoutListener.stop();
         mediaPlayer.stop();
     }
 
     /**
-     * @return true if decoding and playing is still running
+     * @return
+     *      true if decoding and playing is still running
      */
     public boolean isPlaying() {
         return IsPlaying();
     }
 
+    /**
+     * static version of the player running check
+     * @return
+     *      true if decoding and playing is still running
+     */
     public static boolean IsPlaying() {
         return mediaPlayer.isPlaying();
     }
 
     /**
-     * sets listener for handle meta data etc. unnecessary
-     *
-     * @param streamListener listener to set
+     * sets listener for handle metadata etc.
+     * @param streamListener
+     *      listener to set
      */
     public void setOnStreamListener(OnStreamListener streamListener) {
         onStreamListener = streamListener;
