@@ -278,7 +278,7 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-                PlayerService.HISTORY_ENTRIES);
+                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<Song>();
 
@@ -316,6 +316,7 @@ public class MainActivity extends SherlockListActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({})", menu);
 
+        // TODO extract to menu resource
         this.menu = menu;
         // favorites button
         MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,
@@ -507,8 +508,8 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
         if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadataParser().getGENRE());
-            marqueeMod.setText(getMetadataParser().getMODERATOR());
+            marqueeGenre.setText(getMetadataParser().getGenre());
+            marqueeMod.setText(getMetadataParser().getModerator());
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 

@@ -8,18 +8,10 @@ import java.io.*;
 import java.util.*;
 
 /**
- * <b>SongSaver</b><br/>
- * <p/>
- * this class stores a list of songs in internal storage via JSON files
- *
- * @author codingspezis.com
- * @version Apr 28, 2013
+ * This class persists songs in the internal storage via JSON files.
  */
 public class SongSaver {
 
-    /**
-     * JSON keys for accessing songs
-     */
     public static final String JSON_ARRAY_SONGS = "songs";
     public static final String JSON_STRING_INTERPRET = "interpret";
     public static final String JSON_STRING_TITLE = "title";
@@ -58,7 +50,7 @@ public class SongSaver {
 
 
     /**
-     * TODO refactor
+     * TODO refactor, we should use jackson directly (i.e. parse file directly into pojo)
      * reads songs from file
      */
     private synchronized void readSongsFromStorage() {

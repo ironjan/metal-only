@@ -1,58 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- about -->
-    <string name="mailaddress_codingspezis">mail@codingspezis.com</string>
-    <string name="url_codingspezis">http://www.codingspezis.com/</string>
-    <string name="aboutThisApp">Diese App bringt den Internetstream von http://www.metal-only.de auf Android.\nEntwickelt wurde sie von den codingspezis (http://www.codingspezis.com).</string>
-    <string name="about_category_app">App</string>
+    <string name="mailaddress_codingspezis" translateable="false">mail@codingspezis.com</string>
+    <string name="url_codingspezis" translateable="false">http://www.codingspezis.com/</string>
+    <string name="aboutThisApp">Diese App bringt den Internetstream von &lt;a href="http://www.metal-only.de>metal-only&lt;/a> auf Android.&lt;br/>
+&lt;br/>
+Entwickelt wird sie hauptsächlich von den &lt;a href="http://www.codingspezis.com">codingspezis&lt;/a> - der Quellcode der App ist auf &lt;a href="https://github.com/Codingspezis/metal-only">github&lt;/a> zu finden. Wir freuen uns sehr über Mit-Entwickler!</string>
+    <string name="about_category_app" translateable="false">App</string>
     <string name="about_name">Name:</string>
     <string name="about_version">Version:</string>
     <string name="about_web1">Web:</string>
-    <string name="about_web2">metal-only.de</string>
+    <string name="about_web2" translateable="false">metal-only.de</string>
     <string name="about_developers1">Entwickler:</string>
-    <string name="about_developers2">codingspezis.com</string>
+    <string name="about_developers2" translateable="false">codingspezis.com</string>
     <string name="about_mail">Feedback / Bug Report</string>
     <string name="about_category_libs">Verwendete Bibliotheken</string>
     <string name="about_link">Link:</string>
     <string name="about_license">Lizenz:</string>
-
-    <!-- open core -->
-    <string name="url_opencore">https://android.googlesource.com/platform/external/opencore.git</string>
-    <string name="about_opencore">OpenCORE aacdec</string>
-
-    <!-- aac decoder -->
-    <string name="about_aacdecoder">AAC Decoder for Android</string>
-    <string name="url_aacdecoder">http://www.code.google.com/p/aacdecoder-android/</string>
-
-    <!-- actionbarsherlock -->
-    <string name="about_sherlock">ActionBarSherlock</string>
-    <string name="url_sherlock">https://github.com/JakeWharton/ActionBarSherlock/</string>
-
-    <!-- lazylist -->
-    <string name="about_lazylist">LazyList</string>
-    <string name="about_tutorial">Android Custom ListView</string>
-    <string name="url_lazylist">https://www.github.com/thest1/LazyList/</string>
-
-    <!-- androidhive -->
-    <string name="url_androidhive">http://www.androidhive.info/2012/02/android-custom-listview-with-image-and-text/</string>
-
-    <!-- androidannotations -->
-    <string name="about_androidannotations">androidannotations</string>
-    <string name="url_androidannotations">https://github.com/excilys/androidannotations/</string>
-
-    <!-- spring -->
-    <string name="about_spring">Spring for Android</string>
-    <string name="url_spring">http://www.springsource.org/spring-android</string>
-    
-    <!-- jackson -->
-	<string name="about_jackson">Jackson JSON Processor</string>
-	<string name="url_jackson">http://wiki.fasterxml.com/JacksonHome</string>
-
-    <!-- licenses -->
-    <string name="apl2">Apache 2.0</string>
-    <string name="lgpl">LGPL</string>
-    <string name="mit">MIT</string>
     <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
 
 </resources>

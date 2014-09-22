@@ -29,7 +29,7 @@ class StreamWatcher implements OnStreamListener {
             this.playerService.playerService.notify(metadata);
 
             Intent metaIntent = new Intent(PlayerService.INTENT_METADATA);
-            metaIntent.putExtra(PlayerService.EXTRA_META, data);
+            metaIntent.putExtra(PlayerService.BROADCAST_EXTRA_META, data);
             this.playerService.sendBroadcast(metaIntent);
         }
     }

@@ -31,14 +31,14 @@ public class SongAdapterFavorites extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
-		if (convertView == null) {
-			view = inflater.inflate(R.layout.view_list_item_song_fav, null);
-		}
-		Song song = data.get(position);
-	
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        if (convertView == null) {
+            view = inflater.inflate(R.layout.view_list_item_song_fav, null);
+        }
+        Song song = data.get(position);
+
         TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
 

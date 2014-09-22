@@ -30,18 +30,18 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
             this.mainActivity
                     .setSupportProgressBarIndeterminateVisibility(false);
-            if (intent.getBooleanExtra(PlayerService.EXTRA_CONNECTED, false)) {
+            if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.mainActivity.setShouldPlay(true);
                 this.mainActivity.toggleStreamButton(true);
                 this.mainActivity.setMetadataParser(new MetadataParser(intent
-                        .getStringExtra(PlayerService.EXTRA_META)));
+                        .getStringExtra(PlayerService.BROADCAST_EXTRA_META)));
                 this.mainActivity.displayMetadata();
             } else {
                 this.mainActivity.toggleStreamButton(false);
             }
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            String metadata = intent.getStringExtra(PlayerService.EXTRA_META);
+            String metadata = intent.getStringExtra(PlayerService.BROADCAST_EXTRA_META);
             this.mainActivity.setMetadataParser(new MetadataParser(metadata));
             this.mainActivity.refreshShowInfo();
             this.mainActivity.displaySongs();

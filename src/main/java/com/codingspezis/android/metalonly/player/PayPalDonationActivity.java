@@ -25,6 +25,7 @@ public class PayPalDonationActivity extends SherlockFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // help button
+        // TODO use help menu resource
         MenuItem hlp = menu.add(0, R.id.mnu_help, 0, R.string.menu_help);
         hlp.setIcon(R.drawable.ic_action_web_site);
         hlp.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);

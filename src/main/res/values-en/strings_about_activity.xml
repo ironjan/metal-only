@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- about -->
+    <string name="aboutThisApp">this app can be used to listen to &lt;a href="http://www.metal-only.de>metal-only&lt;/a> on Android.&lt;br/>
+&lt;br/>
+It is developed by &lt;a href="http://www.codingspezis.com">codingspezis&lt;/a> - the app\'s source code is available on &lt;a href="https://github.com/Codingspezis/metal-only">github&lt;/a>. We\'d be happy to have some fellow devs!</string>
+    <string name="about_name">Name:</string>
+    <string name="about_version">Version:</string>
+    <string name="about_web1">Web:</string>
+    <string name="about_developers1">Developer:</string>
+    <string name="about_mail">Feedback / Bug Report</string>
+    <string name="about_category_libs">Libraries</string>
+    <string name="about_link">Link:</string>
+    <string name="about_license">License:</string>
+    <string name="no_mail_app">No email application.</string>
+
+</resources>

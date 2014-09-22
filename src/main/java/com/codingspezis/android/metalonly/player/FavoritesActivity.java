@@ -28,6 +28,7 @@ import java.util.*;
  */
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
+@SuppressLint("Registered")
 public class FavoritesActivity extends SherlockListActivity {
 
     private static final int ITEM_CLICK_ACTION_DELETE = 3;
