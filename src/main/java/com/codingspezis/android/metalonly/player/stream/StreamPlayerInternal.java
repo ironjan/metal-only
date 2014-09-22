@@ -66,8 +66,10 @@ public class StreamPlayerInternal implements AudioStream {
      * releases wifi and wake lock
      */
     private void releaseLocks() {
-        wakeLock.release();
-        wifiLock.release();
+        if(wakeLock.isHeld())
+            wakeLock.release();
+        if(wifiLock.isHeld())
+            wifiLock.release();
     }
 
     /**
