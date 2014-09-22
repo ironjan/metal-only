@@ -66,9 +66,14 @@ public class StreamPlayerInternal implements AudioStream {
             public void onTimeout() {
                 long currentTimeout = Calendar.getInstance().getTimeInMillis();
                 // do not allow more than one reconnect within TIMEOUT_LIMIT milliseconds
-                if((currentTimeout - lastTimeout) > TIMEOUT_LIMIT) {
+                if((currentTimeout - lastTimeout) > TIMEOUT_LIMIT)
                     startPlaying();
+                else {
+                    stopPlaying();
+                    if(onStreamListener != null)
+                        onStreamListener.errorOccurred(context.getString(R.string.timeout), false);
                 }
+                lastTimeout = currentTimeout;
             }
         });
     }
@@ -130,7 +135,6 @@ public class StreamPlayerInternal implements AudioStream {
             if(onStreamListener != null) {
                 onStreamListener.errorOccurred("Error "+i+"-"+i2, false);
             }
-            // TODO: check if a timeout ends here
             metadataListener.stop();
             // TODO: try to restart the stream
             return false;
