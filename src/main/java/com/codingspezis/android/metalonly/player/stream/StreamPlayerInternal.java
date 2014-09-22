@@ -3,6 +3,8 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 
 import com.codingspezis.android.metalonly.player.R;
 
@@ -21,6 +23,9 @@ public class StreamPlayerInternal implements AudioStream {
     private MetadataListener metadataListener;
     private TimeoutListener  timeoutListener;
 
+    private PowerManager.WakeLock wakeLock;
+    private WifiManager.WifiLock wifiLock;
+
     // stream URL
     public static final String URL128 = "http://server1.blitz-stream.de:4400";
 
@@ -32,7 +37,37 @@ public class StreamPlayerInternal implements AudioStream {
         this.context = context;
         setupMetadataListener();
         setupTimeoutListener();
+        createLocks(context);
         createPlayer();
+    }
+
+    /**
+     * creates a wake lock and a wifi lock
+     * @param context
+     */
+    private void createLocks(Context context) {
+        // wake
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WAKE_LOCK_STREAM_DECODER");
+        // wifi
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL, "WIFI_LOCK_STREAM_DECODER");
+    }
+
+    /**
+     * acquires wifi and wake lock
+     */
+    private void acquireLocks() {
+        wakeLock.acquire(); // TODO: check if mediaPlayer.setWakeMode(..); is better
+        wifiLock.acquire();
+    }
+
+    /**
+     * releases wifi and wake lock
+     */
+    private void releaseLocks() {
+        wakeLock.release();
+        wifiLock.release();
     }
 
     /**
@@ -89,10 +124,6 @@ public class StreamPlayerInternal implements AudioStream {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(onPreparedListener);
         mediaPlayer.setOnErrorListener(onErrorListener);
-
-        // TODO: check this
-        // mediaPlayer.setWakeMode();
-
     }
 
     /**
@@ -114,6 +145,7 @@ public class StreamPlayerInternal implements AudioStream {
     private MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
+            acquireLocks();
             if(onStreamListener != null)
                 onStreamListener.streamConnected();
             mediaPlayer.start();
@@ -161,7 +193,8 @@ public class StreamPlayerInternal implements AudioStream {
     public void stopPlaying() {
         metadataListener.stop();
         timeoutListener.stop();
-        mediaPlayer.stop();
+        mediaPlayer.stop(); // TODO: check if this can cause an error if the player is already in error state
+        releaseLocks();
     }
 
     /**
