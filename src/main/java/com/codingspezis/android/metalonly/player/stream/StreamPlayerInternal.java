@@ -84,7 +84,8 @@ public class StreamPlayerInternal implements AudioStream {
 
             @Override
             public void onMetadataError(Exception exception) {
-                // TODO: make some noise
+                if (onStreamListener != null)
+                    onStreamListener.errorOccurred(exception.getMessage(), true);
             }
         });
     }
