@@ -58,8 +58,10 @@ public class StreamPlayerInternal implements AudioStream {
      * acquires wifi and wake lock
      */
     private void acquireLocks() {
-        wakeLock.acquire(); // TODO: check if mediaPlayer.setWakeMode(..); is better
-        wifiLock.acquire();
+        if(!wakeLock.isHeld())
+            wakeLock.acquire(); // TODO: check if mediaPlayer.setWakeMode(..); is better
+        if(!wifiLock.isHeld())
+            wifiLock.acquire();
     }
 
     /**
