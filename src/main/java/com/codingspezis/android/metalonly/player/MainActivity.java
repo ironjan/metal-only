@@ -118,9 +118,13 @@ public class MainActivity extends SherlockListActivity implements
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
                     Stats stats = apiWrapper.getStats();
-                    String moderator = stats.getModerator();
-                    String genre = stats.getGenre();
-                    updateShowinfo(moderator, genre);
+                    if(stats != null) {
+                        String moderator = stats.getModerator();
+                        String genre = stats.getGenre();
+                        if(genre == null)
+                            genre = "NULL";
+                        updateShowinfo(moderator, genre);
+                    }
                 } catch (NoInternetException e) {
                     // do nothing  if there is no internet connection
                 }
