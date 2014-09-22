@@ -120,15 +120,14 @@ public class MainActivity extends SherlockListActivity implements
                     Stats stats = apiWrapper.getStats();
                     String moderator = stats.getModerator();
                     String genre = stats.getGenre();
-                    updateShowinfo(moderator, genre);
+                    updateShowInfo(moderator, genre);
                 } catch (NoInternetException e) {
                     // do nothing  if there is no internet connection
                 }
             }
 
-            private void updateShowinfo(final String moderator,
-                                        final String genre) {
-                if (BuildConfig.DEBUG) LOGGER.debug("updateShowinfo({},{})", moderator, genre);
+            private void updateShowInfo(final String moderator, final String genre) {
+                if (BuildConfig.DEBUG) LOGGER.debug("updateShowInfo({},{})", moderator, genre);
 
                 Runnable runnable = new Runnable() {
 

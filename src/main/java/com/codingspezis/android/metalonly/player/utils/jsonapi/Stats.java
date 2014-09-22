@@ -76,7 +76,7 @@ public class Stats {
 
 
     public String getGenre() {
-        if (null == genre) {
+        if (genre.length() == 0) {
             int startGenre = sendung.indexOf("(") + 1;
             int endGenre = sendung.indexOf(")");
             genre = sendung.substring(startGenre, endGenre);
