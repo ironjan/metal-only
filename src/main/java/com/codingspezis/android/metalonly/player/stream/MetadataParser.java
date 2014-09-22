@@ -22,7 +22,7 @@ public class MetadataParser {
 
     public MetadataParser(String data) {
         try {
-            if (numberOfStars(data) >= 3) {
+            if (numberOfStars(data) >= 2) {
                 String[] slices = data.split("\\*");
                 MODERATOR = slices[1].trim();
                 GENRE = slices[2].trim();
@@ -67,9 +67,7 @@ public class MetadataParser {
         if (BuildConfig.DEBUG) LOGGER.debug("toSong()");
         long date = Calendar.getInstance().getTimeInMillis();
 
-        MODERATOR.replace(" OnAir", "");
-
-        Song song = new Song(INTERPRET, TITLE, MODERATOR, date);
+        Song song = new Song(INTERPRET, TITLE, MODERATOR.replace(" OnAir", ""), date);
         if (BuildConfig.DEBUG) LOGGER.debug("toSong() -> {}", song);
 
         return song;

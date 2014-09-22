@@ -6,7 +6,11 @@ import android.media.MediaPlayer;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 
+import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -28,6 +32,10 @@ public class StreamPlayerInternal implements AudioStream {
 
     // stream URL
     public static final String URL128 = "http://server1.blitz-stream.de:4400";
+
+    // logger
+    private static final String TAG = StreamPlayerInternal.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
     /**
      * constructor
@@ -150,6 +158,7 @@ public class StreamPlayerInternal implements AudioStream {
     private MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
+            if (BuildConfig.DEBUG) LOGGER.debug("onPrepared()");
             acquireLocks();
             if(onStreamListener != null)
                 onStreamListener.streamConnected();
@@ -182,6 +191,7 @@ public class StreamPlayerInternal implements AudioStream {
      * starts decoding and playing stream
      */
     public void startPlaying() {
+        if (BuildConfig.DEBUG) LOGGER.debug("startPlaying()");
         try {
             resetPlayer();
             mediaPlayer.prepareAsync();
@@ -196,9 +206,11 @@ public class StreamPlayerInternal implements AudioStream {
      * stops decoding and playing stream
      */
     public void stopPlaying() {
+        if (BuildConfig.DEBUG) LOGGER.debug("stopPlaying()");
         metadataListener.stop();
         timeoutListener.stop();
-        mediaPlayer.stop(); // TODO: check if this can cause an error if the player is already in error state
+        mediaPlayer.stop();
+        mediaPlayer.reset();
         releaseLocks();
     }
 

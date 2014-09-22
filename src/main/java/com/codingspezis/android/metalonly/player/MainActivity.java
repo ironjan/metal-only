@@ -277,8 +277,7 @@ public class MainActivity extends SherlockListActivity implements
     public void displaySongs() {
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
-        historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-                PlayerService.HISTORY_ENTRIES);
+        historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST, PlayerService.HISTORY_ENTRIES);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<Song>();
 
