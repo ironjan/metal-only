@@ -8,7 +8,6 @@ import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.spoledge.aacdecoder.*;
 
 /**
  * service that is managing stream player
@@ -25,8 +24,6 @@ public class PlayerService extends Service {
 
     public static final int FOREGROUND_NOTIFICATION_ID = 1;
     public static final int TIME_15_MINUTES_IN_MILLIS = 15 * 60 * 1000;
-    public static final String DEFAULT_PREF_AUDIO_BUFFER = String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS);
-    public static final String DEFAULT_PREF_DECODING_BUFFER = String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS);
     private NotificationManager notificationManager;
 
     public static final String BROADCAST_EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
@@ -123,11 +120,13 @@ public class PlayerService extends Service {
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);
-            long timeDiff = song.date - historySaver.get(index).date;
             if (index == -1) {
                 canAdd = true;
-            } else if (timeDiff > TIME_15_MINUTES_IN_MILLIS) {
-                canAdd = true;
+            } else {
+                long timeDiff = song.date - historySaver.get(index).date;
+                if (timeDiff > TIME_15_MINUTES_IN_MILLIS) {
+                    canAdd = true;
+                }
             }
         }
         if (canAdd) {
