@@ -32,9 +32,10 @@ public class WishActivity extends SherlockFragmentActivity {
     public static final String KEY_DEFAULT_TITLE = "MO_DEFAULT_TITLE";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WishActivity.class.getSimpleName());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
         super.onCreate(savedInstanceState);
 
@@ -43,11 +44,11 @@ public class WishActivity extends SherlockFragmentActivity {
 
         showContentFragment();
 
-        if(BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
 
     private void showContentFragment() {
-        if(BuildConfig.DEBUG) LOGGER.debug("showContentFragment()");
+        if (BuildConfig.DEBUG) LOGGER.debug("showContentFragment()");
 
         Bundle bundle = getIntent().getExtras();
         WishFragment fragment = WishFragment.newInstance(bundle);
@@ -56,13 +57,13 @@ public class WishActivity extends SherlockFragmentActivity {
         ft.replace(android.R.id.content, fragment);
         ft.commit();
 
-        if(BuildConfig.DEBUG) LOGGER.debug("showContentFragment() done");
+        if (BuildConfig.DEBUG) LOGGER.debug("showContentFragment() done");
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(BuildConfig.DEBUG) LOGGER.debug("");
+        if (BuildConfig.DEBUG) LOGGER.debug("");
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this, MainActivity.class);
@@ -81,7 +82,7 @@ public class WishActivity extends SherlockFragmentActivity {
      */
     public static boolean canWishOrDisplayNot(Activity activity,
                                               AllowedActions allowedActions) {
-        if(BuildConfig.DEBUG) LOGGER.debug("");
+        if (BuildConfig.DEBUG) LOGGER.debug("");
         if (!allowedActions.moderated) {
             MainActivity.alertMessage(activity,
                     activity.getString(R.string.no_moderator));

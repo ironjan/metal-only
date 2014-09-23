@@ -9,18 +9,20 @@ import com.codingspezis.android.metalonly.player.plan.*;
 
 import org.androidannotations.annotations.*;
 
+/**
+ * A view to divide sections in plans.
+ */
 @EViewGroup(R.layout.view_plan_section)
 public class SectionView extends LinearLayout {
 
-	@ViewById
-	TextView title;
-	
-	public SectionView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
+    @ViewById(android.R.id.title)
+    TextView textTitle;
 
-	public void bind(SectionItem sectionItem ){
-		String title2 = sectionItem.getTitle();
-		title.setText(title2);
-	}
+    public SectionView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public void bind(SectionItem sectionItem) {
+        textTitle.setText(sectionItem.getTitle());
+    }
 }

@@ -8,6 +8,7 @@ import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
+import com.spoledge.aacdecoder.*;
 
 /**
  * service that is managing stream player
@@ -22,19 +23,19 @@ public class PlayerService extends Service {
     public static final String INTENT_METADATA = "MO_INTENT_METADATA";
     public static final String INTENT_EXIT = "MO_INTENT_EXIT";
 
-    // notification id
     public static final int FOREGROUND_NOTIFICATION_ID = 1;
+    public static final int TIME_15_MINUTES_IN_MILLIS = 15 * 60 * 1000;
+    public static final String DEFAULT_PREF_AUDIO_BUFFER = String.valueOf(AACPlayer.DEFAULT_AUDIO_BUFFER_CAPACITY_MS);
+    public static final String DEFAULT_PREF_DECODING_BUFFER = String.valueOf(AACPlayer.DEFAULT_DECODE_BUFFER_CAPACITY_MS);
     private NotificationManager notificationManager;
 
-    // broadcast extra keys
-    public static final String EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
-    public static final String EXTRA_META = "MO_EXTRA_META";
+    public static final String BROADCAST_EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
+    public static final String BROADCAST_EXTRA_META = "MO_EXTRA_META";
 
     // JSON file name for favorites
     public static final String JSON_FILE_HIST = "mo_hist.json";
 
-    // maximum number of songs in history
-    public static final int HISTORY_ENTRIES = 25;
+    public static final int MAXIMUM_NUMBER_OF_HISTORY_SONGS = 25;
 
     // public AudioStream audioStream;
     public AudioStream audioStream;
@@ -61,7 +62,7 @@ public class PlayerService extends Service {
         telephonyManager.listen(phoneStateListener,
                 PhoneStateListener.LISTEN_CALL_STATE);
         streamWatcher = new StreamWatcher(this);
-        historySaver = new SongSaver(this, JSON_FILE_HIST, HISTORY_ENTRIES);
+        historySaver = new SongSaver(this, JSON_FILE_HIST, MAXIMUM_NUMBER_OF_HISTORY_SONGS);
 
         registerReceiver(playerBCReceiver, new IntentFilter(INTENT_PLAY));
         registerReceiver(playerBCReceiver, new IntentFilter(INTENT_STOP));
@@ -122,15 +123,11 @@ public class PlayerService extends Service {
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);
+            long timeDiff = song.date - historySaver.get(index).date;
             if (index == -1) {
                 canAdd = true;
-            } else {
-                // add the current song to the history only if it was not played
-                // last 15 minutes
-                long timeDiff = song.date - historySaver.get(index).date;
-                if (timeDiff > (15 * 60 * 1000)) {
-                    canAdd = true;
-                }
+            } else if (timeDiff > TIME_15_MINUTES_IN_MILLIS) {
+                canAdd = true;
             }
         }
         if (canAdd) {
@@ -146,11 +143,11 @@ public class PlayerService extends Service {
     void sendPlayerStatus() {
         Intent tmpIntent = new Intent(INTENT_STATUS);
         if (streamPlaying) {
-            tmpIntent.putExtra(EXTRA_CONNECTED, true);
-            tmpIntent.putExtra(EXTRA_META, streamWatcher.getMetadata());
+            tmpIntent.putExtra(BROADCAST_EXTRA_CONNECTED, true);
+            tmpIntent.putExtra(BROADCAST_EXTRA_META, streamWatcher.getMetadata());
         } else {
-            tmpIntent.putExtra(EXTRA_CONNECTED, false);
-            tmpIntent.putExtra(EXTRA_META, "");
+            tmpIntent.putExtra(BROADCAST_EXTRA_CONNECTED, false);
+            tmpIntent.putExtra(BROADCAST_EXTRA_META, "");
         }
         sendBroadcast(tmpIntent);
     }

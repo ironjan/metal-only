@@ -276,7 +276,8 @@ public class MainActivity extends SherlockListActivity implements
     public void displaySongs() {
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
-        historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST, PlayerService.HISTORY_ENTRIES);
+        historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
+                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<Song>();
 
@@ -326,6 +327,7 @@ public class MainActivity extends SherlockListActivity implements
         SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
         sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
         sub.add(0, R.id.mnu_donation, 0, R.string.menu_donation);
+        sub.add(0, R.id.mnu_settings, 0, R.string.menu_settings);
         sub.add(0, R.id.mnu_info, 0, R.string.menu_info);
         sub.getItem().setShowAsAction(
                 MenuItem.SHOW_AS_ACTION_ALWAYS
@@ -343,7 +345,11 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({})", item);
 
 
-        if (item.getItemId() == R.id.mnu_favorites) {
+        if (item.getItemId() == R.id.mnu_settings) {
+            Intent settingsIntent = new Intent(getApplicationContext(),
+                    SettingsActivity.class);
+            startActivity(settingsIntent);
+        } else if (item.getItemId() == R.id.mnu_favorites) {
             FavoritesActivity_.intent(this).start();
         } else if (item.getItemId() == R.id.mnu_donation) {
             Intent paypalIntent = new Intent(getApplicationContext(),
@@ -501,8 +507,8 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
         if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadataParser().getGENRE());
-            marqueeMod.setText(getMetadataParser().getMODERATOR());
+            marqueeGenre.setText(getMetadataParser().getGenre());
+            marqueeMod.setText(getMetadataParser().getModerator());
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
