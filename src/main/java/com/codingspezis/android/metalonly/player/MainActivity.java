@@ -22,6 +22,7 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;

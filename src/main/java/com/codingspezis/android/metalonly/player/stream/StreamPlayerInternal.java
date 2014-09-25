@@ -8,6 +8,8 @@ import android.os.PowerManager;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataListener;
+import com.codingspezis.android.metalonly.player.stream.metadata.OnMetadataReceivedListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

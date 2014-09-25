@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.stream;
+package com.codingspezis.android.metalonly.player.stream.metadata;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;

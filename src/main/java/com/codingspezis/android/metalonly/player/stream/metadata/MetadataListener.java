@@ -1,4 +1,6 @@
-package com.codingspezis.android.metalonly.player.stream;
+package com.codingspezis.android.metalonly.player.stream.metadata;
+
+import com.codingspezis.android.metalonly.player.stream.StreamPlayerInternal;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

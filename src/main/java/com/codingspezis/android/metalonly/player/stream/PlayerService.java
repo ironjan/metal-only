@@ -8,6 +8,7 @@ import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
 
 /**
  * service that is managing stream player

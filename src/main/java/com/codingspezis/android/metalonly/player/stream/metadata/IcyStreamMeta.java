@@ -1,4 +1,8 @@
-package com.codingspezis.android.metalonly.player.stream;
+package com.codingspezis.android.metalonly.player.stream.metadata;
+
+import android.os.Build;
+
+import com.codingspezis.android.metalonly.player.stream.metadata.IcyURLConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,7 +93,11 @@ public class IcyStreamMeta {
     }
 
     synchronized private void retreiveMetadata() throws IOException {
-        URLConnection con = streamUrl.openConnection();
+        URLConnection con;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            con = new IcyURLConnection(streamUrl);
+        else
+            con = streamUrl.openConnection();
         con.setRequestProperty("Icy-MetaData", "1");
         con.setRequestProperty("Connection", "close");
         con.setRequestProperty("Accept", null);
