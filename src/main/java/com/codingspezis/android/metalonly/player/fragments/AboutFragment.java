@@ -70,7 +70,7 @@ public class AboutFragment extends SherlockFragment {
      */
     @AfterViews
     public void setAppVersionLabel() {
-        textAppVersion.setText(BuildConfig.VERSION_NAME);
+        textAppVersion.setText(BuildConfig.VERSION_NAME+" ("+BuildConfig.VERSION_CODE+")");
     }
 
     @Click({ R.id.textSherlockLicenseApache, R.id.textAndroidannotationsLicenseApache,
