@@ -52,10 +52,8 @@ class StreamWatcher implements OnStreamListener {
                                 StreamWatcher.this.playerService.playerService,
                                 err, Toast.LENGTH_LONG).show();
                         if (!canPlay) {
-                            Intent tmpIntent = new Intent(
-                                    PlayerService.INTENT_STOP); // status will be sent automatically
-                            StreamWatcher.this.playerService
-                                    .sendBroadcast(tmpIntent);
+                            Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
+                            StreamWatcher.this.playerService.sendBroadcast(tmpIntent);
                         }
                     }
                 });
