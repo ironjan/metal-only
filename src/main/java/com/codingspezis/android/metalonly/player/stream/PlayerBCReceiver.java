@@ -95,10 +95,8 @@ public class PlayerBCReceiver extends BroadcastReceiver {
                 AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
         if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == result) {
-            playerService.instantiateSelectedPlayer();
             playerService.streamPlaying = true;
-            playerService.audioStream
-                    .setOnStreamListener(playerService.streamWatcher);
+            playerService.audioStream.setOnStreamListener(playerService.streamWatcher);
 
             playerService.setForeground();
             playerService.audioStream.startPlaying();

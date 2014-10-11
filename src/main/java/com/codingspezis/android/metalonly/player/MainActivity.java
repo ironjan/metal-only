@@ -22,6 +22,7 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
@@ -118,21 +119,16 @@ public class MainActivity extends SherlockListActivity implements
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
                     Stats stats = apiWrapper.getStats();
-                    if(stats != null) {
-                        String moderator = stats.getModerator();
-                        String genre = stats.getGenre();
-                        if(genre == null)
-                            genre = "NULL";
-                        updateShowinfo(moderator, genre);
-                    }
+                    String moderator = stats.getModerator();
+                    String genre = stats.getGenre();
+                    updateShowInfo(moderator, genre);
                 } catch (NoInternetException e) {
                     // do nothing  if there is no internet connection
                 }
             }
 
-            private void updateShowinfo(final String moderator,
-                                        final String genre) {
-                if (BuildConfig.DEBUG) LOGGER.debug("updateShowinfo({},{})", moderator, genre);
+            private void updateShowInfo(final String moderator, final String genre) {
+                if (BuildConfig.DEBUG) LOGGER.debug("updateShowInfo({},{})", moderator, genre);
 
                 Runnable runnable = new Runnable() {
 
@@ -282,7 +278,7 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-                PlayerService.HISTORY_ENTRIES);
+                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<Song>();
 
@@ -350,11 +346,7 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({})", item);
 
 
-        if (item.getItemId() == R.id.mnu_settings) {
-            Intent settingsIntent = new Intent(getApplicationContext(),
-                    SettingsActivity.class);
-            startActivity(settingsIntent);
-        } else if (item.getItemId() == R.id.mnu_favorites) {
+        if (item.getItemId() == R.id.mnu_favorites) {
             FavoritesActivity_.intent(this).start();
         } else if (item.getItemId() == R.id.mnu_donation) {
             Intent paypalIntent = new Intent(getApplicationContext(),
@@ -512,8 +504,8 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
         if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadataParser().getGENRE());
-            marqueeMod.setText(getMetadataParser().getMODERATOR());
+            marqueeGenre.setText(getMetadataParser().getGenre());
+            marqueeMod.setText(getMetadataParser().getModerator());
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 

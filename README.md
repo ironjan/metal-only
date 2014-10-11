@@ -11,16 +11,12 @@ Versionierung nach Semantic Versioning 2.0.0
 Verwendete Software
 -------------------
 
-* [OpenCORE aacdec][1] ([Apache 2.0][6])
-* [AAC Decoder for Android][2] ([LGPL][8])
 * [ActionBarSherlock][3] ([Apache 2.0][6])
 * [LazyList][4] ([MIT][7])
 * [androidannotations][5] ([Apache 2.0][6])
 * [Spring for Android][9] ([Apache 2.0][6])
 * [Jackson JSON Processor][10] ([Apache 2.0][6])
  
-[1]: https://android.googlesource.com/platform/external/opencore.git  "OpenCORE aacdec"
-[2]: http://www.code.google.com/p/aacdecoder-android/                 "AAC Decoder for Android"
 [3]: https://github.com/JakeWharton/ActionBarSherlock/                "ActionBarSherlock"
 [4]: https://www.github.com/thest1/LazyList/                          "LazyList"
 [5]: https://github.com/excilys/androidannotations/                   "androidannotations"

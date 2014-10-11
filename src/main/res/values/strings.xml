@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- app -->
-    <string name="app_name">Metal Only</string>
-
     <!-- menu -->
     <string name="menu">Menü</string>
     <string name="menu_settings">Einstellungen</string>
@@ -14,7 +11,6 @@
 
     <!-- errors -->
     <string name="error_initialize_player">Fehler beim Erstellen des Players</string>
-    <string name="error_player32">AAC+ Decoder-Fehler</string>
 
     <!-- standard text -->
     <string name="ok">OK</string>
@@ -68,18 +64,12 @@
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
     <string name="donation_receiver">An:</string>
-    <string name="donation_receiverPaypal">metalonly@gmx.de</string>
     <string name="donation_donator">Von:</string>
     <string name="donation_value">Betrag in €:</string>
     <string name="donation_toPaypal">zu PayPal</string>
 
     <string-array name="from_array">
         <item>Anonym</item>
-    </string-array>
-    <string-array name="value_array">
-        <item>5 €</item>
-        <item>10 €</item>
-        <item>25 €</item>
     </string-array>
 
     <string name="paypal_description1">&lt;p&gt;An dieser Stelle k&amp;ouml;nnen Sie eine Spende an Metal Only &amp;uuml;ber den Zahlungsdienst PayPal senden (hierzu m&amp;uuml;ssen Sie nicht bei PayPal registriert sein).&lt;br&gt;Informationen und Kontoangaben finden Sie unter &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt;.&lt;/p&gt;</string>
@@ -89,7 +79,6 @@
     <string name="donation_enter_value">Welchen Betrag spenden?</string>
     <string name="help">Hilfe</string>
     <string name="paypal_receiver">Empfänger</string>
-    <string name="paypal_mail_mo">metalonly@gmx.de</string>
     <string name="paypal_sender">Spender</string>
     <string name="paypal_sender_dialog">Name des Spenders</string>
     <string name="paypal_value">Betrag</string>
@@ -98,12 +87,7 @@
     <string name="paypal_send_sum">Zur PayPal Website weiterleiten</string>
     <string name="paypal_info">Kontoinformationen</string>
     <string name="paypal_info_sum">Allgemeine Informationen über Spenden aufrufen</string>
-    <string name="paypal_key_sender">MO_SP_SENDER</string>
-    <string name="paypal_key_value">MO_SP_VALUE</string>
-    <string name="paypal_key_send">MO_SP_SEND</string>
-    <string name="paypal_key_info">MO_SP_INFO</string>
     <string name="paypal_default_sender">Anonym</string>
-    <string name="paypal_default_value">5</string>
     <string name="paypal_category_inoformation">Informationen</string>
     <string name="paypal_category_paypal">PayPal Spende</string>
 
@@ -116,18 +100,9 @@
     <string name="open_internet_settings">Es besteht keine Verbindung zum Internet. Sollen die Netzwerkeinstellungen geöffnet werden?</string>
 
     <!-- settings -->
-    <string name="settings_key_rate">KEY_RATE</string>
-    <string name="settings_key_audio_buffer">KEY_AUDIO_BUFFER</string>
-    <string name="settings_key_decoding_buffer">KEY_DECODING_BUFFER</string>
     <string name="settings_category_stream">Stream</string>
     <string name="settings_rate">Übertragungsrate</string>
     <string name="settings_rate_summary"></string>
-
-    <string-array name="rate_label">
-        <item>32 kb/s</item>
-        <item>128 kb/s</item>
-    </string-array>
-
     <string name="settings_audio_buffer">Audio-Puffer</string>
     <string name="settings_decoding_buffer">Decoding-Puffer</string>
     <string name="settings_buffer_hint">Kapazität in ms:</string>
@@ -172,15 +147,35 @@
     <string name="date">Datum</string>
     <string name="time">Time</string>
     <string name="moderator">Moderator</string>
-    <string name="colon">:</string>
 
-    <!-- Layouting texts -->
 
-    <string name="artistDummy">A very long dummy text for an artist\'s name</string>
-    <string name="genreDummy">A very long dummy text for a show\'s genre</string>
-    <string name="titleDummy">A very long dummy text for a song\'s or show\'s title</string>
-    <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
-    <string name="loading_plan">Plan wird geladen.</string>
-    <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 
+    <!-- untranslateable texts -->
+    <string name="app_name" translateable="false">Metal Only</string>
+    <string name="artistDummy" translateable="false">A very long dummy text for an artist\'s name</string>
+    <string name="genreDummy" translateable="false">A very long dummy text for a show\'s genre</string>
+    <string name="titleDummy" translateable="false">A very long dummy text for a song\'s or show\'s title</string>
+    <string name="emptySongHistory" translateable="false">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
+    <string name="loading_plan" translateable="false">Plan wird geladen.</string>
+    <string name="no_favorites" translateable="false">Füge Favoriten hinzu, um diese hier zu sehen.</string>
+    <string name="colon" translateable="false">:</string>
+    <string name="donation_receiverPaypal" translateable="false">metalonly@gmx.de</string>
+    <string-array name="value_array" translateable="false">
+        <item>5 €</item>
+        <item>10 €</item>
+        <item>25 €</item>
+    </string-array>
+    <string name="paypal_mail_mo" translateable="false">metalonly@gmx.de</string>
+    <string name="paypal_key_sender" translateable="false">MO_SP_SENDER</string>
+    <string name="paypal_key_value" translateable="false">MO_SP_VALUE</string>
+    <string name="paypal_key_send" translateable="false">MO_SP_SEND</string>
+    <string name="paypal_key_info" translateable="false">MO_SP_INFO</string>
+    <string name="paypal_default_value" translateable="false">5</string>
+    <string name="settings_key_rate" translateable="false">KEY_RATE</string>
+    <string name="settings_key_audio_buffer" translateable="false">KEY_AUDIO_BUFFER</string>
+    <string name="settings_key_decoding_buffer" translateable="false">KEY_DECODING_BUFFER</string>
+    <string-array name="rate_label" translateable="false">
+        <item>32 kb/s</item>
+        <item>128 kb/s</item>
+    </string-array>
 </resources>

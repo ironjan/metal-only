@@ -50,6 +50,7 @@ public class WishFragment extends SherlockFragment {
     TextView wishCount;
     private boolean wish, regard;
     private String numberOfWishes;
+
     public WishFragment() {
     }
 
@@ -265,8 +266,7 @@ public class WishFragment extends SherlockFragment {
                 // send post
                 post.setEntity(entity);
                 HttpResponse response = client.execute(post);
-                if (!response.getStatusLine().toString()
-                        .equals("HTTP/1.1 200 OK")) {
+                if (response.getStatusLine().toString().equals("HTTP/1.1 200 OK")) {
                     notifyUser(R.string.sent);
                     getActivity().finish();
                 } else {

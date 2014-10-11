@@ -1,7 +1,7 @@
 def versionMajor = 0 // incompatible API changes
 def versionMinor = 4 // added functionality in a backwards-compatible manner
-def versionPatch = 13 // backwards-compatible bug fixes
-def versionBuild = 1 // bump for dogfood builds, public betas, etc.
+def versionPatch = 14 // backwards-compatible bug fixes
+def versionBuild = 3 // bump for dogfood builds, public betas, etc.
 
 buildscript {
     repositories {

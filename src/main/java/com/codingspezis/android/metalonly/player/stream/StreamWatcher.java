@@ -29,7 +29,7 @@ class StreamWatcher implements OnStreamListener {
             this.playerService.playerService.notify(metadata);
 
             Intent metaIntent = new Intent(PlayerService.INTENT_METADATA);
-            metaIntent.putExtra(PlayerService.EXTRA_META, data);
+            metaIntent.putExtra(PlayerService.BROADCAST_EXTRA_META, data);
             this.playerService.sendBroadcast(metaIntent);
         }
     }
@@ -52,10 +52,8 @@ class StreamWatcher implements OnStreamListener {
                                 StreamWatcher.this.playerService.playerService,
                                 err, Toast.LENGTH_LONG).show();
                         if (!canPlay) {
-                            Intent tmpIntent = new Intent(
-                                    PlayerService.INTENT_STOP); // status will be sent automatically
-                            StreamWatcher.this.playerService
-                                    .sendBroadcast(tmpIntent);
+                            Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
+                            StreamWatcher.this.playerService.sendBroadcast(tmpIntent);
                         }
                     }
                 });
