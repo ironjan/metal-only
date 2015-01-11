@@ -30,4 +30,4 @@ Verwendete Software
 Lizenz
 ------
 
-Lizensiert unter der Apache-Lizenz, Version 2.0.
+Lizenziert unter der Apache-Lizenz, Version 2.0.
