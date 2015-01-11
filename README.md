@@ -26,3 +26,8 @@ Verwendete Software
 [9]: http://projects.spring.io/spring-android/                        "Spring for Android"
 [10]: http://wiki.fasterxml.com/JacksonHome                           "Jackson JSON Processor"
 [11]: https://play.google.com/store/apps/details?id=com.codingspezis.android.metalonly.player "Metal Only App"
+
+Lizenz
+------
+
+Lizensiert unter der Apache-Lizenz, Version 2.0.
