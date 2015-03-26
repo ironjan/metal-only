@@ -1,15 +1,34 @@
-Metal Only Android App
-======================
+# Metal Only Android App
 
-Diese App bringt den Internet Radio Stream von metal-only.de auf Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen oder Grüßen.
+Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen oder Grüßen.
 
-Die App kann über Google Play [heruntergeladen][11] werden.
+Die App kann über Google Play [heruntergeladen][11] werden. Probleme und Feature-Wünsche können an mail@codingspezis.com gesendet werden.
 
-Versionierung nach Semantic Versioning 2.0.0 
-(http://semver.org/).
+## Mitmachen
 
-Getting started
----------------
+TODO: Code und issue tracker auf github
+
+### Issue Tracker benutzen
+
+TODO:
+ * wie sollten bug reports aufgebaut sein
+ * wie sollten feature request aussehen
+
+### Coden
+
+TODO: 
+ * App wird gebaut mit gradle
+ * Abweichungen vom Standard Android Layout
+ * Kurzeinführung in wichtige Bibs mit Links
+ * versionierung nach sem ver Versionierung nach Semantic Versioning 2.0.0 (http://semver.org/).
+ * Testing, build anweisungen
+ * wie man an den code kommt (fork, ....) und PRs sendet
+ 
+### Travis CI
+
+ TODO: Badge einfügen, travis erklären
+### Getting started
+
 
  1. [Fork](https://help.github.com/articles/fork-a-repo/) this project.
  2. Import the project into android studio (Check out from Version Control, select github or git)
@@ -18,8 +37,8 @@ Getting started
  5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
  
 
-Lizenz
-------
+
+## Lizenz
 
 Lizenziert unter der [Apache-Lizenz, Version 2.0.](https://github.com/Codingspezis/metal-only/blob/master/LICENSE.txt)
 
