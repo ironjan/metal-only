@@ -8,6 +8,21 @@ Die App kann über Google Play [heruntergeladen][11] werden.
 Versionierung nach Semantic Versioning 2.0.0 
 (http://semver.org/).
 
+Getting started
+---------------
+
+ 1. [Fork](https://help.github.com/articles/fork-a-repo/) this project.
+ 2. Import the project into android studio (Check out from Version Control, select github or git)
+ 3. Fix bugs, implement features
+ 4. Push on your fork
+ 5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
+ 
+
+Lizenz
+------
+
+Lizenziert unter der [Apache-Lizenz, Version 2.0.](https://github.com/Codingspezis/metal-only/blob/master/LICENSE.txt)
+
 Verwendete Software
 -------------------
 
@@ -26,18 +41,3 @@ Verwendete Software
 [9]: http://projects.spring.io/spring-android/                        "Spring for Android"
 [10]: http://wiki.fasterxml.com/JacksonHome                           "Jackson JSON Processor"
 [11]: https://play.google.com/store/apps/details?id=com.codingspezis.android.metalonly.player "Metal Only App"
-
-Getting started
----------------
-
- 1. [Fork](https://help.github.com/articles/fork-a-repo/) this project.
- 2. Import the project into android studio (Check out from Version Control, select github or git)
- 3. Fix bugs, implement features
- 4. Push on your fork
- 5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
- 
-
-Lizenz
-------
-
-Lizenziert unter der Apache-Lizenz, Version 2.0.
