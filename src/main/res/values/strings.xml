@@ -147,6 +147,9 @@
     <string name="date">Datum</string>
     <string name="time">Time</string>
     <string name="moderator">Moderator</string>
+    <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
+    <string name="loading_plan">Plan wird geladen.</string>
+    <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 
 
 
@@ -175,7 +178,4 @@
         <item>32 kb/s</item>
         <item>128 kb/s</item>
     </string-array>
-    <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
-    <string name="loading_plan">Plan wird geladen.</string>
-    <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 </resources>

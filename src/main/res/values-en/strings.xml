@@ -40,6 +40,9 @@
     <string name="playing">Playing stream</string>
     <string name="internet_timeout">Stopped playing (no internet connection)</string>
     <string name="stream_restart">An erro occurred - retry %s s.</string>
+    <string name="emptySongHistory">This screen shows the last songs you listened to using this app.\n\nJust press "Play" to listen.\n\n(It can take a while to show title of the current song.)</string>
+    <string name="loading_plan">Loading show times.</string>
+    <string name="no_favorites">After adding favourites you'll find them here.</string>
 
     <!-- wish activity -->
     <string name="wish_regards">Wish / Greet</string>
