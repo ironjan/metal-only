@@ -85,29 +85,21 @@ public class Stats {
     }
 
     private String computeGenre() {
-        if (TextUtils.isEmpty(sendung)) {
-            return "";
-        }
-
         int positionOfOpeningParenthesis = sendung.indexOf("(");
-//        final String genre;
-        if (positionOfOpeningParenthesis == -1) {
-//                || positionOfClosingParenthesis == -1
-//                || lengthOfGenre == 0) {
-            return "";
-        }
         int positionOfClosingParenthesis = sendung.indexOf(")");
-        if (positionOfClosingParenthesis == -1) {
-            return "";
-        }
-
         int startOfGenreName = positionOfOpeningParenthesis + 1;
-        int lengthOfGenre = positionOfClosingParenthesis- startOfGenreName;
-        if(lengthOfGenre <=0){
+        int lengthOfGenre = positionOfClosingParenthesis - startOfGenreName;
+
+
+        boolean hasNoGenre = (positionOfOpeningParenthesis == -1
+                || positionOfClosingParenthesis == -1
+                || lengthOfGenre <= 0);
+
+        if (hasNoGenre) {
             return "";
         }
 
-        return sendung.substring(startOfGenreName,positionOfClosingParenthesis);
+        return sendung.substring(startOfGenreName, positionOfClosingParenthesis);
     }
 
 
