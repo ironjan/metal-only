@@ -2,18 +2,20 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import junit.framework.Assert;
 
-import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.*;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import java.lang.IllegalArgumentException;
-
-import dalvik.annotation.TestTarget;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
 public class StatsTest {
 
+    public static final String EMPTY_STRING = "";
+    public static final String EMPTY_PARENTHESES = "Sendung ()";
+    public static final String ONLY_OPENING_PARENTHESIS = "Sendung (";
+    public static final String ONLY_CLOSING_PARENTHESIS = "Sendung )";
+    public static final String ONLY_PARENTHESES = "()";
     Stats stats;
 
     @Before
@@ -21,37 +23,38 @@ public class StatsTest {
         stats = new Stats();
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void test_EmptyStringThrowsException() {
-        stats.setSendung("");
-        String genre = stats.getGenre();
-        Assert.assertEquals("Empty string had a genre!", "", genre);
-    }
     @Test
-    public void test_EmptyParenthesesHaveNoGenre() {
-        stats.setSendung("Sendung ()");
+    public void test_EmptyStringShouldHaveNoGenre() {
+        stats.setSendung(EMPTY_STRING);
         String genre = stats.getGenre();
-        Assert.assertEquals("Empty Parentheses had a genre!", "", genre);
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void test_OnlyOpeningParenthesisThrowsException() {
-        stats.setSendung("Sendung (");
-        String genre = stats.getGenre();
+        Assert.assertEquals("Genre was not empty when setting empty string.", EMPTY_STRING, genre);
     }
 
     @Test
-    public void test_OnlyClosingParenthesisHasWrongGenre() {
-        stats.setSendung("Sendung )");
+    public void test_EmptyParenthesesShouldHaveNoGenre() {
+        stats.setSendung(EMPTY_PARENTHESES);
         String genre = stats.getGenre();
-        Assert.assertEquals("Got the wrong (wrong genre)","Sendung ",genre);
+        Assert.assertEquals("Genre was not empty when setting setting empty parentheses.", EMPTY_STRING, genre);
     }
 
     @Test
-    public void test_OnlyParenthesesHaveNoGenre() {
-        stats.setSendung("()");
+    public void test_OnlyOpeningParenthesesShouldHaveNoGenre() {
+        stats.setSendung(ONLY_OPENING_PARENTHESIS);
         String genre = stats.getGenre();
-        Assert.assertEquals("Only Parentheses had a genre!", "", genre);
+        Assert.assertEquals("Genre was not empty when setting setting string with only opening parentheses.", EMPTY_STRING, genre);
     }
 
+    @Test
+    public void test_OnlyClosingParenthesesShouldHaveNoGenre() {
+        stats.setSendung(ONLY_CLOSING_PARENTHESIS);
+        String genre = stats.getGenre();
+        Assert.assertEquals("Genre was not empty when setting string with only closing parentheses.", EMPTY_STRING, genre);
+    }
+
+    @Test
+    public void test_OnlyParenthesesShouldHaveNoGenre() {
+        stats.setSendung(ONLY_PARENTHESES);
+        String genre = stats.getGenre();
+        Assert.assertEquals("Genre was not empty when setting string with only parentheses.", EMPTY_STRING, genre);
+    }
 }
