@@ -7,11 +7,13 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.1'
+        classpath 'com.android.tools.build:gradle:1.1.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+        classpath 'org.robolectric:robolectric-gradle-plugin:1.0.1'
     }
 }
 
@@ -20,9 +22,10 @@ repositories {
     maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'project-report'
+apply plugin: 'org.robolectric'
 
 configurations {
     apt
@@ -79,10 +82,10 @@ android {
             // buildConfigField "int", "SYNC_INTERVAL", "60 * 60 * 12" // 12 hours
         }
     }
-    
-    if(project.hasProperty("metalonly.signing")
-      && new File(project.property("metalonly.signing") + ".gradle").exists()) {
-      apply from: project.property("metalonly.signing") + ".gradle";
+
+    if (project.hasProperty("metalonly.signing")
+            && new File(project.property("metalonly.signing") + ".gradle").exists()) {
+        apply from: project.property("metalonly.signing") + ".gradle";
     }
 }
 
@@ -100,6 +103,13 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:3.1"
 
     compile fileTree(dir: 'libs', include: '*.jar')
+
+    // tests
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0-rc2'
+    // Repetition for autocompletion in android studio
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'org.robolectric:robolectric:3.0-rc2'
 }
 
 task wrapper(type: Wrapper) {
