@@ -57,4 +57,17 @@ public class StatsTest {
         String genre = stats.getGenre();
         Assert.assertEquals("Genre was not empty when setting string with only parentheses.", EMPTY_STRING, genre);
     }
+
+    @Test
+    public void test_ParenthesesWithGenreShouldHaveGenre(){
+        stats.setSendung("(Genre)");
+        String genre = stats.getGenre();
+        Assert.assertEquals("Genre", genre);
+    }
+    @Test
+    public void test_FullShowInfoShouldHaveGenre(){
+        stats.setSendung("Sendung (Genre)");
+        String genre = stats.getGenre();
+        Assert.assertEquals("Genre", genre);
+    }
 }
