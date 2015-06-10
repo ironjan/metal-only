@@ -11,4 +11,4 @@ android:
   licenses:
     - android-sdk-license-5be876d5
 
-script: ./gradlew assemble
+script: ./gradlew test
