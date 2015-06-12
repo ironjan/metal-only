@@ -15,8 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,7 +33,7 @@ import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
 import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.Marquee;
@@ -61,7 +59,7 @@ import java.util.ArrayList;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
-public class StreamControlActivity extends SherlockListActivity  {
+public class StreamControlActivity extends SherlockListActivity {
     private static final String TAG = StreamControlActivity.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
@@ -401,18 +399,11 @@ public class StreamControlActivity extends SherlockListActivity  {
     static long lastButtonToggle = 0;
     final static long MIN_BOTTON_DELAY = 1000;
 
-    /**
-     * handles button clicks *
-     */
-    @Click({R.id.buttonPlay, R.id.btnCalendar, R.id.btnWish})
-    public void buttonClicked(View arg0) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onClick({})", arg0);
-
-
+    @Click
+    void buttonPlayClicked() {
         long currentTime = System.currentTimeMillis();
-        // stream start / stop
-        if (arg0 == buttonStream
-                && currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
+        boolean hasWaitedLongEnoughToClickAgain = (MIN_BOTTON_DELAY <= currentTime - lastButtonToggle);
+        if (hasWaitedLongEnoughToClickAgain) {
             lastButtonToggle = System.currentTimeMillis();
             if (isShouldPlay()) {
                 stopListening();
@@ -422,19 +413,20 @@ public class StreamControlActivity extends SherlockListActivity  {
                 }
             }
         }
-        // plan
-        else if (arg0 == buttonCalendar) {
-            if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-                startPlanActivity();
-            }
+    }
+
+    @Click
+    void btnCalendarClicked() {
+        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+            startPlanActivity();
         }
-        // wish
-        else if (arg0 == buttonWish) {
-            if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-                startWishActivity();
-            }
+    }
+
+    @Click
+    void btnWishClicked() {
+        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+            startWishActivity();
         }
-        if (BuildConfig.DEBUG) LOGGER.debug("onClick({}) done", arg0);
     }
 
     private void startPlanActivity() {
@@ -542,7 +534,7 @@ public class StreamControlActivity extends SherlockListActivity  {
 
     @ItemClick(android.R.id.list)
     void listItemClicked(int position) {
-        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({})",position);
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({})", position);
 
         final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -556,7 +548,7 @@ public class StreamControlActivity extends SherlockListActivity  {
                 }
         );
         builder.show();
-        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done",position);
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done", position);
     }
 
     /**
