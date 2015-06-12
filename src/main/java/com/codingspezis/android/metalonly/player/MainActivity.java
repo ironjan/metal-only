@@ -164,7 +164,7 @@ public class MainActivity extends SherlockListActivity implements
         apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
-        setMetadata(Metadata.fromString("-"));
+        setMetadata(Metadata.DEFAULT_METADATA);
     }
 
     /**
@@ -515,7 +515,7 @@ public class MainActivity extends SherlockListActivity implements
     private void clearMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
 
-        setMetadata(Metadata.fromString("-"));
+        setMetadata(Metadata.DEFAULT_METADATA);
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 

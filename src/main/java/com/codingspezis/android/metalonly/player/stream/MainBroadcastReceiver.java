@@ -27,6 +27,9 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{})", context, intent);
 
+        String metadata = intent
+                .getStringExtra(PlayerService.BROADCAST_EXTRA_META);
+
         // is playing?
         if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
             this.mainActivity
@@ -34,15 +37,13 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.mainActivity.setShouldPlay(true);
                 this.mainActivity.toggleStreamButton(true);
-                this.mainActivity.setMetadata(Metadata.fromString(intent
-                        .getStringExtra(PlayerService.BROADCAST_EXTRA_META)));
+                this.mainActivity.setMetadata(Metadata.fromString(metadata));
                 this.mainActivity.displayMetadata();
             } else {
                 this.mainActivity.toggleStreamButton(false);
             }
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            String metadata = intent.getStringExtra(PlayerService.BROADCAST_EXTRA_META);
             this.mainActivity.setMetadata(Metadata.fromString(metadata));
             this.mainActivity.refreshShowInfo();
             this.mainActivity.displaySongs();

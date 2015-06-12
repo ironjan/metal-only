@@ -17,6 +17,7 @@ public class Metadata {
     public static final int GENRE_SLICE = 2;
     public static final String DEFAULT_MODEDRATOR = "MetalHead OnAir";
     public static final String DEFAULT_GENRE = "Mixed Metal";
+    public static final Metadata DEFAULT_METADATA = new Metadata("","","","");
     private String interpret = "";
     private String title = "";
     private String genre = "";
@@ -32,11 +33,15 @@ public class Metadata {
         this.title = title;
     }
 
+    /**
+     * Parses the given data string into a Metadata object
+     * @param data the string to be parsed
+     * @return a new Metadata object. Silently returns default object if something goes wrong
+     */
     public static Metadata fromString(String data) {
-        String genre, moderator, interpret, title;
+        final String genre, moderator, interpret, title;
         try {
             if (numberOfStars(data) >= REQUIRED_NUMBER_OF_STARS) {
-                // TODO which exceptions can be thrown? do we need catch
                 String[] slices = data.split("\\*");
                 genre = slices[GENRE_SLICE].trim();
                 moderator = slices[MODERATOR_SLICE].trim();
@@ -47,14 +52,12 @@ public class Metadata {
             }
             interpret = data.substring(0, data.indexOf(" - ")).trim();
             title = data.substring(data.indexOf(" - ") + 2).trim();
+            return new Metadata(moderator,genre,interpret,title);
+
         } catch (Exception e) {
-            moderator = "";
-            genre = "";
-            interpret = "";
-            title = "";
+            return DEFAULT_METADATA;
         }
 
-        return new Metadata(moderator,genre,interpret,title);
     }
 
     public String getTitle() {
