@@ -1,42 +1,64 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
-import android.graphics.PorterDuff.*;
-import android.graphics.drawable.*;
-import android.net.*;
-import android.os.*;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
-import android.widget.AdapterView.*;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
-import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.plan.*;
-import com.codingspezis.android.metalonly.player.siteparser.*;
-import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.favorites.SongSaver;
+import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
+import com.codingspezis.android.metalonly.player.stream.PlayerService;
+import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
-import com.codingspezis.android.metalonly.player.views.*;
-import com.codingspezis.android.metalonly.player.wish.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
+import com.codingspezis.android.metalonly.player.views.Marquee;
+import com.codingspezis.android.metalonly.player.wish.AllowedActions;
+import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
+import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
-import org.slf4j.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.*;
-import java.util.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * main GUI activity
  * TODO use androidannotatons
  * TODO move more functionality out of this class
  */
+@EActivity(R.layout.activity_stream)
 public class StreamControlActivity extends SherlockListActivity implements
         OnClickListener, OnItemClickListener {
     private static final String TAG = StreamControlActivity.class.getSimpleName();
@@ -54,13 +76,20 @@ public class StreamControlActivity extends SherlockListActivity implements
 
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
-    private ListView listView;
-    private ImageView buttonStream;
-    private ImageButton buttonCalendar;
-    private ImageButton buttonWish;
-    private Marquee marqueeMod;
-    private Marquee marqueeGenre;
-    private Menu menu;
+
+    @ViewById(android.R.id.list)
+    ListView listView;
+    @ViewById(R.id.buttonPlay)
+    ImageView buttonStream;
+    @ViewById(R.id.btnCalendar)
+    ImageButton buttonCalendar;
+    @ViewById(R.id.btnWish)
+    ImageButton buttonWish;
+    @ViewById(R.id.marqueeMod)
+    Marquee marqueeMod;
+    @ViewById(R.id.marqueeGenree)
+    Marquee marqueeGenre;
+    Menu menu;
 
     // other
     private MainBroadcastReceiver broadcastReceiver;
@@ -68,8 +97,27 @@ public class StreamControlActivity extends SherlockListActivity implements
     private SongSaver favoritesSaver;
     private SongSaver historySaver;
 
+    /**
+     * initializes GUI objects of main activity
+     */
+    private void setUpGUIObjects() {
+        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
+
+        buttonStream.setOnClickListener(this);
+
+        buttonCalendar.setOnClickListener(this);
+        buttonWish.setOnClickListener(this);
+        listView.setOnItemClickListener(this);
+
+        toggleStreamButton(false);
+        displaySongs();
+        clearMetadata();
+        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
+    }
+
     // other variables
     private boolean shouldPlay = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +127,17 @@ public class StreamControlActivity extends SherlockListActivity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
-        setContentView(R.layout.activity_stream);
         setSupportProgressBarIndeterminateVisibility(false);
+
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
+    }
+
+    @AfterViews
+    void afterViews() {
         setUpBroadcastReceiver();
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
-
-        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
 
     @Override
@@ -190,30 +241,6 @@ public class StreamControlActivity extends SherlockListActivity implements
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
-    }
-
-    /**
-     * initializes GUI objects of main activity
-     */
-    private void setUpGUIObjects() {
-        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
-        buttonStream = (ImageView) findViewById(R.id.buttonPlay);
-        buttonCalendar = (ImageButton) findViewById(R.id.btnCalendar);
-        buttonWish = (ImageButton) findViewById(R.id.btnWish);
-        marqueeMod = (Marquee) findViewById(R.id.marqueeMod);
-        marqueeGenre = (Marquee) findViewById(R.id.marqueeGenree);
-        listView = (ListView) findViewById(android.R.id.list);
-
-        buttonStream.setOnClickListener(this);
-
-        buttonCalendar.setOnClickListener(this);
-        buttonWish.setOnClickListener(this);
-        listView.setOnItemClickListener(this);
-
-        toggleStreamButton(false);
-        displaySongs();
-        clearMetadata();
-        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
     /**
