@@ -246,7 +246,7 @@ public class FavoritesActivity extends SherlockListActivity {
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, StreamControlActivity.class);
         NavUtils.navigateUpTo(this, intent);
     }
 

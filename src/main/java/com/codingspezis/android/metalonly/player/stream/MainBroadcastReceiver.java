@@ -13,14 +13,15 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = MainBroadcastReceiver.class.getSimpleName();
     private final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(TAG);
 
-    private final MainActivity mainActivity;
+    private final StreamControlActivity streamControlActivity;
 
     /**
-     * @param mainActivity
+     * @param streamControlActivity
      */
-    public MainBroadcastReceiver(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-        if (BuildConfig.DEBUG) LOGGER.debug("MainBroadcastReceiver({}) constructed", mainActivity);
+    public MainBroadcastReceiver(StreamControlActivity streamControlActivity) {
+        this.streamControlActivity = streamControlActivity;
+        if (BuildConfig.DEBUG)
+            LOGGER.debug("MainBroadcastReceiver({}) constructed", streamControlActivity);
     }
 
     @Override
@@ -32,21 +33,21 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
 
         // is playing?
         if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
-            this.mainActivity
+            this.streamControlActivity
                     .setSupportProgressBarIndeterminateVisibility(false);
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
-                this.mainActivity.setShouldPlay(true);
-                this.mainActivity.toggleStreamButton(true);
-                this.mainActivity.setMetadata(Metadata.fromString(metadata));
-                this.mainActivity.displayMetadata();
+                this.streamControlActivity.setShouldPlay(true);
+                this.streamControlActivity.toggleStreamButton(true);
+                this.streamControlActivity.setMetadata(Metadata.fromString(metadata));
+                this.streamControlActivity.displayMetadata();
             } else {
-                this.mainActivity.toggleStreamButton(false);
+                this.streamControlActivity.toggleStreamButton(false);
             }
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            this.mainActivity.setMetadata(Metadata.fromString(metadata));
-            this.mainActivity.refreshShowInfo();
-            this.mainActivity.displaySongs();
+            this.streamControlActivity.setMetadata(Metadata.fromString(metadata));
+            this.streamControlActivity.refreshShowInfo();
+            this.streamControlActivity.displaySongs();
         }
 
         if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{}) done", context, intent);

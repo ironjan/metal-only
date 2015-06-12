@@ -84,7 +84,7 @@ public class HTTPGrabber extends Thread {
             canceled = true;
             setProgressDialogVisible(false);
             e.printStackTrace();
-            MainActivity.toastMessage(context, e.getMessage());
+            StreamControlActivity.toastMessage(context, e.getMessage());
             if (listener != null) {
                 listener.onError(e.getMessage());
             }
@@ -127,7 +127,7 @@ public class HTTPGrabber extends Thread {
      * displays timeout message
      */
     protected void displayTimeoutMSG() {
-        MainActivity.toastMessage(context, context.getString(R.string.timeout));
+        StreamControlActivity.toastMessage(context, context.getString(R.string.timeout));
     }
 
     /**

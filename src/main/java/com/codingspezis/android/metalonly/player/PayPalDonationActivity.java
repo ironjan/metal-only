@@ -53,7 +53,7 @@ public class PayPalDonationActivity extends SherlockFragmentActivity {
     }
 
     private void navigateUp() {
-        Intent upIntent = new Intent(this, MainActivity.class);
+        Intent upIntent = new Intent(this, StreamControlActivity.class);
         NavUtils.navigateUpTo(this, upIntent);
     }
 

@@ -59,7 +59,7 @@ public class FileCache {
 
         Editor editor = context.getSharedPreferences(
                 context.getString(R.string.app_name), 0).edit();
-        editor.putLong(MainActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
+        editor.putLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
                 .getInstance().getTimeInMillis());
         editor.commit();
 
@@ -127,7 +127,7 @@ public class FileCache {
     public static boolean isTooOld(Context context, String fileName) {
         SharedPreferences settings = context.getSharedPreferences(
                 context.getString(R.string.app_name), 0);
-        long modThumDate = settings.getLong(MainActivity.KEY_SP_MODTHUMBDATE
+        long modThumDate = settings.getLong(StreamControlActivity.KEY_SP_MODTHUMBDATE
                 + fileName, 0);
         long currentDate = Calendar.getInstance().getTimeInMillis();
 

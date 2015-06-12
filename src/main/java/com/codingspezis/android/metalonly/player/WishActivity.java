@@ -66,7 +66,7 @@ public class WishActivity extends SherlockFragmentActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("");
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, StreamControlActivity.class);
                 NavUtils.navigateUpTo(this, intent);
                 return true;
             default:
@@ -84,11 +84,11 @@ public class WishActivity extends SherlockFragmentActivity {
                                               AllowedActions allowedActions) {
         if (BuildConfig.DEBUG) LOGGER.debug("");
         if (!allowedActions.moderated) {
-            MainActivity.alertMessage(activity,
+            StreamControlActivity.alertMessage(activity,
                     activity.getString(R.string.no_moderator));
             return false;
         } else if (!allowedActions.wishes) {
-            MainActivity.alertMessage(activity,
+            StreamControlActivity.alertMessage(activity,
                     activity.getString(R.string.no_wishes));
             return false;
         }

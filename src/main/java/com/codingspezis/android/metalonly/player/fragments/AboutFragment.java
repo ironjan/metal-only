@@ -3,7 +3,6 @@ package com.codingspezis.android.metalonly.player.fragments;
 import android.content.*;
 import android.net.*;
 import android.os.Bundle;
-import android.text.method.*;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
@@ -54,7 +53,7 @@ public class AboutFragment extends SherlockFragment {
         try {
             startActivity(Intent.createChooser(emailIntent, strTo));
         } catch (android.content.ActivityNotFoundException ex) {
-            MainActivity.toastMessage(getActivity(), getString(R.string.no_mail_app));
+            StreamControlActivity.toastMessage(getActivity(), getString(R.string.no_mail_app));
         }
     }
 

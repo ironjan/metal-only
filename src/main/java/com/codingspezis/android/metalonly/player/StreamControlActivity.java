@@ -37,9 +37,9 @@ import java.util.*;
  * TODO use androidannotatons
  * TODO move more functionality out of this class
  */
-public class MainActivity extends SherlockListActivity implements
+public class StreamControlActivity extends SherlockListActivity implements
         OnClickListener, OnItemClickListener {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = StreamControlActivity.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
     // intent keys
@@ -53,7 +53,7 @@ public class MainActivity extends SherlockListActivity implements
     private MetalOnlyAPIWrapper apiWrapper;
 
     // GUI objects
-    private final MainActivity mainActivity = this;
+    private final StreamControlActivity streamControlActivity = this;
     private ListView listView;
     private ImageView buttonStream;
     private ImageButton buttonCalendar;
@@ -445,17 +445,17 @@ public class MainActivity extends SherlockListActivity implements
                                 allowedActions.regards);
                         bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
                                 allowedActions.limit);
-                        Intent wishIntent = new Intent(mainActivity,
+                        Intent wishIntent = new Intent(streamControlActivity,
                                 WishActivity.class);
                         wishIntent.putExtras(bundle);
-                        mainActivity.startActivity(wishIntent);
+                        streamControlActivity.startActivity(wishIntent);
                     } else {
-                        alertMessage(mainActivity, mainActivity
+                        alertMessage(streamControlActivity, streamControlActivity
                                 .getString(R.string.no_wishes_and_regards));
                     }
                 } else {
-                    alertMessage(mainActivity,
-                            mainActivity.getString(R.string.no_moderator));
+                    alertMessage(streamControlActivity,
+                            streamControlActivity.getString(R.string.no_moderator));
                 }
             }
         });

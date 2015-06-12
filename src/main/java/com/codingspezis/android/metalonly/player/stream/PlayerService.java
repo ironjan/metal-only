@@ -82,7 +82,7 @@ public class PlayerService extends Service {
         CharSequence tickerText = getString(R.string.playing);
         long when = System.currentTimeMillis();
         CharSequence contentTitle = getString(R.string.app_name);
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, StreamControlActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
         Notification not = new Notification(R.drawable.mo_notify, tickerText, when);
         not.setLatestEventInfo(getApplicationContext(),
