@@ -22,7 +22,7 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
@@ -30,7 +30,6 @@ import com.codingspezis.android.metalonly.player.wish.*;
 import org.slf4j.*;
 
 import java.net.*;
-import java.text.*;
 import java.util.*;
 
 /**
@@ -65,7 +64,7 @@ public class MainActivity extends SherlockListActivity implements
 
     // other
     private MainBroadcastReceiver broadcastReceiver;
-    private MetadataParser metadataParser;
+    private Metadata metadata;
     private SongSaver favoritesSaver;
     private SongSaver historySaver;
 
@@ -165,7 +164,7 @@ public class MainActivity extends SherlockListActivity implements
         apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
-        setMetadataParser(new MetadataParser("-"));
+        setMetadata(Metadata.fromString("-"));
     }
 
     /**
@@ -502,9 +501,9 @@ public class MainActivity extends SherlockListActivity implements
     public void displayMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
-        if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadataParser().getGenre());
-            marqueeMod.setText(getMetadataParser().getModerator());
+        if (getMetadata().toSong().isValid() && isShouldPlay()) {
+            marqueeGenre.setText(getMetadata().getGenre());
+            marqueeMod.setText(getMetadata().getModerator());
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
@@ -516,7 +515,7 @@ public class MainActivity extends SherlockListActivity implements
     private void clearMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
 
-        setMetadataParser(new MetadataParser("-"));
+        setMetadata(Metadata.fromString("-"));
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 
@@ -626,20 +625,6 @@ public class MainActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
     }
 
-    /**
-     * converts timeMillis to a printable string
-     *
-     * @param timeMillis date as long
-     * @return date as string
-     */
-    @SuppressLint("SimpleDateFormat")
-    public static String longToDateString(long timeMillis) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeMillis);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm-dd.MM.yy");
-        return sdf.format(calendar.getTime());
-    }
-
     public boolean isShouldPlay() {
         return shouldPlay;
     }
@@ -648,12 +633,12 @@ public class MainActivity extends SherlockListActivity implements
         this.shouldPlay = shouldPlay;
     }
 
-    public MetadataParser getMetadataParser() {
-        return metadataParser;
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    public void setMetadataParser(MetadataParser metadataParser) {
-        this.metadataParser = metadataParser;
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 
 }

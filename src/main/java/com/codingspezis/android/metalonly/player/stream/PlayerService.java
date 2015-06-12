@@ -4,11 +4,10 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.telephony.*;
-import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 
 /**
  * service that is managing stream player
@@ -117,7 +116,7 @@ public class PlayerService extends Service {
      * @param metadata meta data to parse to song
      */
     void addSongToHistory(String metadata) {
-        Song song = (new MetadataParser(metadata)).toSong();
+        Song song = (Metadata.fromString(metadata)).toSong();
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);

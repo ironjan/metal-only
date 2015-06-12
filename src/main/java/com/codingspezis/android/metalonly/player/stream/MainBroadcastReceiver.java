@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.content.*;
 
 import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 
 /**
  * broadcast receiver class for communication between other activities or
@@ -34,7 +34,7 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.mainActivity.setShouldPlay(true);
                 this.mainActivity.toggleStreamButton(true);
-                this.mainActivity.setMetadataParser(new MetadataParser(intent
+                this.mainActivity.setMetadata(Metadata.fromString(intent
                         .getStringExtra(PlayerService.BROADCAST_EXTRA_META)));
                 this.mainActivity.displayMetadata();
             } else {
@@ -43,7 +43,7 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
             String metadata = intent.getStringExtra(PlayerService.BROADCAST_EXTRA_META);
-            this.mainActivity.setMetadataParser(new MetadataParser(metadata));
+            this.mainActivity.setMetadata(Metadata.fromString(metadata));
             this.mainActivity.refreshShowInfo();
             this.mainActivity.displaySongs();
         }

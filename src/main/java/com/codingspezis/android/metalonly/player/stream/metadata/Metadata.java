@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * parses interpret title genre and moderator from meta data
  */
-public class MetadataParser {
+public class Metadata {
 
     public static final int REQUIRED_NUMBER_OF_STARS = 3;
     public static final int MODERATOR_SLICE = 1;
@@ -22,10 +22,18 @@ public class MetadataParser {
     private String genre = "";
     private String moderator = "";
 
-    private static final String TAG = MetadataParser.class.getSimpleName();
+    private static final String TAG = Metadata.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
-    public MetadataParser(String data) {
+    private Metadata(String moderator, String genre, String interpret, String title){
+        this.moderator = moderator;
+        this.genre = genre;
+        this.interpret = interpret;
+        this.title = title;
+    }
+
+    public static Metadata fromString(String data) {
+        String genre, moderator, interpret, title;
         try {
             if (numberOfStars(data) >= REQUIRED_NUMBER_OF_STARS) {
                 // TODO which exceptions can be thrown? do we need catch
@@ -37,8 +45,8 @@ public class MetadataParser {
                 moderator = DEFAULT_MODEDRATOR;
                 genre = DEFAULT_GENRE;
             }
-            interpret = extractInterpret(data);
-            title = extractTitle(data);
+            interpret = data.substring(0, data.indexOf(" - ")).trim();
+            title = data.substring(data.indexOf(" - ") + 2).trim();
         } catch (Exception e) {
             moderator = "";
             genre = "";
@@ -46,15 +54,7 @@ public class MetadataParser {
             title = "";
         }
 
-        if (BuildConfig.DEBUG) LOGGER.debug("Created: {} from MetadataParser({})", this, data);
-    }
-
-    private String extractTitle(String data) {
-        return data.substring(data.indexOf(" - ") + 2).trim();
-    }
-
-    private String extractInterpret(String data) {
-        return data.substring(0, data.indexOf(" - ")).trim();
+        return new Metadata(moderator,genre,interpret,title);
     }
 
     public String getTitle() {
@@ -104,7 +104,7 @@ public class MetadataParser {
 
     @Override
     public String toString() {
-        return "MetadataParser{" +
+        return "Metadata{" +
                 "interpret='" + interpret + '\'' +
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
