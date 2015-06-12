@@ -44,6 +44,7 @@ import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
 import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
@@ -66,17 +67,15 @@ public class StreamControlActivity extends SherlockListActivity  {
 
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
-    // intent extra key
-    public static final String messageExtra = "MO_MESSAGE_EXTRA";
 
     // shared preferences keys
     public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
 
-    private MetalOnlyAPIWrapper apiWrapper;
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
 
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
-
 
     @ViewById(android.R.id.list)
     ListView listView;
@@ -208,7 +207,6 @@ public class StreamControlActivity extends SherlockListActivity  {
      */
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
-        apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
         setMetadata(Metadata.DEFAULT_METADATA);
