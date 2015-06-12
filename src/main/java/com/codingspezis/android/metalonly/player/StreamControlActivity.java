@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
@@ -45,7 +44,9 @@ import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
 import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,7 @@ import java.util.ArrayList;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
-public class StreamControlActivity extends SherlockListActivity implements
-        OnClickListener, OnItemClickListener {
+public class StreamControlActivity extends SherlockListActivity  {
     private static final String TAG = StreamControlActivity.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
 
@@ -76,6 +76,7 @@ public class StreamControlActivity extends SherlockListActivity implements
 
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
+
 
     @ViewById(android.R.id.list)
     ListView listView;
@@ -103,11 +104,6 @@ public class StreamControlActivity extends SherlockListActivity implements
     private void setUpGUIObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
 
-        buttonStream.setOnClickListener(this);
-
-        buttonCalendar.setOnClickListener(this);
-        buttonWish.setOnClickListener(this);
-        listView.setOnItemClickListener(this);
 
         toggleStreamButton(false);
         displaySongs();
@@ -410,8 +406,8 @@ public class StreamControlActivity extends SherlockListActivity implements
     /**
      * handles button clicks *
      */
-    @Override
-    public void onClick(View arg0) {
+    @Click({R.id.buttonPlay, R.id.btnCalendar, R.id.btnWish})
+    public void buttonClicked(View arg0) {
         if (BuildConfig.DEBUG) LOGGER.debug("onClick({})", arg0);
 
 
@@ -546,11 +542,11 @@ public class StreamControlActivity extends SherlockListActivity implements
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onItemClick(...)");
+    @ItemClick(android.R.id.list)
+    void listItemClicked(int position) {
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({})",position);
 
-        final int index = arg2;
+        final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.history_options_array,
                 new DialogInterface.OnClickListener() {
@@ -562,7 +558,7 @@ public class StreamControlActivity extends SherlockListActivity implements
                 }
         );
         builder.show();
-        if (BuildConfig.DEBUG) LOGGER.debug("onItemClick(...) done");
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done",position);
     }
 
     /**
