@@ -7,8 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
+        android:orientation="vertical">
+
         <!-- nick, song, regard input-->
         <EditText
             android:id="@+id/editNick"
@@ -21,6 +21,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp" />
+
         <EditText
             android:id="@+id/editArtist"
             android:layout_width="match_parent"
@@ -32,6 +33,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp" />
+
         <EditText
             android:id="@+id/editTitle"
             android:layout_width="match_parent"
@@ -43,6 +45,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp" />
+
         <EditText
             android:id="@+id/editRegard"
             android:layout_width="match_parent"
@@ -54,13 +57,13 @@
             android:inputType="textMultiLine"
             android:minHeight="48dp" />
 
-		<!-- limitations text -->
+        <!-- limitations text -->
         <TextView
             android:id="@id/txtWishcount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/empty"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -70,9 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/wish_send" />
-        
+
     </LinearLayout>
-    
-    
+
 
 </ScrollView>

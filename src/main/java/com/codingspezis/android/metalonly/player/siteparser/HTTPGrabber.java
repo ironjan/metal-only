@@ -21,15 +21,14 @@ import java.util.*;
  */
 public class HTTPGrabber extends Thread {
 
+    private final long timeoutDelay = 5000;
     protected Context context;
     protected String URL;
     protected OnHTTPGrabberListener listener;
     protected Handler handler;
-
     private ProgressDialog progressDialog;
     private boolean canceled;
     private boolean timedout;
-    private final long timeoutDelay = 5000;
 
     /**
      * constructor (does not communicate)
@@ -44,6 +43,59 @@ public class HTTPGrabber extends Thread {
         this.URL = URL;
         this.listener = listener;
         handler = new Handler();
+    }
+
+    /**
+     * if there is no network connection available this method shows network
+     * settings
+     *
+     * @param context GET context
+     * @return true if network settings will be displayed - false otherwise
+     */
+    public static boolean displayNetworkSettingsIfNeeded(final Context context) {
+        if (isOnline(context)) {
+            return false;
+        } else {
+            (new Handler(context.getMainLooper())).post(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle(R.string.no_internet);
+                    alert.setMessage(R.string.open_internet_settings);
+                    alert.setNegativeButton(R.string.no, null);
+                    alert.setPositiveButton(R.string.yes,
+                            new OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    Intent tmpIntent = new Intent(
+                                            Intent.ACTION_MAIN);
+                                    tmpIntent
+                                            .setAction("android.settings.WIRELESS_SETTINGS");
+                                    context.startActivity(tmpIntent);
+                                }
+                            }
+                    );
+                    alert.show();
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * checks network connection
+     *
+     * @return true if there is a network connection false otherwise
+     */
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() == null) {
+            return false;
+        } else {
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        }
     }
 
     @Override
@@ -128,59 +180,6 @@ public class HTTPGrabber extends Thread {
      */
     protected void displayTimeoutMSG() {
         StreamControlActivity.toastMessage(context, context.getString(R.string.timeout));
-    }
-
-    /**
-     * if there is no network connection available this method shows network
-     * settings
-     *
-     * @param context GET context
-     * @return true if network settings will be displayed - false otherwise
-     */
-    public static boolean displayNetworkSettingsIfNeeded(final Context context) {
-        if (isOnline(context)) {
-            return false;
-        } else {
-            (new Handler(context.getMainLooper())).post(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    alert.setTitle(R.string.no_internet);
-                    alert.setMessage(R.string.open_internet_settings);
-                    alert.setNegativeButton(R.string.no, null);
-                    alert.setPositiveButton(R.string.yes,
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    Intent tmpIntent = new Intent(
-                                            Intent.ACTION_MAIN);
-                                    tmpIntent
-                                            .setAction("android.settings.WIRELESS_SETTINGS");
-                                    context.startActivity(tmpIntent);
-                                }
-                            }
-                    );
-                    alert.show();
-                }
-            });
-            return true;
-        }
-    }
-
-    /**
-     * checks network connection
-     *
-     * @return true if there is a network connection false otherwise
-     */
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() == null) {
-            return false;
-        } else {
-            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
-        }
     }
 
 }

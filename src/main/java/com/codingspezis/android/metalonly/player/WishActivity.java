@@ -33,6 +33,27 @@ public class WishActivity extends SherlockFragmentActivity {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WishActivity.class.getSimpleName());
 
+    /**
+     * checks if it is possible to wish something
+     *
+     * @param allowedActions class for representing what is allowed
+     * @return true if you can wish - false otherwise
+     */
+    public static boolean canWishOrDisplayNot(Activity activity,
+                                              AllowedActions allowedActions) {
+        if (BuildConfig.DEBUG) LOGGER.debug("");
+        if (!allowedActions.moderated) {
+            StreamControlActivity.alertMessage(activity,
+                    activity.getString(R.string.no_moderator));
+            return false;
+        } else if (!allowedActions.wishes) {
+            StreamControlActivity.alertMessage(activity,
+                    activity.getString(R.string.no_wishes));
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
@@ -60,7 +81,6 @@ public class WishActivity extends SherlockFragmentActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("showContentFragment() done");
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (BuildConfig.DEBUG) LOGGER.debug("");
@@ -72,27 +92,6 @@ public class WishActivity extends SherlockFragmentActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    /**
-     * checks if it is possible to wish something
-     *
-     * @param allowedActions class for representing what is allowed
-     * @return true if you can wish - false otherwise
-     */
-    public static boolean canWishOrDisplayNot(Activity activity,
-                                              AllowedActions allowedActions) {
-        if (BuildConfig.DEBUG) LOGGER.debug("");
-        if (!allowedActions.moderated) {
-            StreamControlActivity.alertMessage(activity,
-                    activity.getString(R.string.no_moderator));
-            return false;
-        } else if (!allowedActions.wishes) {
-            StreamControlActivity.alertMessage(activity,
-                    activity.getString(R.string.no_wishes));
-            return false;
-        }
-        return true;
     }
 
 }

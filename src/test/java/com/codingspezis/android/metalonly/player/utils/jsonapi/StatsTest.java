@@ -1,11 +1,10 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import junit.framework.Assert;
+import junit.framework.*;
 
-import org.junit.runner.RunWith;
-import org.junit.*;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runner.*;
+import org.robolectric.*;
+import org.robolectric.annotation.*;
 
 @Config(emulateSdk = 18)
 @RunWith(RobolectricTestRunner.class)
@@ -59,13 +58,14 @@ public class StatsTest {
     }
 
     @Test
-    public void test_ParenthesesWithGenreShouldHaveGenre(){
+    public void test_ParenthesesWithGenreShouldHaveGenre() {
         stats.setSendung("(Genre)");
         String genre = stats.getGenre();
         Assert.assertEquals("Genre", genre);
     }
+
     @Test
-    public void test_FullShowInfoShouldHaveGenre(){
+    public void test_FullShowInfoShouldHaveGenre() {
         stats.setSendung("Sendung (Genre)");
         String genre = stats.getGenre();
         Assert.assertEquals("Genre", genre);

@@ -17,8 +17,8 @@ class MyPhoneStateListener extends PhoneStateListener {
      *
      */
     private final PlayerService playerService;
-    private boolean mute;
     private final AudioManager audioManager;
+    private boolean mute;
 
     public MyPhoneStateListener(PlayerService playerService) {
         super();

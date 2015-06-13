@@ -17,16 +17,15 @@ public class Metadata {
     public static final int GENRE_SLICE = 2;
     public static final String DEFAULT_MODEDRATOR = "MetalHead OnAir";
     public static final String DEFAULT_GENRE = "Mixed Metal";
-    public static final Metadata DEFAULT_METADATA = new Metadata("","","","");
+    public static final Metadata DEFAULT_METADATA = new Metadata("", "", "", "");
+    private static final String TAG = Metadata.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
     private String interpret = "";
     private String title = "";
     private String genre = "";
     private String moderator = "";
 
-    private static final String TAG = Metadata.class.getSimpleName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
-
-    private Metadata(String moderator, String genre, String interpret, String title){
+    private Metadata(String moderator, String genre, String interpret, String title) {
         this.moderator = moderator;
         this.genre = genre;
         this.interpret = interpret;
@@ -35,6 +34,7 @@ public class Metadata {
 
     /**
      * Parses the given data string into a Metadata object
+     *
      * @param data the string to be parsed
      * @return a new Metadata object. Silently returns default object if something goes wrong
      */
@@ -52,11 +52,32 @@ public class Metadata {
             }
             interpret = data.substring(0, data.indexOf(" - ")).trim();
             title = data.substring(data.indexOf(" - ") + 2).trim();
-            return new Metadata(moderator,genre,interpret,title);
+            return new Metadata(moderator, genre, interpret, title);
 
         } catch (Exception e) {
             return DEFAULT_METADATA;
         }
+
+    }
+
+    /**
+     * checks string str for occurrence of '*'
+     *
+     * @param toCount string to check
+     * @return number of char '*' containing in str
+     */
+    private static int numberOfStars(String toCount) {
+        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({})", toCount);
+
+        final String withoutStars = toCount.replaceAll("\\*", "");
+
+        final int lengthWithStars = toCount.length();
+        final int lengthWithoutStars = withoutStars.length();
+
+        final int result = lengthWithStars - lengthWithoutStars;
+        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({}) -> ", toCount, result);
+
+        return result;
 
     }
 
@@ -82,27 +103,6 @@ public class Metadata {
 
         if (BuildConfig.DEBUG) LOGGER.debug("toSong() -> {}", song);
         return song;
-    }
-
-    /**
-     * checks string str for occurrence of '*'
-     *
-     * @param toCount string to check
-     * @return number of char '*' containing in str
-     */
-    private static int numberOfStars(String toCount) {
-        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({})", toCount);
-
-        final String withoutStars = toCount.replaceAll("\\*", "");
-
-        final int lengthWithStars = toCount.length();
-        final int lengthWithoutStars = withoutStars.length();
-
-        final int result = lengthWithStars - lengthWithoutStars;
-        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({}) -> ", toCount, result);
-
-        return result;
-
     }
 
     @Override

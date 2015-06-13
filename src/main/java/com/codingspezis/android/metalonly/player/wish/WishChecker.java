@@ -11,9 +11,8 @@ import java.io.*;
  */
 public class WishChecker {
 
-    private OnWishesCheckedListener wishListener;
-
     private final HTTPGrabber grabber;
+    private OnWishesCheckedListener wishListener;
     private final OnHTTPGrabberListener grabberListener =
 
             new OnHTTPGrabberListener() {

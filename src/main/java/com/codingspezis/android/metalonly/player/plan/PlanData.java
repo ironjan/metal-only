@@ -5,6 +5,7 @@ import com.codingspezis.android.metalonly.player.*;
 import java.util.*;
 
 public class PlanData {
+    private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
     private final String mod, genre, title;
     private Calendar start;
     private int duration;
@@ -28,14 +29,16 @@ public class PlanData {
         return ret;
     }
 
-    private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
-
     public String getDescription() {
         return getTitle() + "\n" + getMod() + "\n" + getGenre() + "\n";
     }
 
     public int getDuration() {
         return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public Calendar getEnd() {
@@ -64,6 +67,10 @@ public class PlanData {
         return start;
     }
 
+    public void setStart(Calendar start) {
+        this.start = start;
+    }
+
     public long getStartTimeAsMillis() {
         return getStart().getTimeInMillis();
     }
@@ -85,13 +92,5 @@ public class PlanData {
         int thisDay = getStart().get(Calendar.DAY_OF_WEEK);
         int otherDay = other.getStart().get(Calendar.DAY_OF_WEEK);
         return thisDay == otherDay;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public void setStart(Calendar start) {
-        this.start = start;
     }
 }

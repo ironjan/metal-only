@@ -1,57 +1,35 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.graphics.*;
+import android.graphics.PorterDuff.*;
+import android.graphics.drawable.*;
+import android.net.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 
-import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.actionbarsherlock.view.Window;
-import com.codingspezis.android.metalonly.player.favorites.Song;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver;
-import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
-import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
-import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
-import com.codingspezis.android.metalonly.player.stream.PlayerService;
-import com.codingspezis.android.metalonly.player.stream.SongAdapter;
-import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.views.Marquee;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
-import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
-import com.codingspezis.android.metalonly.player.wish.WishChecker;
+import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.plan.*;
+import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
+import com.codingspezis.android.metalonly.player.views.*;
+import com.codingspezis.android.metalonly.player.wish.*;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.ViewById;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.androidannotations.annotations.*;
+import org.slf4j.*;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.net.*;
+import java.util.*;
 
 /**
  * main GUI activity
@@ -60,21 +38,19 @@ import java.util.ArrayList;
  */
 @EActivity(R.layout.activity_stream)
 public class StreamControlActivity extends SherlockListActivity {
-    private static final String TAG = StreamControlActivity.class.getSimpleName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
-
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
-
     // shared preferences keys
     public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
-
-    @Bean
-    MetalOnlyAPIWrapper apiWrapper;
-
+    final static long MIN_BOTTON_DELAY = 1000;
+    private static final String TAG = StreamControlActivity.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+    // button is not usable for MIN_BOTTON_DELAY msecs
+    static long lastButtonToggle = 0;
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
-
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)
@@ -88,12 +64,50 @@ public class StreamControlActivity extends SherlockListActivity {
     @ViewById(R.id.marqueeGenree)
     Marquee marqueeGenre;
     Menu menu;
-
     // other
     private MainBroadcastReceiver broadcastReceiver;
     private Metadata metadata;
     private SongSaver favoritesSaver;
     private SongSaver historySaver;
+    // other variables
+    private boolean shouldPlay = false;
+
+    /**
+     * @param context
+     * @param msg
+     */
+    public static void toastMessage(final Context context, final String msg) {
+        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
+        });
+        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
+    }
+
+    /**
+     * @param context
+     * @param msg
+     */
+    public static void alertMessage(final Context context, final String msg) {
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
+
+            @Override
+            public void run() {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setMessage(msg);
+                alert.setPositiveButton(context.getString(R.string.ok), null);
+                alert.show();
+            }
+        });
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
+    }
 
     /**
      * initializes GUI objects of main activity
@@ -107,10 +121,6 @@ public class StreamControlActivity extends SherlockListActivity {
         clearMetadata();
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
-
-    // other variables
-    private boolean shouldPlay = false;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -395,10 +405,6 @@ public class StreamControlActivity extends SherlockListActivity {
         return super.onKeyUp(keyCode, event);
     }
 
-    // button is not usable for MIN_BOTTON_DELAY msecs
-    static long lastButtonToggle = 0;
-    final static long MIN_BOTTON_DELAY = 1000;
-
     @Click
     void buttonPlayClicked() {
         long currentTime = System.currentTimeMillis();
@@ -598,44 +604,6 @@ public class StreamControlActivity extends SherlockListActivity {
         }
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{}) done", index, action);
 
-    }
-
-
-    /**
-     * @param context
-     * @param msg
-     */
-    public static void toastMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
-    }
-
-    /**
-     * @param context
-     * @param msg
-     */
-    public static void alertMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setMessage(msg);
-                alert.setPositiveButton(context.getString(R.string.ok), null);
-                alert.show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
     }
 
     public boolean isShouldPlay() {

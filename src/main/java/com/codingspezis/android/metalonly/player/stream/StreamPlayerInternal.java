@@ -1,46 +1,72 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.wifi.WifiManager;
-import android.os.PowerManager;
+import android.content.*;
+import android.media.*;
+import android.net.wifi.*;
+import android.os.*;
 
-import com.codingspezis.android.metalonly.player.BuildConfig;
-import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataListener;
-import com.codingspezis.android.metalonly.player.stream.metadata.OnMetadataReceivedListener;
+import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.stream.metadata.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
-import java.io.IOException;
-import java.util.Calendar;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by r on 17.09.14.
  */
 public class StreamPlayerInternal implements AudioStream {
 
-    private static MediaPlayer mediaPlayer;
-    private Context context;
-
-    private OnStreamListener onStreamListener;
-    private MetadataListener metadataListener;
-    private TimeoutListener  timeoutListener;
-
-    private PowerManager.WakeLock wakeLock;
-    private WifiManager.WifiLock wifiLock;
-
     // stream URL
     public static final String URL128 = "http://server1.blitz-stream.de:4400";
-
     // logger
     private static final String TAG = StreamPlayerInternal.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+    private static MediaPlayer mediaPlayer;
+    private Context context;
+    private OnStreamListener onStreamListener;
+    private MetadataListener metadataListener;
+    private TimeoutListener timeoutListener;
+    private PowerManager.WakeLock wakeLock;
+    private WifiManager.WifiLock wifiLock;
+    /**
+     * listener for preparation of the media player instance
+     */
+    private MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mediaPlayer) {
+            if (BuildConfig.DEBUG) LOGGER.debug("onPrepared()");
+            acquireLocks();
+            if (onStreamListener != null)
+                onStreamListener.streamConnected();
+            mediaPlayer.start();
+            new Thread(metadataListener).start();
+            new Thread(timeoutListener).start();
+        }
+    };
+    /**
+     * listener for errors of the media player instance
+     */
+    private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(MediaPlayer mediaPlayer, int i, int i2) {
+            // "In this case, the application must release the MediaPlayer object and instantiate a new one."
+            // http://developer.android.com/reference/android/media/MediaPlayer.html#MEDIA_ERROR_SERVER_DIED
+            if (i == MediaPlayer.MEDIA_ERROR_SERVER_DIED)
+                createPlayer();
+            if (onStreamListener != null) {
+                onStreamListener.errorOccurred("Error " + i + "-" + i2, false);
+            }
+            metadataListener.stop();
+            // TODO: try to restart the stream
+            return false;
+        }
+    };
 
     /**
      * constructor
+     *
      * @param context parents context
      */
     public StreamPlayerInternal(Context context) {
@@ -52,7 +78,17 @@ public class StreamPlayerInternal implements AudioStream {
     }
 
     /**
+     * static version of the player running check
+     *
+     * @return true if decoding and playing is still running
+     */
+    public static boolean IsPlaying() {
+        return mediaPlayer.isPlaying();
+    }
+
+    /**
      * creates a wake lock and a wifi lock
+     *
      * @param context
      */
     private void createLocks(Context context) {
@@ -68,9 +104,9 @@ public class StreamPlayerInternal implements AudioStream {
      * acquires wifi and wake lock
      */
     private void acquireLocks() {
-        if(!wakeLock.isHeld())
+        if (!wakeLock.isHeld())
             wakeLock.acquire(); // TODO: check if mediaPlayer.setWakeMode(..); is better
-        if(!wifiLock.isHeld())
+        if (!wifiLock.isHeld())
             wifiLock.acquire();
     }
 
@@ -78,9 +114,9 @@ public class StreamPlayerInternal implements AudioStream {
      * releases wifi and wake lock
      */
     private void releaseLocks() {
-        if(wakeLock.isHeld())
+        if (wakeLock.isHeld())
             wakeLock.release();
-        if(wifiLock.isHeld())
+        if (wifiLock.isHeld())
             wifiLock.release();
     }
 
@@ -110,17 +146,18 @@ public class StreamPlayerInternal implements AudioStream {
     private void setupTimeoutListener() {
         timeoutListener = new TimeoutListener();
         timeoutListener.setOnTimeoutListener(new OnTimeoutListener() {
-            private long lastTimeout;
             private static final long TIMEOUT_LIMIT = 30 * 1000; // 30 sec
+            private long lastTimeout;
+
             @Override
             public void onTimeout() {
                 long currentTimeout = Calendar.getInstance().getTimeInMillis();
                 // do not allow more than one reconnect within TIMEOUT_LIMIT milliseconds
-                if((currentTimeout - lastTimeout) > TIMEOUT_LIMIT)
+                if ((currentTimeout - lastTimeout) > TIMEOUT_LIMIT)
                     startPlaying();
                 else {
                     stopPlaying();
-                    if(onStreamListener != null)
+                    if (onStreamListener != null)
                         onStreamListener.errorOccurred(context.getString(R.string.timeout), false);
                 }
                 lastTimeout = currentTimeout;
@@ -143,8 +180,8 @@ public class StreamPlayerInternal implements AudioStream {
 
     /**
      * resets the media player instance
-     * @throws IOException
-     *      throws an exception if the data source couldn't be set
+     *
+     * @throws IOException throws an exception if the data source couldn't be set
      */
     private void resetPlayer() throws IOException {
         mediaPlayer.reset();
@@ -155,41 +192,6 @@ public class StreamPlayerInternal implements AudioStream {
     }
 
     /**
-     * listener for preparation of the media player instance
-     */
-    private MediaPlayer.OnPreparedListener onPreparedListener = new MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(MediaPlayer mediaPlayer) {
-            if (BuildConfig.DEBUG) LOGGER.debug("onPrepared()");
-            acquireLocks();
-            if(onStreamListener != null)
-                onStreamListener.streamConnected();
-            mediaPlayer.start();
-            new Thread(metadataListener).start();
-            new Thread(timeoutListener).start();
-        }
-    };
-
-    /**
-     * listener for errors of the media player instance
-     */
-    private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(MediaPlayer mediaPlayer, int i, int i2) {
-            // "In this case, the application must release the MediaPlayer object and instantiate a new one."
-            // http://developer.android.com/reference/android/media/MediaPlayer.html#MEDIA_ERROR_SERVER_DIED
-            if(i == MediaPlayer.MEDIA_ERROR_SERVER_DIED)
-                createPlayer();
-            if(onStreamListener != null) {
-                onStreamListener.errorOccurred("Error "+i+"-"+i2, false);
-            }
-            metadataListener.stop();
-            // TODO: try to restart the stream
-            return false;
-        }
-    };
-
-    /**
      * starts decoding and playing stream
      */
     public void startPlaying() {
@@ -197,8 +199,8 @@ public class StreamPlayerInternal implements AudioStream {
         try {
             resetPlayer();
             mediaPlayer.prepareAsync();
-        } catch(IOException e) {
-            if(onStreamListener != null) {
+        } catch (IOException e) {
+            if (onStreamListener != null) {
                 onStreamListener.errorOccurred(context.getString(R.string.error_initialize_player), false); // should never happen
             }
         }
@@ -217,26 +219,16 @@ public class StreamPlayerInternal implements AudioStream {
     }
 
     /**
-     * @return
-     *      true if decoding and playing is still running
+     * @return true if decoding and playing is still running
      */
     public boolean isPlaying() {
         return IsPlaying();
     }
 
     /**
-     * static version of the player running check
-     * @return
-     *      true if decoding and playing is still running
-     */
-    public static boolean IsPlaying() {
-        return mediaPlayer.isPlaying();
-    }
-
-    /**
      * sets listener for handle metadata etc.
-     * @param streamListener
-     *      listener to set
+     *
+     * @param streamListener listener to set
      */
     public void setOnStreamListener(OnStreamListener streamListener) {
         onStreamListener = streamListener;

@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.content.*;
 
 import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
+import com.codingspezis.android.metalonly.player.stream.metadata.*;
 
 /**
  * broadcast receiver class for communication between other activities or

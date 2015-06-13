@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/elementMargin">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/elementMargin">
 
     <RelativeLayout
         android:id="@+id/RelativeLayout1"
@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:paddingRight="8dp"
             android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/textAppVersion"
@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/elementMargin"
             android:layout_toRightOf="@+id/textAppName"
             android:text="@string/empty"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/textAboutApp"
@@ -38,7 +38,7 @@
             android:layout_below="@+id/textAppName"
             android:layout_marginTop="@dimen/elementMarginDouble"
             android:autoLink="web"
-            android:text="@string/aboutThisApp"/>
+            android:text="@string/aboutThisApp" />
 
         <Button
             android:id="@+id/buttonFeedback"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textAboutApp"
             android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/about_mail"/>
+            android:text="@string/about_mail" />
 
         <ImageView
             android:id="@+id/divider"
@@ -55,7 +55,7 @@
             android:layout_below="@+id/buttonFeedback"
             android:layout_marginTop="@dimen/elementMargin"
             android:src="@drawable/grey_horizontal_line"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textSherlockName"
