@@ -55,10 +55,6 @@ public class StreamControlActivity extends SherlockListActivity {
     ListView listView;
     @ViewById(R.id.buttonPlay)
     ImageView buttonStream;
-    @ViewById(R.id.btnCalendar)
-    ImageButton buttonCalendar;
-    @ViewById(R.id.btnWish)
-    ImageButton buttonWish;
     @ViewById(R.id.marqueeMod)
     Marquee marqueeMod;
     @ViewById(R.id.marqueeGenree)
