@@ -109,12 +109,18 @@ dependencies {
 
     // tests
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc2'
+    testCompile 'org.robolectric:robolectric:3.0-rc3'
+    testCompile 'org.robolectric:shadows-support-v4:3.0-rc3'
     // Repetition for autocompletion in android studio
     androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.robolectric:robolectric:3.0-rc2'
+    androidTestCompile 'org.robolectric:robolectric:3.0-rc3'
+    testCompile 'org.robolectric:shadows-support-v4:3.0-rc3'
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.10'
+}
+robolectric {
+    include '**/*Test.class'
+    maxHeapSize = "2048m"
 }
