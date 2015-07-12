@@ -1,14 +1,24 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import org.junit.runner.*;
-import org.robolectric.*;
-import org.robolectric.annotation.*;
+import android.os.Build;
 
-@Config(emulateSdk = 18)
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+@Config(sdk = Build.VERSION_CODES.JELLY_BEAN_MR2)
 @RunWith(RobolectricTestRunner.class)
-public class StatsTest {
+public class StatsTest extends TestCase {
 
     public static final String EMPTY_STRING = "";
     public static final String EMPTY_PARENTHESES = "Sendung ()";
