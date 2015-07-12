@@ -10,21 +10,21 @@
         android:id="@id/modImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:contentDescription="@string/empty"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_bg"
-        android:layout_centerVertical="true" />
+        android:src="@drawable/image_bg" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/modImage"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_centerVertical="true">
+        android:layout_toRightOf="@id/modImage">
 
         <TextView
             android:id="@id/txtDate"
@@ -68,9 +68,9 @@
             android:singleLine="true"
             android:text="@string/titleDummy"
             android:textColor="@android:color/white"
+            android:textIsSelectable="false"
             android:textStyle="bold"
-            android:typeface="sans"
-            android:textIsSelectable="false" />
+            android:typeface="sans" />
 
     </RelativeLayout>
 

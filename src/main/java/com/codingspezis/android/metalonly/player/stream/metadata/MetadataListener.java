@@ -1,22 +1,21 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import com.codingspezis.android.metalonly.player.stream.StreamPlayerInternal;
+import com.codingspezis.android.metalonly.player.stream.*;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 
 /**
  * Created by r on 17.09.14.
  */
 public class MetadataListener implements Runnable {
 
+    private static final int REFRESH_INTERVAL = 20 * 1000;
     private IcyStreamMeta icyStreamMeta;
     private OnMetadataReceivedListener onMetadataReceivedListener;
     private boolean active;
-
-    private static final int REFRESH_INTERVAL = 20 * 1000;
     private boolean err;
+
     /**
      * constructor
      */
@@ -25,7 +24,7 @@ public class MetadataListener implements Runnable {
         icyStreamMeta = new IcyStreamMeta();
         try {
             icyStreamMeta.setStreamUrl(new URL(StreamPlayerInternal.URL128));
-        }catch(MalformedURLException e) {
+        } catch (MalformedURLException e) {
             // this should never happen
             err = true;
         }
@@ -33,8 +32,8 @@ public class MetadataListener implements Runnable {
 
     /**
      * sets the onMetadataReceivedListener
-     * @param onMetadataReceivedListener
-     *      listener to set
+     *
+     * @param onMetadataReceivedListener listener to set
      */
     public void setOnMetadataReceivedListener(OnMetadataReceivedListener onMetadataReceivedListener) {
         this.onMetadataReceivedListener = onMetadataReceivedListener;
@@ -50,25 +49,25 @@ public class MetadataListener implements Runnable {
     /**
      * gets meta data every REFRESH_INTERVAL milliseconds
      */
-    @ Override
+    @Override
     public void run() {
         active = true;
         String metadata;
-        while(active && !err) {
+        while (active && !err) {
             try {
                 icyStreamMeta.refreshMeta();
                 metadata = icyStreamMeta.getStreamTitle();
-                if(metadata.trim().length() != 0) {
+                if (metadata.trim().length() != 0) {
                     if (onMetadataReceivedListener != null && active)
                         onMetadataReceivedListener.onMetadataReceived(metadata);
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 if (onMetadataReceivedListener != null && active)
                     onMetadataReceivedListener.onMetadataError(e);
             }
             try {
                 Thread.sleep(REFRESH_INTERVAL);
-            } catch(InterruptedException e) {
+            } catch (InterruptedException e) {
                 // everything is fine
             }
         }

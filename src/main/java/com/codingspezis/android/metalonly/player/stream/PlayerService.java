@@ -4,11 +4,10 @@ import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.telephony.*;
-import android.util.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
+import com.codingspezis.android.metalonly.player.stream.metadata.*;
 
 /**
  * service that is managing stream player
@@ -25,29 +24,22 @@ public class PlayerService extends Service {
 
     public static final int FOREGROUND_NOTIFICATION_ID = 1;
     public static final int TIME_15_MINUTES_IN_MILLIS = 15 * 60 * 1000;
-    private NotificationManager notificationManager;
-
     public static final String BROADCAST_EXTRA_CONNECTED = "MO_EXTRA_CONNECTED";
     public static final String BROADCAST_EXTRA_META = "MO_EXTRA_META";
-
     // JSON file name for favorites
     public static final String JSON_FILE_HIST = "mo_hist.json";
-
     public static final int MAXIMUM_NUMBER_OF_HISTORY_SONGS = 25;
-
+    final PlayerService playerService = this;
     // public AudioStream audioStream;
     public AudioStream audioStream;
-
-    private PlayerBCReceiver playerBCReceiver;
-
-    private MyPhoneStateListener phoneStateListener;
-    private TelephonyManager telephonyManager;
     StreamWatcher streamWatcher;
-    private SongSaver historySaver;
-    final PlayerService playerService = this;
-
     // this should be the state of the stream player
     boolean streamPlaying = false;
+    private NotificationManager notificationManager;
+    private PlayerBCReceiver playerBCReceiver;
+    private MyPhoneStateListener phoneStateListener;
+    private TelephonyManager telephonyManager;
+    private SongSaver historySaver;
 
     @Override
     public void onCreate() {
@@ -83,7 +75,7 @@ public class PlayerService extends Service {
         CharSequence tickerText = getString(R.string.playing);
         long when = System.currentTimeMillis();
         CharSequence contentTitle = getString(R.string.app_name);
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, StreamControlActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
         Notification not = new Notification(R.drawable.mo_notify, tickerText, when);
         not.setLatestEventInfo(getApplicationContext(),
@@ -117,7 +109,7 @@ public class PlayerService extends Service {
      * @param metadata meta data to parse to song
      */
     void addSongToHistory(String metadata) {
-        Song song = (new MetadataParser(metadata)).toSong();
+        Song song = (Metadata.fromString(metadata)).toSong();
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);

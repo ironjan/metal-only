@@ -34,12 +34,12 @@ public class PlanWithStats {
         return stats;
     }
 
-    public PlanEntry[] getPlan() {
-        return plan;
-    }
-
     public void setStats(Stats stats) {
         this.stats = stats;
+    }
+
+    public PlanEntry[] getPlan() {
+        return plan;
     }
 
     public void setPlan(PlanEntry[] plan) {

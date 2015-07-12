@@ -9,9 +9,7 @@ import android.graphics.drawable.*;
 import android.net.*;
 import android.os.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
-import android.widget.AdapterView.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
@@ -22,15 +20,15 @@ import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataParser;
+import com.codingspezis.android.metalonly.player.stream.metadata.*;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
+import org.androidannotations.annotations.*;
 import org.slf4j.*;
 
 import java.net.*;
-import java.text.*;
 import java.util.*;
 
 /**
@@ -38,39 +36,87 @@ import java.util.*;
  * TODO use androidannotatons
  * TODO move more functionality out of this class
  */
-public class MainActivity extends SherlockListActivity implements
-        OnClickListener, OnItemClickListener {
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
-
+@EActivity(R.layout.activity_stream)
+public class StreamControlActivity extends SherlockListActivity {
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
-    // intent extra key
-    public static final String messageExtra = "MO_MESSAGE_EXTRA";
-
     // shared preferences keys
     public static final String KEY_SP_MODTHUMBDATE = "MO_SP_MODTHUMBDATE_";
-
-    private MetalOnlyAPIWrapper apiWrapper;
-
+    final static long MIN_BOTTON_DELAY = 1000;
+    private static final String TAG = StreamControlActivity.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+    // button is not usable for MIN_BOTTON_DELAY msecs
+    static long lastButtonToggle = 0;
     // GUI objects
-    private final MainActivity mainActivity = this;
-    private ListView listView;
-    private ImageView buttonStream;
-    private ImageButton buttonCalendar;
-    private ImageButton buttonWish;
-    private Marquee marqueeMod;
-    private Marquee marqueeGenre;
-    private Menu menu;
-
+    private final StreamControlActivity streamControlActivity = this;
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
+    @ViewById(android.R.id.list)
+    ListView listView;
+    @ViewById(R.id.buttonPlay)
+    ImageView buttonStream;
+    @ViewById(R.id.marqueeMod)
+    Marquee marqueeMod;
+    @ViewById(R.id.marqueeGenree)
+    Marquee marqueeGenre;
+    Menu menu;
     // other
     private MainBroadcastReceiver broadcastReceiver;
-    private MetadataParser metadataParser;
+    private Metadata metadata;
     private SongSaver favoritesSaver;
     private SongSaver historySaver;
-
     // other variables
     private boolean shouldPlay = false;
+
+    /**
+     * @param context
+     * @param msg
+     */
+    public static void toastMessage(final Context context, final String msg) {
+        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+            }
+        });
+        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
+    }
+
+    /**
+     * @param context
+     * @param msg
+     */
+    public static void alertMessage(final Context context, final String msg) {
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
+
+        (new Handler(context.getMainLooper())).post(new Runnable() {
+
+            @Override
+            public void run() {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setMessage(msg);
+                alert.setPositiveButton(context.getString(R.string.ok), null);
+                alert.show();
+            }
+        });
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
+    }
+
+    /**
+     * initializes GUI objects of main activity
+     */
+    private void setUpGUIObjects() {
+        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
+
+
+        toggleStreamButton(false);
+        displaySongs();
+        clearMetadata();
+        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,14 +126,17 @@ public class MainActivity extends SherlockListActivity implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
-        setContentView(R.layout.activity_stream);
         setSupportProgressBarIndeterminateVisibility(false);
+
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
+    }
+
+    @AfterViews
+    void afterViews() {
         setUpBroadcastReceiver();
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
-
-        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
 
     @Override
@@ -162,10 +211,9 @@ public class MainActivity extends SherlockListActivity implements
      */
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
-        apiWrapper = MetalOnlyAPIWrapper_.getInstance_(getApplicationContext());
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
-        setMetadataParser(new MetadataParser("-"));
+        setMetadata(Metadata.DEFAULT_METADATA);
     }
 
     /**
@@ -191,30 +239,6 @@ public class MainActivity extends SherlockListActivity implements
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
-    }
-
-    /**
-     * initializes GUI objects of main activity
-     */
-    private void setUpGUIObjects() {
-        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
-        buttonStream = (ImageView) findViewById(R.id.buttonPlay);
-        buttonCalendar = (ImageButton) findViewById(R.id.btnCalendar);
-        buttonWish = (ImageButton) findViewById(R.id.btnWish);
-        marqueeMod = (Marquee) findViewById(R.id.marqueeMod);
-        marqueeGenre = (Marquee) findViewById(R.id.marqueeGenree);
-        listView = (ListView) findViewById(android.R.id.list);
-
-        buttonStream.setOnClickListener(this);
-
-        buttonCalendar.setOnClickListener(this);
-        buttonWish.setOnClickListener(this);
-        listView.setOnItemClickListener(this);
-
-        toggleStreamButton(false);
-        displaySongs();
-        clearMetadata();
-        if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
     /**
@@ -377,22 +401,11 @@ public class MainActivity extends SherlockListActivity implements
         return super.onKeyUp(keyCode, event);
     }
 
-    // button is not usable for MIN_BOTTON_DELAY msecs
-    static long lastButtonToggle = 0;
-    final static long MIN_BOTTON_DELAY = 1000;
-
-    /**
-     * handles button clicks *
-     */
-    @Override
-    public void onClick(View arg0) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onClick({})", arg0);
-
-
+    @Click
+    void buttonPlayClicked() {
         long currentTime = System.currentTimeMillis();
-        // stream start / stop
-        if (arg0 == buttonStream
-                && currentTime - lastButtonToggle >= MIN_BOTTON_DELAY) {
+        boolean hasWaitedLongEnoughToClickAgain = (MIN_BOTTON_DELAY <= currentTime - lastButtonToggle);
+        if (hasWaitedLongEnoughToClickAgain) {
             lastButtonToggle = System.currentTimeMillis();
             if (isShouldPlay()) {
                 stopListening();
@@ -402,19 +415,20 @@ public class MainActivity extends SherlockListActivity implements
                 }
             }
         }
-        // plan
-        else if (arg0 == buttonCalendar) {
-            if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-                startPlanActivity();
-            }
+    }
+
+    @Click
+    void btnCalendarClicked() {
+        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+            startPlanActivity();
         }
-        // wish
-        else if (arg0 == buttonWish) {
-            if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-                startWishActivity();
-            }
+    }
+
+    @Click
+    void btnWishClicked() {
+        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
+            startWishActivity();
         }
-        if (BuildConfig.DEBUG) LOGGER.debug("onClick({}) done", arg0);
     }
 
     private void startPlanActivity() {
@@ -446,17 +460,17 @@ public class MainActivity extends SherlockListActivity implements
                                 allowedActions.regards);
                         bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
                                 allowedActions.limit);
-                        Intent wishIntent = new Intent(mainActivity,
+                        Intent wishIntent = new Intent(streamControlActivity,
                                 WishActivity.class);
                         wishIntent.putExtras(bundle);
-                        mainActivity.startActivity(wishIntent);
+                        streamControlActivity.startActivity(wishIntent);
                     } else {
-                        alertMessage(mainActivity, mainActivity
+                        alertMessage(streamControlActivity, streamControlActivity
                                 .getString(R.string.no_wishes_and_regards));
                     }
                 } else {
-                    alertMessage(mainActivity,
-                            mainActivity.getString(R.string.no_moderator));
+                    alertMessage(streamControlActivity,
+                            streamControlActivity.getString(R.string.no_moderator));
                 }
             }
         });
@@ -502,9 +516,9 @@ public class MainActivity extends SherlockListActivity implements
     public void displayMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
-        if (getMetadataParser().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadataParser().getGenre());
-            marqueeMod.setText(getMetadataParser().getModerator());
+        if (getMetadata().toSong().isValid() && isShouldPlay()) {
+            marqueeGenre.setText(getMetadata().getGenre());
+            marqueeMod.setText(getMetadata().getModerator());
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
@@ -516,15 +530,15 @@ public class MainActivity extends SherlockListActivity implements
     private void clearMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
 
-        setMetadataParser(new MetadataParser("-"));
+        setMetadata(Metadata.DEFAULT_METADATA);
         if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onItemClick(...)");
+    @ItemClick(android.R.id.list)
+    void listItemClicked(int position) {
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({})", position);
 
-        final int index = arg2;
+        final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.history_options_array,
                 new DialogInterface.OnClickListener() {
@@ -536,7 +550,7 @@ public class MainActivity extends SherlockListActivity implements
                 }
         );
         builder.show();
-        if (BuildConfig.DEBUG) LOGGER.debug("onItemClick(...) done");
+        if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done", position);
     }
 
     /**
@@ -588,58 +602,6 @@ public class MainActivity extends SherlockListActivity implements
 
     }
 
-
-    /**
-     * @param context
-     * @param msg
-     */
-    public static void toastMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
-    }
-
-    /**
-     * @param context
-     * @param msg
-     */
-    public static void alertMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setMessage(msg);
-                alert.setPositiveButton(context.getString(R.string.ok), null);
-                alert.show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
-    }
-
-    /**
-     * converts timeMillis to a printable string
-     *
-     * @param timeMillis date as long
-     * @return date as string
-     */
-    @SuppressLint("SimpleDateFormat")
-    public static String longToDateString(long timeMillis) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeMillis);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm-dd.MM.yy");
-        return sdf.format(calendar.getTime());
-    }
-
     public boolean isShouldPlay() {
         return shouldPlay;
     }
@@ -648,12 +610,12 @@ public class MainActivity extends SherlockListActivity implements
         this.shouldPlay = shouldPlay;
     }
 
-    public MetadataParser getMetadataParser() {
-        return metadataParser;
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    public void setMetadataParser(MetadataParser metadataParser) {
-        this.metadataParser = metadataParser;
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
     }
 
 }

@@ -147,7 +147,9 @@
     <string name="date">Datum</string>
     <string name="time">Time</string>
     <string name="moderator">Moderator</string>
-
+    <string name="emptySongHistory">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
+    <string name="loading_plan">Plan wird geladen.</string>
+    <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 
 
     <!-- untranslateable texts -->
@@ -155,9 +157,6 @@
     <string name="artistDummy" translateable="false">A very long dummy text for an artist\'s name</string>
     <string name="genreDummy" translateable="false">A very long dummy text for a show\'s genre</string>
     <string name="titleDummy" translateable="false">A very long dummy text for a song\'s or show\'s title</string>
-    <string name="emptySongHistory" translateable="false">Hier werden die letzten Lieder angezeigt, die du mit dieser App angehört hast.\n\nDrück einfach auf "Play" um anzufangen.\n\n(Es kann ein paar Sekunden dauern, bis das aktuelle Lied angezeigt wird.)</string>
-    <string name="loading_plan" translateable="false">Plan wird geladen.</string>
-    <string name="no_favorites" translateable="false">Füge Favoriten hinzu, um diese hier zu sehen.</string>
     <string name="colon" translateable="false">:</string>
     <string name="donation_receiverPaypal" translateable="false">metalonly@gmx.de</string>
     <string-array name="value_array" translateable="false">

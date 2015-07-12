@@ -25,12 +25,7 @@ public class Stats {
     private boolean moderated = false;
     private int wishLimit = 0;
     private int greetingLimit = 0;
-    private String genre = "";
-
-    @JsonProperty("moderator")
-    public void setModerator(String moderator) {
-        this.moderator = moderator;
-    }
+    private String genre;
 
     @JsonProperty("sendung")
     public void setSendung(String sendung) {
@@ -74,14 +69,34 @@ public class Stats {
         return moderator;
     }
 
+    @JsonProperty("moderator")
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
+    }
 
     public String getGenre() {
-        if (genre.length() == 0) {
-            int startGenre = sendung.indexOf("(") + 1;
-            int endGenre = sendung.indexOf(")");
-            genre = sendung.substring(startGenre, endGenre);
+        if (genre == null) {
+            genre = computeGenre();
         }
         return genre;
+    }
+
+    private String computeGenre() {
+        int positionOfOpeningParenthesis = sendung.indexOf("(");
+        int positionOfClosingParenthesis = sendung.indexOf(")");
+        int startOfGenreName = positionOfOpeningParenthesis + 1;
+        int lengthOfGenre = positionOfClosingParenthesis - startOfGenreName;
+
+
+        boolean hasNoGenre = (positionOfOpeningParenthesis == -1
+                || positionOfClosingParenthesis == -1
+                || lengthOfGenre <= 0);
+
+        if (hasNoGenre) {
+            return "";
+        }
+
+        return sendung.substring(startOfGenreName, positionOfClosingParenthesis);
     }
 
 

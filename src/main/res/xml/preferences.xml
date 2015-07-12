@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-   <PreferenceCategory
-            android:title="@string/settings_category_stream">
-       
-		<!-- 32 or 128 kb/s -->
+    <PreferenceCategory android:title="@string/settings_category_stream">
+
+        <!-- 32 or 128 kb/s -->
         <ListPreference
-			android:key="@string/settings_key_rate"
-            android:title="@string/settings_rate"
+            android:dialogTitle="@string/settings_rate"
             android:entries="@array/rate_label"
             android:entryValues="@array/rate_label"
-            android:dialogTitle="@string/settings_rate" />
-        
+            android:key="@string/settings_key_rate"
+            android:title="@string/settings_rate" />
+
         <!-- audio puffer -->
         <EditTextPreference
-            android:key="@string/settings_key_audio_buffer"
-            android:title="@string/settings_audio_buffer"
             android:hint="@string/settings_buffer_hint"
-            android:inputType="number" />
+            android:inputType="number"
+            android:key="@string/settings_key_audio_buffer"
+            android:title="@string/settings_audio_buffer" />
 
         <!-- decoding puffer -->
         <EditTextPreference
-            android:key="@string/settings_key_decoding_buffer"
-            android:title="@string/settings_decoding_buffer"
             android:hint="@string/settings_buffer_hint"
-            android:inputType="number" />
+            android:inputType="number"
+            android:key="@string/settings_key_decoding_buffer"
+            android:title="@string/settings_decoding_buffer" />
 
     </PreferenceCategory>
 

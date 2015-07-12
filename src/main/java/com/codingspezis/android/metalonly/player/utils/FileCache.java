@@ -20,11 +20,9 @@ import java.util.*;
  */
 public class FileCache {
 
-    private static final String TAG = FileCache.class.getSimpleName();
-
     // moderator thumbs are cached 7 days in internal file storage
     public static final long WEEK_IN_MILLISECS = 7 * 24 * 60 * 60 * 1000;
-
+    private static final String TAG = FileCache.class.getSimpleName();
     private final Context context;
 
     public FileCache(Context context) {
@@ -50,6 +48,32 @@ public class FileCache {
         return null;
     }
 
+    /**
+     * checks cache duration of special file
+     *
+     * @param context  context for shared preferences
+     * @param fileName name of file
+     * @return true if file is older than cache duration
+     */
+    public static boolean isTooOld(Context context, String fileName) {
+        SharedPreferences settings = context.getSharedPreferences(
+                context.getString(R.string.app_name), 0);
+        long modThumDate = settings.getLong(StreamControlActivity.KEY_SP_MODTHUMBDATE
+                + fileName, 0);
+        long currentDate = Calendar.getInstance().getTimeInMillis();
+
+        return (currentDate - modThumDate) > WEEK_IN_MILLISECS;
+    }
+
+    public static synchronized void clear(Context context) {
+        String files[] = context.fileList();
+        for (String file : files) {
+            if (isTooOld(context, file)) {
+                context.deleteFile(file);
+            }
+        }
+    }
+
     public synchronized FileOutputStream getOutputStream(String moderator)
             throws FileNotFoundException {
         String fileName = String.valueOf(moderator.hashCode());
@@ -59,7 +83,7 @@ public class FileCache {
 
         Editor editor = context.getSharedPreferences(
                 context.getString(R.string.app_name), 0).edit();
-        editor.putLong(MainActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
+        editor.putLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
                 .getInstance().getTimeInMillis());
         editor.commit();
 
@@ -115,32 +139,6 @@ public class FileCache {
             }
         }
         return null;
-    }
-
-    /**
-     * checks cache duration of special file
-     *
-     * @param context  context for shared preferences
-     * @param fileName name of file
-     * @return true if file is older than cache duration
-     */
-    public static boolean isTooOld(Context context, String fileName) {
-        SharedPreferences settings = context.getSharedPreferences(
-                context.getString(R.string.app_name), 0);
-        long modThumDate = settings.getLong(MainActivity.KEY_SP_MODTHUMBDATE
-                + fileName, 0);
-        long currentDate = Calendar.getInstance().getTimeInMillis();
-
-        return (currentDate - modThumDate) > WEEK_IN_MILLISECS;
-    }
-
-    public static synchronized void clear(Context context) {
-        String files[] = context.fileList();
-        for (String file : files) {
-            if (isTooOld(context, file)) {
-                context.deleteFile(file);
-            }
-        }
     }
 
     public void clear() {

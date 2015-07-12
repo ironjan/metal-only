@@ -20,23 +20,18 @@ import java.util.*;
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanActivity extends SherlockListActivity {
 
-    @StringRes
-    String plan;
-
-    @StringArrayRes
-    String[] days;
-
-    @Extra
-    String site;
     public static final String KEY_SITE = "site";
-
     public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
             "{dd.MM.yy HH:mm"), DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm"),
             DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy"),
             DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
-
     private static final String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
-
+    @StringRes
+    String plan;
+    @StringArrayRes
+    String[] days;
+    @Extra
+    String site;
     private int todayListStartIndex;
 
     @Override
@@ -164,7 +159,7 @@ public class PlanActivity extends SherlockListActivity {
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, StreamControlActivity.class);
         NavUtils.navigateUpTo(this, intent);
     }
 

@@ -26,6 +26,14 @@ public class MemoryCache {
         setLimit(Runtime.getRuntime().maxMemory() / 4);
     }
 
+    static long getSizeInBytes(Bitmap bitmap) {
+        if (bitmap == null) {
+            return 0;
+        }
+
+        return bitmap.getRowBytes() * bitmap.getHeight();
+    }
+
     public void setLimit(long new_limit) {
         maxMemoryInBytes = new_limit;
         Log.i(TAG, "MemoryCache will use up to " + maxMemoryInBytes / 1024.
@@ -90,13 +98,5 @@ public class MemoryCache {
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
-    }
-
-    static long getSizeInBytes(Bitmap bitmap) {
-        if (bitmap == null) {
-            return 0;
-        }
-
-        return bitmap.getRowBytes() * bitmap.getHeight();
     }
 }
