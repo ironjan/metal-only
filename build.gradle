@@ -8,11 +8,13 @@ buildscript {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'        
         classpath 'org.robolectric:robolectric-gradle-plugin:1.0.1'
     }
 }
@@ -26,6 +28,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'project-report'
 apply plugin: 'org.robolectric'
+apply plugin: 'com.github.ben-manes.versions'
 
 configurations {
     apt
