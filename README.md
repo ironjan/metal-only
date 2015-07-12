@@ -6,7 +6,7 @@ Die App kann über Google Play [heruntergeladen][11] werden. Probleme und Featur
 
 ## Mitmachen
 
-TODO: Code und issue tracker auf github
+Code und issue tracker auf github
 
 ### Issue Tracker benutzen
 
@@ -20,6 +20,8 @@ TODO:
  * App wird gebaut mit gradle
  * Abweichungen vom Standard Android Layout
  * Kurzeinführung in wichtige Bibs mit Links
+  * ./gradlew dependencyUpdates um nach updates zu suchen
+  * more infos at https://github.com/ben-manes/gradle-versions-plugin
  * versionierung nach sem ver Versionierung nach Semantic Versioning 2.0.0 (http://semver.org/).
  * Testing, build anweisungen
  * wie man an den code kommt (fork, ....) und PRs sendet
@@ -27,6 +29,7 @@ TODO:
 ### Travis CI
 
  TODO: Badge einfügen, travis erklären
+
 ### Getting started
 
 
@@ -36,7 +39,6 @@ TODO:
  4. Push on your fork
  5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
  
-
 
 ## Lizenz
 
