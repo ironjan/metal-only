@@ -21,10 +21,11 @@ import java.util.concurrent.*;
  */
 public class ImageLoader {
 
-    MemoryCache memoryCache = new MemoryCache();
-    FileCache fileCache;
+    final int stub_id = R.drawable.mo_wait;
     private final Map<ImageView, String> imageViews = Collections
             .synchronizedMap(new WeakHashMap<ImageView, String>());
+    MemoryCache memoryCache = new MemoryCache();
+    FileCache fileCache;
     ExecutorService executorService;
     Handler handler = new Handler(); // handler to display images in UI thread
 
@@ -32,8 +33,6 @@ public class ImageLoader {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
     }
-
-    final int stub_id = R.drawable.mo_wait;
 
     public void DisplayImage(String moderator, ImageView imageView) {
         imageViews.put(imageView, moderator);
@@ -90,6 +89,19 @@ public class ImageLoader {
         }
     }
 
+    boolean imageViewReused(PhotoToLoad photoToLoad) {
+        String tag = imageViews.get(photoToLoad.imageView);
+        if (tag == null || !tag.equals(photoToLoad.moderator)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void clearCache() {
+        memoryCache.clear();
+        fileCache.clear();
+    }
+
     // Task for the queue
     class PhotoToLoad {
         public String moderator;
@@ -126,19 +138,6 @@ public class ImageLoader {
                 th.printStackTrace();
             }
         }
-    }
-
-    boolean imageViewReused(PhotoToLoad photoToLoad) {
-        String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.moderator)) {
-            return true;
-        }
-        return false;
-    }
-
-    public void clearCache() {
-        memoryCache.clear();
-        fileCache.clear();
     }
 
 }

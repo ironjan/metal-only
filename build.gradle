@@ -8,11 +8,13 @@ buildscript {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.5.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'        
         classpath 'org.robolectric:robolectric-gradle-plugin:1.0.1'
     }
 }
@@ -26,6 +28,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'project-report'
 apply plugin: 'org.robolectric'
+apply plugin: 'com.github.ben-manes.versions'
 
 configurations {
     apt
@@ -90,28 +93,34 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:22.0.0'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
 
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0-rc4'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
 
-    compile 'org.slf4j:slf4j-android:1.6.1-RC1'
+    compile 'org.slf4j:slf4j-android:1.7.12'
 
-    apt "org.androidannotations:androidannotations:3.1"
-    compile "org.androidannotations:androidannotations-api:3.1"
+    apt "org.androidannotations:androidannotations:3.3.2"
+    compile "org.androidannotations:androidannotations-api:3.3.2"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 
     // tests
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0-rc2'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
     // Repetition for autocompletion in android studio
     androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.robolectric:robolectric:3.0-rc2'
+    androidTestCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.10'
+}
+robolectric {
+    include '**/*Test.class'
+    maxHeapSize = "2048m"
 }

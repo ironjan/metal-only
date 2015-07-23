@@ -8,6 +8,8 @@ env:
 android:
   components:
     - build-tools-19.1.0
+    - extra
+    - android-19
   licenses:
     - android-sdk-license-5be876d5
 

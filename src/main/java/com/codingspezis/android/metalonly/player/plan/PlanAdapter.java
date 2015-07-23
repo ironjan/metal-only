@@ -11,9 +11,9 @@ import java.util.*;
 
 public class PlanAdapter extends BaseAdapter {
 
-    private final ArrayList<Item> data;
     @SuppressWarnings("unused")
     private static LayoutInflater inflater = null;
+    private final ArrayList<Item> data;
     @SuppressWarnings("unused")
     private final ImageLoader imageLoader;
     private Context context;

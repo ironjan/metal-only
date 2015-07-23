@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/mnu_add_manually"
         android:icon="@drawable/ic_content_new_dark"
         android:showAsAction="always"
-        android:title="@string/menu_add_mannually"/>
+        android:title="@string/menu_add_mannually" />
     <item
         android:id="@+id/mnu_shareall"
         android:icon="@drawable/ic_social_share_dark"
         android:showAsAction="ifRoom"
-        android:title="@string/menu_shareall"/>
+        android:title="@string/menu_shareall" />
     <item
         android:id="@+id/mnu_deleteall"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/menu_deleteall"/>
+        android:title="@string/menu_deleteall" />
 
 </menu>

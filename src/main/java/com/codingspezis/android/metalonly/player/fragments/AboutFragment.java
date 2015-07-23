@@ -2,8 +2,7 @@ package com.codingspezis.android.metalonly.player.fragments;
 
 import android.content.*;
 import android.net.*;
-import android.os.Bundle;
-import android.text.method.*;
+import android.os.*;
 import android.widget.*;
 
 import com.actionbarsherlock.app.*;
@@ -15,29 +14,23 @@ import org.slf4j.*;
 
 @EFragment(R.layout.fragment_about)
 public class AboutFragment extends SherlockFragment {
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
     @StringRes
     String mailaddress_codingspezis, app_name;
-
     @ViewById
     TextView textAppVersion;
-
     @ViewById(R.id.textAboutApp)
     @FromHtml(R.string.aboutThisApp)
     TextView mTextAboutApp;
-
     @ViewById
     @FromHtml(R.string.url_sherlock)
     TextView textSherlockLink;
-
     @ViewById
     @FromHtml(R.string.url_lazylist)
     TextView textLazyListLink;
-
     @ViewById
     @FromHtml(R.string.url_androidannotations)
     TextView textAndroidannotationsLink;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
 
     /**
      * sends system intent ACTION_SEND (send mail)
@@ -54,7 +47,7 @@ public class AboutFragment extends SherlockFragment {
         try {
             startActivity(Intent.createChooser(emailIntent, strTo));
         } catch (android.content.ActivityNotFoundException ex) {
-            MainActivity.toastMessage(getActivity(), getString(R.string.no_mail_app));
+            StreamControlActivity.toastMessage(getActivity(), getString(R.string.no_mail_app));
         }
     }
 
@@ -70,16 +63,16 @@ public class AboutFragment extends SherlockFragment {
      */
     @AfterViews
     public void setAppVersionLabel() {
-        textAppVersion.setText(BuildConfig.VERSION_NAME+" ("+BuildConfig.VERSION_CODE+")");
+        textAppVersion.setText(BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")");
     }
 
-    @Click({ R.id.textSherlockLicenseApache, R.id.textAndroidannotationsLicenseApache,
-             R.id.textSpringLicenseApache,   R.id.textJacksonLicenseApache })
+    @Click({R.id.textSherlockLicenseApache, R.id.textAndroidannotationsLicenseApache,
+            R.id.textSpringLicenseApache, R.id.textJacksonLicenseApache})
     void displayApacheLicense() {
         displayLicense(LicenseActivity.KEY_BU_LICENSE_APACHE);
     }
 
-    @Click({ R.id.textLazyListLicenseMIT })
+    @Click({R.id.textLazyListLicenseMIT})
     void displayMitLicense() {
         displayLicense(LicenseActivity.KEY_BU_LICENSE_MIT);
     }
@@ -87,8 +80,7 @@ public class AboutFragment extends SherlockFragment {
     /**
      * displays specified license
      *
-     * @param license
-     *            license to display
+     * @param license license to display
      */
     private void displayLicense(String license) {
         Intent licenseIntent = new Intent(getActivity().getApplicationContext(),

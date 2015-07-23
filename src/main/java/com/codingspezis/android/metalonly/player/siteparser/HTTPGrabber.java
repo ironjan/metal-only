@@ -21,15 +21,14 @@ import java.util.*;
  */
 public class HTTPGrabber extends Thread {
 
+    private final long timeoutDelay = 5000;
     protected Context context;
     protected String URL;
     protected OnHTTPGrabberListener listener;
     protected Handler handler;
-
     private ProgressDialog progressDialog;
     private boolean canceled;
     private boolean timedout;
-    private final long timeoutDelay = 5000;
 
     /**
      * constructor (does not communicate)
@@ -44,90 +43,6 @@ public class HTTPGrabber extends Thread {
         this.URL = URL;
         this.listener = listener;
         handler = new Handler();
-    }
-
-    @Override
-    public void run() {
-        setProgressDialogVisible(true);
-        // timeout timer setup
-        timedout = false;
-        Timer timeoutTimer = new Timer(true);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (!canceled) {
-                    timedout = true;
-                    setProgressDialogVisible(false);
-                    if (listener != null) {
-                        listener.onTimeout();
-                    }
-                }
-            }
-        };
-        timeoutTimer.schedule(timerTask, timeoutDelay);
-        // HTTP part
-        URLConnection con;
-        try {
-            con = (new URL(URL)).openConnection();
-            con.connect();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
-            if (!canceled && !timedout) {
-                timeoutTimer.cancel();
-                setProgressDialogVisible(false);
-                if (listener != null) {
-                    listener.onSuccess(reader);
-                }
-            }
-            reader.close();
-        } catch (Exception e) {
-            canceled = true;
-            setProgressDialogVisible(false);
-            e.printStackTrace();
-            MainActivity.toastMessage(context, e.getMessage());
-            if (listener != null) {
-                listener.onError(e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * this function shows or hides progress dialog
-     *
-     * @param visible visible or not
-     */
-    protected void setProgressDialogVisible(final boolean visible) {
-        Runnable progressRun = new Runnable() {
-            @Override
-            public void run() {
-                if (visible) {
-                    progressDialog = ProgressDialog.show(context, "",
-                            context.getString(R.string.communicating), true,
-                            true, new DialogInterface.OnCancelListener() {
-                                @Override
-                                public void onCancel(DialogInterface dialog) {
-                                    canceled = true;
-                                    if (listener != null) {
-                                        listener.onCancel();
-                                    }
-                                }
-                            }
-                    );
-                } else {
-                    if (progressDialog != null && progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                }
-            }
-        };
-        handler.post(progressRun);
-    }
-
-    /**
-     * displays timeout message
-     */
-    protected void displayTimeoutMSG() {
-        MainActivity.toastMessage(context, context.getString(R.string.timeout));
     }
 
     /**
@@ -181,6 +96,90 @@ public class HTTPGrabber extends Thread {
         } else {
             return cm.getActiveNetworkInfo().isConnectedOrConnecting();
         }
+    }
+
+    @Override
+    public void run() {
+        setProgressDialogVisible(true);
+        // timeout timer setup
+        timedout = false;
+        Timer timeoutTimer = new Timer(true);
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (!canceled) {
+                    timedout = true;
+                    setProgressDialogVisible(false);
+                    if (listener != null) {
+                        listener.onTimeout();
+                    }
+                }
+            }
+        };
+        timeoutTimer.schedule(timerTask, timeoutDelay);
+        // HTTP part
+        URLConnection con;
+        try {
+            con = (new URL(URL)).openConnection();
+            con.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            if (!canceled && !timedout) {
+                timeoutTimer.cancel();
+                setProgressDialogVisible(false);
+                if (listener != null) {
+                    listener.onSuccess(reader);
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            canceled = true;
+            setProgressDialogVisible(false);
+            e.printStackTrace();
+            StreamControlActivity.toastMessage(context, e.getMessage());
+            if (listener != null) {
+                listener.onError(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * this function shows or hides progress dialog
+     *
+     * @param visible visible or not
+     */
+    protected void setProgressDialogVisible(final boolean visible) {
+        Runnable progressRun = new Runnable() {
+            @Override
+            public void run() {
+                if (visible) {
+                    progressDialog = ProgressDialog.show(context, "",
+                            context.getString(R.string.communicating), true,
+                            true, new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialog) {
+                                    canceled = true;
+                                    if (listener != null) {
+                                        listener.onCancel();
+                                    }
+                                }
+                            }
+                    );
+                } else {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                }
+            }
+        };
+        handler.post(progressRun);
+    }
+
+    /**
+     * displays timeout message
+     */
+    protected void displayTimeoutMSG() {
+        StreamControlActivity.toastMessage(context, context.getString(R.string.timeout));
     }
 
 }

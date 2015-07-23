@@ -1,15 +1,24 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import junit.framework.Assert;
+import junit.framework.TestCase;
 
+import android.os.Build;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.junit.*;
-import org.robolectric.RobolectricTestRunner;
+import org.junit.runners.BlockJUnit4ClassRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
-@Config(emulateSdk = 18)
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+@Config(sdk = Build.VERSION_CODES.JELLY_BEAN_MR2)
 @RunWith(RobolectricTestRunner.class)
-public class StatsTest {
+public class StatsTest extends TestCase {
 
     public static final String EMPTY_STRING = "";
     public static final String EMPTY_PARENTHESES = "Sendung ()";
@@ -59,13 +68,14 @@ public class StatsTest {
     }
 
     @Test
-    public void test_ParenthesesWithGenreShouldHaveGenre(){
+    public void test_ParenthesesWithGenreShouldHaveGenre() {
         stats.setSendung("(Genre)");
         String genre = stats.getGenre();
         Assert.assertEquals("Genre", genre);
     }
+
     @Test
-    public void test_FullShowInfoShouldHaveGenre(){
+    public void test_FullShowInfoShouldHaveGenre() {
         stats.setSendung("Sendung (Genre)");
         String genre = stats.getGenre();
         Assert.assertEquals("Genre", genre);

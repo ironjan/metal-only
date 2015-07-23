@@ -10,7 +10,7 @@ import java.io.*;
 
 public class PlanGrabber {
 
-    private final MainActivity mainActivity;
+    private final StreamControlActivity streamControlActivity;
 
     private final Context context;
 
@@ -29,9 +29,9 @@ public class PlanGrabber {
                 bundle.putString(PlanActivity.KEY_SITE, site);
                 Intent planIntent = PlanActivity_.intent(context.getApplicationContext()).get();
                 planIntent.putExtras(bundle);
-                PlanGrabber.this.mainActivity.startActivity(planIntent);
+                PlanGrabber.this.streamControlActivity.startActivity(planIntent);
             } catch (Exception e) {
-                MainActivity.toastMessage(context, e.getMessage());
+                StreamControlActivity.toastMessage(context, e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -53,8 +53,8 @@ public class PlanGrabber {
     /**
      * Constructor
      */
-    public PlanGrabber(MainActivity mainActivity, Context context, String URL) {
-        this.mainActivity = mainActivity;
+    public PlanGrabber(StreamControlActivity streamControlActivity, Context context, String URL) {
+        this.streamControlActivity = streamControlActivity;
         this.context = context;
         grabber = new HTTPGrabber(context, URL, listener);
     }

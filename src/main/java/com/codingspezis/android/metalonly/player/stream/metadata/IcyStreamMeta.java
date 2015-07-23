@@ -1,22 +1,15 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import android.os.Build;
+import android.os.*;
 
-import com.codingspezis.android.metalonly.player.stream.metadata.IcyURLConnection;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.util.regex.*;
 
 /**
  * Created by r on 17.09.14.
- *
+ * <p/>
  * CREDIT TO:
  * http://stackoverflow.com/questions/8970548/how-to-get-metadata-of-a-streaming-online-radio
  */
@@ -29,6 +22,21 @@ public class IcyStreamMeta {
 
     public IcyStreamMeta() {
         isError = false;
+    }
+
+    public static Map<String, String> parseMetadata(String metaString) {
+        Map<String, String> metadata = new HashMap();
+        String[] metaParts = metaString.split(";");
+        Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");
+        Matcher m;
+        for (int i = 0; i < metaParts.length; i++) {
+            m = p.matcher(metaParts[i]);
+            if (m.find()) {
+                metadata.put((String) m.group(1), (String) m.group(2));
+            }
+        }
+
+        return metadata;
     }
 
     /**
@@ -76,7 +84,7 @@ public class IcyStreamMeta {
             return "";
 
         String streamTitle = data.get("StreamTitle");
-        String artist = streamTitle.substring(streamTitle.indexOf("-")+1);
+        String artist = streamTitle.substring(streamTitle.indexOf("-") + 1);
         return artist.trim();
     }
 
@@ -94,7 +102,7 @@ public class IcyStreamMeta {
 
     synchronized private void retreiveMetadata() throws IOException {
         URLConnection con;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             con = new IcyURLConnection(streamUrl);
         else
             con = streamUrl.openConnection();
@@ -113,8 +121,7 @@ public class IcyStreamMeta {
             // Headers are sent within a stream
             StringBuilder strHeaders = new StringBuilder();
             char c;
-            while ((c = (char)stream.read()) != -1)
-            {
+            while ((c = (char) stream.read()) != -1) {
                 strHeaders.append(c);
                 if (strHeaders.length() > 5 && (strHeaders.substring((strHeaders.length() - 4), strHeaders.length()).equals("\r\n\r\n"))) {
                     // end of headers
@@ -125,15 +132,13 @@ public class IcyStreamMeta {
             // Match headers to get metadata offset within a stream
             Pattern p = Pattern.compile("\\r\\n(icy-metaint):\\s*(.*)\\r\\n");
             Matcher m = p.matcher(strHeaders.toString());
-            if (m.find())
-            {
+            if (m.find()) {
                 metaDataOffset = Integer.parseInt(m.group(2));
             }
         }
 
         // In case no data was sent
-        if (metaDataOffset == 0)
-        {
+        if (metaDataOffset == 0) {
             isError = true;
             return;
         }
@@ -155,20 +160,15 @@ public class IcyStreamMeta {
 
             if (count > metaDataOffset + 1 && count < (metaDataOffset + metaDataLength)) {
                 inData = true;
-            }
-            else
-            {
+            } else {
                 inData = false;
             }
-            if (inData)
-            {
-                if (b != 0)
-                {
-                    metaData.append((char)b);
+            if (inData) {
+                if (b != 0) {
+                    metaData.append((char) b);
                 }
             }
-            if (count > (metaDataOffset + metaDataLength))
-            {
+            if (count > (metaDataOffset + metaDataLength)) {
                 break;
             }
         }
@@ -193,20 +193,5 @@ public class IcyStreamMeta {
         this.metadata = null;
         this.streamUrl = streamUrl;
         this.isError = false;
-    }
-
-    public static Map<String, String> parseMetadata(String metaString) {
-        Map<String, String> metadata = new HashMap();
-        String[] metaParts = metaString.split(";");
-        Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");
-        Matcher m;
-        for (int i = 0; i < metaParts.length; i++) {
-            m = p.matcher(metaParts[i]);
-            if (m.find()) {
-                metadata.put((String)m.group(1), (String)m.group(2));
-            }
-        }
-
-        return metadata;
     }
 }

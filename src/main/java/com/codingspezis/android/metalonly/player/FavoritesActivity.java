@@ -31,22 +31,31 @@ import java.util.*;
 @SuppressLint("Registered")
 public class FavoritesActivity extends SherlockListActivity {
 
-    private static final int ITEM_CLICK_ACTION_DELETE = 3;
-
-    private static final int ITEM_CLICK_ACTION_SHARE = 2;
-
-    private static final int ITEM_CLICK_ACTION_YOUTUBE = 1;
-
-    private static final int ITEM_CLICK_ACTION_WISH = 0;
-
     public static final String JSON_FILE_FAV = "mo_fav.json";
-
+    private static final int ITEM_CLICK_ACTION_DELETE = 3;
+    private static final int ITEM_CLICK_ACTION_SHARE = 2;
+    private static final int ITEM_CLICK_ACTION_YOUTUBE = 1;
+    private static final int ITEM_CLICK_ACTION_WISH = 0;
     @ViewById
     ListView list;
 
     private Menu menu;
 
     private SongSaver favoritesSaver;
+
+    /**
+     * asks if user is sure to delete something
+     *
+     * @param yes what is to do if user clicks yes
+     * @param no  what is to do if user clicks no
+     */
+    public static void askSureDelete(Context context, OnClickListener yes, OnClickListener no) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setMessage(R.string.delete_sure);
+        alert.setNegativeButton(R.string.no, no);
+        alert.setPositiveButton(R.string.yes, yes);
+        alert.show();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -246,21 +255,7 @@ public class FavoritesActivity extends SherlockListActivity {
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, StreamControlActivity.class);
         NavUtils.navigateUpTo(this, intent);
-    }
-
-    /**
-     * asks if user is sure to delete something
-     *
-     * @param yes what is to do if user clicks yes
-     * @param no  what is to do if user clicks no
-     */
-    public static void askSureDelete(Context context, OnClickListener yes, OnClickListener no) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setMessage(R.string.delete_sure);
-        alert.setNegativeButton(R.string.no, no);
-        alert.setPositiveButton(R.string.yes, yes);
-        alert.show();
     }
 }

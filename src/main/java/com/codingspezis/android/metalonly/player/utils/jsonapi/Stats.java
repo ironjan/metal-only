@@ -1,8 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import android.text.TextUtils;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 /**
  * <pre>
@@ -28,11 +26,6 @@ public class Stats {
     private int wishLimit = 0;
     private int greetingLimit = 0;
     private String genre;
-
-    @JsonProperty("moderator")
-    public void setModerator(String moderator) {
-        this.moderator = moderator;
-    }
 
     @JsonProperty("sendung")
     public void setSendung(String sendung) {
@@ -76,6 +69,10 @@ public class Stats {
         return moderator;
     }
 
+    @JsonProperty("moderator")
+    public void setModerator(String moderator) {
+        this.moderator = moderator;
+    }
 
     public String getGenre() {
         if (genre == null) {

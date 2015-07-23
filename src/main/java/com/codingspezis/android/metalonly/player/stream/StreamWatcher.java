@@ -10,6 +10,7 @@ import android.widget.*;
 class StreamWatcher implements OnStreamListener {
 
     private final PlayerService playerService;
+    private String metadata;
 
     /**
      * @param playerService
@@ -17,8 +18,6 @@ class StreamWatcher implements OnStreamListener {
     StreamWatcher(PlayerService playerService) {
         this.playerService = playerService;
     }
-
-    private String metadata;
 
     @Override
     public void metadataReceived(String data) {

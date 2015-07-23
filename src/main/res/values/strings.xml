@@ -152,7 +152,6 @@
     <string name="no_favorites">Füge Favoriten hinzu, um diese hier zu sehen.</string>
 
 
-
     <!-- untranslateable texts -->
     <string name="app_name" translateable="false">Metal Only</string>
     <string name="artistDummy" translateable="false">A very long dummy text for an artist\'s name</string>

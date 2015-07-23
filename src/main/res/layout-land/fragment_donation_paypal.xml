@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/donationReceiver"
@@ -16,7 +16,7 @@
             android:baselineAligned="true"
             android:gravity="bottom"
             android:orientation="horizontal"
-            android:paddingLeft="4dp" >
+            android:paddingLeft="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,8 +88,8 @@
             android:layout_alignBaseline="@+id/editDonator"
             android:layout_alignBottom="@+id/editDonator"
             android:layout_alignParentLeft="true"
-            android:text="@string/donation_donator"
             android:layout_marginRight="8dp"
+            android:text="@string/donation_donator"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -99,8 +99,8 @@
             android:layout_alignBaseline="@+id/editDonationValue"
             android:layout_alignBottom="@+id/editDonationValue"
             android:layout_alignParentLeft="true"
-            android:text="@string/donation_value"
             android:layout_marginRight="8dp"
+            android:text="@string/donation_value"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
