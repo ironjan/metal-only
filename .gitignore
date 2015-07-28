@@ -29,6 +29,7 @@ proguard/
 *.ipr
 *.iws
 .idea/
+.idea/*
 
 .apt_generated
 .factorypath
