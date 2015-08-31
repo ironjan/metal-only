@@ -4,11 +4,7 @@ Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf Android
 
 Die App kann über Google Play [heruntergeladen][11] werden. Probleme und Feature-Wünsche können an mail@codingspezis.com gesendet werden.
 
-## Mitmachen
-
-Code und issue tracker auf github
-
-### Fehler melden
+## Fehler melden
 
 Beantworte die folgenden Fragen:
 
@@ -17,7 +13,7 @@ Beantworte die folgenden Fragen:
  * Was sollte passieren?
  * Was passiert stattdessen?
 
-### Coden
+## Entwickeln
 
 Die metal-only wird mit [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide) gebaut. Zum Entwickeln empfiehlt sich [Android Studio](https://developer.android.com/sdk/index.html).
 
@@ -30,10 +26,6 @@ Die metal-only wird mit [gradle](http://tools.android.com/tech-docs/new-build-sy
  5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
  
 Siehe auch https://gun.io/blog/how-to-github-fork-branch-and-pull-request/
-
-### Versionierung
-
-Siehe http://semver.org/
 
 ## Lizenz
 
