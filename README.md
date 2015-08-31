@@ -16,29 +16,21 @@ TODO:
 
 ### Coden
 
-TODO: 
- * App wird gebaut mit gradle
- * Abweichungen vom Standard Android Layout
- * Kurzeinführung in wichtige Bibs mit Links
-  * ./gradlew dependencyUpdates um nach updates zu suchen
-  * more infos at https://github.com/ben-manes/gradle-versions-plugin
- * versionierung nach sem ver Versionierung nach Semantic Versioning 2.0.0 (http://semver.org/).
- * Testing, build anweisungen
- * wie man an den code kommt (fork, ....) und PRs sendet
- 
-### Travis CI
-
- TODO: Badge einfügen, travis erklären
+Die metal-only wird mit [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide) gebaut. Zum Entwickeln empfiehlt sich [Android Studio](https://developer.android.com/sdk/index.html).
 
 ### Getting started
 
-
  1. [Fork](https://help.github.com/articles/fork-a-repo/) this project.
  2. Import the project into android studio (Check out from Version Control, select github or git)
- 3. Fix bugs, implement features
+ 3. Create a branch to work on. Then fix bugs, implement features, ...
  4. Push on your fork
  5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
  
+Siehe auch https://gun.io/blog/how-to-github-fork-branch-and-pull-request/
+
+### Versionierung
+
+Siehe http://semver.org/
 
 ## Lizenz
 
