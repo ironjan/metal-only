@@ -8,11 +8,14 @@ Die App kann über Google Play [heruntergeladen][11] werden. Probleme und Featur
 
 Code und issue tracker auf github
 
-### Issue Tracker benutzen
+### Fehler melden
 
-TODO:
- * wie sollten bug reports aufgebaut sein
- * wie sollten feature request aussehen
+Beantworte die folgenden Fragen:
+
+ * Welche Android-Version und welche Version der App wird verwendet?
+ * Welche Schritte führst du durch?
+ * Was sollte passieren?
+ * Was passiert stattdessen?
 
 ### Coden
 
