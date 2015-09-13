@@ -1,3 +1,5 @@
+// use semantic versioning: http://semver.org/
+// only change _after_ merge requests
 def versionMajor = 0 // incompatible API changes
 def versionMinor = 4 // added functionality in a backwards-compatible manner
 def versionPatch = 14 // backwards-compatible bug fixes
