@@ -1,8 +1,12 @@
 # Metal Only Android App
 
-Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen oder Grüßen.
+Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf
+Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält 
+sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen 
+oder Grüßen.
 
-Die App kann über Google Play [heruntergeladen][11] werden. Probleme und Feature-Wünsche können an mail@codingspezis.com gesendet werden.
+Die App kann über Google Play [heruntergeladen][11] werden. Probleme und 
+Feature-Wünsche können an mail@codingspezis.com gesendet werden.
 
 ## Fehler melden
 
@@ -15,17 +19,25 @@ Beantworte die folgenden Fragen:
 
 ## Entwickeln
 
-Die metal-only wird mit [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide) gebaut. Zum Entwickeln empfiehlt sich [Android Studio](https://developer.android.com/sdk/index.html).
+Die metal-only wird mit [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide) 
+gebaut. Zum Entwickeln empfiehlt sich [Android Studio](https://developer.android.com/sdk/index.html).
 
 ### Getting started
 
  1. [Fork](https://help.github.com/articles/fork-a-repo/) this project.
- 2. Import the project into android studio (Check out from Version Control, select github or git)
+ 2. Import the project into android studio (Check out from Version Control, 
+    select github or git)
  3. Create a branch to work on. Then fix bugs, implement features, ...
  4. Push on your fork
- 5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) with base branch Codingspezis/metal-only develop
+ 5. [Create a Pull request](https://help.github.com/articles/creating-a-pull-request/) 
+    with base branch Codingspezis/metal-only develop
  
 Siehe auch https://gun.io/blog/how-to-github-fork-branch-and-pull-request/
+
+### Abhängigkeiten updaten
+
+Um zu sehen, ob es Updates gibt, kann ```./gradlew dependencyUpdates``` 
+benutzt werden. Aber Achtung: zeigt auch "false positives" an. 
 
 ## Lizenz
 
