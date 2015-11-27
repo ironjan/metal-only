@@ -6,7 +6,11 @@ sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen
 oder Grüßen.
 
 Die App kann über Google Play [heruntergeladen][11] werden. Probleme und 
-Feature-Wünsche können an mail@codingspezis.com gesendet werden.
+Feature-Wünsche können an [lippertsjan+metal-only@gmail.com](mailto:lippertsjan+metal-only@gmail.com) 
+gesendet werden.
+
+Ursprünglich wurde die App von den [Codingspezis](http://codingspezis.com/projekte/metal-only) 
+entwickelt. 
 
 ## Fehler melden
 
