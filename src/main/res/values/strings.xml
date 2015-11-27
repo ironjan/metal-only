@@ -17,7 +17,7 @@
     <string name="abort">Abbruch</string>
     <string name="back">Zurück</string>
     <string name="next">Weiter</string>
-    <string name="empty"></string>
+    <string name="empty" translatable="false"></string>
     <string name="attention">Achtung</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
@@ -102,7 +102,7 @@
     <!-- settings -->
     <string name="settings_category_stream">Stream</string>
     <string name="settings_rate">Übertragungsrate</string>
-    <string name="settings_rate_summary"></string>
+    <string name="settings_rate_summary" translatable="false"></string>
     <string name="settings_audio_buffer">Audio-Puffer</string>
     <string name="settings_decoding_buffer">Decoding-Puffer</string>
     <string name="settings_buffer_hint">Kapazität in ms:</string>
@@ -153,28 +153,29 @@
 
 
     <!-- untranslateable texts -->
-    <string name="app_name" translateable="false">Metal Only</string>
-    <string name="artistDummy" translateable="false">A very long dummy text for an artist\'s name</string>
-    <string name="genreDummy" translateable="false">A very long dummy text for a show\'s genre</string>
-    <string name="titleDummy" translateable="false">A very long dummy text for a song\'s or show\'s title</string>
-    <string name="colon" translateable="false">:</string>
-    <string name="donation_receiverPaypal" translateable="false">metalonly@gmx.de</string>
+    <string name="app_name" translateable="false" translatable="false">Metal Only</string>
+    <string name="artistDummy" translateable="false" translatable="false">A very long dummy text for an artist\'s name</string>
+    <string name="genreDummy" translateable="false" translatable="false">A very long dummy text for a show\'s genre</string>
+    <string name="titleDummy" translateable="false" translatable="false">A very long dummy text for a song\'s or show\'s title</string>
+    <string name="colon" translateable="false" translatable="false">:</string>
+    <string name="donation_receiverPaypal" translateable="false" translatable="false">metalonly@gmx.de</string>
     <string-array name="value_array" translateable="false">
         <item>5 €</item>
         <item>10 €</item>
         <item>25 €</item>
     </string-array>
-    <string name="paypal_mail_mo" translateable="false">metalonly@gmx.de</string>
-    <string name="paypal_key_sender" translateable="false">MO_SP_SENDER</string>
-    <string name="paypal_key_value" translateable="false">MO_SP_VALUE</string>
-    <string name="paypal_key_send" translateable="false">MO_SP_SEND</string>
-    <string name="paypal_key_info" translateable="false">MO_SP_INFO</string>
-    <string name="paypal_default_value" translateable="false">5</string>
-    <string name="settings_key_rate" translateable="false">KEY_RATE</string>
-    <string name="settings_key_audio_buffer" translateable="false">KEY_AUDIO_BUFFER</string>
-    <string name="settings_key_decoding_buffer" translateable="false">KEY_DECODING_BUFFER</string>
+    <string name="paypal_mail_mo" translateable="false" translatable="false">metalonly@gmx.de</string>
+    <string name="paypal_key_sender" translateable="false" translatable="false">MO_SP_SENDER</string>
+    <string name="paypal_key_value" translateable="false" translatable="false">MO_SP_VALUE</string>
+    <string name="paypal_key_send" translateable="false" translatable="false">MO_SP_SEND</string>
+    <string name="paypal_key_info" translateable="false" translatable="false">MO_SP_INFO</string>
+    <string name="paypal_default_value" translateable="false" translatable="false">5</string>
+    <string name="settings_key_rate" translateable="false" translatable="false">KEY_RATE</string>
+    <string name="settings_key_audio_buffer" translateable="false" translatable="false">KEY_AUDIO_BUFFER</string>
+    <string name="settings_key_decoding_buffer" translateable="false" translatable="false">KEY_DECODING_BUFFER</string>
     <string-array name="rate_label" translateable="false">
         <item>32 kb/s</item>
         <item>128 kb/s</item>
     </string-array>
+    <string name="error_player32" translatable="false">AAC+ Decoder-Error</string>
 </resources>
