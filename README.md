@@ -14,6 +14,8 @@ entwickelt.
 
 ## Fehler melden
 
+Issue Tracker: https://www.pivotaltracker.com/n/projects/1489992
+
 Beantworte die folgenden Fragen:
 
  * Welche Android-Version und welche Version der App wird verwendet?
