@@ -13,7 +13,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
     /**
      * Requests the show's stats
      *
-     * @return the show's stats
+     * @return the show's stats. Will not be null.
      */
     @Get("stats")
     @Accept(MediaType.APPLICATION_JSON)
@@ -22,7 +22,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
     /**
      * Requests this week's sending plan
      *
-     * @return this week's sending plan
+     * @return this week's sending plan. Will not be null.
      */
     @Get("plannew")
     @Accept(MediaType.APPLICATION_JSON)
@@ -31,7 +31,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
     /**
      * Requests this week's sending plan including stats
      *
-     * @return this week's sending plan including stats
+     * @return this week's sending plan including stats. Will not be null.
      */
     @Get("all")
     @Accept(MediaType.APPLICATION_JSON)

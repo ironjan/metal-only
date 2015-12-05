@@ -64,7 +64,8 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public Stats getStats() {
         checkConnectivity();
-        Stats stats = null;
+        Stats stats = new Stats();
+
         try {
             stats = api.getStats();
         } catch (RestClientException e) {
@@ -76,7 +77,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public Plan getPlan() {
         checkConnectivity();
-        Plan plan = null;
+        Plan plan = new Plan();
         try {
             plan = api.getPlan();
         } catch (RestClientException e) {
@@ -88,7 +89,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public PlanWithStats getPlanWithStats() {
         checkConnectivity();
-        PlanWithStats planWithStats = null;
+        PlanWithStats planWithStats = new PlanWithStats();
         try {
             planWithStats = api.getPlanWithStats();
         } catch (RestClientException e) {
