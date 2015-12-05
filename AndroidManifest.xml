@@ -45,11 +45,6 @@
             android:windowSoftInputMode="stateUnchanged" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/menu_settings"
-            android:launchMode="singleTask" >
-        </activity>
-        <activity
             android:name=".FavoritesActivity_"
             android:label="@string/menu_favorites"
             android:launchMode="singleTask" >
