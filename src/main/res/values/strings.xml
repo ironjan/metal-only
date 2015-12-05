@@ -153,29 +153,31 @@
 
 
     <!-- untranslateable texts -->
-    <string name="app_name" translateable="false" translatable="false">Metal Only</string>
-    <string name="artistDummy" translateable="false" translatable="false">A very long dummy text for an artist\'s name</string>
-    <string name="genreDummy" translateable="false" translatable="false">A very long dummy text for a show\'s genre</string>
-    <string name="titleDummy" translateable="false" translatable="false">A very long dummy text for a song\'s or show\'s title</string>
-    <string name="colon" translateable="false" translatable="false">:</string>
-    <string name="donation_receiverPaypal" translateable="false" translatable="false">metalonly@gmx.de</string>
-    <string-array name="value_array" translateable="false">
-        <item>5 €</item>
-        <item>10 €</item>
-        <item>25 €</item>
+    <string name="app_name" translatable="false">Metal Only</string>
+    <string name="artistDummy" translatable="false">A very long dummy text for an artist\'s name</string>
+    <string name="genreDummy" translatable="false">A very long dummy text for a show\'s genre</string>
+    <string name="titleDummy" translatable="false">A very long dummy text for a song\'s or show\'s title</string>
+    <string name="colon" translatable="false">:</string>
+    <string name="donation_receiverPaypal" translatable="false">metalonly@gmx.de</string>
+
+    <string-array name="value_array" translatable="false">
+        <item>5€</item>
+        <item>10€</item>
+        <item>25€</item>
     </string-array>
-    <string name="paypal_mail_mo" translateable="false" translatable="false">metalonly@gmx.de</string>
-    <string name="paypal_key_sender" translateable="false" translatable="false">MO_SP_SENDER</string>
-    <string name="paypal_key_value" translateable="false" translatable="false">MO_SP_VALUE</string>
-    <string name="paypal_key_send" translateable="false" translatable="false">MO_SP_SEND</string>
-    <string name="paypal_key_info" translateable="false" translatable="false">MO_SP_INFO</string>
-    <string name="paypal_default_value" translateable="false" translatable="false">5</string>
-    <string name="settings_key_rate" translateable="false" translatable="false">KEY_RATE</string>
-    <string name="settings_key_audio_buffer" translateable="false" translatable="false">KEY_AUDIO_BUFFER</string>
-    <string name="settings_key_decoding_buffer" translateable="false" translatable="false">KEY_DECODING_BUFFER</string>
-    <string-array name="rate_label" translateable="false">
-        <item>32 kb/s</item>
-        <item>128 kb/s</item>
+    <string name="paypal_mail_mo" translatable="false">metalonly@gmx.de</string>
+    <string name="paypal_key_sender" translatable="false">MO_SP_SENDER</string>
+    <string name="paypal_key_value" translatable="false">MO_SP_VALUE</string>
+    <string name="paypal_key_send" translatable="false">MO_SP_SEND</string>
+    <string name="paypal_key_info" translatable="false">MO_SP_INFO</string>
+    <string name="paypal_default_value" translatable="false">5</string>
+    <string name="settings_key_rate" translatable="false">KEY_RATE</string>
+    <string name="settings_key_audio_buffer" translatable="false">KEY_AUDIO_BUFFER</string>
+    <string name="settings_key_decoding_buffer" translatable="false">KEY_DECODING_BUFFER</string>
+
+    <string-array name="rate_label" translatable="false">
+        <item>32 kB/s</item>
+        <item>128 kB/s</item>
     </string-array>
     <string name="error_player32" translatable="false">AAC+ Decoder-Error</string>
 </resources>
