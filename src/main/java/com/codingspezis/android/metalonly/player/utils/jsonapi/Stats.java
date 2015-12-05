@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * <pre>
@@ -18,14 +18,15 @@ import com.fasterxml.jackson.annotation.*;
 public class Stats {
 
     private static final String WISH_GREET_FULL = "1";
-    private String moderator = "";
-    private String sendung = "";
+
+    private String moderator = "Unbekannt";
+    private String sendung = "Ladefehler";
     private boolean canWish = false;
     private boolean canGreet = false;
     private boolean moderated = false;
     private int wishLimit = 0;
     private int greetingLimit = 0;
-    private String genre;
+    private String genre = "Metal";
 
     @JsonProperty("sendung")
     public void setSendung(String sendung) {
