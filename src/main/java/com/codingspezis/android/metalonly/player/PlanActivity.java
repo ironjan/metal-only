@@ -159,7 +159,7 @@ public class PlanActivity extends SherlockListActivity {
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {
-        Intent intent = new Intent(this, StreamControlActivity.class);
+        Intent intent = new Intent(this, StreamControlActivity_.class);
         NavUtils.navigateUpTo(this, intent);
     }
 

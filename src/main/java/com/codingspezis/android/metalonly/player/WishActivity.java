@@ -86,7 +86,7 @@ public class WishActivity extends SherlockFragmentActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("");
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, StreamControlActivity.class);
+                Intent intent = new Intent(this, StreamControlActivity_.class);
                 NavUtils.navigateUpTo(this, intent);
                 return true;
             default:
