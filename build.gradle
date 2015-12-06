@@ -2,7 +2,7 @@
 // only change _after_ merge requests
 def versionMajor = 0 // incompatible API changes
 def versionMinor = 4 // added functionality in a backwards-compatible manner
-def versionPatch = 15 // backwards-compatible bug fixes
+def versionPatch = 16 // backwards-compatible bug fixes
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 buildscript {
