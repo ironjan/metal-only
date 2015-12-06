@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    style="?android:attr/selectableItemBackground"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:minHeight="48dp">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/Widget.ProgressBar.Vertical"
+        android:layout_width="4dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:max="100"
+        android:minHeight="48dp"
+        android:progress="100" />
 
     <ImageView
         android:id="@id/modImage"
@@ -26,57 +36,50 @@
         android:layout_toRightOf="@id/modImage">
 
         <TextView
-            android:id="@id/txtDate"
+            android:id="@id/txtMod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/txtArtist"
+            android:layout_alignBaseline="@id/txtTitle"
             android:layout_alignParentRight="true"
             android:singleLine="true"
-            android:text="@string/date"
+            android:text="@string/moderator"
             android:textIsSelectable="false" />
 
         <TextView
             android:id="@id/txtTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/txtTitle"
-            android:layout_alignRight="@id/txtDate"
-            android:layout_below="@id/txtDate"
+            android:layout_alignBaseline="@id/txtGenre"
+            android:layout_alignRight="@id/txtMod"
+            android:layout_below="@id/txtMod"
             android:singleLine="true"
             android:text="@string/time"
-            android:textIsSelectable="false" />
-
-        <TextView
-            android:id="@id/txtArtist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/txtDate"
-            android:singleLine="true"
-            android:text="@string/artistDummy"
             android:textIsSelectable="false" />
 
         <TextView
             android:id="@id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/txtArtist"
-            android:layout_below="@id/txtArtist"
-            android:layout_toLeftOf="@id/txtTime"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/txtMod"
             android:singleLine="true"
             android:text="@string/titleDummy"
             android:textColor="@android:color/white"
             android:textIsSelectable="false"
-            android:textStyle="bold"
-            android:typeface="sans" />
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/txtGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txtTitle"
+            android:layout_below="@id/txtTitle"
+            android:layout_toLeftOf="@id/txtTime"
+            android:singleLine="true"
+            android:text="@string/genreDummy"
+            android:textIsSelectable="false" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/listSizer"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

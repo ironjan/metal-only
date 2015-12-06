@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="mailaddress_codingspezis" translateable="false" translatable="false">mail@codingspezis.com</string>
-    <string name="url_codingspezis" translateable="false" translatable="false">http://www.codingspezis.com/</string>
+    <string name="mailaddress_codingspezis" translatable="false">mail@codingspezis.com</string>
+    <string name="url_codingspezis" translatable="false">http://www.codingspezis.com/</string>
     <string name="aboutThisApp">Diese App bringt den Internetstream von &lt;a href="http://www.metal-only.de>metal-only&lt;/a> auf Android.&lt;br/>
 &lt;br/>
 Entwickelt wird sie hauptsächlich von den &lt;a href="http://www.codingspezis.com">codingspezis&lt;/a> - der Quellcode der App ist auf &lt;a href="https://github.com/Codingspezis/metal-only">github&lt;/a> zu finden. Wir freuen uns sehr über Mit-Entwickler!</string>
-    <string name="about_category_app" translateable="false" translatable="false">App</string>
+    <string name="about_category_app" translatable="false">App</string>
     <string name="about_name">Name:</string>
     <string name="about_version">Version:</string>
     <string name="about_web1">Web:</string>
-    <string name="about_web2" translateable="false" translatable="false">metal-only.de</string>
+    <string name="about_web2" translatable="false">metal-only.de</string>
     <string name="about_developers1">Entwickler:</string>
-    <string name="about_developers2" translateable="false" translatable="false">codingspezis.com</string>
+    <string name="about_developers2" translatable="false">codingspezis.com</string>
     <string name="about_mail">Feedback / Bug Report</string>
     <string name="about_category_libs">Verwendete Bibliotheken</string>
     <string name="about_link">Link:</string>
@@ -46,6 +46,6 @@ Entwickelt wird sie hauptsächlich von den &lt;a href="http://www.codingspezis.c
     <!-- licenses -->
     <string name="apl2" translatable="false">Apache 2.0</string>
     <string name="lgpl" translatable="false">LGPL</string>
-    <string name="mit">MIT</string>
+    <string name="mit" translatable="false">MIT</string>
 
 </resources>
