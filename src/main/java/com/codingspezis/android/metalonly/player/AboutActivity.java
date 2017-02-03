@@ -11,10 +11,8 @@ import com.actionbarsherlock.view.*;
 import org.androidannotations.annotations.*;
 
 /**
- * this activity shows information about the application e.g. codingspezis.com
- * and used software
+ * this activity shows information about the application and used software
  *
- * @author codingspezis.com
  */
 @EActivity(R.layout.activity_about)
 @SuppressLint("Registered")
