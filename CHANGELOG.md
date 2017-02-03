@@ -1,0 +1,19 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+### Added
+-
+
+### Changed
+-
+
+## [0.4.17] - 2017-02-03
+### Fixed
+- Crash when starting the app
+
+### Added
+- CHANGELOG.md in git repository
