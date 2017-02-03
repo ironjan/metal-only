@@ -17,6 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Stats {
 
+    private Stats() {
+    }
+
+
     private static final String WISH_GREET_FULL = "1";
 
     private String moderator = "Unbekannt";
@@ -27,6 +31,10 @@ public class Stats {
     private int wishLimit = 0;
     private int greetingLimit = 0;
     private String genre = "Metal";
+
+    public static Stats getDefault() {
+        return new Stats();
+    }
 
     @JsonProperty("sendung")
     public void setSendung(String sendung) {

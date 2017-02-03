@@ -30,7 +30,7 @@ public class StatsTest extends TestCase {
 
     @Before
     public void initStats() {
-        stats = new Stats();
+        stats = Stats.getDefault();
     }
 
     @Test

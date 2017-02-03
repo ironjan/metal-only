@@ -7,7 +7,7 @@ import org.springframework.http.converter.json.*;
 /**
  * Interface to generate the REST-Client
  */
-@Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = "http://metal-only.de/botcon/mob.php?action=")
+@Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = "https://www.metal-only.de/botcon/mob.php?action=")
 interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
     /**
@@ -16,7 +16,6 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      * @return the show's stats. Will not be null.
      */
     @Get("stats")
-    @Accept(MediaType.APPLICATION_JSON)
     Stats getStats();
 
     /**
@@ -25,7 +24,6 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      * @return this week's sending plan. Will not be null.
      */
     @Get("plannew")
-    @Accept(MediaType.APPLICATION_JSON)
     Plan getPlan();
 
     /**
@@ -34,7 +32,6 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      * @return this week's sending plan including stats. Will not be null.
      */
     @Get("all")
-    @Accept(MediaType.APPLICATION_JSON)
     PlanWithStats getPlanWithStats();
 
 }
