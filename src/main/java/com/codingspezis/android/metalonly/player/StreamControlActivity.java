@@ -21,6 +21,7 @@ import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
 import com.codingspezis.android.metalonly.player.stream.*;
 import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
 import com.codingspezis.android.metalonly.player.views.*;
 import com.codingspezis.android.metalonly.player.wish.*;
@@ -434,8 +435,7 @@ public class StreamControlActivity extends SherlockListActivity {
     private void startPlanActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
 
-        PlanGrabber pg = new PlanGrabber(this, this,
-                "http://www.metal-only.de/botcon/mob.php?action=plan");
+        PlanGrabber pg = new PlanGrabber(this, this, UrlConstants.API_OLD_PLAN_URL);
         pg.start();
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
 
@@ -444,7 +444,7 @@ public class StreamControlActivity extends SherlockListActivity {
     private void startWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("startWishActivity()");
 
-        WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
+        WishChecker wishChecker = new WishChecker(this, UrlConstants.METAL_ONLY_WISHES_WISHES_URL);
         wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
 
             @Override
@@ -453,6 +453,9 @@ public class StreamControlActivity extends SherlockListActivity {
                     if (allowedActions.wishes || allowedActions.regards) {
                         // allowedActions.wishes = false;
                         // allowedActions.regards = false;
+
+                        // FIXME replace this with android annotation intent calls
+
                         Bundle bundle = new Bundle();
                         bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
                                 allowedActions.wishes);
@@ -583,7 +586,7 @@ public class StreamControlActivity extends SherlockListActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Uri url = Uri.parse("http://www.youtube.com/results?search_query="
+                Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
                         + searchStr);
                 Intent youtube = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(youtube);

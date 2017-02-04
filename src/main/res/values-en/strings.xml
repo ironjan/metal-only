@@ -74,7 +74,9 @@
         <item>Anonymous</item>
     </string-array>
 
+    <!-- FIXME replace address -->
     <string name="paypal_description1">&lt;p&gt;You can donate to Metal Only via PayPal (A registration at PayPal is not necessary).&lt;br&gt;Infos and account info are avaialbe at &lt;a href=http://www.metal-only.de/?action=donation &gt;www.metal-only.de/?action=donation&lt;/a&gt; (German).&lt;/p&gt;</string>
+    <!-- FIXME replace address -->
     <string name="paypal_description2">To donate anonymously, just leave the \'From\'-value blank. You can check the inputs again on the PayPal website.</string>
     <string name="notification">Hint</string>
     <string name="donation_enter_from">Donator?</string>
