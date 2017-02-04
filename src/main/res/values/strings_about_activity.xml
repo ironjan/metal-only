@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- FIXME replace address -->
     <string name="mailaddress_codingspezis" translatable="false">mail@codingspezis.com</string>
+    <!-- FIXME replace address -->
     <string name="url_codingspezis" translatable="false">http://www.codingspezis.com/</string>
+    <!-- FIXME replace address -->
     <string name="aboutThisApp">Diese App bringt den Internetstream von &lt;a href="http://www.metal-only.de>metal-only&lt;/a> auf Android.&lt;br/>
 &lt;br/>
 Entwickelt wird sie hauptsächlich von den &lt;a href="http://www.codingspezis.com">codingspezis&lt;/a> - der Quellcode der App ist auf &lt;a href="https://github.com/Codingspezis/metal-only">github&lt;/a> zu finden. Wir freuen uns sehr über Mit-Entwickler!</string>

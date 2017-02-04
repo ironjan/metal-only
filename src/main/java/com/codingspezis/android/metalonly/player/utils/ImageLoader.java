@@ -60,10 +60,8 @@ public class ImageLoader {
         try {
             //
             Bitmap bitmap = null;
-            URL imageUrl = new URL(
-                    "http://www.metal-only.de/botcon/mob.php?action=pic&nick="
-                            + moderator
-            );
+            String absoluteUrl = UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator;
+            URL imageUrl = new URL(absoluteUrl);
             HttpURLConnection conn = (HttpURLConnection) imageUrl
                     .openConnection();
             conn.setConnectTimeout(30000);

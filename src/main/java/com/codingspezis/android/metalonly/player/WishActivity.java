@@ -21,9 +21,6 @@ import org.slf4j.*;
 
 public class WishActivity extends SherlockFragmentActivity {
 
-    // URL to wish script on metal-only.de
-    public static final String URL_WISHES = "http://metalonly.de/?action=wunschscript";
-
     // intent keys
     public static final String KEY_WISHES_ALLOWED = "MO_WISHES_ALLOWED";
     public static final String KEY_REGARDS_ALLOWED = "MO_REGARDS_ALLOWED";

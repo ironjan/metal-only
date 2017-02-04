@@ -1,5 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
+
 import org.androidannotations.annotations.rest.*;
 import org.androidannotations.api.rest.*;
 import org.springframework.http.converter.json.*;
@@ -7,7 +9,7 @@ import org.springframework.http.converter.json.*;
 /**
  * Interface to generate the REST-Client
  */
-@Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = "https://www.metal-only.de/botcon/mob.php?action=")
+@Rest(converters = MappingJackson2HttpMessageConverter.class, rootUrl = UrlConstants.METAL_ONLY_API_BASE_URL)
 interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
     /**
@@ -15,7 +17,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      *
      * @return the show's stats. Will not be null.
      */
-    @Get("stats")
+    @Get(UrlConstants.API_STATS_PATH)
     Stats getStats();
 
     /**
@@ -23,7 +25,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      *
      * @return this week's sending plan. Will not be null.
      */
-    @Get("plannew")
+    @Get(UrlConstants.API_PLAN_PATH)
     Plan getPlan();
 
     /**
@@ -31,7 +33,7 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      *
      * @return this week's sending plan including stats. Will not be null.
      */
-    @Get("all")
+    @Get(UrlConstants.API_PLAN_WITH_STATS_PATH)
     PlanWithStats getPlanWithStats();
 
 }

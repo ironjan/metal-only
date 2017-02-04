@@ -11,9 +11,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 -
 
-## [0.4.17] - 2017-02-03
-### Fixed
-- Crash when starting the app
+## [0.4.18] - 2017-02-03
+- Fixed: Wishes and Greetings work again
+- Fixed: Moderator images loaded again
+- Fixed: plan works again
 
-### Added
-- CHANGELOG.md in git repository
+## [0.4.17] - 2017-02-03
+- Fixed: Crash when starting the app
+- Added: CHANGELOG.md in git repository
