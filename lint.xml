@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="Wakelock">
-        <ignore path="src/com/codingspezis/android/metalonly/player/stream/OpencorePlayer.java" />
-    </issue>
+    <issue id="InvalidPackage" severity="warning" />
 </lint>

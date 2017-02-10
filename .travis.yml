@@ -1,17 +1,22 @@
 ## from https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
 language: android
-jdk: oraclejdk7
+jdk: oraclejdk8
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
 sudo: false
 
 android:
   components:
-    - build-tools-19.1.0
+    - tools
+    - platform-tools
+    - tools
+    - build-tools-25.0.2
+    - android-25
     - extra
-    - android-19
   licenses:
-    - android-sdk-license-5be876d5
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 script: ./gradlew lint test

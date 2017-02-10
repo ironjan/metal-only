@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.stream;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.*;
 
 import com.codingspezis.android.metalonly.player.*;
@@ -77,13 +78,18 @@ public class PlayerService extends Service {
         CharSequence contentTitle = getString(R.string.app_name);
         Intent notificationIntent = new Intent(this, StreamControlActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
-        Notification not = new Notification(R.drawable.mo_notify, tickerText, when);
-        not.setLatestEventInfo(getApplicationContext(),
-                contentTitle,
-                contentText,
-                contentIntent);
-        not.flags = not.flags | Notification.FLAG_ONGOING_EVENT;
-        return not;
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        Notification notification = builder.setContentIntent(contentIntent)
+                .setSmallIcon(R.drawable.mo_notify)
+                .setTicker(tickerText)
+                .setWhen(when)
+                .setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .build();
+
+        notification.flags = notification.flags | Notification.FLAG_ONGOING_EVENT;
+        return notification;
     }
 
     public void setForeground() {
