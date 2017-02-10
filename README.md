@@ -9,12 +9,11 @@ Die App kann über Google Play [heruntergeladen][11] werden. Probleme und
 Feature-Wünsche können an [lippertsjan+metal-only@gmail.com](mailto:lippertsjan+metal-only@gmail.com) 
 gesendet werden.
 
-Ursprünglich wurde die App von den [Codingspezis](http://codingspezis.com/projekte/metal-only) 
-entwickelt. 
+Ursprünglich wurde die App von [@rbrtslmn](https://github.com/rbrtslmn) und den Codingspezis entwickelt. 
 
 ## Fehler melden
 
-Issue Tracker: https://www.pivotaltracker.com/n/projects/1489992
+Issue Tracker: https://github.com/ironjan/metal-only/issues
 
 Beantworte die folgenden Fragen:
 
