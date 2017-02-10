@@ -8,9 +8,12 @@ sudo: false
 
 android:
   components:
+    - tools
+    - platform-tools
+    - tools
     - build-tools-25.0.2
-    - extra
     - android-25
+    - extra
   licenses:
     - android-sdk-license-5be876d5
 
