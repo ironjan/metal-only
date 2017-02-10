@@ -15,6 +15,8 @@ android:
     - android-25
     - extra
   licenses:
-    - android-sdk-license-5be876d5
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 script: ./gradlew lint test
