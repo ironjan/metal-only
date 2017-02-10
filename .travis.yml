@@ -3,14 +3,14 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
 sudo: false
 
 android:
   components:
-    - build-tools-19.1.0
+    - build-tools-25.0.2
     - extra
-    - android-19
+    - android-25
   licenses:
     - android-sdk-license-5be876d5
 
