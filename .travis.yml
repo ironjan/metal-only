@@ -1,6 +1,6 @@
 ## from https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
 language: android
-jdk: oraclejdk7
+jdk: oraclejdk8
 env:
   matrix:
     - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
