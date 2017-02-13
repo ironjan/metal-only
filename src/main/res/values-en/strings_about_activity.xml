@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- about -->
-    <string name="aboutThisApp">this app can be used to listen to &lt;a href="http://www.metal-only.de>metal-only&lt;/a> on Android.&lt;br/>
+    <!-- FIXME replace address -->
+<string name="aboutThisApp">this app can be used to listen to &lt;a href="http://www.metal-only.de>metal-only&lt;/a> on Android.&lt;br/>
 &lt;br/>
 It is developed by &lt;a href="http://www.codingspezis.com">codingspezis&lt;/a> - the app\'s source code is available on &lt;a href="https://github.com/Codingspezis/metal-only">github&lt;/a>. We\'d be happy to have some fellow devs!</string>
     <string name="about_name">Name:</string>

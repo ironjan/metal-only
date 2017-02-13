@@ -17,6 +17,8 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * </pre>
  */
 public class Plan {
+    private Plan(){}
+
     PlanEntry[] plan = {};
 
     public PlanEntry[] getPlan() {
@@ -26,5 +28,10 @@ public class Plan {
     public void setPlan(PlanEntry[] plan) {
         this.plan = plan;
     }
+
+    public static Plan getDefault() {
+        return new Plan();
+    }
+
 
 }

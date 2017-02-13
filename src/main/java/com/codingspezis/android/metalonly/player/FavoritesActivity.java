@@ -14,6 +14,7 @@ import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.Menu;
 import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.wish.*;
 
 import org.androidannotations.annotations.*;
@@ -147,7 +148,7 @@ public class FavoritesActivity extends SherlockListActivity {
 
     private void wishSong(final int index) {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-            WishChecker wishChecker = new WishChecker(this, WishActivity.URL_WISHES);
+            WishChecker wishChecker = new WishChecker(this, UrlConstants.METAL_ONLY_WISHES_WISHES_URL);
             wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
                 @Override
                 public void onWishesChecked(AllowedActions allowedActions) {

@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import com.codingspezis.android.metalonly.player.stream.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import java.io.*;
 import java.net.*;
@@ -23,7 +23,7 @@ public class MetadataListener implements Runnable {
         err = false;
         icyStreamMeta = new IcyStreamMeta();
         try {
-            icyStreamMeta.setStreamUrl(new URL(StreamPlayerInternal.URL128));
+            icyStreamMeta.setStreamUrl(new URL(UrlConstants.STREAM_URL_128));
         } catch (MalformedURLException e) {
             // this should never happen
             err = true;
