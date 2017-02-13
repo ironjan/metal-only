@@ -7,6 +7,7 @@ import android.support.v4.app.*;
 
 import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 /**
  * with this activity users can make paypal donations to metal only
@@ -47,7 +48,7 @@ public class PayPalDonationActivity extends SherlockFragmentActivity {
     }
 
     protected void showHelp() {
-        Uri metalOnly = Uri.parse("http://www.metal-only.de/?action=donation");
+        Uri metalOnly = Uri.parse(UrlConstants.METAL_ONLY_DONATION_URL);
         Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
         startActivity(homepage);
     }

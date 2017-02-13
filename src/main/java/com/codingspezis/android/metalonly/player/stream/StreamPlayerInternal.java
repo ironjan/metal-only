@@ -7,6 +7,7 @@ import android.os.*;
 
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import org.slf4j.*;
 
@@ -18,8 +19,6 @@ import java.util.*;
  */
 public class StreamPlayerInternal implements AudioStream {
 
-    // stream URL
-    public static final String URL128 = "http://server1.blitz-stream.de:4400";
     // logger
     private static final String TAG = StreamPlayerInternal.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
@@ -186,7 +185,7 @@ public class StreamPlayerInternal implements AudioStream {
     private void resetPlayer() throws IOException {
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setDataSource(URL128);
+        mediaPlayer.setDataSource(UrlConstants.STREAM_URL_128);
         metadataListener.stop();
         timeoutListener.stop();
     }

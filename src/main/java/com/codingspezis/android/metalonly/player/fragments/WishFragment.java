@@ -9,6 +9,7 @@ import android.widget.*;
 
 import com.actionbarsherlock.app.*;
 import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import org.androidannotations.annotations.*;
 import org.apache.http.*;
@@ -234,8 +235,7 @@ public class WishFragment extends SherlockFragment {
             // TODO refactor this method
             // generate url
             HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(
-                    "http://www.metal-only.de/?action=wunschscript&do=save");
+            HttpPost post = new HttpPost(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL);
             List<NameValuePair> pairs = new ArrayList<NameValuePair>(4);
             // add post values
 

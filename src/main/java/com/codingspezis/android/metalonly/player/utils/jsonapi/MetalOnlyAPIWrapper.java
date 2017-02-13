@@ -64,22 +64,24 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public Stats getStats() {
         checkConnectivity();
-        Stats stats = new Stats();
-
+        
+        Stats result = Stats.getDefault();
         try {
-            stats = api.getStats();
+            Stats apiStats = api.getStats();
+            result = (apiStats != null) ? apiStats : result;
         } catch (RestClientException e) {
             Log.d(TAG, e.getMessage(), e);
         }
-        return stats;
+        return result;
     }
 
     @Override
     public Plan getPlan() {
         checkConnectivity();
-        Plan plan = new Plan();
+        Plan plan = Plan.getDefault();
         try {
-            plan = api.getPlan();
+            Plan apiPlan = api.getPlan();
+            plan = (apiPlan != null) ? apiPlan : plan;
         } catch (RestClientException e) {
             Log.d(TAG, e.getMessage(), e);
         }
@@ -89,9 +91,10 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public PlanWithStats getPlanWithStats() {
         checkConnectivity();
-        PlanWithStats planWithStats = new PlanWithStats();
+        PlanWithStats planWithStats = PlanWithStats.getDefault();
         try {
-            planWithStats = api.getPlanWithStats();
+            PlanWithStats apiPlanWithStats = api.getPlanWithStats();
+            planWithStats = (apiPlanWithStats != null) ? apiPlanWithStats : planWithStats;
         } catch (RestClientException e) {
             Log.d(TAG, e.getMessage(), e);
         }
