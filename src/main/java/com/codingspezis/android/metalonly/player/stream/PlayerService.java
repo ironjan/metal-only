@@ -13,6 +13,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;

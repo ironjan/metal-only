@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.support.v4.app.ListFragment;
 
+import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.plan.EntryItem;
 import com.codingspezis.android.metalonly.player.plan.Item;
