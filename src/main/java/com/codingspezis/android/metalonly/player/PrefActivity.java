@@ -2,17 +2,17 @@ package com.codingspezis.android.metalonly.player;
 
 import android.annotation.*;
 import android.os.*;
-
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 
 @SuppressLint("Registered")
-public class PrefActivity extends SherlockPreferenceActivity {
+public class PrefActivity extends AppCompatPreferenceActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_Sherlock);
+        // TODO is setTheme necessary?
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

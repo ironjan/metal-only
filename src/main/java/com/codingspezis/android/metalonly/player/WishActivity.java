@@ -5,9 +5,9 @@ import android.content.*;
 import android.os.*;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.*;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.fragments.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 
@@ -19,7 +19,7 @@ import org.slf4j.*;
  * TODO use androidannotations
  */
 
-public class WishActivity extends SherlockFragmentActivity {
+public class WishActivity extends AppCompatActivity {
 
     // intent keys
     public static final String KEY_WISHES_ALLOWED = "MO_WISHES_ALLOWED";

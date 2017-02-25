@@ -4,18 +4,17 @@ import android.annotation.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v7.app.AppCompatActivity;
 import android.view.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
 import com.codingspezis.android.metalonly.player.licensing.*;
 
 /**
  * displays one of: mit | lgpl | apache
  * TODO use androidannotatons
  */
-public class LicenseActivity extends SherlockActivity {
+public class LicenseActivity extends AppCompatActivity {
 
     // bundle keys
     public static final String KEY_BU_LICENSE_NAME = "MO_LICENSE_NAME";

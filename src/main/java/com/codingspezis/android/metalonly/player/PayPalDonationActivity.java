@@ -4,16 +4,17 @@ import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 /**
  * with this activity users can make paypal donations to metal only
  * TODO use androidannotatons
  */
-public class PayPalDonationActivity extends SherlockFragmentActivity {
+public class PayPalDonationActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

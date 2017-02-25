@@ -5,16 +5,16 @@ import android.content.SharedPreferences.*;
 import android.net.*;
 import android.os.*;
 import android.preference.*;
+import android.support.v4.app.Fragment;
 import android.text.*;
 import android.view.*;
 import android.view.inputmethod.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.donation.*;
 
-public class PayPalDonationFragment extends SherlockFragment {
+public class PayPalDonationFragment extends Fragment {
 
     private EditText editDonator, editDonationValue;
 
@@ -94,7 +94,7 @@ public class PayPalDonationFragment extends SherlockFragment {
 
     private void fetchPrefValues() {
         prefs = PreferenceManager
-                .getDefaultSharedPreferences(getSherlockActivity());
+                .getDefaultSharedPreferences(getActivity());
         donator = prefs.getString(getString(R.string.paypal_key_sender), "");
         try {
             donationValue = prefs.getFloat(
@@ -126,7 +126,7 @@ public class PayPalDonationFragment extends SherlockFragment {
         updateValues();
 
         if (donationValue <= 0) {
-            Toast.makeText(getSherlockActivity(),
+            Toast.makeText(getActivity(),
                     "Der Spendenbetrag kann nicht leer sein.",
                     Toast.LENGTH_LONG).show();
             return;

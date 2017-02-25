@@ -11,11 +11,6 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
-import com.actionbarsherlock.view.Window;
 import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.plan.*;
 import com.codingspezis.android.metalonly.player.siteparser.*;
@@ -31,6 +26,7 @@ import org.slf4j.*;
 
 import java.net.*;
 import java.util.*;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * main GUI activity
@@ -38,7 +34,7 @@ import java.util.*;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
-public class StreamControlActivity extends SherlockListActivity {
+public class StreamControlActivity extends AppCompatActivity {
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -123,7 +119,8 @@ public class StreamControlActivity extends SherlockListActivity {
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
-        setTheme(R.style.Theme_Sherlock);
+        // TODO is setTheme necessary?
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);

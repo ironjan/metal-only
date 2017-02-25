@@ -4,9 +4,8 @@ import android.annotation.*;
 import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
-
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import org.androidannotations.annotations.*;
 
@@ -16,7 +15,7 @@ import org.androidannotations.annotations.*;
  */
 @EActivity(R.layout.activity_about)
 @SuppressLint("Registered")
-public class AboutActivity extends SherlockFragmentActivity {
+public class AboutActivity extends AppCompatActivity {
 
 
     @Override
