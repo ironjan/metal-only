@@ -17,7 +17,6 @@ import java.util.*;
  * while communicating it displays a progress dialog<br/>
  * use {@link OnHTTPGrabberListener} to handle events
  *
- * @author codingspezis.com
  */
 public class HTTPGrabber extends Thread {
 
