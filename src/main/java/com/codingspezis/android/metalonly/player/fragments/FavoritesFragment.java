@@ -36,7 +36,6 @@ import java.util.ArrayList;
 
 /**
  * Displays favorites and allows to handle them
- * FIXME Replace Sherlock component
  */
 @EFragment(R.layout.fragment_favorites)
 @OptionsMenu(R.menu.favoritesmenu)

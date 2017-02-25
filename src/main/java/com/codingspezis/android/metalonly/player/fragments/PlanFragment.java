@@ -26,9 +26,6 @@ import java.util.GregorianCalendar;
 import java.util.StringTokenizer;
 
 
-/**
- * FIXME Replace Sherlock component
- */
 @EFragment(R.layout.fragment_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanFragment extends ListFragment {

@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- FIXME replace address -->
     <string name="mailaddress_codingspezis" translatable="false">lippertsjan+metalonly@gmail.com</string>
-    <!-- FIXME replace address -->
     <string name="url_codingspezis" translatable="false">http://ironjan.de/metal-only</string>
-    <!-- FIXME replace address -->
     <string name="aboutThisApp">Diese App bringt den Internetstream von &lt;a href="http://www.metal-only.de>metal-only&lt;/a> auf Android.&lt;br/>
 &lt;br/>
 Entwickelt wird die App auf &lt;a href="https://github.com/ironjan/metal-only">github&lt;/a>. Wir freuen uns sehr über Mit-Entwickler!</string>
@@ -23,6 +20,7 @@ Entwickelt wird die App auf &lt;a href="https://github.com/ironjan/metal-only">g
     <string name="no_mail_app">Keine E-Mail Anwendung gefunden.</string>
 
     <!-- actionbarsherlock -->
+    <!-- TODO Remove. We're not using ABS anymore -->
     <string name="about_sherlock" translatable="false">ActionBarSherlock</string>
     <string name="url_sherlock" translatable="false">https://github.com/JakeWharton/ActionBarSherlock/</string>
 

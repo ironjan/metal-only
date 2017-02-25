@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  * This class was copied from https://android.googlesource.com/platform/development/+/nougat-release/samples/Support7Demos/src/com/example/android/supportv7/app/AppCompatPreferenceActivity.java
-  * TODO replace this class with AppCompatActivity + PreferenceFragment
  */
 package com.codingspezis.android.metalonly.player;
 
