@@ -5,8 +5,6 @@ import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 /**

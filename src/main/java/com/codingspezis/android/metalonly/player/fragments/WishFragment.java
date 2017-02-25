@@ -7,7 +7,6 @@ import android.text.*;
 import android.view.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
 import com.codingspezis.android.metalonly.player.*;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 

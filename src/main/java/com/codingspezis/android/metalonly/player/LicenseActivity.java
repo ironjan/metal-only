@@ -7,8 +7,6 @@ import android.support.v4.app.*;
 import android.view.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
 import com.codingspezis.android.metalonly.player.licensing.*;
 
 /**

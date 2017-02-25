@@ -6,8 +6,6 @@ import android.os.*;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
 import com.codingspezis.android.metalonly.player.fragments.*;
 import com.codingspezis.android.metalonly.player.wish.*;
 

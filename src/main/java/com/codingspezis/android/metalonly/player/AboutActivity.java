@@ -5,9 +5,6 @@ import android.content.*;
 import android.os.*;
 import android.support.v4.app.*;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.*;
-
 import org.androidannotations.annotations.*;
 
 /**

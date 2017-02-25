@@ -5,7 +5,6 @@ import android.net.*;
 import android.os.*;
 import android.widget.*;
 
-import com.actionbarsherlock.app.*;
 import com.codingspezis.android.metalonly.player.*;
 
 import org.androidannotations.annotations.*;
