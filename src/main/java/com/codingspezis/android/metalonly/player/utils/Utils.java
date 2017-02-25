@@ -1,8 +1,9 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import android.util.*;
+import android.util.Log;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * this class comes in the original form from:

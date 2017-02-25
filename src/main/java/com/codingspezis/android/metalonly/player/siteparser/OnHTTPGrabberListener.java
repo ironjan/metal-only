@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.siteparser;
 
-import java.io.*;
+import java.io.BufferedReader;
 
 /**
  * this interface can handle {@link HTTPGrabber} events

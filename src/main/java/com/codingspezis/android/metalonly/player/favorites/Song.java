@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.favorites;
 
-import java.util.*;
+import java.util.Calendar;
 
 /**
  * class for holding a song

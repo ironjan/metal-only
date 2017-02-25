@@ -1,13 +1,15 @@
 package com.codingspezis.android.metalonly.player.plan.views;
 
-import android.content.*;
-import android.util.*;
-import android.widget.*;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.plan.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.plan.SectionItem;
 
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.ViewById;
 
 /**
  * A view to divide sections in plans.

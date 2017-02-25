@@ -1,8 +1,9 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
-import android.media.*;
-import android.telephony.*;
+import android.content.Context;
+import android.media.AudioManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 
 /**
  * MyPhoneStateListener

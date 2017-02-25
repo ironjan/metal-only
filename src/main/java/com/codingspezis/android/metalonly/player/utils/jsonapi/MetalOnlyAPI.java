@@ -2,9 +2,11 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
-import org.androidannotations.annotations.rest.*;
-import org.androidannotations.api.rest.*;
-import org.springframework.http.converter.json.*;
+import org.androidannotations.annotations.rest.Get;
+import org.androidannotations.annotations.rest.Rest;
+import org.androidannotations.api.rest.RestClientErrorHandling;
+import org.androidannotations.api.rest.RestClientSupport;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 /**
  * Interface to generate the REST-Client

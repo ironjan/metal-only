@@ -1,31 +1,24 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.content.DialogInterface.*;
-import android.net.*;
-import android.os.*;
-import android.support.v4.app.*;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
-import android.widget.*;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.widget.ListView;
 
-import com.codingspezis.android.metalonly.player.favorites.*;
 import com.codingspezis.android.metalonly.player.fragments.FavoritesFragment;
 import com.codingspezis.android.metalonly.player.fragments.FavoritesFragment_;
-import com.codingspezis.android.metalonly.player.fragments.PlanFragment;
-import com.codingspezis.android.metalonly.player.fragments.PlanFragment_;
-import com.codingspezis.android.metalonly.player.siteparser.*;
-import com.codingspezis.android.metalonly.player.utils.UrlConstants;
-import com.codingspezis.android.metalonly.player.wish.*;
 
-import org.androidannotations.annotations.*;
-
-import java.net.*;
-import java.util.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
 
 /**
  * Displays favorites and allows to handle them
@@ -43,7 +36,7 @@ public class FavoritesActivity extends AppCompatActivity {
     private Menu menu;
 
     @AfterViews
-    void bindFragment(){
+    void bindFragment() {
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
@@ -51,6 +44,7 @@ public class FavoritesActivity extends AppCompatActivity {
         ft.replace(android.R.id.content, build);
         ft.commit();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +52,6 @@ public class FavoritesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
-
 
 
     @Override

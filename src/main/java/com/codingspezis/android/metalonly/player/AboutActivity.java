@@ -1,13 +1,13 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.content.*;
-import android.os.*;
-import android.support.v4.app.*;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.EActivity;
 
 /**
  * this activity shows information about the application and used software

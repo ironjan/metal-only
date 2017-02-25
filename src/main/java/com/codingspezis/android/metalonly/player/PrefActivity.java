@@ -1,8 +1,7 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.os.*;
-import android.support.v7.app.AppCompatActivity;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.MenuItem;
 
 

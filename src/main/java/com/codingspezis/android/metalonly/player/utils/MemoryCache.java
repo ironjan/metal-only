@@ -1,10 +1,13 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import android.graphics.*;
-import android.util.*;
+import android.graphics.Bitmap;
+import android.util.Log;
 
-import java.util.*;
-import java.util.Map.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * this class comes in the original form from:

@@ -1,8 +1,8 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
-import android.os.*;
-import android.widget.*;
+import android.content.Intent;
+import android.os.Handler;
+import android.widget.Toast;
 
 /**
  * listener for stream (e.g. meta data)

@@ -1,8 +1,10 @@
 package com.codingspezis.android.metalonly.player.donation;
 
-import android.text.*;
+import android.text.InputFilter;
+import android.text.Spanned;
 
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Filters EditText input so, that only correct values for money are accepted.

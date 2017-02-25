@@ -1,23 +1,24 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.support.v4.app.*;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
 import com.codingspezis.android.metalonly.player.fragments.PlanFragment;
-import com.codingspezis.android.metalonly.player.fragments.PlanFragment_;
-import com.codingspezis.android.metalonly.player.plan.*;
 
-import org.androidannotations.annotations.*;
-import org.androidannotations.annotations.res.*;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.res.StringArrayRes;
+import org.androidannotations.annotations.res.StringRes;
 
-import java.text.*;
-import java.util.*;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -29,7 +30,7 @@ public class PlanActivity extends AppCompatActivity {
 
     public static final String KEY_SITE = "site";
     public static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm");
-    public static final SimpleDateFormat         DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
+    public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
     public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
     @StringRes
     String plan;
@@ -52,7 +53,7 @@ public class PlanActivity extends AppCompatActivity {
     }
 
     @AfterViews
-    void bindPlanFragment(){
+    void bindPlanFragment() {
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction ft = fm.beginTransaction();
@@ -60,6 +61,7 @@ public class PlanActivity extends AppCompatActivity {
         ft.replace(android.R.id.content, build);
         ft.commit();
     }
+
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {

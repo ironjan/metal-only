@@ -8,18 +8,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.StreamControlActivity_;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongAdapterFavorites;
@@ -30,7 +25,6 @@ import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
 import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
-import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;

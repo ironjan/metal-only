@@ -1,16 +1,22 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.app.*;
-import android.content.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * adapter for displaying a 3 row list view

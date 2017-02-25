@@ -1,13 +1,20 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import android.net.*;
-import android.util.*;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 
-import org.androidannotations.annotations.*;
-import org.androidannotations.annotations.rest.*;
-import org.androidannotations.api.rest.*;
-import org.springframework.http.client.*;
-import org.springframework.web.client.*;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.SystemService;
+import org.androidannotations.annotations.rest.RestService;
+import org.androidannotations.api.rest.RestErrorHandler;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * A wrapper aroung the Rest-Api implementation to catch exceptions etc.
@@ -64,7 +71,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public Stats getStats() {
         checkConnectivity();
-        
+
         Stats result = Stats.getDefault();
         try {
             Stats apiStats = api.getStats();
