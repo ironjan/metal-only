@@ -7,6 +7,9 @@ import com.actionbarsherlock.app.*;
 import com.actionbarsherlock.view.*;
 
 
+/**
+ * FIXME Replace Sherlock component
+ */
 @SuppressLint("Registered")
 public class PrefActivity extends SherlockPreferenceActivity {
 

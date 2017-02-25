@@ -23,9 +23,8 @@ import java.net.*;
 import java.util.*;
 
 /**
- * FavoritesActivity
- * <p/>
- * this activity displays favorites and allows to handle them
+ * Displays favorites and allows to handle them
+ * FIXME Replace Sherlock component
  */
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)

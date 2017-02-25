@@ -14,6 +14,7 @@ import com.codingspezis.android.metalonly.player.licensing.*;
 /**
  * displays one of: mit | lgpl | apache
  * TODO use androidannotatons
+ * FIXME Replace Sherlock component
  */
 public class LicenseActivity extends SherlockActivity {
 

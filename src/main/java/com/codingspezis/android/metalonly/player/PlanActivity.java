@@ -16,6 +16,9 @@ import java.text.*;
 import java.util.*;
 
 
+/**
+ * FIXME Replace Sherlock component
+ */
 @EActivity(R.layout.activity_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanActivity extends SherlockListActivity {
