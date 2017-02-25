@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 
 /**
