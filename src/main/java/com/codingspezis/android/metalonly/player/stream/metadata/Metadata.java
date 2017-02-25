@@ -1,11 +1,12 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.favorites.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.favorites.Song;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Calendar;
 
 /**
  * parses interpret title genre and moderator from meta data

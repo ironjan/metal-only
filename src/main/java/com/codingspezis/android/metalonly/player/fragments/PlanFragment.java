@@ -2,15 +2,9 @@ package com.codingspezis.android.metalonly.player.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 
-import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.StreamControlActivity_;
 import com.codingspezis.android.metalonly.player.plan.EntryItem;
 import com.codingspezis.android.metalonly.player.plan.Item;
 import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
@@ -18,13 +12,9 @@ import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
 import com.codingspezis.android.metalonly.player.plan.SectionItem;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.res.StringArrayRes;
 import org.androidannotations.annotations.res.StringRes;
 
@@ -41,7 +31,7 @@ import java.util.StringTokenizer;
  */
 @EFragment(R.layout.fragment_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
-public class PlanFragment extends ListFragment{
+public class PlanFragment extends ListFragment {
 
     public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
             "{dd.MM.yy HH:mm");
@@ -62,7 +52,7 @@ public class PlanFragment extends ListFragment{
 
     @AfterViews
     void afterViews() {
-        String site  = getArguments().getString(PlanActivity.KEY_SITE);
+        String site = getArguments().getString(PlanActivity.KEY_SITE);
         ArrayList<PlanData> listEvents = extractEvents(site);
         ArrayList<Item> listItems = convertToPlan(listEvents);
         PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);

@@ -17,7 +17,8 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * </pre>
  */
 public class Plan {
-    private Plan(){}
+    private Plan() {
+    }
 
     PlanEntry[] plan = {};
 

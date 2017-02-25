@@ -1,11 +1,16 @@
 package com.codingspezis.android.metalonly.player.favorites;
 
-import android.content.*;
+import android.content.Context;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
 
 /**
  * This class persists songs in the internal storage via JSON files.

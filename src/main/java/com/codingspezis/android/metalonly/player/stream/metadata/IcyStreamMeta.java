@@ -1,11 +1,16 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import android.os.*;
+import android.os.Build;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.regex.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by r on 17.09.14.

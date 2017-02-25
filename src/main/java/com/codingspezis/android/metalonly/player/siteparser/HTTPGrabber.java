@@ -1,22 +1,28 @@
 package com.codingspezis.android.metalonly.player.siteparser;
 
-import android.app.*;
-import android.content.*;
-import android.content.DialogInterface.*;
-import android.net.*;
-import android.os.*;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.os.Handler;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * this class is for sending HTTP GET & receiving response<br/>
  * while communicating it displays a progress dialog<br/>
  * use {@link OnHTTPGrabberListener} to handle events
- *
  */
 public class HTTPGrabber extends Thread {
 

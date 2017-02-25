@@ -27,14 +27,16 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * </pre>
  */
 public class PlanWithStats {
-    private PlanWithStats(){}
+    private PlanWithStats() {
+    }
 
     Stats stats = Stats.getDefault();
     PlanEntry[] plan = {};
 
-    public static PlanWithStats getDefault(){
+    public static PlanWithStats getDefault() {
         return new PlanWithStats();
     }
+
     public Stats getStats() {
         return stats;
     }

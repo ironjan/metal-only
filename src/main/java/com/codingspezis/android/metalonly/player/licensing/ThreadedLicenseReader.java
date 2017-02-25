@@ -1,8 +1,12 @@
 package com.codingspezis.android.metalonly.player.licensing;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.LicenseActivity;
+import com.codingspezis.android.metalonly.player.R;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  * loads licenses asynchronous

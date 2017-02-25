@@ -1,12 +1,16 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import android.content.*;
-import android.os.*;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.PlanActivity;
+import com.codingspezis.android.metalonly.player.PlanActivity_;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.siteparser.OnHTTPGrabberListener;
 
-import java.io.*;
+import java.io.BufferedReader;
 
 public class PlanGrabber {
 

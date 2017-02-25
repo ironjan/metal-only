@@ -1,18 +1,26 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
-import android.content.*;
-import android.content.SharedPreferences.*;
-import android.net.*;
-import android.os.*;
-import android.preference.*;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.text.*;
-import android.view.*;
-import android.view.inputmethod.*;
-import android.widget.*;
+import android.text.InputFilter;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.donation.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.donation.CurrencyFormatInputFilter;
+import com.codingspezis.android.metalonly.player.donation.PayPalURLGenerator;
 
 public class PayPalDonationFragment extends Fragment {
 

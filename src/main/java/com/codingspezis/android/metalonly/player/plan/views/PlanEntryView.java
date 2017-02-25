@@ -1,14 +1,18 @@
 package com.codingspezis.android.metalonly.player.plan.views;
 
-import android.content.*;
-import android.util.*;
-import android.widget.*;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.plan.*;
-import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.plan.PlanData;
+import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.ViewById;
 
 /**
  * Custom view to display PlanData

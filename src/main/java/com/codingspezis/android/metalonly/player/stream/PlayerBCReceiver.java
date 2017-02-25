@@ -1,13 +1,16 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
-import android.media.*;
-import android.media.AudioManager.*;
-import android.util.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
+import android.media.AudioManager.OnAudioFocusChangeListener;
+import android.util.Log;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * broadcast receiver that handles messages for this service
