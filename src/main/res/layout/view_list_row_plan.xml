@@ -6,7 +6,7 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.ProgressBar.Vertical"
+        style="@style/CustomVerticalProgressBar"
         android:layout_width="4dip"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
