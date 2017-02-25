@@ -26,6 +26,7 @@ import org.slf4j.*;
 
 import java.net.*;
 import java.util.*;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * main GUI activity
@@ -34,7 +35,7 @@ import java.util.*;
  * FIXME Replace Sherlock component
  */
 @EActivity(R.layout.activity_stream)
-public class StreamControlActivity extends SherlockListActivity {
+public class StreamControlActivity extends AppCompatActivity {
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -119,7 +120,8 @@ public class StreamControlActivity extends SherlockListActivity {
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
-        setTheme(R.style.Theme_Sherlock);
+        // TODO is setTheme necessary?
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);

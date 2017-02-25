@@ -4,6 +4,9 @@ import android.content.*;
 import android.net.*;
 import android.os.*;
 import android.support.v4.app.*;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
@@ -12,7 +15,7 @@ import com.codingspezis.android.metalonly.player.utils.UrlConstants;
  * TODO use androidannotatons
  * FIXME Replace Sherlock component
  */
-public class PayPalDonationActivity extends SherlockFragmentActivity {
+public class PayPalDonationActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

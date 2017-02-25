@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.fragments;
 import android.content.*;
 import android.net.*;
 import android.os.*;
+import android.support.v4.app.Fragment;
 import android.widget.*;
 
 import com.codingspezis.android.metalonly.player.*;
@@ -12,7 +13,7 @@ import org.androidannotations.annotations.res.*;
 import org.slf4j.*;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SherlockFragment {
+public class AboutFragment extends Fragment {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
     @StringRes
     String mailaddress_codingspezis, app_name;

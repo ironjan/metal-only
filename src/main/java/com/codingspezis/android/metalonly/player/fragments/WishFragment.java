@@ -22,10 +22,11 @@ import org.slf4j.*;
 
 import java.io.*;
 import java.util.*;
+import android.support.v4.app.Fragment;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
-public class WishFragment extends SherlockFragment {
+public class WishFragment extends Fragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
     // intent keys
     private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;
