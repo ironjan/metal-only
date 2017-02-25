@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  * activity that is showing a GUI for entering and sending wishes and/or regards
  * to metal-only.de
  * TODO use androidannotations
- * FIXME Replace Sherlock component
  */
 
 public class WishActivity extends AppCompatActivity {

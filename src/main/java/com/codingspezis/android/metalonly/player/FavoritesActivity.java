@@ -21,8 +21,9 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 /**
- * Displays favorites and allows to handle them
- * FIXME Replace Sherlock component
+ * FavoritesActivity
+ * <p/>
+ * this activity displays favorites and allows to handle them
  */
 @EActivity(R.layout.activity_favorites)
 @OptionsMenu(R.menu.favoritesmenu)

@@ -21,9 +21,6 @@ import org.androidannotations.annotations.res.StringRes;
 import java.text.SimpleDateFormat;
 
 
-/**
- * FIXME Replace Sherlock component
- */
 @EActivity(R.layout.activity_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanActivity extends AppCompatActivity {

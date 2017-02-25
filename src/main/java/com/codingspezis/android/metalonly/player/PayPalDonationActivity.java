@@ -13,7 +13,6 @@ import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 /**
  * with this activity users can make paypal donations to metal only
  * TODO use androidannotatons
- * FIXME Replace Sherlock component
  */
 public class PayPalDonationActivity extends AppCompatActivity {
 

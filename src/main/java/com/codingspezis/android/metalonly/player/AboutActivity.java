@@ -11,7 +11,7 @@ import org.androidannotations.annotations.EActivity;
 
 /**
  * this activity shows information about the application and used software
- * FIXME Replace Sherlock component
+ *
  */
 @EActivity(R.layout.activity_about)
 @SuppressLint("Registered")

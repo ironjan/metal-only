@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 
-/**
- * FIXME Replace Sherlock component
- */
 @SuppressLint("Registered")
 public class PrefActivity extends AppCompatPreferenceActivity {
 

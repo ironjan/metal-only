@@ -57,7 +57,6 @@ import java.util.ArrayList;
  * main GUI activity
  * TODO use androidannotatons
  * TODO move more functionality out of this class
- * FIXME Replace Sherlock component
  */
 @EActivity(R.layout.activity_stream)
 public class StreamControlActivity extends AppCompatActivity {
