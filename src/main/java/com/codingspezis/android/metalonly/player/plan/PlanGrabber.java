@@ -1,10 +1,7 @@
 package com.codingspezis.android.metalonly.player.plan;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 
-import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.PlanActivity_;
 import com.codingspezis.android.metalonly.player.StreamControlActivity;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
@@ -29,11 +26,8 @@ public class PlanGrabber {
                 while ((line = httpResponse.readLine()) != null) {
                     site += line;
                 }
-                Bundle bundle = new Bundle();
-                bundle.putString(PlanActivity.KEY_SITE, site);
-                Intent planIntent = PlanActivity_.intent(context.getApplicationContext()).get();
-                planIntent.putExtras(bundle);
-                PlanGrabber.this.streamControlActivity.startActivity(planIntent);
+
+                PlanActivity_.intent(context).site(site).start();
             } catch (Exception e) {
                 StreamControlActivity.toastMessage(context, e.getMessage());
                 e.printStackTrace();
