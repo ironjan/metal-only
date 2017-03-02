@@ -2,7 +2,11 @@ package com.codingspezis.android.metalonly.player.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.view.View;
+import android.widget.ListView;
 
 import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.R;
@@ -13,9 +17,12 @@ import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
 import com.codingspezis.android.metalonly.player.plan.SectionItem;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringArrayRes;
 import org.androidannotations.annotations.res.StringRes;
 
@@ -29,7 +36,7 @@ import java.util.StringTokenizer;
 
 @EFragment(R.layout.fragment_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
-public class PlanFragment extends ListFragment {
+public class PlanFragment extends Fragment {
 
     public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
             "{dd.MM.yy HH:mm");
@@ -40,22 +47,39 @@ public class PlanFragment extends ListFragment {
     String[] days;
     private int todayListStartIndex;
 
+    @FragmentArg
+    String site;
+
+    @ViewById(android.R.id.list)
+    ListView list;
+
+    @ViewById(android.R.id.empty)
+    View empty;
+
+    private PlanAdapter adapter;
 
     public static PlanFragment newInstance(String site) {
         return PlanFragment_.builder()
-                .arg(PlanActivity.KEY_SITE, site)
+                .site(site)
                 .build();
+    }
+
+    @AfterInject
+    void loadData(){
+        ArrayList<PlanData> listEvents = extractEvents(site);
+        ArrayList<Item> listItems = convertToPlan(listEvents);
+        adapter = new PlanAdapter(getActivity(), listItems);
     }
 
 
     @AfterViews
     void afterViews() {
-        String site = getArguments().getString(PlanActivity.KEY_SITE);
-        ArrayList<PlanData> listEvents = extractEvents(site);
-        ArrayList<Item> listItems = convertToPlan(listEvents);
-        PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
-        getListView().setAdapter(adapter);
-        setSelection(todayListStartIndex);
+        adapter.notifyDataSetChanged();
+        list.setEmptyView(empty);
+        list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        list.setSelection(todayListStartIndex);
     }
 
     private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
@@ -76,15 +100,15 @@ public class PlanFragment extends ListFragment {
                 PlanData nextItem = listEvents.get(i + 1);
                 if (notOnSameDay(d, nextItem)) {
                     day++;
-                    if (isToday(day))
-                        todayListStartIndex = listItems.size();
                     nextDaySection = new SectionItem(days[day]);
                     listItems.add(nextDaySection);
-                    int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
-                    if (day == dayOfWeek) {
-                        final int pos = listItems.size() - 1;
-                        getListView().setSelection(pos);
-                    }
+//                    if (isToday(day))
+//                        todayListStartIndex = listItems.size();
+//                    int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+//                    if (day == dayOfWeek) {
+//                        final int pos = listItems.size() - 1;
+////                        getListView().setSelection(pos);
+//                    }
                 }
             }
         }
