@@ -3,9 +3,8 @@ package com.codingspezis.android.metalonly.player;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import com.codingspezis.android.metalonly.player.fragments.PlanFragment;
@@ -40,8 +39,11 @@ public class PlanActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null){
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setHomeButtonEnabled(true);
+        }
     }
 
     @AfterInject
@@ -51,12 +53,10 @@ public class PlanActivity extends AppCompatActivity {
 
     @AfterViews
     void bindPlanFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-
-        FragmentTransaction ft = fm.beginTransaction();
-        PlanFragment build = PlanFragment.newInstance(site);
-        ft.replace(android.R.id.content, build);
-        ft.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, PlanFragment.newInstance(site))
+                .commit();
     }
 
     @SuppressLint("InlinedApi")
