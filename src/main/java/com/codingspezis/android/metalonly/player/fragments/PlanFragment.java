@@ -56,7 +56,6 @@ public class PlanFragment extends Fragment {
     @ViewById(android.R.id.empty)
     View empty;
 
-    private PlanAdapter adapter;
 
     public static PlanFragment newInstance(String site) {
         return PlanFragment_.builder()
@@ -64,21 +63,15 @@ public class PlanFragment extends Fragment {
                 .build();
     }
 
-    @AfterInject
-    void loadData(){
-        ArrayList<PlanData> listEvents = extractEvents(site);
-        ArrayList<Item> listItems = convertToPlan(listEvents);
-        adapter = new PlanAdapter(getActivity(), listItems);
-    }
-
 
     @AfterViews
     void afterViews() {
-        adapter.notifyDataSetChanged();
+        ArrayList<PlanData> listEvents = extractEvents(site);
+        ArrayList<Item> listItems = convertToPlan(listEvents);
+        PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
+
         list.setEmptyView(empty);
         list.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
         list.setSelection(todayListStartIndex);
     }
 
@@ -102,13 +95,13 @@ public class PlanFragment extends Fragment {
                     day++;
                     nextDaySection = new SectionItem(days[day]);
                     listItems.add(nextDaySection);
-//                    if (isToday(day))
-//                        todayListStartIndex = listItems.size();
-//                    int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
-//                    if (day == dayOfWeek) {
-//                        final int pos = listItems.size() - 1;
-////                        getListView().setSelection(pos);
-//                    }
+                    if (isToday(day))
+                        todayListStartIndex = listItems.size();
+                    int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+                    if (day == dayOfWeek) {
+                        final int pos = listItems.size() - 1;
+                        list.setSelection(pos);
+                    }
                 }
             }
         }
