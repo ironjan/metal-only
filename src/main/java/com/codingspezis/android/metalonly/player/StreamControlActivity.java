@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -81,6 +82,9 @@ public class StreamControlActivity extends AppCompatActivity {
     Marquee marqueeMod;
     @ViewById(R.id.marqueeGenree)
     Marquee marqueeGenre;
+    @ViewById(android.R.id.empty)
+    View empty;
+
     Menu menu;
     // other
     private MainBroadcastReceiver broadcastReceiver;
@@ -133,7 +137,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpGUIObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
 
-
+        listView.setEmptyView(empty);
         toggleStreamButton(false);
         displaySongs();
         clearMetadata();
