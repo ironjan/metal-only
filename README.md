@@ -1,5 +1,8 @@
 # Metal Only Android App
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e64554aa306945dbbe50e64ad605c37e)](https://www.codacy.com/app/lippertsjan/metal-only?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ironjan/metal-only&amp;utm_campaign=Badge_Grade)
+
+
 Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf
 Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält 
 sie einige Sender-spezifische Funktionen, wie das Senden von Musik-Wünschen 
