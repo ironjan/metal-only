@@ -2,13 +2,10 @@ package com.codingspezis.android.metalonly.player.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
-import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.plan.EntryItem;
 import com.codingspezis.android.metalonly.player.plan.Item;
@@ -17,7 +14,6 @@ import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
 import com.codingspezis.android.metalonly.player.plan.SectionItem;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
