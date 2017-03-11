@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -49,8 +48,6 @@ public class FavoritesFragment extends ListFragment {
     private static final int ITEM_CLICK_ACTION_WISH = 0;
     @ViewById
     ListView list;
-
-    private Menu menu;
 
     private SongSaver favoritesSaver;
 
@@ -150,6 +147,9 @@ public class FavoritesFragment extends ListFragment {
                 break;
             case ITEM_CLICK_ACTION_DELETE: // delete
                 deleteSong(index);
+                break;
+            default:
+                /* unknown action, ignore */
         }
     }
 
