@@ -1,8 +1,9 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.PlanActivity;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class PlanData {
     private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;

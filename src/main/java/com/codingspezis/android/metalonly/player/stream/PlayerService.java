@@ -1,14 +1,22 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.telephony.*;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.favorites.SongSaver;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 
 /**
  * service that is managing stream player

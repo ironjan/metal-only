@@ -1,14 +1,20 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import android.content.*;
-import android.content.SharedPreferences.*;
-import android.graphics.*;
-import android.util.*;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 
 /**
  * this class comes in the original form from:

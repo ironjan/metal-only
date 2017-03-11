@@ -1,18 +1,22 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
-import android.media.*;
-import android.net.wifi.*;
-import android.os.*;
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataListener;
+import com.codingspezis.android.metalonly.player.stream.metadata.OnMetadataReceivedListener;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Calendar;
 
 /**
  * Created by r on 17.09.14.

@@ -2,8 +2,9 @@ package com.codingspezis.android.metalonly.player.stream.metadata;
 
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by r on 17.09.14.

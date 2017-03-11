@@ -1,13 +1,18 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import android.content.*;
-import android.view.*;
-import android.widget.*;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
-import com.codingspezis.android.metalonly.player.plan.views.*;
-import com.codingspezis.android.metalonly.player.utils.*;
+import com.codingspezis.android.metalonly.player.plan.views.PlanEntryView;
+import com.codingspezis.android.metalonly.player.plan.views.PlanEntryView_;
+import com.codingspezis.android.metalonly.player.plan.views.SectionView;
+import com.codingspezis.android.metalonly.player.plan.views.SectionView_;
+import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class PlanAdapter extends BaseAdapter {
 

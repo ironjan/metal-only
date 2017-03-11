@@ -1,20 +1,28 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
-import android.content.*;
-import android.content.SharedPreferences.*;
-import android.net.*;
-import android.os.*;
-import android.preference.*;
-import android.text.*;
-import android.view.*;
-import android.view.inputmethod.*;
-import android.widget.*;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.text.InputFilter;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.donation.*;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.donation.CurrencyFormatInputFilter;
+import com.codingspezis.android.metalonly.player.donation.PayPalURLGenerator;
 
-public class PayPalDonationFragment extends SherlockFragment {
+public class PayPalDonationFragment extends Fragment {
 
     private EditText editDonator, editDonationValue;
 
@@ -94,7 +102,7 @@ public class PayPalDonationFragment extends SherlockFragment {
 
     private void fetchPrefValues() {
         prefs = PreferenceManager
-                .getDefaultSharedPreferences(getSherlockActivity());
+                .getDefaultSharedPreferences(getActivity());
         donator = prefs.getString(getString(R.string.paypal_key_sender), "");
         try {
             donationValue = prefs.getFloat(
@@ -126,7 +134,7 @@ public class PayPalDonationFragment extends SherlockFragment {
         updateValues();
 
         if (donationValue <= 0) {
-            Toast.makeText(getSherlockActivity(),
+            Toast.makeText(getActivity(),
                     "Der Spendenbetrag kann nicht leer sein.",
                     Toast.LENGTH_LONG).show();
             return;

@@ -1,9 +1,10 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import org.androidannotations.annotations.*;
-import org.androidannotations.api.rest.*;
-import org.slf4j.*;
-import org.springframework.core.*;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.api.rest.RestErrorHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.NestedRuntimeException;
 
 @EBean
 public class MyErrorHandler implements RestErrorHandler {

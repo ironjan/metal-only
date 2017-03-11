@@ -1,13 +1,16 @@
 package com.codingspezis.android.metalonly.player.favorites;
 
-import android.app.*;
-import android.content.*;
-import android.view.*;
-import android.widget.*;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * adapter for displaying a 2 row list view

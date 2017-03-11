@@ -1,32 +1,49 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.text.*;
-import android.view.*;
-import android.widget.*;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
-import org.androidannotations.annotations.*;
-import org.apache.http.*;
-import org.apache.http.client.*;
-import org.apache.http.client.entity.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.impl.client.*;
-import org.apache.http.message.*;
-import org.apache.http.protocol.*;
-import org.slf4j.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
-public class WishFragment extends SherlockFragment {
+public class WishFragment extends Fragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
     // intent keys
     private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;

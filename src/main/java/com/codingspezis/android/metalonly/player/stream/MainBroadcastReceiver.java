@@ -1,9 +1,12 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 
 /**
  * broadcast receiver class for communication between other activities or

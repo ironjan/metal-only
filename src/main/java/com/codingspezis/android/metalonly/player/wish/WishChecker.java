@@ -1,10 +1,11 @@
 package com.codingspezis.android.metalonly.player.wish;
 
-import android.content.*;
+import android.content.Context;
 
-import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.siteparser.OnHTTPGrabberListener;
 
-import java.io.*;
+import java.io.BufferedReader;
 
 /**
  * checks for open wishes / regards on wish page on metal-only.de

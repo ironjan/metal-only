@@ -1,8 +1,11 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.PlanActivity;
+import com.codingspezis.android.metalonly.player.R;
 
 /**
  * ClickListener for entries in the plan shown by {@link PlanActivity}

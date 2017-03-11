@@ -11,7 +11,9 @@ public final class UrlConstants {
     public static final String METAL_ONLY_WISHES_WISHES_URL = "https://metal-only.de/?action=wunschscript";
     public static final String METAL_ONLY_WUNSCHSCRIPT_POST_URL = "https://www.metal-only.de/?action=wunschscript&do=save";
 
-    /** Note that the Stream is the only non-https url! */
+    /**
+     * Note that the Stream is the only non-https url!
+     */
     public static final String STREAM_URL_128 = "http://server1.blitz-stream.de:4400";
 
     public static final String METAL_ONLY_API_BASE_URL = "https://www.metal-only.de/botcon/mob.php?action=";

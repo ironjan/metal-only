@@ -1,21 +1,23 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.content.*;
-import android.os.*;
-import android.support.v4.app.*;
-import android.view.*;
-import android.widget.*;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.MenuItem;
-import com.codingspezis.android.metalonly.player.licensing.*;
+import com.codingspezis.android.metalonly.player.licensing.OnLicenseReadListener;
+import com.codingspezis.android.metalonly.player.licensing.ThreadedLicenseReader;
 
 /**
  * displays one of: mit | lgpl | apache
  * TODO use androidannotatons
  */
-public class LicenseActivity extends SherlockActivity {
+public class LicenseActivity extends AppCompatActivity {
 
     // bundle keys
     public static final String KEY_BU_LICENSE_NAME = "MO_LICENSE_NAME";

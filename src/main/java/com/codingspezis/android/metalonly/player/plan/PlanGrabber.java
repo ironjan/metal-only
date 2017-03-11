@@ -1,16 +1,15 @@
 package com.codingspezis.android.metalonly.player.plan;
 
-import android.content.*;
-import android.os.*;
+import android.content.Context;
 
-import com.codingspezis.android.metalonly.player.*;
-import com.codingspezis.android.metalonly.player.siteparser.*;
+import com.codingspezis.android.metalonly.player.PlanActivity_;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.siteparser.OnHTTPGrabberListener;
 
-import java.io.*;
+import java.io.BufferedReader;
 
 public class PlanGrabber {
-
-    private final StreamControlActivity streamControlActivity;
 
     private final Context context;
 
@@ -25,11 +24,8 @@ public class PlanGrabber {
                 while ((line = httpResponse.readLine()) != null) {
                     site += line;
                 }
-                Bundle bundle = new Bundle();
-                bundle.putString(PlanActivity.KEY_SITE, site);
-                Intent planIntent = PlanActivity_.intent(context.getApplicationContext()).get();
-                planIntent.putExtras(bundle);
-                PlanGrabber.this.streamControlActivity.startActivity(planIntent);
+
+                PlanActivity_.intent(context).site(site).start();
             } catch (Exception e) {
                 StreamControlActivity.toastMessage(context, e.getMessage());
                 e.printStackTrace();
@@ -53,8 +49,7 @@ public class PlanGrabber {
     /**
      * Constructor
      */
-    public PlanGrabber(StreamControlActivity streamControlActivity, Context context, String URL) {
-        this.streamControlActivity = streamControlActivity;
+    public PlanGrabber(Context context, String URL) {
         this.context = context;
         grabber = new HTTPGrabber(context, URL, listener);
     }

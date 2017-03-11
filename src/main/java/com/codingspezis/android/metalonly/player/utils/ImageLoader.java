@@ -1,16 +1,21 @@
 package com.codingspezis.android.metalonly.player.utils;
 
-import android.content.*;
-import android.graphics.*;
-import android.os.*;
-import android.widget.*;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.widget.ImageView;
 
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.R;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * this class comes in the original form from:

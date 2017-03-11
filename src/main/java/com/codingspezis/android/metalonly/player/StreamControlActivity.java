@@ -1,36 +1,58 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.annotation.*;
-import android.app.*;
-import android.content.*;
-import android.graphics.*;
-import android.graphics.PorterDuff.*;
-import android.graphics.drawable.*;
-import android.net.*;
-import android.os.*;
-import android.view.*;
-import android.widget.*;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.*;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
-import com.actionbarsherlock.view.Window;
-import com.codingspezis.android.metalonly.player.favorites.*;
-import com.codingspezis.android.metalonly.player.plan.*;
-import com.codingspezis.android.metalonly.player.siteparser.*;
-import com.codingspezis.android.metalonly.player.stream.*;
-import com.codingspezis.android.metalonly.player.stream.metadata.*;
+import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.favorites.SongSaver;
+import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
+import com.codingspezis.android.metalonly.player.stream.PlayerService;
+import com.codingspezis.android.metalonly.player.stream.SongAdapter;
+import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.*;
-import com.codingspezis.android.metalonly.player.views.*;
-import com.codingspezis.android.metalonly.player.wish.*;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
+import com.codingspezis.android.metalonly.player.views.Marquee;
+import com.codingspezis.android.metalonly.player.wish.AllowedActions;
+import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
+import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
-import org.androidannotations.annotations.*;
-import org.slf4j.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ViewById;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.*;
-import java.util.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * main GUI activity
@@ -38,7 +60,7 @@ import java.util.*;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
-public class StreamControlActivity extends SherlockListActivity {
+public class StreamControlActivity extends AppCompatActivity {
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -60,6 +82,9 @@ public class StreamControlActivity extends SherlockListActivity {
     Marquee marqueeMod;
     @ViewById(R.id.marqueeGenree)
     Marquee marqueeGenre;
+    @ViewById(android.R.id.empty)
+    View empty;
+
     Menu menu;
     // other
     private MainBroadcastReceiver broadcastReceiver;
@@ -112,7 +137,7 @@ public class StreamControlActivity extends SherlockListActivity {
     private void setUpGUIObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
 
-
+        listView.setEmptyView(empty);
         toggleStreamButton(false);
         displaySongs();
         clearMetadata();
@@ -123,7 +148,8 @@ public class StreamControlActivity extends SherlockListActivity {
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
-        setTheme(R.style.Theme_Sherlock);
+        // TODO is setTheme necessary?
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -435,7 +461,7 @@ public class StreamControlActivity extends SherlockListActivity {
     private void startPlanActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
 
-        PlanGrabber pg = new PlanGrabber(this, this, UrlConstants.API_OLD_PLAN_URL);
+        PlanGrabber pg = new PlanGrabber(this, UrlConstants.API_OLD_PLAN_URL);
         pg.start();
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
 

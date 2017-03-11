@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.donation;
 
-import java.net.*;
+import java.net.URLEncoder;
 
 public class PayPalURLGenerator {
     /**

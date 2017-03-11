@@ -1,19 +1,27 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
-import android.content.*;
-import android.net.*;
-import android.os.*;
-import android.widget.*;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.widget.TextView;
 
-import com.actionbarsherlock.app.*;
-import com.codingspezis.android.metalonly.player.*;
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.LicenseActivity;
+import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 
-import org.androidannotations.annotations.*;
-import org.androidannotations.annotations.res.*;
-import org.slf4j.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FromHtml;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @EFragment(R.layout.fragment_about)
-public class AboutFragment extends SherlockFragment {
+public class AboutFragment extends Fragment {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
     @StringRes
     String mailaddress_codingspezis, app_name;
