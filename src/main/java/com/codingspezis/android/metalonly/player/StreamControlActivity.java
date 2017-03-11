@@ -461,7 +461,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void startPlanActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
 
-        PlanGrabber pg = new PlanGrabber(this, this, UrlConstants.API_OLD_PLAN_URL);
+        PlanGrabber pg = new PlanGrabber(this, UrlConstants.API_OLD_PLAN_URL);
         pg.start();
         if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
 

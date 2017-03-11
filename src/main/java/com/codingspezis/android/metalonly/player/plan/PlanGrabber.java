@@ -11,8 +11,6 @@ import java.io.BufferedReader;
 
 public class PlanGrabber {
 
-    private final StreamControlActivity streamControlActivity;
-
     private final Context context;
 
     private final HTTPGrabber grabber;
@@ -51,8 +49,7 @@ public class PlanGrabber {
     /**
      * Constructor
      */
-    public PlanGrabber(StreamControlActivity streamControlActivity, Context context, String URL) {
-        this.streamControlActivity = streamControlActivity;
+    public PlanGrabber(Context context, String URL) {
         this.context = context;
         grabber = new HTTPGrabber(context, URL, listener);
     }
