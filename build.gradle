@@ -90,7 +90,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 }
 
-def androidannotationsVersion = '3.3.2'
+def androidannotationsVersion = '4.2.0'
 dependencies {
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:appcompat-v7:25.1.1'
@@ -101,8 +101,10 @@ dependencies {
 
     compile 'org.slf4j:slf4j-android:1.7.22'
 
-    apt "org.androidannotations:androidannotations:$androidannotationsVersion"
     compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
+    apt "org.androidannotations:androidannotations:$androidannotationsVersion"
+    compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
+    apt "org.androidannotations:rest-spring:$androidannotationsVersion"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 

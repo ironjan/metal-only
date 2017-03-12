@@ -1,7 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.api.rest.RestErrorHandler;
+import org.androidannotations.rest.spring.api.RestErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NestedRuntimeException;
