@@ -5,11 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Added
 -
 
-### Changed
--
+## [0.4.18-2] (Beta)
+- Removed ActionBarSherlock
 
 ## [0.4.18] - 2017-02-03
 - Fixed: Wishes and Greetings work again
