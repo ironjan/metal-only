@@ -7,13 +7,13 @@ public interface OnMetadataReceivedListener {
      *
      * @param metadata matadata as string
      */
-    public void onMetadataReceived(String metadata);
+    void onMetadataReceived(String metadata);
 
     /**
      * called whenever an error occurred during receiving metadata
      *
      * @param exception occurred exception
      */
-    public void onMetadataError(Exception exception);
+    void onMetadataError(Exception exception);
 
 }

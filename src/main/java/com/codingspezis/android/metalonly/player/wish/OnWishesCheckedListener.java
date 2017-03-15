@@ -10,6 +10,6 @@ public interface OnWishesCheckedListener {
      *
      * @param allowedActions result of check
      */
-    public void onWishesChecked(AllowedActions allowedActions);
+    void onWishesChecked(AllowedActions allowedActions);
 
 }

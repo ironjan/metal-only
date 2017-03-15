@@ -9,5 +9,5 @@ public interface CustomDataView<T> {
      *
      * @param t the item to be displayed
      */
-    public void bind(T t);
+    void bind(T t);
 }
