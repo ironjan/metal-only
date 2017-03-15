@@ -14,7 +14,6 @@
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
-        android:contentDescription="@string/empty"
         android:scaleType="centerCrop"
         android:src="@drawable/image_bg" />
 
