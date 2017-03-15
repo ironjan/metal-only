@@ -163,11 +163,7 @@ public class IcyStreamMeta {
                 metaDataLength = b * 16;
             }
 
-            if (count > metaDataOffset + 1 && count < (metaDataOffset + metaDataLength)) {
-                inData = true;
-            } else {
-                inData = false;
-            }
+            inData = metaDataOffset < count  + 1 && count < (metaDataOffset + metaDataLength);
             if (inData) {
                 if (b != 0) {
                     metaData.append((char) b);

@@ -133,11 +133,8 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
         }
 
         final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            return true;
-        }
+        return activeNetwork != null && activeNetwork.isConnected();
 
-        return false;
     }
 
     /**
@@ -153,7 +150,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
      */
     @Override
     public void setRestTemplate(final RestTemplate restTemplate) {
-        return;
+        /* Ignore all calls */
     }
 
     /**
@@ -161,6 +158,6 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
      */
     @Override
     public void setRestErrorHandler(RestErrorHandler handler) {
-        return;
+        /* Ignore all calls */
     }
 }

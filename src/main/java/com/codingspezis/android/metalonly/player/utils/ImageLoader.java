@@ -94,10 +94,7 @@ public class ImageLoader {
 
     boolean imageViewReused(PhotoToLoad photoToLoad) {
         String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.moderator)) {
-            return true;
-        }
-        return false;
+        return tag == null || !tag.equals(photoToLoad.moderator);
     }
 
     public void clearCache() {
