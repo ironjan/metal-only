@@ -98,8 +98,6 @@ public class Metadata {
         if (BuildConfig.DEBUG) LOGGER.debug("toSong()");
         long date = Calendar.getInstance().getTimeInMillis();
 
-        moderator.replace(" OnAir", "");
-
         Song song = new Song(interpret, title, moderator, date);
 
         if (BuildConfig.DEBUG) LOGGER.debug("toSong() -> {}", song);
