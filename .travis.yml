@@ -20,4 +20,4 @@ android:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-script: ./gradlew lint test
+script: ./ci.sh
