@@ -156,7 +156,7 @@ public class WishFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         final String nickName = editNick.getText().toString();
         editor.putString(KEY_SP_NICK, nickName);
-        editor.commit();
+        editor.apply();
         super.onPause();
 
         if (BuildConfig.DEBUG) LOGGER.debug("onPause() done");

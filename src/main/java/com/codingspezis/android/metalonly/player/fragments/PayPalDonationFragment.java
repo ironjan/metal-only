@@ -165,7 +165,7 @@ public class PayPalDonationFragment extends Fragment {
         Editor edit = prefs.edit();
         edit.putFloat(getString(R.string.paypal_key_value), donationValue);
         edit.putString(getString(R.string.paypal_key_sender), donator);
-        edit.commit();
+        edit.apply();
 
         super.onPause();
     }

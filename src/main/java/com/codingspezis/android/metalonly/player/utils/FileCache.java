@@ -91,7 +91,7 @@ public class FileCache {
                 context.getString(R.string.app_name), 0).edit();
         editor.putLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
                 .getInstance().getTimeInMillis());
-        editor.commit();
+        editor.apply();
 
         return context.openFileOutput(fileName, Context.MODE_PRIVATE);
     }
