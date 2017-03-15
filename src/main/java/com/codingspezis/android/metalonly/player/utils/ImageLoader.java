@@ -64,7 +64,7 @@ public class ImageLoader {
         // from web
         try {
             //
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String absoluteUrl = UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator;
             URL imageUrl = new URL(absoluteUrl);
             HttpURLConnection conn = (HttpURLConnection) imageUrl
