@@ -60,6 +60,7 @@ import java.util.ArrayList;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
+@SuppressLint("Registered")
 public class StreamControlActivity extends AppCompatActivity {
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
