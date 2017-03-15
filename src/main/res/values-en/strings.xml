@@ -60,7 +60,7 @@
     <string name="no_moderator">Wishing and greeting is only possible in moderated shows</string>
     <string name="per_user">per listener</string>
     <string name="invalid_input">Input incomplete</string>
-    <string name="communicating">Communicating with server...</string>
+    <string name="communicating">Communicating with server…</string>
     <string name="menu_help">Help</string>
 
     <!-- paypal donation -->
