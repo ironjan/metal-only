@@ -75,16 +75,24 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 
         Log.d("PayerBCReceiver", "received intent: " + action);
 
-        if (action.equals(PlayerService.INTENT_PLAY)) {
-            play();
-            sendPlayerStatus();
-        } else if (action.equals(PlayerService.INTENT_STOP)) {
-            stop();
-            sendPlayerStatus();
-        } else if (action.equals(PlayerService.INTENT_STATUS_REQUEST)) {
-            sendPlayerStatus();
-        } else if (action.equals(PlayerService.INTENT_EXIT)) {
-            exit();
+        switch (action) {
+            case PlayerService.INTENT_PLAY:
+                play();
+                sendPlayerStatus();
+                break;
+            case PlayerService.INTENT_STOP:
+                stop();
+                sendPlayerStatus();
+                break;
+            case PlayerService.INTENT_STATUS_REQUEST:
+                sendPlayerStatus();
+                break;
+            case PlayerService.INTENT_EXIT:
+                exit();
+                break;
+            default:
+                /* ignore unknown case */
+                break;
         }
 
         if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{}) done", context, intent);
