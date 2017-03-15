@@ -155,8 +155,7 @@ public class PlanFragment extends Fragment {
     private boolean hasModerator(String token) {
         boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
         boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
-        boolean hasModerator = !(metalHeadIsMod || hasNoMod);
-        return hasModerator;
+        return !(metalHeadIsMod || hasNoMod);
     }
 
     @ItemClick(android.R.id.list)
