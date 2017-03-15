@@ -1,8 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-/**
- * Created by r on 17.09.14.
- */
 public interface OnMetadataReceivedListener {
 
     /**

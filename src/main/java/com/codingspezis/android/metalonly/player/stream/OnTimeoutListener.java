@@ -1,8 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-/**
- * Created by r on 19.09.14.
- */
 public interface OnTimeoutListener {
 
     /**

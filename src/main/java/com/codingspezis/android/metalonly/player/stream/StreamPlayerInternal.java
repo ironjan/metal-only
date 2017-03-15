@@ -18,9 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Calendar;
 
-/**
- * Created by r on 17.09.14.
- */
 public class StreamPlayerInternal implements AudioStream {
 
     // logger
