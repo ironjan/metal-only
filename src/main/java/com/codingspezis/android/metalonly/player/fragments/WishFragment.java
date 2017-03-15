@@ -253,7 +253,7 @@ public class WishFragment extends Fragment {
             // generate url
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>(4);
+            List<NameValuePair> pairs = new ArrayList<>(4);
             // add post values
 
             if (!TextUtils.isEmpty(editNick.getText())) {

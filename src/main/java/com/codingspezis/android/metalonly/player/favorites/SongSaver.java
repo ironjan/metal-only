@@ -48,7 +48,7 @@ public class SongSaver {
             this.limit = Integer.MAX_VALUE;
         else
             this.limit = limit;
-        songList = new LinkedList<Song>();
+        songList = new LinkedList<>();
         readSongsFromStorage();
         changes = false;
     }

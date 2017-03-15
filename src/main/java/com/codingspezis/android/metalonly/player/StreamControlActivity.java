@@ -332,7 +332,7 @@ public class StreamControlActivity extends AppCompatActivity {
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
                 PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
-        ArrayList<Song> data = new ArrayList<Song>();
+        ArrayList<Song> data = new ArrayList<>();
 
         for (int i = historySaver.size() - 1; i >= 0; i--) {
             final Song song = historySaver.get(i);
