@@ -289,10 +289,6 @@ public class WishFragment extends Fragment {
                 } else {
                     notifyUser(R.string.sending_error);
                 }
-            } catch (ClientProtocolException e) {
-                notifyUser(e.getMessage());
-            } catch (UnsupportedEncodingException e) {
-                notifyUser(e.getMessage());
             } catch (IOException e) {
                 notifyUser(e.getMessage());
             }

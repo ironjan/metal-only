@@ -138,8 +138,6 @@ public class FileCache {
                 stream2.close();
 
                 return bitmap;
-            } catch (FileNotFoundException e) {
-                Log.e(TAG, e.getMessage(), e);
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }

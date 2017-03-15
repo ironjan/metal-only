@@ -86,10 +86,7 @@ public class SongSaver {
             }
         } catch (FileNotFoundException e) {
             // everything is fine - just nothing saved
-        } catch (IOException e) {
-            // TODO: error handling (but this should be dead code)
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             // TODO: error handling (but this should be dead code)
             e.printStackTrace();
         }
@@ -120,13 +117,7 @@ public class SongSaver {
                 OutputStreamWriter osr = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
                 osr.write(jObj.toString());
                 osr.close();
-            } catch (JSONException e) {
-                // TODO: error handling (but this should be dead code)
-                e.printStackTrace();
-            } catch (FileNotFoundException e) {
-                // TODO: error handling (but this should be dead code)
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (JSONException | IOException e) {
                 // TODO: error handling (but this should be dead code)
                 e.printStackTrace();
             }
