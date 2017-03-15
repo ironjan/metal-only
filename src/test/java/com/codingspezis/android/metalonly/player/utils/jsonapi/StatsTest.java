@@ -8,13 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.RobolectricTestRunner;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 @Config(sdk = Build.VERSION_CODES.JELLY_BEAN_MR2)
 @RunWith(RobolectricTestRunner.class)
