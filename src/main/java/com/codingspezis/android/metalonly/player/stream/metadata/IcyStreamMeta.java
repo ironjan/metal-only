@@ -34,8 +34,8 @@ public class IcyStreamMeta {
         String[] metaParts = metaString.split(";");
         Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");
         Matcher m;
-        for (int i = 0; i < metaParts.length; i++) {
-            m = p.matcher(metaParts[i]);
+        for (String metaPart : metaParts) {
+            m = p.matcher(metaPart);
             if (m.find()) {
                 metadata.put((String) m.group(1), (String) m.group(2));
             }

@@ -46,9 +46,9 @@ public class FileCache {
         String fileName = String.valueOf(moderator.hashCode());
         String files[] = context.fileList();
 
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].equals(fileName)) {
-                return files[i];
+        for (String file : files) {
+            if (file.equals(fileName)) {
+                return file;
             }
         }
         return null;
