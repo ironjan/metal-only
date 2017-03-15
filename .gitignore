@@ -36,3 +36,4 @@ proguard/
 .settings
 abrt_checker_*
 .gradle/
+nohup.out
