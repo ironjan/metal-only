@@ -117,7 +117,7 @@ public class PayPalDonationFragment extends Fragment {
         try {
             String donationValueDeprecated = prefs.getString(
                     getString(R.string.paypal_key_value), "-1.0");
-            donationValue = Float.valueOf(donationValueDeprecated).floatValue();
+            donationValue = Float.valueOf(donationValueDeprecated);
         } catch (NumberFormatException ex) {
             donationValue = -1.0F;
         }
