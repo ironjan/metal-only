@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 -
 
-## [0.4.18-2] (Beta)
-- Removed ActionBarSherlock
-- Major Code Cleanup
+## [0.4.18-*] (Beta)
+- (-2) Removed ActionBarSherlock
+- (-3) Major Code Cleanup
 
 ## [0.4.18] - 2017-02-03
 - Fixed: Wishes and Greetings work again
