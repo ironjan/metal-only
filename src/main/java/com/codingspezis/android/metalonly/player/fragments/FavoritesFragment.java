@@ -120,7 +120,7 @@ public class FavoritesFragment extends ListFragment {
      */
     private void displayFavorites() {
         list.removeAllViewsInLayout();
-        ArrayList<Song> songs = new ArrayList<Song>();
+        ArrayList<Song> songs = new ArrayList<>();
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
             songs.add(favoritesSaver.get(i));
         }

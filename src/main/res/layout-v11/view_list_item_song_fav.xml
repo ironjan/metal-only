@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:singleLine="true"
         android:text="@string/artistDummy"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        android:maxLines="1" />
 
     <TextView
         android:id="@id/txtTitle"
@@ -23,10 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtArtist"
-        android:singleLine="true"
         android:text="@string/titleDummy"
         android:textColor="@android:color/white"
         android:textIsSelectable="false"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:maxLines="1" />
 
 </RelativeLayout>

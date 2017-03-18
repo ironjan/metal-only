@@ -46,9 +46,9 @@ public class FileCache {
         String fileName = String.valueOf(moderator.hashCode());
         String files[] = context.fileList();
 
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].equals(fileName)) {
-                return files[i];
+        for (String file : files) {
+            if (file.equals(fileName)) {
+                return file;
             }
         }
         return null;
@@ -91,7 +91,7 @@ public class FileCache {
                 context.getString(R.string.app_name), 0).edit();
         editor.putLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
                 .getInstance().getTimeInMillis());
-        editor.commit();
+        editor.apply();
 
         return context.openFileOutput(fileName, Context.MODE_PRIVATE);
     }
@@ -138,8 +138,6 @@ public class FileCache {
                 stream2.close();
 
                 return bitmap;
-            } catch (FileNotFoundException e) {
-                Log.e(TAG, e.getMessage(), e);
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }

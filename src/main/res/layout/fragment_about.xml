@@ -27,7 +27,6 @@
             android:layout_alignBaseline="@+id/textAppName"
             android:layout_marginTop="@dimen/elementMargin"
             android:layout_toRightOf="@+id/textAppName"
-            android:text="@string/empty"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -75,8 +74,8 @@
             android:layout_below="@+id/textSherlockName"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_sherlock" />
+            android:text="@string/url_sherlock"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/textSherlockLicenseApache"
@@ -137,8 +136,8 @@
             android:layout_marginBottom="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_androidannotations" />
+            android:text="@string/url_androidannotations"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/textAndroidannotationsLicenseApache"
@@ -169,8 +168,8 @@
             android:layout_marginBottom="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_spring" />
+            android:text="@string/url_spring"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/textSpringLicenseApache"
@@ -202,8 +201,8 @@
             android:layout_marginBottom="@dimen/elementMargin"
             android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
-            android:singleLine="true"
-            android:text="@string/url_jackson" />
+            android:text="@string/url_jackson"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/textJacksonLicenseApache"

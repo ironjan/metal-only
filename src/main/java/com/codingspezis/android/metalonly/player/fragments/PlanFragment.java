@@ -73,7 +73,7 @@ public class PlanFragment extends Fragment {
 
     private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
         // TODO refactor this method
-        ArrayList<Item> listItems = new ArrayList<Item>();
+        ArrayList<Item> listItems = new ArrayList<>();
         Calendar cal = new GregorianCalendar();
 
         int day = 0;
@@ -120,7 +120,7 @@ public class PlanFragment extends Fragment {
     private ArrayList<PlanData> extractEvents(String site) {
         StringTokenizer tokenizer = new StringTokenizer(site, "}");
 
-        ArrayList<PlanData> listEvents = new ArrayList<PlanData>();
+        ArrayList<PlanData> listEvents = new ArrayList<>();
 
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
@@ -155,8 +155,7 @@ public class PlanFragment extends Fragment {
     private boolean hasModerator(String token) {
         boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
         boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
-        boolean hasModerator = !(metalHeadIsMod || hasNoMod);
-        return hasModerator;
+        return !(metalHeadIsMod || hasNoMod);
     }
 
     @ItemClick(android.R.id.list)

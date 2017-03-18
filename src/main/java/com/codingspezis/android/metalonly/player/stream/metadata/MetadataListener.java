@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by r on 17.09.14.
- */
 public class MetadataListener implements Runnable {
 
     private static final int REFRESH_INTERVAL = 20 * 1000;

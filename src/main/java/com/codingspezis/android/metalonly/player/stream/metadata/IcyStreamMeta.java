@@ -30,12 +30,12 @@ public class IcyStreamMeta {
     }
 
     public static Map<String, String> parseMetadata(String metaString) {
-        Map<String, String> metadata = new HashMap();
+        Map<String, String> metadata = new HashMap<>();
         String[] metaParts = metaString.split(";");
         Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");
         Matcher m;
-        for (int i = 0; i < metaParts.length; i++) {
-            m = p.matcher(metaParts[i]);
+        for (String metaPart : metaParts) {
+            m = p.matcher(metaPart);
             if (m.find()) {
                 metadata.put((String) m.group(1), (String) m.group(2));
             }
@@ -152,7 +152,7 @@ public class IcyStreamMeta {
         int b;
         int count = 0;
         int metaDataLength = 4080; // 4080 is the max length
-        boolean inData = false;
+        boolean inData;
         StringBuilder metaData = new StringBuilder();
         // Stream position should be either at the beginning or right after headers
         while ((b = stream.read()) != -1) {
@@ -163,11 +163,7 @@ public class IcyStreamMeta {
                 metaDataLength = b * 16;
             }
 
-            if (count > metaDataOffset + 1 && count < (metaDataOffset + metaDataLength)) {
-                inData = true;
-            } else {
-                inData = false;
-            }
+            inData = metaDataOffset < count  + 1 && count < (metaDataOffset + metaDataLength);
             if (inData) {
                 if (b != 0) {
                     metaData.append((char) b);

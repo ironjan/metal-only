@@ -13,7 +13,6 @@
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
-        android:contentDescription="@string/empty"
         android:scaleType="centerCrop"
         android:src="@drawable/image_bg" />
 
@@ -31,9 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/txtArtist"
             android:layout_alignParentRight="true"
-            android:singleLine="true"
             android:text="@string/date"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:maxLines="1" />
 
         <TextView
             android:id="@id/txtTime"
@@ -42,9 +41,9 @@
             android:layout_alignBaseline="@id/txtTitle"
             android:layout_alignRight="@id/txtDate"
             android:layout_below="@id/txtDate"
-            android:singleLine="true"
             android:text="@string/time"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:maxLines="1" />
 
         <TextView
             android:id="@id/txtArtist"
@@ -53,9 +52,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/txtDate"
-            android:singleLine="true"
             android:text="@string/artistDummy"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:maxLines="1" />
 
         <TextView
             android:id="@id/txtTitle"
@@ -64,12 +63,12 @@
             android:layout_alignLeft="@id/txtArtist"
             android:layout_below="@id/txtArtist"
             android:layout_toLeftOf="@id/txtTime"
-            android:singleLine="true"
             android:text="@string/titleDummy"
             android:textColor="@android:color/white"
             android:textIsSelectable="false"
             android:textStyle="bold"
-            android:typeface="sans" />
+            android:typeface="sans"
+            android:maxLines="1" />
 
     </RelativeLayout>
 

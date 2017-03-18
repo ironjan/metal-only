@@ -9,17 +9,17 @@ public interface AudioStream {
     /**
      * starts decoding and playing stream
      */
-    public void startPlaying();
+    void startPlaying();
 
     /**
      * stops decoding and playing stream
      */
-    public void stopPlaying();
+    void stopPlaying();
 
     /**
      * @return true if decoding and playing is still running
      */
-    public boolean isPlaying();
+    boolean isPlaying();
 
     /**
      * TODO: put this method to an other class
@@ -27,6 +27,6 @@ public interface AudioStream {
      *
      * @param streamListener listener to set
      */
-    public void setOnStreamListener(OnStreamListener streamListener);
+    void setOnStreamListener(OnStreamListener streamListener);
 
 }

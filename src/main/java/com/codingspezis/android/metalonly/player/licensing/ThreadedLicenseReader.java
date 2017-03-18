@@ -84,7 +84,7 @@ public class ThreadedLicenseReader extends Thread {
 
         Reader fr = new InputStreamReader(in, "utf-8");
         String s = "";
-        int read = -1;
+        int read;
         final int BUFF_SIZE = 256;
         char buffer[] = new char[BUFF_SIZE];
         do {

@@ -17,7 +17,6 @@
     <string name="abort">Abbruch</string>
     <string name="back">Zurück</string>
     <string name="next">Weiter</string>
-    <string name="empty" translatable="false"></string>
     <string name="attention">Achtung</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>

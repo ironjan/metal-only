@@ -111,7 +111,7 @@ public class IcyURLConnection extends HttpURLConnection {
 
         connected = true;
 
-        headers = new HashMap<String, List<String>>();
+        headers = new HashMap<>();
 
         outputStream = socket.getOutputStream();
         inputStream = socket.getInputStream();
@@ -178,9 +178,9 @@ public class IcyURLConnection extends HttpURLConnection {
 
     @Override
     public synchronized void setRequestProperty(String key, String value) {
-        if (requestProps == null) requestProps = new HashMap<String, List<String>>();
+        if (requestProps == null) requestProps = new HashMap<>();
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add(value);
         requestProps.put(key, list);
     }
@@ -188,10 +188,10 @@ public class IcyURLConnection extends HttpURLConnection {
 
     @Override
     public synchronized void addRequestProperty(String key, String value) {
-        if (requestProps == null) requestProps = new HashMap<String, List<String>>();
+        if (requestProps == null) requestProps = new HashMap<>();
 
         List<String> list = requestProps.get(key);
-        if (list == null) list = new ArrayList<String>();
+        if (list == null) list = new ArrayList<>();
 
         list.add(value);
         requestProps.put(key, list);
@@ -267,7 +267,7 @@ public class IcyURLConnection extends HttpURLConnection {
         if (list != null) {
             list.add(val);
         } else {
-            list = new ArrayList<String>();
+            list = new ArrayList<>();
             list.add(val);
             headers.put(key, list);
         }

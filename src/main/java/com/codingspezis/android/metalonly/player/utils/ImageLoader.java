@@ -64,7 +64,7 @@ public class ImageLoader {
         // from web
         try {
             //
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             String absoluteUrl = UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator;
             URL imageUrl = new URL(absoluteUrl);
             HttpURLConnection conn = (HttpURLConnection) imageUrl
@@ -94,10 +94,7 @@ public class ImageLoader {
 
     boolean imageViewReused(PhotoToLoad photoToLoad) {
         String tag = imageViews.get(photoToLoad.imageView);
-        if (tag == null || !tag.equals(photoToLoad.moderator)) {
-            return true;
-        }
-        return false;
+        return tag == null || !tag.equals(photoToLoad.moderator);
     }
 
     public void clearCache() {

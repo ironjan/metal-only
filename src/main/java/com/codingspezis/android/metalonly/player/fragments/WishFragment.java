@@ -156,7 +156,7 @@ public class WishFragment extends Fragment {
         SharedPreferences.Editor editor = settings.edit();
         final String nickName = editNick.getText().toString();
         editor.putString(KEY_SP_NICK, nickName);
-        editor.commit();
+        editor.apply();
         super.onPause();
 
         if (BuildConfig.DEBUG) LOGGER.debug("onPause() done");
@@ -253,7 +253,7 @@ public class WishFragment extends Fragment {
             // generate url
             HttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL);
-            List<NameValuePair> pairs = new ArrayList<NameValuePair>(4);
+            List<NameValuePair> pairs = new ArrayList<>(4);
             // add post values
 
             if (!TextUtils.isEmpty(editNick.getText())) {
@@ -289,10 +289,6 @@ public class WishFragment extends Fragment {
                 } else {
                     notifyUser(R.string.sending_error);
                 }
-            } catch (ClientProtocolException e) {
-                notifyUser(e.getMessage());
-            } catch (UnsupportedEncodingException e) {
-                notifyUser(e.getMessage());
             } catch (IOException e) {
                 notifyUser(e.getMessage());
             }

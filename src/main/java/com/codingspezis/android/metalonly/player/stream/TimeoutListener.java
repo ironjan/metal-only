@@ -1,8 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream;
 
-/**
- * Created by r on 18.09.14.
- */
 public class TimeoutListener implements Runnable {
 
     private static final int CHECK_INTERVAL = 1 * 1000; // 1 sec

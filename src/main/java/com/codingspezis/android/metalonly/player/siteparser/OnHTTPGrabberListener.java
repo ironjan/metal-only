@@ -12,24 +12,24 @@ public interface OnHTTPGrabberListener {
      *
      * @param httpResponse BufferedReader reading GET response (doesn't has to be closed)
      */
-    public void onSuccess(BufferedReader httpResponse);
+    void onSuccess(BufferedReader httpResponse);
 
     /**
      * this is called when HTTP GET was not successful until 5 seconds after
      * start
      */
-    public void onTimeout();
+    void onTimeout();
 
     /**
      * this is called when user cancels progress dialog
      */
-    public void onCancel();
+    void onCancel();
 
     /**
      * this is called when an error occurred while sending and receiving
      *
      * @param error error message
      */
-    public void onError(String error);
+    void onError(String error);
 
 }
