@@ -6,6 +6,7 @@ def versionPatch = 18 // backwards-compatible bug fixes
 def versionBuild = 3  // bump for dogfood builds, public betas, etc.
 
 buildscript {
+    ext.kotlin_version = '1.1.0'
     repositories {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
@@ -16,7 +17,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'        
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -26,6 +28,7 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'android-apt'
 apply plugin: 'project-report'
 apply plugin: 'com.github.ben-manes.versions'
@@ -121,6 +124,7 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.robolectric:shadows-support-v4:3.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 task wrapper(type: Wrapper) {
