@@ -140,7 +140,7 @@ public class PayPalDonationFragment extends Fragment {
             return;
         }
 
-        final String paypalURL = PayPalURLGenerator.generatePaypalURL(
+        final String paypalURL = PayPalURLGenerator.INSTANCE.generatePaypalURL(
                 donationValue, donator);
         Uri paypalUri = Uri.parse(paypalURL);
         Intent paypalIntent = new Intent(Intent.ACTION_VIEW, paypalUri);
