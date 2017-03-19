@@ -6,7 +6,7 @@ object PayPalURLGenerator {
     /**
      * @param donationValue how much is donated
      * *
-     * @param donator       who is donating
+     * @param donator who is donating
      * *
      * @return PayPal URL for donating entered value
      */
@@ -30,7 +30,7 @@ object PayPalURLGenerator {
                     "UTF-8")
 
             returnValue = "https://www.paypal.com/cgi-bin/webscr?business=metalonly@gmx.de&cmd=_xclick&currency_code=EUR&amount=" +
-                    encodedDonationValue            +
+                    encodedDonationValue +
                     "&item_name=" +
                     encodedDonator +
                     "%20Spende%20METAL%20ONLY%20e.V."

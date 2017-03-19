@@ -1,3 +1,3 @@
 #!/bin/bash
-./gradlew lint test
+./gradlew lint ktlint test
 
