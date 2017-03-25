@@ -3,16 +3,15 @@ package com.codingspezis.android.metalonly.player.views;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.widget.TextView;
-
 /**
  * class similar to TextView scrolls from right to left if view width is greater
  * than display width
  */
-public class Marquee extends TextView {
+public class Marquee extends AppCompatTextView {
 
     public Marquee(Context context, AttributeSet attrs) {
         super(context, attrs);
