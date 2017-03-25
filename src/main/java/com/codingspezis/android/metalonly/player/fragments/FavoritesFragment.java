@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,27 +9,33 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.StreamControlActivity;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongAdapterFavorites;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
-import com.codingspezis.android.metalonly.player.utils.UrlConstants;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.wish.AllowedActions;
-import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
-import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -46,8 +53,11 @@ public class FavoritesFragment extends ListFragment {
     private static final int ITEM_CLICK_ACTION_SHARE = 2;
     private static final int ITEM_CLICK_ACTION_YOUTUBE = 1;
     private static final int ITEM_CLICK_ACTION_WISH = 0;
+    private static final Logger LOGGER = LoggerFactory.getLogger(FavoritesFragment.class);
     @ViewById
     ListView list;
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
 
     private SongSaver favoritesSaver;
 
@@ -65,15 +75,12 @@ public class FavoritesFragment extends ListFragment {
         alert.show();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    @AfterViews
+    void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
         list = getListView();
         displayFavorites();
     }
-
     @Override
     public void onPause() {
         favoritesSaver.saveSongsToStorage();
@@ -155,32 +162,38 @@ public class FavoritesFragment extends ListFragment {
 
     private void wishSong(final int index) {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(getActivity())) {
-            WishChecker wishChecker = new WishChecker(getActivity(), UrlConstants.METAL_ONLY_WISHES_WISHES_URL);
-            wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
-                @Override
-                public void onWishesChecked(AllowedActions allowedActions) {
-                    // TODO simplify intent
-                    if (WishActivity
-                            .canWishOrDisplayNot(getActivity(), allowedActions)) {
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-                                allowedActions.getWishes());
-                        bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-                                allowedActions.getRegards());
-                        bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-                                allowedActions.getLimit());
-                        bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET,
-                                favoritesSaver.get(index).interpret);
-                        bundle.putString(WishActivity.KEY_DEFAULT_TITLE,
-                                favoritesSaver.get(index).title);
-                        Intent wishIntent = new Intent(getActivity(), WishActivity.class);
-                        wishIntent.putExtras(bundle);
-                        FavoritesFragment.this.startActivity(wishIntent);
-                    }
-                }
-            });
-            wishChecker.start();
+            Stats stats = apiWrapper.getStats();
+            if (stats.isNotModerated()) {
+                alertMessage(getActivity(), getString(R.string.no_moderator));
+            } else if (stats.canNeitherWishNorGreet()) {
+                alertMessage(getActivity(), getString(R.string.no_wishes_and_regards));
+            } else {
+                // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
+                bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
+                bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimitAsString());
+                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).interpret);
+                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).title);
+                Intent wishIntent = new Intent(getActivity(), WishActivity.class);
+                wishIntent.putExtras(bundle);
+
+                getActivity().startActivity(wishIntent);
+            }
         }
+    }
+
+
+    @MainThread
+    void alertMessage(final Context context, final String msg) {
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
+
+        new AlertDialog.Builder(context)
+                .setMessage(msg)
+                .setPositiveButton(context.getString(R.string.ok), null)
+                .show();
+
+        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
     }
 
     private void searchSongOnYoutube(final int index) {
