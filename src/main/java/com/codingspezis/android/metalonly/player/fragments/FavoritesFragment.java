@@ -99,7 +99,11 @@ public class FavoritesFragment extends ListFragment {
         // TODO We should use a custom class for this dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(R.string.menu_add_mannually);
+
+        // FIXME fix this...
+        @SuppressLint("RestrictedApi")
         final View v = getLayoutInflater(null).inflate(R.layout.dialog_add_song, null);
+
         alert.setView(v);
         alert.setNegativeButton(R.string.abort, null);
         alert.setPositiveButton(R.string.ok, new OnClickListener() {
