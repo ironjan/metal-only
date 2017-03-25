@@ -39,8 +39,6 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetExcepti
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.Marquee;
 import com.codingspezis.android.metalonly.player.wish.AllowedActions;
-import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
-import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
