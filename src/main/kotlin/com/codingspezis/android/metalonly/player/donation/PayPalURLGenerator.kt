@@ -25,7 +25,7 @@ object PayPalURLGenerator {
             // TODO Should this be moved to @Rest?
             return "https://www.paypal.com/cgi-bin/webscr?business=metalonly@gmx.de&cmd=_xclick&currency_code=EUR&amount=$encodedDonationValue&item_name=$encodedDonator%20Spende%20METAL%20ONLY%20e.V."
         } catch (e: UnsupportedEncodingException) {
-           /* UTF-8 is a supported encoding */
+            /* UTF-8 is a supported encoding */
         }
         return "https://www.paypal.com/"
     }
