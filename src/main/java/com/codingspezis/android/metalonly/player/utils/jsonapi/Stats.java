@@ -28,6 +28,23 @@ public class Stats {
     private boolean canWish = false;
     private boolean canGreet = false;
     private boolean moderated = false;
+
+    public boolean isCanWish() {
+        return canWish;
+    }
+
+    public boolean isCanGreet() {
+        return canGreet;
+    }
+
+    public boolean isModerated() {
+        return moderated;
+    }
+
+    public String getWishLimitAsString() {
+        return String.valueOf(wishLimit);
+    }
+
     private int wishLimit = 0;
     private int greetingLimit = 0;
     private String genre = "Metal";
@@ -108,4 +125,11 @@ public class Stats {
     }
 
 
+    public boolean isNotModerated(){
+        return !moderated;
+    }
+
+    public boolean canNeitherWishNorGreet() {
+        return !(canWish || canGreet);
+    }
 }
