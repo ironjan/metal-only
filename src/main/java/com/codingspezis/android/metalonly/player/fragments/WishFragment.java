@@ -67,7 +67,7 @@ public class WishFragment extends Fragment {
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
     private boolean wish, regard;
-    private String numberOfWishes;
+    private int numberOfWishes;
 
     public WishFragment() {
     }
@@ -113,12 +113,12 @@ public class WishFragment extends Fragment {
         if (null != bundle) {
             wish = bundle.getBoolean(KEY_WISHES_ALLOWED, false);
             regard = bundle.getBoolean(KEY_REGARDS_ALLOWED, false);
-            numberOfWishes = bundle.getString(KEY_NUMBER_OF_WISHES);
+            numberOfWishes = bundle.getInt(KEY_NUMBER_OF_WISHES);
             editArtist.setText(bundle.getString(KEY_DEFAULT_INTERPRET));
             editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
         }
 
-        wishCount.setText(numberOfWishes);
+        wishCount.setText(String.valueOf(numberOfWishes));
         if (!wish) {
             editArtist.setText(R.string.no_wishes_short);
             editArtist.setEnabled(false);

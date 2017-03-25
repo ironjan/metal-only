@@ -172,7 +172,7 @@ public class FavoritesFragment extends ListFragment {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
                 bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-                bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimitAsString());
+                bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
                 bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).interpret);
                 bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).title);
                 Intent wishIntent = new Intent(getActivity(), WishActivity.class);

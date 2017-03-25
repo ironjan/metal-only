@@ -485,7 +485,7 @@ public class StreamControlActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
             bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-            bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimitAsString());
+            bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
             wishIntent.putExtras(bundle);
 

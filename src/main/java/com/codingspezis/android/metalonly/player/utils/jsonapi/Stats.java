@@ -41,9 +41,6 @@ public class Stats {
         return moderated;
     }
 
-    public String getWishLimitAsString() {
-        return String.valueOf(wishLimit);
-    }
 
     private int wishLimit = 0;
     private int greetingLimit = 0;
@@ -62,6 +59,10 @@ public class Stats {
     @JsonProperty("wunschvoll")
     public void setCanWish(String wunschvollString) {
         this.canWish = !(WISH_GREET_FULL.equals(wunschvollString));
+    }
+
+    public int getWishLimit() {
+        return wishLimit;
     }
 
     @JsonProperty("grussvoll")
