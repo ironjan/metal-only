@@ -21,9 +21,9 @@ public class WishChecker {
                 @Override
                 public void onSuccess(BufferedReader httpResponse) {
                     AllowedActions allowedActions = new AllowedActions();
-                    allowedActions.regards = true;
-                    allowedActions.wishes = true;
-                    allowedActions.moderated = true;
+                    allowedActions.setRegards(true);
+                    allowedActions.setWishes(true);
+                    allowedActions.setModerated(true);
                     try {
                         String line = httpResponse.readLine();
                         while (line != null) {
@@ -31,24 +31,24 @@ public class WishChecker {
                             // "Derzeitiges Limit: 4 Wünsche und 3 Grüße pro Hörer"
                             if (line.contains("Derzeitiges Limit:")) {
                                 try {
-                                    allowedActions.limit = line.substring(
+                                    allowedActions.setLimit(line.substring(
                                             line.indexOf("Derzeitiges Limit:"),
-                                            line.indexOf("pro Hörer")).trim();
+                                            line.indexOf("pro Hörer")).trim());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                             if (line.contains("sind keine Grüße möglich.")) {
-                                allowedActions.regards = false;
+                                allowedActions.setRegards(false);
                             }
                             if (line.contains("die Playlist ist bereits voll")) {
-                                allowedActions.wishes = false;
+                                allowedActions.setWishes(false);
                             }
                             if (line.contains("sind nur in der moderierten Sendezeit möglich!")
                                     || line.contains("Aktuell On Air: MetalHead")) {
-                                allowedActions.regards = false;
-                                allowedActions.wishes = false;
-                                allowedActions.moderated = false;
+                                allowedActions.setRegards(false);
+                                allowedActions.setWishes(false);
+                                allowedActions.setModerated(false);
                                 break;
                             }
                             line = httpResponse.readLine();

@@ -476,20 +476,19 @@ public class StreamControlActivity extends AppCompatActivity {
 
             @Override
             public void onWishesChecked(AllowedActions allowedActions) {
-                if (allowedActions.moderated) {
-                    if (allowedActions.wishes || allowedActions.regards) {
+                if (allowedActions.getModerated()) {
+                    if (allowedActions.getWishes() || allowedActions.getRegards()) {
                         // allowedActions.wishes = false;
                         // allowedActions.regards = false;
 
-                        // FIXME replace this with android annotation intent calls
-
+                        // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
                         Bundle bundle = new Bundle();
                         bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-                                allowedActions.wishes);
+                                allowedActions.getWishes());
                         bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-                                allowedActions.regards);
+                                allowedActions.getRegards());
                         bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-                                allowedActions.limit);
+                                allowedActions.getLimit());
                         Intent wishIntent = new Intent(streamControlActivity,
                                 WishActivity.class);
                         wishIntent.putExtras(bundle);

@@ -40,11 +40,11 @@ public class WishActivity extends AppCompatActivity {
     public static boolean canWishOrDisplayNot(Activity activity,
                                               AllowedActions allowedActions) {
         if (BuildConfig.DEBUG) LOGGER.debug("");
-        if (!allowedActions.moderated) {
+        if (!allowedActions.getModerated()) {
             StreamControlActivity.alertMessage(activity,
                     activity.getString(R.string.no_moderator));
             return false;
-        } else if (!allowedActions.wishes) {
+        } else if (!allowedActions.getWishes()) {
             StreamControlActivity.alertMessage(activity,
                     activity.getString(R.string.no_wishes));
             return false;

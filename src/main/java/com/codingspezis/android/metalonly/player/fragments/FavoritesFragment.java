@@ -164,11 +164,11 @@ public class FavoritesFragment extends ListFragment {
                             .canWishOrDisplayNot(getActivity(), allowedActions)) {
                         Bundle bundle = new Bundle();
                         bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-                                allowedActions.wishes);
+                                allowedActions.getWishes());
                         bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-                                allowedActions.regards);
+                                allowedActions.getRegards());
                         bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-                                allowedActions.limit);
+                                allowedActions.getLimit());
                         bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET,
                                 favoritesSaver.get(index).interpret);
                         bundle.putString(WishActivity.KEY_DEFAULT_TITLE,
