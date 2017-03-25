@@ -28,6 +28,6 @@ object PayPalURLGenerator {
         } catch (e: UnsupportedEncodingException) {
             "https://www.paypal.com/"
         }
-
+        "https://www.paypal.com/"
     }
 }
