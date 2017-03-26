@@ -8,6 +8,7 @@ import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
+import org.androidannotations.rest.spring.annotations.Field;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.androidannotations.rest.spring.api.RestErrorHandler;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -106,6 +107,12 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
             Log.d(TAG, e.getMessage(), e);
         }
         return planWithStats;
+    }
+
+    @Override
+    public void postWishesGreetings(@Field String nick, @Field String artist, @Field String song, @Field String greet) {
+        checkConnectivity();
+        api.postWishesGreetings(nick, artist, song, greet);
     }
 
     private void checkConnectivity() {

@@ -2,7 +2,9 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
+import org.androidannotations.rest.spring.annotations.Field;
 import org.androidannotations.rest.spring.annotations.Get;
+import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.RestClientErrorHandling;
 import org.androidannotations.rest.spring.api.RestClientSupport;
@@ -38,5 +40,9 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
      */
     @Get(UrlConstants.API_PLAN_WITH_STATS_PATH)
     PlanWithStats getPlanWithStats();
+
+
+    @Post(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
+    void postWishesGreetings(@Field String nick, @Field String artist, @Field String song, @Field String greet);
 
 }
