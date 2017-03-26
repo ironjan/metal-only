@@ -28,6 +28,20 @@ public class Stats {
     private boolean canWish = false;
     private boolean canGreet = false;
     private boolean moderated = false;
+
+    public boolean isCanWish() {
+        return canWish;
+    }
+
+    public boolean isCanGreet() {
+        return canGreet;
+    }
+
+    public boolean isModerated() {
+        return moderated;
+    }
+
+
     private int wishLimit = 0;
     private int greetingLimit = 0;
     private String genre = "Metal";
@@ -45,6 +59,10 @@ public class Stats {
     @JsonProperty("wunschvoll")
     public void setCanWish(String wunschvollString) {
         this.canWish = !(WISH_GREET_FULL.equals(wunschvollString));
+    }
+
+    public int getWishLimit() {
+        return wishLimit;
     }
 
     @JsonProperty("grussvoll")
@@ -108,4 +126,11 @@ public class Stats {
     }
 
 
+    public boolean isNotModerated(){
+        return !moderated;
+    }
+
+    public boolean canNeitherWishNorGreet() {
+        return !(canWish || canGreet);
+    }
 }

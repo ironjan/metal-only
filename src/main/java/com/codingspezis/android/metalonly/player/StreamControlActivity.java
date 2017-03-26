@@ -39,10 +39,9 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetExcepti
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.Marquee;
 import com.codingspezis.android.metalonly.player.wish.AllowedActions;
-import com.codingspezis.android.metalonly.player.wish.OnWishesCheckedListener;
-import com.codingspezis.android.metalonly.player.wish.WishChecker;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -455,7 +454,7 @@ public class StreamControlActivity extends AppCompatActivity {
     @Click
     void btnWishClicked() {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-            startWishActivity();
+            tryStartWishActivity();
         }
     }
 
@@ -468,44 +467,29 @@ public class StreamControlActivity extends AppCompatActivity {
 
     }
 
-    private void startWishActivity() {
-        if (BuildConfig.DEBUG) LOGGER.debug("startWishActivity()");
+    @Background
+    void tryStartWishActivity() {
+        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        WishChecker wishChecker = new WishChecker(this, UrlConstants.METAL_ONLY_WISHES_WISHES_URL);
-        wishChecker.setOnWishesCheckedListener(new OnWishesCheckedListener() {
+        Stats stats = apiWrapper.getStats();
+        if(stats.isNotModerated()){
+            alertMessage(streamControlActivity,
+                    streamControlActivity.getString(R.string.no_moderator));
+        }else if(stats.canNeitherWishNorGreet()){
+            alertMessage(streamControlActivity, streamControlActivity
+                    .getString(R.string.no_wishes_and_regards));
+        }else{
+            // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
+            bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
+            bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
+            Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
+            wishIntent.putExtras(bundle);
 
-            @Override
-            public void onWishesChecked(AllowedActions allowedActions) {
-                if (allowedActions.moderated) {
-                    if (allowedActions.wishes || allowedActions.regards) {
-                        // allowedActions.wishes = false;
-                        // allowedActions.regards = false;
-
-                        // FIXME replace this with android annotation intent calls
-
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED,
-                                allowedActions.wishes);
-                        bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED,
-                                allowedActions.regards);
-                        bundle.putString(WishActivity.KEY_NUMBER_OF_WISHES,
-                                allowedActions.limit);
-                        Intent wishIntent = new Intent(streamControlActivity,
-                                WishActivity.class);
-                        wishIntent.putExtras(bundle);
-                        streamControlActivity.startActivity(wishIntent);
-                    } else {
-                        alertMessage(streamControlActivity, streamControlActivity
-                                .getString(R.string.no_wishes_and_regards));
-                    }
-                } else {
-                    alertMessage(streamControlActivity,
-                            streamControlActivity.getString(R.string.no_moderator));
-                }
-            }
-        });
-        wishChecker.start();
-        if (BuildConfig.DEBUG) LOGGER.debug("startWishActivity() done");
+            streamControlActivity.startActivity(wishIntent);
+        }
+        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
     }
 
     /**
