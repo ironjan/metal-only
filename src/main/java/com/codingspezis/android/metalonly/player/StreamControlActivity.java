@@ -38,7 +38,6 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapp
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.Marquee;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
