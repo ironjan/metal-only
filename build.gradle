@@ -16,6 +16,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -28,6 +29,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'android-apt'
 apply plugin: 'project-report'
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -113,9 +115,9 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.22'
 
     compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
-    kapt "org.androidannotations:androidannotations:$androidannotationsVersion"
+    apt "org.androidannotations:androidannotations:$androidannotationsVersion"
     compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
-    kapt "org.androidannotations:rest-spring:$androidannotationsVersion"
+    apt "org.androidannotations:rest-spring:$androidannotationsVersion"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 
