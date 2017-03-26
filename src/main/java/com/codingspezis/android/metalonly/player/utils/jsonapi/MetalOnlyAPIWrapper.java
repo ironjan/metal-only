@@ -110,9 +110,15 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     }
 
     @Override
-    public void postWishesGreetings(@Field String nick, @Field String artist, @Field String song, @Field String greet) {
+    public void postWishAndGreetings(String nick, String artist, String song, String greet) {
         checkConnectivity();
-        api.postWishesGreetings(nick, artist, song, greet);
+        api.postWishAndGreetings(nick, artist, song, greet);
+    }
+
+    @Override
+    public void postGreetings(String nick, String greet) {
+        checkConnectivity();
+        api.postGreetings(nick, greet);
     }
 
     private void checkConnectivity() {

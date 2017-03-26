@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +17,12 @@ import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
@@ -26,7 +31,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -37,7 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +71,8 @@ public class WishFragment extends Fragment {
     TextView wishCount;
     private boolean wish, regard;
     private int numberOfWishes;
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
 
     public WishFragment() {
     }
@@ -190,16 +195,32 @@ public class WishFragment extends Fragment {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
         if (haveValidData()) {
-            if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: valid data, sending");
-            (new GetSender()).start();
-
+            // TODO send data
+            sendWishGreet();
         } else {
-            if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked: invalid data");
             notifyUser(R.string.invalid_input);
         }
 
 
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked() done");
+    }
+
+    @Background
+    void sendWishGreet() {
+        try{
+            final String nick = editNick.getText().toString();
+            final String artist = editArtist.getText().toString();
+            final String song = editTitle.getText().toString();
+            final String greet = editRegard.getText().toString();
+
+            if(TextUtils.isEmpty(artist) || TextUtils.isEmpty(song)) {
+                apiWrapper.postGreetings(nick, greet);
+            }else{
+                apiWrapper.postWishAndGreetings(nick, artist, song, greet);
+            }
+        }catch (NoInternetException e){
+            notifyUser(R.string.no_internet);
+        }
     }
 
     @UiThread
@@ -234,67 +255,6 @@ public class WishFragment extends Fragment {
 
 
         if (BuildConfig.DEBUG) LOGGER.debug("showInfo() done");
-    }
-
-    /**
-     * GetSender
-     */
-    private class GetSender extends Thread {
-
-        private final Logger SENDER_LOGGER = LoggerFactory.getLogger(GetSender.class.getSimpleName());
-
-        // TODO move this to own class
-        @SuppressWarnings("RefusedBequest")
-        @Override
-        public void run() {
-            if (BuildConfig.DEBUG) SENDER_LOGGER.debug("run()");
-
-            // TODO refactor this method
-            // generate url
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL);
-            List<NameValuePair> pairs = new ArrayList<>(4);
-            // add post values
-
-            if (!TextUtils.isEmpty(editNick.getText())) {
-                pairs.add(new BasicNameValuePair("nick", editNick.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editArtist.getText())
-                    && editArtist.isEnabled()) {
-                pairs.add(new BasicNameValuePair("artist", editArtist.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editTitle.getText())
-                    && editTitle.isEnabled()) {
-                pairs.add(new BasicNameValuePair("song", editTitle.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editRegard.getText())) {
-                pairs.add(new BasicNameValuePair("greet", editRegard.getText()
-                        .toString()));
-            }
-
-            try {
-                // generate entity
-                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs,
-                        "UTF-8");
-                entity.setContentEncoding(HTTP.UTF_8);
-                // send post
-                post.setEntity(entity);
-                HttpResponse response = client.execute(post);
-                if (response.getStatusLine().toString().equals("HTTP/1.1 200 OK")) {
-                    notifyUser(R.string.sent);
-                    getActivity().finish();
-                } else {
-                    notifyUser(R.string.sending_error);
-                }
-            } catch (IOException e) {
-                notifyUser(e.getMessage());
-            }
-
-            if (BuildConfig.DEBUG) SENDER_LOGGER.debug("run() done");
-        }
     }
 
 }
