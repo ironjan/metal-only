@@ -216,7 +216,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
                 new WishSender(this, nick, greet, artist, title).send();
             }else{
-                new WishSender(this, nick, greet).send();
+                new WishSender(this, nick, greet, null, null).send();
             }
         }catch (NoInternetException e){
             notifyUser(R.string.no_internet);
