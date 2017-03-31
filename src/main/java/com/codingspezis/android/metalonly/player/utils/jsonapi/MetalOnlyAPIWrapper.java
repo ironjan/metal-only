@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
  * A wrapper aroung the Rest-Api implementation to catch exceptions etc.
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
+public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
 
     private static final int TIME_OUT = 30 * 1000;
 
@@ -29,6 +29,9 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
 
     @RestService
     MetalOnlyAPI api;
+
+    @RestService
+    WishGreetAPI wishGreetAPI;
 
     @SystemService
     ConnectivityManager cm;
@@ -112,24 +115,47 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     @Override
     public String postWishAndGreetings(String nick, String artist, String song, String greet) {
         checkConnectivity();
-        String response = api.postWishAndGreetings(nick, artist, song, greet);
+        String response = wishGreetAPI.postWishAndGreetings(nick, artist, song, greet);
         return cleanWishGreetResponse(response);
     }
 
     @Override
     public String postGreetings(String nick, String greet) {
         checkConnectivity();
-        String response = api.postGreetings(nick, greet);
+        String response = wishGreetAPI.postGreetings(nick, greet);
         return cleanWishGreetResponse(response);
     }
+/*
 
+
+            if (!TextUtils.isEmpty(editNick.getText())) {
+                pairs.add(new BasicNameValuePair("nick", editNick.getText()
+                        .toString()));
+            }
+            if (!TextUtils.isEmpty(editArtist.getText())
+                    && editArtist.isEnabled()) {
+                pairs.add(new BasicNameValuePair("artist", editArtist.getText()
+                        .toString()));
+            }
+            if (!TextUtils.isEmpty(editTitle.getText())
+                    && editTitle.isEnabled()) {
+                pairs.add(new BasicNameValuePair("song", editTitle.getText()
+                        .toString()));
+            }
+            if (!TextUtils.isEmpty(editRegard.getText())) {
+                pairs.add(new BasicNameValuePair("greet", editRegard.getText()
+                        .toString()));
+            }
+ */
     private String cleanWishGreetResponse(String response){
         if(response == null){
             return "Übermittlung fehlgeschlagen";
         }
         else if (response.contains("Wunsch/Gruss hinzugefügt.")){
             return "Wunsch/Gruss hinzugefügt.";
-        }else{
+        }else if(response.contains("Bitte Wunsch/Gruss und einen Nick angeben")){
+            return "Bitte Wunsch/Gruss und einen Nick angeben";
+        }else {
             return "Wunsch/Gruss wurde übermittelt.";
         }
     }

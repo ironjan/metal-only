@@ -15,7 +15,7 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 /**
  * Interface to generate the REST-Client
  */
-@Rest(converters = {MappingJackson2HttpMessageConverter.class, FormHttpMessageConverter.class, StringHttpMessageConverter.class}, rootUrl = UrlConstants.METAL_ONLY_API_BASE_URL)
+@Rest(converters = {MappingJackson2HttpMessageConverter.class }, rootUrl = UrlConstants.METAL_ONLY_API_BASE_URL)
 interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
     /**
@@ -43,22 +43,5 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
     PlanWithStats getPlanWithStats();
 
 
-    /**
-     * Submits a wish with greetings
-     * @param nick the user's nick
-     * @param artist the wished artist
-     * @param song the wished song
-     * @param greet some greetings
-     */
-    @Post(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
-    String postWishAndGreetings(@Field String nick, @Field String artist, @Field String song, @Field String greet);
-
-    /**
-     * Submits some greetings
-     * @param nick the user's nick
-     * @param greet some greetings
-     */
-    @Post(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
-    String postGreetings(@Field String nick, @Field String greet);
 
 }
