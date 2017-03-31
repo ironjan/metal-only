@@ -19,6 +19,7 @@ import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.wish.WishSender;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -46,7 +47,7 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
-public class WishFragment extends Fragment {
+public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
     // intent keys
     private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;
@@ -195,7 +196,6 @@ public class WishFragment extends Fragment {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
         if (haveValidData()) {
-            // TODO send data
             sendWishGreet();
         } else {
             notifyUser(R.string.invalid_input);
@@ -210,16 +210,14 @@ public class WishFragment extends Fragment {
         try{
             final String nick = editNick.getText().toString();
             final String artist = editArtist.getText().toString();
-            final String song = editTitle.getText().toString();
+            final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            String x;
-            if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(song)) {
-                x = apiWrapper.postWishAndGreetings(nick, artist, song, greet);
+            if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+                new WishSender(this, nick, greet, artist, title).send();
             }else{
-                x = apiWrapper.postGreetings(nick, greet);
+                new WishSender(this, nick, greet).send();
             }
-               LOGGER.error(x);
         }catch (NoInternetException e){
             notifyUser(R.string.no_internet);
         }
@@ -259,4 +257,27 @@ public class WishFragment extends Fragment {
         if (BuildConfig.DEBUG) LOGGER.debug("showInfo() done");
     }
 
+    @Override
+    public void onSuccess() {
+        notifyUser(R.string.sent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void onFail() {
+        notifyUser(R.string.sending_error);
+        enableSendButton();
+    }
+
+    @Override
+    public void onException(Exception e) {
+        notifyUser(e.getMessage());
+        enableSendButton();
+    }
+
+    @UiThread
+    void enableSendButton(){
+        buttonSend.setEnabled(true);
+        buttonSend.setText(R.string.wish_send);
+    }
 }
