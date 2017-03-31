@@ -3,7 +3,7 @@
 def versionMajor = 0  // incompatible API changes
 def versionMinor = 4  // added functionality in a backwards-compatible manner
 def versionPatch = 18 // backwards-compatible bug fixes
-def versionBuild = 4  // bump for dogfood builds, public betas, etc.
+def versionBuild = 5  // bump for dogfood builds, public betas, etc.
 
 buildscript {
     ext.kotlin_version = '1.1.0'

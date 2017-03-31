@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -
 
 ## [0.4.18-*] (Beta)
+- (0.4.18-5)
+  - Greetings/Wishes fixed. 
 - (0.4.18-4)
   - Greetings/Wishes system rewritten (experimental)
   - Known problem: Song history not displayed
