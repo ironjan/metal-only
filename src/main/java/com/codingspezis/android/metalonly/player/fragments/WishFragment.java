@@ -213,11 +213,13 @@ public class WishFragment extends Fragment {
             final String song = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if(TextUtils.isEmpty(artist) || TextUtils.isEmpty(song)) {
-                apiWrapper.postGreetings(nick, greet);
+            String x;
+            if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(song)) {
+                x = apiWrapper.postWishAndGreetings(nick, artist, song, greet);
             }else{
-                apiWrapper.postWishAndGreetings(nick, artist, song, greet);
+                x = apiWrapper.postGreetings(nick, greet);
             }
+               LOGGER.error(x);
         }catch (NoInternetException e){
             notifyUser(R.string.no_internet);
         }

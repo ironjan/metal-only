@@ -110,17 +110,29 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI {
     }
 
     @Override
-    public void postWishAndGreetings(String nick, String artist, String song, String greet) {
+    public String postWishAndGreetings(String nick, String artist, String song, String greet) {
         checkConnectivity();
-        api.postWishAndGreetings(nick, artist, song, greet);
+        String response = api.postWishAndGreetings(nick, artist, song, greet);
+        return cleanWishGreetResponse(response);
     }
 
     @Override
-    public void postGreetings(String nick, String greet) {
+    public String postGreetings(String nick, String greet) {
         checkConnectivity();
-        api.postGreetings(nick, greet);
+        String response = api.postGreetings(nick, greet);
+        return cleanWishGreetResponse(response);
     }
 
+    private String cleanWishGreetResponse(String response){
+        if(response == null){
+            return "Übermittlung fehlgeschlagen";
+        }
+        else if (response.contains("Wunsch/Gruss hinzugefügt.")){
+            return "Wunsch/Gruss hinzugefügt.";
+        }else{
+            return "Wunsch/Gruss wurde übermittelt.";
+        }
+    }
     private void checkConnectivity() {
         if (!hasConnection()) {
             throw new NoInternetException();
