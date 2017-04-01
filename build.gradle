@@ -3,7 +3,7 @@
 def versionMajor = 0  // incompatible API changes
 def versionMinor = 4  // added functionality in a backwards-compatible manner
 def versionPatch = 18 // backwards-compatible bug fixes
-def versionBuild = 3  // bump for dogfood builds, public betas, etc.
+def versionBuild = 6  // bump for dogfood builds, public betas, etc.
 
 buildscript {
     ext.kotlin_version = '1.1.0'
@@ -78,6 +78,9 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
+            java {
+                srcDirs += "src/main/kotlin"
+            }
         }
     }
 
