@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -
 
 ## [0.4.18-*] (Beta)
-- (-2) Removed ActionBarSherlock
-- (-3) Major Code Cleanup
+- (0.4.18-6)
+  - Greetings/Wishes reverted to less maintainable, but probably working version. 
+- (0.4.18-4)
+  - Greetings/Wishes system rewritten (experimental)
+  - Known problem: Song history not displayed
+- (0.4.18-3) Major Code Cleanup
+- (0.4.18-2) Removed ActionBarSherlock
 
 ## [0.4.18] - 2017-02-03
 - Fixed: Wishes and Greetings work again
