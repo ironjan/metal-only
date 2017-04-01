@@ -5,15 +5,12 @@ import android.text.TextUtils
 import com.codingspezis.android.metalonly.player.BuildConfig
 import com.codingspezis.android.metalonly.player.utils.UrlConstants
 
-import org.apache.http.HttpResponse
 import org.apache.http.NameValuePair
-import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.message.BasicNameValuePair
 import org.apache.http.protocol.HTTP
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import java.io.IOException
@@ -39,7 +36,6 @@ class WishSender {
         this.greet = greet
         this.callback = callback
     }
-
 
     fun send() {
         val client = DefaultHttpClient()
@@ -76,7 +72,6 @@ class WishSender {
 
         if (BuildConfig.DEBUG) SENDER_LOGGER.debug("run() done")
     }
-
 
     interface Callback {
         fun onSuccess()
