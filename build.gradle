@@ -108,8 +108,6 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-
-    useLibrary 'org.apache.http.legacy'
 }
 
 def androidannotationsVersion = '4.2.0'
@@ -120,6 +118,7 @@ dependencies {
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
 
     compile 'org.slf4j:slf4j-android:1.7.22'
 
