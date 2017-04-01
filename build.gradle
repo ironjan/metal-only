@@ -94,8 +94,6 @@ android {
         }
     }
 
-    println("Trying to apply property: metalonly.signing `" + project.property("metalonly.signing") + "`")
-    println("Settings file: `" + project.property("metalonly.signing") + ".gradle`")
     if (project.hasProperty("metalonly.signing")
             && new File(project.property("metalonly.signing") + ".gradle").exists()) {
         apply from: project.property("metalonly.signing") + ".gradle";
