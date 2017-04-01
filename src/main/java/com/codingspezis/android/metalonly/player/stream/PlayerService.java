@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager;
 
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.StreamControlActivity_;
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
@@ -84,7 +85,7 @@ public class PlayerService extends Service {
         CharSequence tickerText = getString(R.string.playing);
         long when = System.currentTimeMillis();
         CharSequence contentTitle = getString(R.string.app_name);
-        Intent notificationIntent = new Intent(this, StreamControlActivity.class);
+        Intent notificationIntent = StreamControlActivity_.intent(this ).get();
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);

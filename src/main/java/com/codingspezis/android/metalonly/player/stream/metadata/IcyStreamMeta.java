@@ -32,7 +32,8 @@ public class IcyStreamMeta {
     public static Map<String, String> parseMetadata(String metaString) {
         Map<String, String> metadata = new HashMap<>();
         String[] metaParts = metaString.split(";");
-        Pattern p = Pattern.compile("^([a-zA-Z]+)=\\'([^\\']*)\\'$");
+//        ÔStreamTitle='Maat - The Divine Slaughtering Of Mankin';
+        Pattern p = Pattern.compile("(\\w+)='(.*)'$");
         Matcher m;
         for (String metaPart : metaParts) {
             m = p.matcher(metaPart);
