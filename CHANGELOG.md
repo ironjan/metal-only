@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -
 
 ## [0.4.18-*] (Beta)
+- (0.4.18-9)
+  - Fixed: [Favorites were crashing/not shown](https://github.com/ironjan/metal-only/issues/43)
 - (0.4.18-8)
   - Fixed: [Rewrite Greetings/Wishes with OkHttp](https://github.com/ironjan/metal-only/issues/11)
 - (0.4.18-7)
