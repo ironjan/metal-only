@@ -65,4 +65,10 @@ public class SongAdapterFavorites extends BaseAdapter {
     public long getItemId(int arg0) {
         return arg0;
     }
+
+    public void replaceData(ArrayList<Song> songs) {
+        this.data.clear();
+        this.data.addAll(songs);
+        notifyDataSetChanged();
+    }
 }
