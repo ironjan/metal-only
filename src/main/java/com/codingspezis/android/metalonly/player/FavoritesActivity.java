@@ -21,12 +21,9 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 /**
- * FavoritesActivity
- * <p/>
- * this activity displays favorites and allows to handle them
+ * Activity that displays favorites and allows to handle them
  */
 @EActivity(R.layout.activity_favorites)
-@OptionsMenu(R.menu.favoritesmenu)
 @SuppressLint("Registered")
 public class FavoritesActivity extends AppCompatActivity {
 

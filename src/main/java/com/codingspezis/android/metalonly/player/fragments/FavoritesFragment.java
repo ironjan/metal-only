@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,7 +23,6 @@ import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -44,7 +43,7 @@ import java.util.ArrayList;
 @EFragment(R.layout.fragment_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
 @SuppressLint("Registered")
-public class FavoritesFragment extends ListFragment {
+public class FavoritesFragment extends Fragment {
 
     public static final String JSON_FILE_FAV = "mo_fav.json";
     private static final int ITEM_CLICK_ACTION_DELETE = 3;
@@ -54,8 +53,12 @@ public class FavoritesFragment extends ListFragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(FavoritesFragment.class);
     @ViewById
     ListView list;
+    @ViewById
+    View empty;
+
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
+    private SongAdapterFavorites adapter;
 
     private SongSaver favoritesSaver;
 
@@ -76,7 +79,9 @@ public class FavoritesFragment extends ListFragment {
     @AfterViews
     void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
-        list = getListView();
+        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<Song>(0));
+        list.setAdapter(adapter);
+        list.setEmptyView(empty);
         displayFavorites();
     }
     @Override
@@ -133,8 +138,7 @@ public class FavoritesFragment extends ListFragment {
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
             songs.add(favoritesSaver.get(i));
         }
-        SongAdapterFavorites adapter = new SongAdapterFavorites(getActivity(), songs);
-        list.setAdapter(adapter);
+        adapter.replaceData(songs);
     }
 
     /**
