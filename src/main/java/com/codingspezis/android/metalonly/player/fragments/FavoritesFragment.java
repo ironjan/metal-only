@@ -54,6 +54,9 @@ public class FavoritesFragment extends ListFragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(FavoritesFragment.class);
     @ViewById
     ListView list;
+    @ViewById
+    View empty;
+
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
 
@@ -77,6 +80,7 @@ public class FavoritesFragment extends ListFragment {
     void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
         list = getListView();
+        list.setEmptyView(empty);
         displayFavorites();
     }
     @Override
