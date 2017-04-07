@@ -55,13 +55,5 @@ class Song {
      * @return true, if this is a valid song. False if invalid
      */
     val isValid: Boolean
-        get() = interpret.length != 0 && title.length != 0
+        get() = interpret.isNotEmpty() && title.isNotEmpty()
 }
-/**
- * Wrapper for [.Song]. Creates a song
- * with out thumb and date set to the moment this constructor is called
-
- * @param interpret song artist
- * *
- * @param title     song title
- */
