@@ -179,8 +179,8 @@ public class FavoritesFragment extends Fragment {
                 bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
                 bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
                 bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
-                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).interpret);
-                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).title);
+                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).getInterpret());
+                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).getTitle());
                 Intent wishIntent = new Intent(getActivity(), WishActivity.class);
                 wishIntent.putExtras(bundle);
 
@@ -203,8 +203,8 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void searchSongOnYoutube(final int index) {
-        String searchStr = favoritesSaver.get(index).interpret + " - "
-                + favoritesSaver.get(index).title;
+        String searchStr = favoritesSaver.get(index).getInterpret() + " - "
+                + favoritesSaver.get(index).getTitle();
         try {
             searchStr = URLEncoder.encode(searchStr, "UTF-8");
         } catch (Exception e) {
@@ -216,8 +216,8 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void shareSong(final int index) {
-        String message = favoritesSaver.get(index).interpret + " - "
-                + favoritesSaver.get(index).title;
+        String message = favoritesSaver.get(index).getInterpret() + " - "
+                + favoritesSaver.get(index).getTitle();
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);
@@ -257,7 +257,7 @@ public class FavoritesFragment extends Fragment {
     void shareAllClicked() {
         String message = "";
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-            message += favoritesSaver.get(i).interpret + " - " + favoritesSaver.get(i).title + "\n";
+            message += favoritesSaver.get(i).getInterpret() + " - " + favoritesSaver.get(i).getTitle() + "\n";
         }
         // open share dialog
         Intent share = new Intent(Intent.ACTION_SEND);

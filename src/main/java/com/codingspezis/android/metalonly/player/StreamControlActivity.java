@@ -579,8 +579,7 @@ public class StreamControlActivity extends AppCompatActivity {
             case 0: // add to favorites
                 Song song = historySaver.get(index);
                 if (favoritesSaver.isAlreadyIn(song) == -1) {
-                    song.clearThumb();
-                    favoritesSaver.addSong(song);
+                    favoritesSaver.addSong(song.withClearedThumb());
                     Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
                             .show();
                 } else {
@@ -589,8 +588,8 @@ public class StreamControlActivity extends AppCompatActivity {
                 }
                 break;
             case 1: // YouTube
-                String searchStr = historySaver.get(index).interpret + " - "
-                        + historySaver.get(index).title;
+                String searchStr = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
                 try {
                     searchStr = URLEncoder.encode(searchStr, "UTF-8");
                 } catch (Exception e) {
@@ -602,8 +601,8 @@ public class StreamControlActivity extends AppCompatActivity {
                 startActivity(youtube);
                 break;
             case 2: // share
-                String message = historySaver.get(index).interpret + " - "
-                        + historySaver.get(index).title;
+                String message = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
                 share.putExtra(Intent.EXTRA_TEXT, message);

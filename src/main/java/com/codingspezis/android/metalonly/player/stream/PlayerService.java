@@ -130,7 +130,7 @@ public class PlayerService extends Service {
             if (index == -1) {
                 canAdd = true;
             } else {
-                long timeDiff = song.date - historySaver.get(index).date;
+                long timeDiff = song.getDate() - historySaver.get(index).getDate();
                 if (timeDiff > TIME_15_MINUTES_IN_MILLIS) {
                     canAdd = true;
                 }

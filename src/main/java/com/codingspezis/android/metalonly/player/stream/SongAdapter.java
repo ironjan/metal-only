@@ -50,10 +50,10 @@ public class SongAdapter extends BaseAdapter {
         final TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
         final TextView txtDate = (TextView) view.findViewById(R.id.txtDate);
 
-        txtTitle.setText(song.title);
-        txtArtist.setText(song.interpret);
+        txtTitle.setText(song.getTitle());
+        txtArtist.setText(song.getInterpret());
         try {
-            final Date dateAsDate = new Date(song.date);
+            final Date dateAsDate = new Date(song.getDate());
             String day = DateFormat.getDateInstance(DateFormat.SHORT,
                     Locale.GERMAN).format(dateAsDate);
             String time = DateFormat.getTimeInstance(DateFormat.SHORT,
