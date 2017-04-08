@@ -1,6 +1,5 @@
 package com.codingspezis.android.metalonly.player.utils
 
-
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,13 +14,13 @@ import org.androidannotations.annotations.res.StringRes
 @EBean
 open class FeedbackMailer {
     @RootContext
-    internal var context: Context? = null
+    protected lateinit var context: Context
 
     @StringRes
-    internal var app_name: String? = null
+    protected lateinit var app_name: String
 
     @StringRes
-    internal var mailaddress_codingspezis: String? = null
+    protected lateinit var mailaddress_codingspezis: String
 
     /**
      * sends system intent ACTION_SEND (send mail)
@@ -33,7 +32,6 @@ open class FeedbackMailer {
                 "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
                 "Android: ${Build.VERSION.RELEASE}\n" +
                 "Model: ${Build.MODEL}"
-
 
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>(mailaddress_codingspezis.toString()))

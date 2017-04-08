@@ -29,7 +29,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'android-apt'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'project-report'
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -121,9 +121,9 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.22'
 
     compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
-    apt "org.androidannotations:androidannotations:$androidannotationsVersion"
+    kapt "org.androidannotations:androidannotations:$androidannotationsVersion"
     compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
-    apt "org.androidannotations:rest-spring:$androidannotationsVersion"
+    kapt "org.androidannotations:rest-spring:$androidannotationsVersion"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 
@@ -156,5 +156,12 @@ task ktlintFormat(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
     args "-F", "src/**/*.kt"
+}
+
+
+kapt {
+    arguments {
+        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+    }
 }
 
