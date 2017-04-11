@@ -31,19 +31,10 @@ import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
 public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
-    // intent keys
-    private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;
-    private static final String KEY_REGARDS_ALLOWED = WishActivity.KEY_REGARDS_ALLOWED;
-    private static final String KEY_NUMBER_OF_WISHES = WishActivity.KEY_NUMBER_OF_WISHES;
-    private static final String KEY_DEFAULT_INTERPRET = WishActivity.KEY_DEFAULT_INTERPRET;
-    private static final String KEY_DEFAULT_TITLE = WishActivity.KEY_DEFAULT_TITLE;
-    // shared preferences keys
     private static final String KEY_SP_NICK = "moa_nickname";
     @ViewById(R.id.btnSend)
     Button buttonSend;
@@ -105,11 +96,11 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
 
         if (null != bundle) {
-            wish = bundle.getBoolean(KEY_WISHES_ALLOWED, false);
-            regard = bundle.getBoolean(KEY_REGARDS_ALLOWED, false);
-            numberOfWishes = bundle.getInt(KEY_NUMBER_OF_WISHES);
-            editArtist.setText(bundle.getString(KEY_DEFAULT_INTERPRET));
-            editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
+            wish = bundle.getBoolean(WishActivity.KEY_WISHES_ALLOWED, false);
+            regard = bundle.getBoolean(WishActivity.KEY_REGARDS_ALLOWED, false);
+            numberOfWishes = bundle.getInt(WishActivity.KEY_NUMBER_OF_WISHES);
+            editArtist.setText(bundle.getString(WishActivity.KEY_DEFAULT_INTERPRET));
+            editTitle.setText(bundle.getString(WishActivity.KEY_DEFAULT_TITLE));
         }
 
         wishCount.setText(String.valueOf(numberOfWishes));
