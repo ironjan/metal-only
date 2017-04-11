@@ -15,10 +15,13 @@ import android.widget.Toast;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.wish.WishSender;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -28,8 +31,11 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
@@ -43,6 +49,14 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editArtist,
             editTitle,
             editRegard;
+
+    @StringRes
+    String number_of_wishes_format,
+            no_regards,
+            app_name,
+            no_wishes_short;
+
+
     @ViewById
     TextView textArtist,
             textTitle,
@@ -55,6 +69,35 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     MetalOnlyAPIWrapper apiWrapper;
 
     public WishFragment() {
+    }
+
+    @AfterInject
+    void loadAllowedActions(){
+        if (!HTTPGrabber.isOnline(getActivity())) {
+            Stats stats = apiWrapper.getStats();
+            if(stats.isNotModerated()){
+                // FIXME: Show R.string.no_moderator
+                showToast(R.string.no_moderator);
+            }else if(stats.canNeitherWishNorGreet()){
+                // FIXME: Show R.string.no_wishes_and_regards
+                showToast(R.string.no_wishes_and_regards);
+            }else{
+                // FIXME: Show correct form
+                showToast("Oki");
+            }
+        }
+        else{
+            // FIXME display offline message
+            showToast("Offline");
+        }
+    }
+
+    private void showToast(int msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     private static void setInvisible(View v) {
@@ -82,7 +125,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void init() {
         if (BuildConfig.DEBUG) LOGGER.debug("init()");
 
-        final String app_name = getString(R.string.app_name);
         final SharedPreferences settings = getActivity().getSharedPreferences(app_name,
                 Context.MODE_MULTI_PROCESS);
 
@@ -103,29 +145,24 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editTitle.setText(bundle.getString(WishActivity.KEY_DEFAULT_TITLE));
         }
 
-        wishCount.setText(String.valueOf(numberOfWishes));
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.GERMAN, number_of_wishes_format, numberOfWishes));
+
         if (!wish) {
-            editArtist.setText(R.string.no_wishes_short);
+            editArtist.setText(no_wishes_short);
             editArtist.setEnabled(false);
-            setInvisible(editArtist);
-            setInvisible(textArtist);
-            editTitle.setText(R.string.no_wishes_short);
+            editTitle.setText(no_wishes_short);
             editTitle.setEnabled(false);
-            setInvisible(editTitle);
-            setInvisible(textTitle);
-
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_wishes_short));
-
         }
+
         if (!regard) {
-            editRegard.setText(R.string.no_regards);
+            editRegard.setText(no_regards);
             editRegard.setEnabled(false);
-            setInvisible(editRegard);
-            setInvisible(textRegard);
 
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_regards));
+            sb.append("\n").append(no_regards);
         }
 
+        wishCount.setText(sb.toString());
         if (BuildConfig.DEBUG) LOGGER.debug("init() done");
 
     }
