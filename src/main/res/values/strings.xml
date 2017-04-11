@@ -59,6 +59,7 @@
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
     <string name="menu_help">Hilfe</string>
+    <string name="number_of_wishes_format">%1$d Wünsche.</string>
 
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>

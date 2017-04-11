@@ -62,6 +62,7 @@
     <string name="invalid_input">Input incomplete</string>
     <string name="communicating">Communicating with server…</string>
     <string name="menu_help">Help</string>
+    <string name="number_of_wishes_format">%1$d wishes.</string>
 
     <!-- paypal donation -->
     <string name="paypal">Donation via PayPal</string>
