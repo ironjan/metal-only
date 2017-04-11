@@ -38,7 +38,7 @@ open class FeedbackMailer {
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
         try {
-            context!!.startActivity(Intent.createChooser(emailIntent, mailaddress_codingspezis))
+            context.startActivity(Intent.createChooser(emailIntent, mailaddress_codingspezis))
         } catch (ex: android.content.ActivityNotFoundException) {
             val toast = Toast(context)
             toast.duration = Toast.LENGTH_LONG
