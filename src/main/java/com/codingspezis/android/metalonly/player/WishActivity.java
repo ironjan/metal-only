@@ -22,10 +22,6 @@ import org.slf4j.LoggerFactory;
 
 public class WishActivity extends AppCompatActivity {
 
-    // intent keys
-    public static final String KEY_WISHES_ALLOWED = "MO_WISHES_ALLOWED";
-    public static final String KEY_REGARDS_ALLOWED = "MO_REGARDS_ALLOWED";
-    public static final String KEY_NUMBER_OF_WISHES = "MO_NUMBER_OF_WISHES";
     public static final String KEY_DEFAULT_INTERPRET = "MO_DEFAULT_INTERPRET";
     public static final String KEY_DEFAULT_TITLE = "MO_DEFAULT_TITLE";
 
