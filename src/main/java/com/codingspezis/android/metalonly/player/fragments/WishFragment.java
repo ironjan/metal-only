@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,21 +51,25 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editTitle,
             editRegard;
 
+    @ViewById(android.R.id.progress)
+    ProgressBar progress;
+
     @StringRes
     String number_of_wishes_format,
             no_regards,
             app_name,
             no_wishes_short;
 
+    private Stats stats = Stats.getDefault();
 
     @ViewById
     TextView textArtist,
             textTitle,
             textRegard;
+    
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
-    private boolean wish, regard;
-    private int numberOfWishes;
+    
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
 
@@ -72,42 +77,50 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @AfterInject
+    @Background
     void loadAllowedActions(){
-        if (!HTTPGrabber.isOnline(getActivity())) {
-            Stats stats = apiWrapper.getStats();
-            if(stats.isNotModerated()){
-                // FIXME: Show R.string.no_moderator
-                showToast(R.string.no_moderator);
-            }else if(stats.canNeitherWishNorGreet()){
-                // FIXME: Show R.string.no_wishes_and_regards
-                showToast(R.string.no_wishes_and_regards);
-            }else{
-                // FIXME: Show correct form
-                showToast("Oki");
-            }
+        if (HTTPGrabber.isOnline(getActivity())) {
+            showLoading(true);
+            updateStats(apiWrapper.getStats());
         }
         else{
-            // FIXME display offline message
-            showToast("Offline");
+            notifyUser(R.string.no_internet);
         }
     }
 
-    private void showToast(int msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
+    @UiThread
+    void updateStats(Stats stats){
+        this.stats = stats;
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
 
-    private void showToast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    private static void setInvisible(View v) {
-        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({})", v);
-
-        if (null != v) {
-            v.setVisibility(View.GONE);
+        if (!stats.isCanWish()) {
+            editArtist.setText(no_wishes_short);
+            editArtist.setEnabled(false);
+            editTitle.setText(no_wishes_short);
+            editTitle.setEnabled(false);
         }
 
-        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({}) done", v);
+        if (!stats.isCanGreet()) {
+            editRegard.setText(no_regards);
+            editRegard.setEnabled(false);
+
+            sb.append("\n").append(no_regards);
+        }
+
+        wishCount.setText(sb.toString());
+        showLoading(false);
+    }
+
+    @UiThread
+    void showLoading(boolean isLoading) {
+    if(isLoading){
+        editRegard.setVisibility(View.INVISIBLE);
+        progress.setVisibility(View.VISIBLE);
+    }else{
+        editRegard.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.INVISIBLE);
+    }
     }
 
     @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
@@ -122,49 +135,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @AfterViews
-    void init() {
-        if (BuildConfig.DEBUG) LOGGER.debug("init()");
-
+    void loadNick() {
+        // TODO Use AA shared prefs
         final SharedPreferences settings = getActivity().getSharedPreferences(app_name,
                 Context.MODE_MULTI_PROCESS);
 
-        // input fields
         final String nickName = settings.getString(KEY_SP_NICK, "");
         editNick.setText(nickName);
-
-
-        // get parameters
-        Bundle bundle = getArguments();
-
-
-        if (null != bundle) {
-            wish = bundle.getBoolean(WishActivity.KEY_WISHES_ALLOWED, false);
-            regard = bundle.getBoolean(WishActivity.KEY_REGARDS_ALLOWED, false);
-            numberOfWishes = bundle.getInt(WishActivity.KEY_NUMBER_OF_WISHES);
-            editArtist.setText(bundle.getString(WishActivity.KEY_DEFAULT_INTERPRET));
-            editTitle.setText(bundle.getString(WishActivity.KEY_DEFAULT_TITLE));
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.GERMAN, number_of_wishes_format, numberOfWishes));
-
-        if (!wish) {
-            editArtist.setText(no_wishes_short);
-            editArtist.setEnabled(false);
-            editTitle.setText(no_wishes_short);
-            editTitle.setEnabled(false);
-        }
-
-        if (!regard) {
-            editRegard.setText(no_regards);
-            editRegard.setEnabled(false);
-
-            sb.append("\n").append(no_regards);
-        }
-
-        wishCount.setText(sb.toString());
-        if (BuildConfig.DEBUG) LOGGER.debug("init() done");
-
     }
 
     @Override
@@ -229,7 +206,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+            if(stats.isCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
                 new WishSender(this, nick, greet, artist, title).send();
             }else{
                 new WishSender(this, nick, greet, null, null).send();
