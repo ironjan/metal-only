@@ -471,21 +471,11 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
         Stats stats = apiWrapper.getStats();
-        if(stats.isNotModerated()){
-            alertMessage(streamControlActivity,
-                    streamControlActivity.getString(R.string.no_moderator));
-        }else if(stats.canNeitherWishNorGreet()){
+         if(stats.canNeitherWishNorGreet()){
             alertMessage(streamControlActivity, streamControlActivity
                     .getString(R.string.no_wishes_and_regards));
         }else{
-            // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
-            bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-            bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
-            wishIntent.putExtras(bundle);
-
             streamControlActivity.startActivity(wishIntent);
         }
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
