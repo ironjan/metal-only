@@ -51,19 +51,6 @@ public class FavoritesActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (event.getAction() == KeyEvent.ACTION_UP && menu != null
-                    && menu.findItem(R.id.mnu_sub) != null) {
-                menu.performIdentifierAction(R.id.mnu_sub, 0);
-                return true;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
     @SuppressLint("InlinedApi")
     @OptionsItem(android.R.id.home)
     void upButtonClicked() {
