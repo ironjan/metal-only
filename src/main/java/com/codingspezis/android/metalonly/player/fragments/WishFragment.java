@@ -9,16 +9,20 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
+import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.wish.WishSender;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -28,22 +32,16 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.Locale;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.help)
 public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
-    // intent keys
-    private static final String KEY_WISHES_ALLOWED = WishActivity.KEY_WISHES_ALLOWED;
-    private static final String KEY_REGARDS_ALLOWED = WishActivity.KEY_REGARDS_ALLOWED;
-    private static final String KEY_NUMBER_OF_WISHES = WishActivity.KEY_NUMBER_OF_WISHES;
-    private static final String KEY_DEFAULT_INTERPRET = WishActivity.KEY_DEFAULT_INTERPRET;
-    private static final String KEY_DEFAULT_TITLE = WishActivity.KEY_DEFAULT_TITLE;
-    // shared preferences keys
     private static final String KEY_SP_NICK = "moa_nickname";
     @ViewById(R.id.btnSend)
     Button buttonSend;
@@ -52,28 +50,77 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editArtist,
             editTitle,
             editRegard;
+
+    @ViewById(android.R.id.progress)
+    ProgressBar progress;
+
+    @StringRes
+    String number_of_wishes_format,
+            no_regards,
+            app_name,
+            no_wishes_short;
+
+    private Stats stats = Stats.getDefault();
+
     @ViewById
     TextView textArtist,
             textTitle,
             textRegard;
+    
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
-    private boolean wish, regard;
-    private int numberOfWishes;
+    
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
 
     public WishFragment() {
     }
 
-    private static void setInvisible(View v) {
-        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({})", v);
+    @AfterInject
+    @Background
+    void loadAllowedActions(){
+        if (HTTPGrabber.isOnline(getActivity())) {
+            showLoading(true);
+            updateStats(apiWrapper.getStats());
+        }
+        else{
+            notifyUser(R.string.no_internet);
+        }
+    }
 
-        if (null != v) {
-            v.setVisibility(View.GONE);
+    @UiThread
+    void updateStats(Stats stats){
+        this.stats = stats;
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
+
+        if (!stats.isCanWish()) {
+            editArtist.setText(no_wishes_short);
+            editArtist.setEnabled(false);
+            editTitle.setText(no_wishes_short);
+            editTitle.setEnabled(false);
         }
 
-        if (BuildConfig.DEBUG) LOGGER.debug("setInvisible({}) done", v);
+        if (!stats.isCanGreet()) {
+            editRegard.setText(no_regards);
+            editRegard.setEnabled(false);
+
+            sb.append("\n").append(no_regards);
+        }
+
+        wishCount.setText(sb.toString());
+        showLoading(false);
+    }
+
+    @UiThread
+    void showLoading(boolean isLoading) {
+    if(isLoading){
+        editRegard.setVisibility(View.INVISIBLE);
+        progress.setVisibility(View.VISIBLE);
+    }else{
+        editRegard.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.INVISIBLE);
+    }
     }
 
     @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
@@ -88,55 +135,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @AfterViews
-    void init() {
-        if (BuildConfig.DEBUG) LOGGER.debug("init()");
-
-        final String app_name = getString(R.string.app_name);
+    void loadNick() {
+        // TODO Use AA shared prefs
         final SharedPreferences settings = getActivity().getSharedPreferences(app_name,
                 Context.MODE_MULTI_PROCESS);
 
-        // input fields
         final String nickName = settings.getString(KEY_SP_NICK, "");
         editNick.setText(nickName);
-
-
-        // get parameters
-        Bundle bundle = getArguments();
-
-
-        if (null != bundle) {
-            wish = bundle.getBoolean(KEY_WISHES_ALLOWED, false);
-            regard = bundle.getBoolean(KEY_REGARDS_ALLOWED, false);
-            numberOfWishes = bundle.getInt(KEY_NUMBER_OF_WISHES);
-            editArtist.setText(bundle.getString(KEY_DEFAULT_INTERPRET));
-            editTitle.setText(bundle.getString(KEY_DEFAULT_TITLE));
-        }
-
-        wishCount.setText(String.valueOf(numberOfWishes));
-        if (!wish) {
-            editArtist.setText(R.string.no_wishes_short);
-            editArtist.setEnabled(false);
-            setInvisible(editArtist);
-            setInvisible(textArtist);
-            editTitle.setText(R.string.no_wishes_short);
-            editTitle.setEnabled(false);
-            setInvisible(editTitle);
-            setInvisible(textTitle);
-
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_wishes_short));
-
-        }
-        if (!regard) {
-            editRegard.setText(R.string.no_regards);
-            editRegard.setEnabled(false);
-            setInvisible(editRegard);
-            setInvisible(textRegard);
-
-            wishCount.setText(wishCount.getText() + "\n" + getString(R.string.no_regards));
-        }
-
-        if (BuildConfig.DEBUG) LOGGER.debug("init() done");
-
     }
 
     @Override
@@ -201,7 +206,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if(wish && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+            if(stats.isCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
                 new WishSender(this, nick, greet, artist, title).send();
             }else{
                 new WishSender(this, nick, greet, null, null).send();

@@ -176,9 +176,6 @@ public class FavoritesFragment extends Fragment {
             } else {
                 // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
-                bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-                bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
                 bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).getInterpret());
                 bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).getTitle());
                 Intent wishIntent = new Intent(getActivity(), WishActivity.class);
