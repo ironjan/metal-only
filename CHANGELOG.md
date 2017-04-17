@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 -
 
+## [0.5.0]
+- Better system for Greetings and Wishes
+- Major Code Cleanup
+- Made Feedback more accessable
+- Fixed some bugs (notification, song history, favorites)
+
 ## [0.4.18-*] (Beta)
 - (0.4.18-9)
   - Fixed: [Favorites were crashing/not shown](https://github.com/ironjan/metal-only/issues/43)
