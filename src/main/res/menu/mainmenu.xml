@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/mnu_sub"
-        android:title="@string/menu" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/mnu_favorites"
+        app:showAsAction="always|withText"
         android:title="@string/menu_favorites" />
     <item
         android:id="@+id/mnu_donation"
@@ -13,5 +11,8 @@
     <item
         android:id="@+id/mnu_info"
         android:title="@string/menu_info" />
+    <item
+        android:id="@+id/mnu_feedback"
+        android:title="@string/menu_feedback" />
 
 </menu>
