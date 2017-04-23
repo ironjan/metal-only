@@ -63,7 +63,8 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_stream)
 @OptionsMenu(R.menu.mainmenu)
 @SuppressLint("Registered")
-public class StreamControlActivity extends AppCompatActivity {
+public class StreamControlActivity extends AppCompatActivity
+implements PlanGrabber.PlanGrabberCallback{
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -583,4 +584,15 @@ public class StreamControlActivity extends AppCompatActivity {
         this.metadata = metadata;
     }
 
+    public void onPlanLoadSuccess(String site){
+        PlanActivity_.intent(this).site(site).start();
+    }
+
+    public void onPlanLoadError(String message){
+        toastMessage(this, message);
+    }
+
+    public void onPlanLoadError(int stringId){
+        toastMessage(this, getResources().getString(stringId));
+    }
 }

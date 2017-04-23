@@ -125,6 +125,8 @@
     <!-- other features -->
     <string name="plan">Sendeplan</string>
     <string name="volume">Lautstärke</string>
+    <string name="plan_timeout">Timeout beim Laden des Plans</string>
+    <string name="plan_load_cancelled">Laden des Plans wurde abgebrochen</string>
 
     <!-- history -->
     <string-array name="history_options_array">

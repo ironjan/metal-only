@@ -130,6 +130,8 @@
     <!-- other features -->
     <string name="plan">Plan</string>
     <string name="volume">Volume</string>
+    <string name="plan_timeout">Timeout when loading plan</string>
+    <string name="plan_load_cancelled">Loading plan was cancelled</string>
 
     <!-- history -->
     <string-array name="history_options_array">
