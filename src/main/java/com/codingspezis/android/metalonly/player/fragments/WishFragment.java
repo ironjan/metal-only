@@ -1,8 +1,6 @@
 package com.codingspezis.android.metalonly.player.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -15,11 +13,11 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
+import com.codingspezis.android.metalonly.player.wish.WishPrefs_;
 import com.codingspezis.android.metalonly.player.wish.WishSender;
 
 import org.androidannotations.annotations.AfterInject;
@@ -33,6 +31,7 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,30 +65,32 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     TextView textArtist,
             textTitle,
             textRegard;
-    
+
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
-    
+
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
+
+    @Pref
+    WishPrefs_ wishPrefs;
 
     public WishFragment() {
     }
 
     @AfterInject
     @Background
-    void loadAllowedActions(){
+    void loadAllowedActions() {
         if (HTTPGrabber.isOnline(getActivity())) {
             showLoading(true);
             updateStats(apiWrapper.getStats());
-        }
-        else{
+        } else {
             notifyUser(R.string.no_internet);
         }
     }
 
     @UiThread
-    void updateStats(Stats stats){
+    void updateStats(Stats stats) {
         this.stats = stats;
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
@@ -114,13 +115,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @UiThread
     void showLoading(boolean isLoading) {
-    if(isLoading){
-        editRegard.setVisibility(View.INVISIBLE);
-        progress.setVisibility(View.VISIBLE);
-    }else{
-        editRegard.setVisibility(View.VISIBLE);
-        progress.setVisibility(View.INVISIBLE);
-    }
+        if (isLoading) {
+            editRegard.setVisibility(View.INVISIBLE);
+            progress.setVisibility(View.VISIBLE);
+        } else {
+            editRegard.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.INVISIBLE);
+        }
     }
 
     @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
@@ -136,29 +137,21 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @AfterViews
     void loadNick() {
-        // TODO Use AA shared prefs
-        final SharedPreferences settings = getActivity().getSharedPreferences(app_name,
-                Context.MODE_MULTI_PROCESS);
-
-        final String nickName = settings.getString(KEY_SP_NICK, "");
-        editNick.setText(nickName);
+        editNick.setText(wishPrefs.nick().get());
+        editArtist.setText(wishPrefs.artist().get());
+        editTitle.setText(wishPrefs.title().get());
+        editRegard.setText(wishPrefs.greeting().get());
     }
 
     @Override
     public void onPause() {
-        if (BuildConfig.DEBUG) LOGGER.debug("onPause()");
-
-        final String app_name = getString(R.string.app_name);
-        SharedPreferences settings = getActivity().getSharedPreferences(app_name,
-                Context.MODE_MULTI_PROCESS);
-
-        SharedPreferences.Editor editor = settings.edit();
-        final String nickName = editNick.getText().toString();
-        editor.putString(KEY_SP_NICK, nickName);
-        editor.apply();
+        wishPrefs.edit()
+                .nick().put(editNick.getText().toString())
+                .artist().put(editArtist.getText().toString())
+                .title().put(editTitle.getText().toString())
+                .greeting().put(editRegard.getText().toString()).
+                apply();
         super.onPause();
-
-        if (BuildConfig.DEBUG) LOGGER.debug("onPause() done");
     }
 
     /**
@@ -200,18 +193,18 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Background
     void sendWishGreet() {
-        try{
+        try {
             final String nick = editNick.getText().toString();
             final String artist = editArtist.getText().toString();
             final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if(stats.isCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+            if (stats.isCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
                 new WishSender(this, nick, greet, artist, title).send();
-            }else{
+            } else {
                 new WishSender(this, nick, greet, null, null).send();
             }
-        }catch (NoInternetException e){
+        } catch (NoInternetException e) {
             notifyUser(R.string.no_internet);
         }
     }
@@ -269,7 +262,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @UiThread
-    void enableSendButton(){
+    void enableSendButton() {
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.wish_send);
     }
