@@ -10,8 +10,10 @@ import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.LicenseActivity;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.StreamControlActivity;
+import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FromHtml;
@@ -40,30 +42,13 @@ public class AboutFragment extends Fragment {
     @FromHtml(R.string.url_androidannotations)
     TextView textAndroidannotationsLink;
 
-    /**
-     * sends system intent ACTION_SEND (send mail)
-     *
-     * @param strTo      receiver of mail
-     * @param strSubject subject of mail
-     * @param strText    text of mail
-     */
-    private void sendEmail(String strTo, String strSubject, String strText) {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{strTo});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, strSubject);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, strText);
-        try {
-            startActivity(Intent.createChooser(emailIntent, strTo));
-        } catch (android.content.ActivityNotFoundException ex) {
-            StreamControlActivity.toastMessage(getActivity(), getString(R.string.no_mail_app));
-        }
-    }
+    @Bean
+    FeedbackMailer feedbackMailer;
+
 
     @Click(R.id.buttonFeedback)
     void buttonFeedbackClicked() {
-        String subject = "[" + app_name + " " + BuildConfig.VERSION_NAME
-                + "] Feedback, Fehler";
-        sendEmail(mailaddress_codingspezis, subject, "");
+        feedbackMailer.sendEmail();
     }
 
     /**

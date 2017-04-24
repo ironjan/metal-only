@@ -5,11 +5,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
--
+- Minor fixes
+
+## [0.5.0]
+- Better system for Greetings and Wishes
+- Major Code Cleanup
+- Made Feedback more accessable
+- Fixed some bugs (notification, song history, favorites)
 
 ## [0.4.18-*] (Beta)
-- (-2) Removed ActionBarSherlock
-- (-3) Major Code Cleanup
+- (0.4.18-9)
+  - Fixed: [Favorites were crashing/not shown](https://github.com/ironjan/metal-only/issues/43)
+- (0.4.18-8)
+  - Fixed: [Rewrite Greetings/Wishes with OkHttp](https://github.com/ironjan/metal-only/issues/11)
+- (0.4.18-7)
+  - Fixed: [Song history doesn't display songs](https://github.com/ironjan/metal-only/issues/29)
+  - Fixed: [Notification doesn't open app](https://github.com/ironjan/metal-only/issues/34)
+- (0.4.18-6)
+  - Greetings/Wishes reverted to less maintainable, but probably working version. 
+- (0.4.18-4)
+  - Greetings/Wishes system rewritten (experimental)
+  - Known problem: Song history not displayed
+- (0.4.18-3) Major Code Cleanup
+- (0.4.18-2) Removed ActionBarSherlock
 
 ## [0.4.18] - 2017-02-03
 - Fixed: Wishes and Greetings work again

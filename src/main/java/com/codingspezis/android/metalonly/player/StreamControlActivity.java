@@ -37,8 +37,8 @@ import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
+import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.views.Marquee;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -46,6 +46,8 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +61,10 @@ import java.util.ArrayList;
  * TODO move more functionality out of this class
  */
 @EActivity(R.layout.activity_stream)
+@OptionsMenu(R.menu.mainmenu)
 @SuppressLint("Registered")
-public class StreamControlActivity extends AppCompatActivity {
+public class StreamControlActivity extends AppCompatActivity
+implements PlanGrabber.PlanGrabberCallback{
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -84,6 +88,9 @@ public class StreamControlActivity extends AppCompatActivity {
     Marquee marqueeGenre;
     @ViewById(android.R.id.empty)
     View empty;
+
+    @Bean
+    FeedbackMailer feedbackMailer;
 
     Menu menu;
     // other
@@ -239,7 +246,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-                -1);
+            -1);
         setMetadata(Metadata.DEFAULT_METADATA);
     }
 
@@ -250,9 +257,9 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpBroadcastReceiver()");
         broadcastReceiver = new MainBroadcastReceiver(this);
         registerReceiver(broadcastReceiver, new IntentFilter(
-                PlayerService.INTENT_STATUS));
+            PlayerService.INTENT_STATUS));
         registerReceiver(broadcastReceiver, new IntentFilter(
-                PlayerService.INTENT_METADATA));
+            PlayerService.INTENT_METADATA));
         registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
     }
 
@@ -262,7 +269,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpPlayerService() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpPlayerService()");
         Intent playerStartIntent = new Intent(getApplicationContext(),
-                PlayerService.class);
+            PlayerService.class);
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
@@ -329,7 +336,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
+            PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<>();
 
@@ -360,72 +367,25 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("toggleStreamButton({}) done", listening);
     }
 
-    /**
-     * generates options menu
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({})", menu);
-
-        // TODO extract to menu resource
-        this.menu = menu;
-        // favorites button
-        MenuItem fav = menu.add(0, R.id.mnu_favorites, 0,
-                R.string.menu_favorites);
-        fav.setIcon(R.drawable.mo_star_b5);
-        fav.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
-                | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-        // menu button
-        SubMenu sub = menu.addSubMenu(0, R.id.mnu_sub, 0, R.string.menu);
-        sub.setIcon(R.drawable.ic_core_unstyled_action_overflow);
-        sub.add(0, R.id.mnu_donation, 0, R.string.menu_donation);
-        sub.add(0, R.id.mnu_info, 0, R.string.menu_info);
-        sub.getItem().setShowAsAction(
-                MenuItem.SHOW_AS_ACTION_ALWAYS
-                        | MenuItem.SHOW_AS_ACTION_WITH_TEXT
-        );
-        if (BuildConfig.DEBUG) LOGGER.debug("onCreateOptionsMenu({}) done", menu);
-        return true;
+    @OptionsItem(R.id.mnu_donation)
+    void startDonation(){
+        Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
+        startActivity(paypalIntent);
     }
 
-    /**
-     * handles menu button actions
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({})", item);
+    @OptionsItem(R.id.mnu_info)
+    void startAbout(){
+        AboutActivity_.intent(this).start();
+    } 
 
-
-        if (item.getItemId() == R.id.mnu_favorites) {
-            FavoritesActivity_.intent(this).start();
-        } else if (item.getItemId() == R.id.mnu_donation) {
-            Intent paypalIntent = new Intent(getApplicationContext(),
-                    PayPalDonationActivity.class);
-            startActivity(paypalIntent);
-        } else if (item.getItemId() == R.id.mnu_info) {
-            AboutActivity_.intent(this).start();
-        } else {
-            if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({}) done", item);
-            return false;
-        }
-        if (BuildConfig.DEBUG) LOGGER.debug("onOptionsItemSelected({}) done", item);
-        return true;
+    @OptionsItem(R.id.mnu_favorites)
+    void startFavorites(){
+        FavoritesActivity_.intent(this).start();        
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (BuildConfig.DEBUG) LOGGER.debug("onKeyUp({},{})", keyCode, event);
-
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (event.getAction() == KeyEvent.ACTION_UP && menu != null
-                    && menu.findItem(R.id.mnu_sub) != null) {
-                menu.performIdentifierAction(R.id.mnu_sub, 0);
-                return true;
-            }
-        }
-        if (BuildConfig.DEBUG) LOGGER.debug("onKeyUp({},{}) done", keyCode, event);
-
-        return super.onKeyUp(keyCode, event);
+    @OptionsItem(R.id.mnu_feedback)
+    void sendFeedback(){
+        feedbackMailer.sendEmail();
     }
 
     @Click
@@ -474,19 +434,12 @@ public class StreamControlActivity extends AppCompatActivity {
         Stats stats = apiWrapper.getStats();
         if(stats.isNotModerated()){
             alertMessage(streamControlActivity,
-                    streamControlActivity.getString(R.string.no_moderator));
+                streamControlActivity.getString(R.string.no_moderator));
         }else if(stats.canNeitherWishNorGreet()){
             alertMessage(streamControlActivity, streamControlActivity
-                    .getString(R.string.no_wishes_and_regards));
+                .getString(R.string.no_wishes_and_regards));
         }else{
-            // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
-            bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-            bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
-            wishIntent.putExtras(bundle);
-
             streamControlActivity.startActivity(wishIntent);
         }
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
@@ -555,14 +508,14 @@ public class StreamControlActivity extends AppCompatActivity {
         final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.history_options_array,
-                new DialogInterface.OnClickListener() {
+            new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        handleAction(historySaver.size() - index - 1, which);
-                    }
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    handleAction(historySaver.size() - index - 1, which);
                 }
-        );
+            }
+            );
         builder.show();
         if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done", position);
     }
@@ -578,39 +531,38 @@ public class StreamControlActivity extends AppCompatActivity {
 
         switch (action) {
             case 0: // add to favorites
-                Song song = historySaver.get(index);
-                if (favoritesSaver.isAlreadyIn(song) == -1) {
-                    song.clearThumb();
-                    favoritesSaver.addSong(song);
-                    Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-                            .show();
-                }
-                break;
+            Song song = historySaver.get(index);
+            if (favoritesSaver.isAlreadyIn(song) == -1) {
+                favoritesSaver.addSong(song.withClearedThumb());
+                Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
+                .show();
+            } else {
+                Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
+                .show();
+            }
+            break;
             case 1: // YouTube
-                String searchStr = historySaver.get(index).interpret + " - "
-                        + historySaver.get(index).title;
-                try {
-                    searchStr = URLEncoder.encode(searchStr, "UTF-8");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
-                        + searchStr);
-                Intent youtube = new Intent(Intent.ACTION_VIEW, url);
-                startActivity(youtube);
-                break;
+            String searchStr = historySaver.get(index).getInterpret() + " - "
+            + historySaver.get(index).getTitle();
+            try {
+                searchStr = URLEncoder.encode(searchStr, "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
+                + searchStr);
+            Intent youtube = new Intent(Intent.ACTION_VIEW, url);
+            startActivity(youtube);
+            break;
             case 2: // share
-                String message = historySaver.get(index).interpret + " - "
-                        + historySaver.get(index).title;
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, message);
-                startActivity(Intent.createChooser(share, getResources()
-                        .getStringArray(R.array.favorite_options_array)[2]));
-                break;
+            String message = historySaver.get(index).getInterpret() + " - "
+            + historySaver.get(index).getTitle();
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("text/plain");
+            share.putExtra(Intent.EXTRA_TEXT, message);
+            startActivity(Intent.createChooser(share, getResources()
+                .getStringArray(R.array.favorite_options_array)[2]));
+            break;
         }
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{}) done", index, action);
 
@@ -632,4 +584,15 @@ public class StreamControlActivity extends AppCompatActivity {
         this.metadata = metadata;
     }
 
+    public void onPlanLoadSuccess(String site){
+        PlanActivity_.intent(this).site(site).start();
+    }
+
+    public void onPlanLoadError(String message){
+        toastMessage(this, message);
+    }
+
+    public void onPlanLoadError(int stringId){
+        toastMessage(this, getResources().getString(stringId));
+    }
 }

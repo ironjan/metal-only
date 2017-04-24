@@ -5,12 +5,4 @@
     android:id="@android:id/content"
     android:layout_height="match_parent" >
 
-    <fragment
-        android:id="@+id/planFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.codingspezis.android.metalonly.player.fragments.PlanFragment_"
-        tools:layout="@layout/fragment_plan">
-    </fragment>
-
 </FrameLayout>

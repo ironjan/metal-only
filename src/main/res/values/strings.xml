@@ -8,6 +8,7 @@
     <string name="menu_history">Verlauf</string>
     <string name="menu_donation">Spende</string>
     <string name="menu_info">Info</string>
+    <string name="menu_feedback">Feedback</string>
 
     <!-- errors -->
     <string name="error_initialize_player">Fehler beim Erstellen des Players</string>
@@ -59,6 +60,7 @@
     <string name="invalid_input">Unvollständige Eingabe!</string>
     <string name="communicating">Kommuniziere mit Server</string>
     <string name="menu_help">Hilfe</string>
+    <string name="number_of_wishes_format">%1$d Wünsche.</string>
 
     <!-- paypal donation -->
     <string name="paypal">PayPal Spende</string>
@@ -123,6 +125,8 @@
     <!-- other features -->
     <string name="plan">Sendeplan</string>
     <string name="volume">Lautstärke</string>
+    <string name="plan_timeout">Timeout beim Laden des Plans</string>
+    <string name="plan_load_cancelled">Laden des Plans wurde abgebrochen</string>
 
     <!-- history -->
     <string-array name="history_options_array">

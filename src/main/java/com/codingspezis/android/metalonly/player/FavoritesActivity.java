@@ -21,12 +21,9 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 /**
- * FavoritesActivity
- * <p/>
- * this activity displays favorites and allows to handle them
+ * Activity that displays favorites and allows to handle them
  */
 @EActivity(R.layout.activity_favorites)
-@OptionsMenu(R.menu.favoritesmenu)
 @SuppressLint("Registered")
 public class FavoritesActivity extends AppCompatActivity {
 
@@ -52,19 +49,6 @@ public class FavoritesActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-    }
-
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (event.getAction() == KeyEvent.ACTION_UP && menu != null
-                    && menu.findItem(R.id.mnu_sub) != null) {
-                menu.performIdentifierAction(R.id.mnu_sub, 0);
-                return true;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
     }
 
     @SuppressLint("InlinedApi")

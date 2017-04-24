@@ -45,8 +45,8 @@ public class SongAdapterFavorites extends BaseAdapter {
         TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
 
-        txtTitle.setText(song.title);
-        txtArtist.setText(song.interpret);
+        txtTitle.setText(song.getTitle());
+        txtArtist.setText(song.getInterpret());
 
         return view;
     }
@@ -64,5 +64,11 @@ public class SongAdapterFavorites extends BaseAdapter {
     @Override
     public long getItemId(int arg0) {
         return arg0;
+    }
+
+    public void replaceData(ArrayList<Song> songs) {
+        this.data.clear();
+        this.data.addAll(songs);
+        notifyDataSetChanged();
     }
 }

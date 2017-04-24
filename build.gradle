@@ -1,12 +1,12 @@
 // use semantic versioning: http://semver.org/
 // only change _after_ merge requests
 def versionMajor = 0  // incompatible API changes
-def versionMinor = 4  // added functionality in a backwards-compatible manner
-def versionPatch = 18 // backwards-compatible bug fixes
-def versionBuild = 3  // bump for dogfood builds, public betas, etc.
+def versionMinor = 5  // added functionality in a backwards-compatible manner
+def versionPatch = 0  // backwards-compatible bug fixes
+def versionBuild = 0  // bump for dogfood builds, public betas, etc.
 
 buildscript {
-    ext.kotlin_version = '1.1.0'
+    ext.kotlin_version = '1.1.1'
     repositories {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
@@ -29,7 +29,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'android-apt'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'project-report'
 apply plugin: 'com.github.ben-manes.versions'
 
@@ -78,6 +78,9 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
+            java {
+                srcDirs += "src/main/kotlin"
+            }
         }
     }
 
@@ -94,13 +97,15 @@ android {
     if (project.hasProperty("metalonly.signing")
             && new File(project.property("metalonly.signing") + ".gradle").exists()) {
         apply from: project.property("metalonly.signing") + ".gradle";
+        println("Applied production signing config")
+    }
+    else{
+        println("Project does not have producion signing config")
     }
 
     lintOptions {
         disable 'InvalidPackage'
     }
-
-    useLibrary 'org.apache.http.legacy'
 }
 
 def androidannotationsVersion = '4.2.0'
@@ -111,13 +116,14 @@ dependencies {
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
 
     compile 'org.slf4j:slf4j-android:1.7.22'
 
     compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
-    apt "org.androidannotations:androidannotations:$androidannotationsVersion"
+    kapt "org.androidannotations:androidannotations:$androidannotationsVersion"
     compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
-    apt "org.androidannotations:rest-spring:$androidannotationsVersion"
+    kapt "org.androidannotations:rest-spring:$androidannotationsVersion"
 
     compile fileTree(dir: 'libs', include: '*.jar')
 
@@ -150,5 +156,12 @@ task ktlintFormat(type: JavaExec) {
     main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
     args "-F", "src/**/*.kt"
+}
+
+
+kapt {
+    arguments {
+        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+    }
 }
 

@@ -100,23 +100,32 @@
             android:inputType="textMultiLine"
             android:minHeight="48dp" />
 
-        <!-- limitations text -->
+        <ProgressBar
+            android:id="@android:id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:minHeight="48dp"
+            android:indeterminate="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editRegard" />
         <TextView
             android:id="@id/txtWishcount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:layout_below="@id/editRegard"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <!-- buttons -->
         <Button
             android:id="@id/btnSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtWishcount"
             android:text="@string/wish_send" />
+
 
     </RelativeLayout>
 

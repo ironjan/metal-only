@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,7 +23,6 @@ import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -44,7 +43,7 @@ import java.util.ArrayList;
 @EFragment(R.layout.fragment_favorites)
 @OptionsMenu(R.menu.favoritesmenu)
 @SuppressLint("Registered")
-public class FavoritesFragment extends ListFragment {
+public class FavoritesFragment extends Fragment {
 
     public static final String JSON_FILE_FAV = "mo_fav.json";
     private static final int ITEM_CLICK_ACTION_DELETE = 3;
@@ -54,8 +53,12 @@ public class FavoritesFragment extends ListFragment {
     private static final Logger LOGGER = LoggerFactory.getLogger(FavoritesFragment.class);
     @ViewById
     ListView list;
+    @ViewById
+    View empty;
+
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
+    private SongAdapterFavorites adapter;
 
     private SongSaver favoritesSaver;
 
@@ -76,7 +79,9 @@ public class FavoritesFragment extends ListFragment {
     @AfterViews
     void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
-        list = getListView();
+        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<Song>(0));
+        list.setAdapter(adapter);
+        list.setEmptyView(empty);
         displayFavorites();
     }
     @Override
@@ -133,8 +138,7 @@ public class FavoritesFragment extends ListFragment {
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
             songs.add(favoritesSaver.get(i));
         }
-        SongAdapterFavorites adapter = new SongAdapterFavorites(getActivity(), songs);
-        list.setAdapter(adapter);
+        adapter.replaceData(songs);
     }
 
     /**
@@ -172,11 +176,8 @@ public class FavoritesFragment extends ListFragment {
             } else {
                 // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
                 Bundle bundle = new Bundle();
-                bundle.putBoolean(WishActivity.KEY_WISHES_ALLOWED, stats.isCanWish());
-                bundle.putBoolean(WishActivity.KEY_REGARDS_ALLOWED, stats.isCanGreet());
-                bundle.putInt(WishActivity.KEY_NUMBER_OF_WISHES, stats.getWishLimit());
-                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).interpret);
-                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).title);
+                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).getInterpret());
+                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).getTitle());
                 Intent wishIntent = new Intent(getActivity(), WishActivity.class);
                 wishIntent.putExtras(bundle);
 
@@ -199,8 +200,8 @@ public class FavoritesFragment extends ListFragment {
     }
 
     private void searchSongOnYoutube(final int index) {
-        String searchStr = favoritesSaver.get(index).interpret + " - "
-                + favoritesSaver.get(index).title;
+        String searchStr = favoritesSaver.get(index).getInterpret() + " - "
+                + favoritesSaver.get(index).getTitle();
         try {
             searchStr = URLEncoder.encode(searchStr, "UTF-8");
         } catch (Exception e) {
@@ -212,8 +213,8 @@ public class FavoritesFragment extends ListFragment {
     }
 
     private void shareSong(final int index) {
-        String message = favoritesSaver.get(index).interpret + " - "
-                + favoritesSaver.get(index).title;
+        String message = favoritesSaver.get(index).getInterpret() + " - "
+                + favoritesSaver.get(index).getTitle();
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);
@@ -253,7 +254,7 @@ public class FavoritesFragment extends ListFragment {
     void shareAllClicked() {
         String message = "";
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-            message += favoritesSaver.get(i).interpret + " - " + favoritesSaver.get(i).title + "\n";
+            message += favoritesSaver.get(i).getInterpret() + " - " + favoritesSaver.get(i).getTitle() + "\n";
         }
         // open share dialog
         Intent share = new Intent(Intent.ACTION_SEND);
