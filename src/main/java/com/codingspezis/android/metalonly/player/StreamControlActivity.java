@@ -29,11 +29,11 @@ import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
 import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
+import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.views.Marquee;
 
 import org.androidannotations.annotations.AfterViews;
@@ -68,6 +68,9 @@ public class StreamControlActivity extends AppCompatActivity {
     final static long MIN_BOTTON_DELAY = 1000;
     private static final String TAG = StreamControlActivity.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+    public static final int LIST_ITEM_ACTION_FAVORITES = 0;
+    public static final int LIST_ITEM_ACTION_YOUTUBE = 1;
+    public static final int LIST_ITEM_ACTION_SHARE = 2;
     // button is not usable for MIN_BOTTON_DELAY msecs
     static long lastButtonToggle = 0;
     // GUI objects
@@ -242,7 +245,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-            -1);
+                -1);
         setMetadata(Metadata.DEFAULT_METADATA);
     }
 
@@ -253,9 +256,9 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpBroadcastReceiver()");
         broadcastReceiver = new MainBroadcastReceiver(this);
         registerReceiver(broadcastReceiver, new IntentFilter(
-            PlayerService.INTENT_STATUS));
+                PlayerService.INTENT_STATUS));
         registerReceiver(broadcastReceiver, new IntentFilter(
-            PlayerService.INTENT_METADATA));
+                PlayerService.INTENT_METADATA));
         registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
     }
 
@@ -265,7 +268,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpPlayerService() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpPlayerService()");
         Intent playerStartIntent = new Intent(getApplicationContext(),
-            PlayerService.class);
+                PlayerService.class);
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
@@ -332,7 +335,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-            PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
+                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<>();
 
@@ -364,23 +367,23 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     @OptionsItem(R.id.mnu_donation)
-    void startDonation(){
+    void startDonation() {
         Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
         startActivity(paypalIntent);
     }
 
     @OptionsItem(R.id.mnu_info)
-    void startAbout(){
+    void startAbout() {
         AboutActivity_.intent(this).start();
-    } 
+    }
 
     @OptionsItem(R.id.mnu_favorites)
-    void startFavorites(){
-        FavoritesActivity_.intent(this).start();        
+    void startFavorites() {
+        FavoritesActivity_.intent(this).start();
     }
 
     @OptionsItem(R.id.mnu_feedback)
-    void sendFeedback(){
+    void sendFeedback() {
         feedbackMailer.sendEmail();
     }
 
@@ -423,13 +426,13 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
         Stats stats = apiWrapper.getStats();
-        if(stats.isNotModerated()){
+        if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
-                streamControlActivity.getString(R.string.no_moderator));
-        }else if(stats.canNeitherWishNorGreet()){
+                    streamControlActivity.getString(R.string.no_moderator));
+        } else if (stats.canNeitherWishNorGreet()) {
             alertMessage(streamControlActivity, streamControlActivity
-                .getString(R.string.no_wishes_and_regards));
-        }else{
+                    .getString(R.string.no_wishes_and_regards));
+        } else {
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
             streamControlActivity.startActivity(wishIntent);
         }
@@ -499,14 +502,14 @@ public class StreamControlActivity extends AppCompatActivity {
         final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.history_options_array,
-            new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    handleAction(historySaver.size() - index - 1, which);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handleAction(historySaver.size() - index - 1, which);
+                    }
                 }
-            }
-            );
+        );
         builder.show();
         if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done", position);
     }
@@ -521,39 +524,39 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{})", index, action);
 
         switch (action) {
-            case 0: // add to favorites
-            Song song = historySaver.get(index);
-            if (favoritesSaver.isAlreadyIn(song) == -1) {
-                favoritesSaver.addSong(song.withClearedThumb());
-                Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-                .show();
-            } else {
-                Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-                .show();
-            }
-            break;
-            case 1: // YouTube
-            String searchStr = historySaver.get(index).getInterpret() + " - "
-            + historySaver.get(index).getTitle();
-            try {
-                searchStr = URLEncoder.encode(searchStr, "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
-                + searchStr);
-            Intent youtube = new Intent(Intent.ACTION_VIEW, url);
-            startActivity(youtube);
-            break;
-            case 2: // share
-            String message = historySaver.get(index).getInterpret() + " - "
-            + historySaver.get(index).getTitle();
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, message);
-            startActivity(Intent.createChooser(share, getResources()
-                .getStringArray(R.array.favorite_options_array)[2]));
-            break;
+            case LIST_ITEM_ACTION_FAVORITES: // add to favorites
+                Song song = historySaver.get(index);
+                if (favoritesSaver.isAlreadyIn(song) == -1) {
+                    favoritesSaver.addSong(song.withClearedThumb());
+                    Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            case LIST_ITEM_ACTION_YOUTUBE: // YouTube
+                String searchStr = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
+                try {
+                    searchStr = URLEncoder.encode(searchStr, "UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
+                        + searchStr);
+                Intent youtube = new Intent(Intent.ACTION_VIEW, url);
+                startActivity(youtube);
+                break;
+            case LIST_ITEM_ACTION_SHARE: // share
+                String message = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(Intent.createChooser(share, getResources()
+                        .getStringArray(R.array.favorite_options_array)[2]));
+                break;
         }
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{}) done", index, action);
 
