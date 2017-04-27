@@ -14,10 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -27,7 +24,6 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
-import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
 import com.codingspezis.android.metalonly.player.stream.PlayerService;
@@ -63,8 +59,8 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_stream)
 @OptionsMenu(R.menu.mainmenu)
 @SuppressLint("Registered")
-public class StreamControlActivity extends AppCompatActivity
-implements PlanGrabber.PlanGrabberCallback{
+public class StreamControlActivity extends AppCompatActivity {
+
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -419,12 +415,7 @@ implements PlanGrabber.PlanGrabberCallback{
     }
 
     private void startPlanActivity() {
-        if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
-
-        PlanGrabber pg = new PlanGrabber(this, UrlConstants.API_OLD_PLAN_URL);
-        pg.start();
-        if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
-
+        PlanActivity_.intent(this).start();
     }
 
     @Background
@@ -584,15 +575,4 @@ implements PlanGrabber.PlanGrabberCallback{
         this.metadata = metadata;
     }
 
-    public void onPlanLoadSuccess(String site){
-        PlanActivity_.intent(this).site(site).start();
-    }
-
-    public void onPlanLoadError(String message){
-        toastMessage(this, message);
-    }
-
-    public void onPlanLoadError(int stringId){
-        toastMessage(this, getResources().getString(stringId));
-    }
 }
