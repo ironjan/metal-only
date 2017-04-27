@@ -34,8 +34,9 @@ import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.views.Marquee;
+import com.codingspezis.android.metalonly.player.views.ShowInformation;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -44,6 +45,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,10 +83,8 @@ public class StreamControlActivity extends AppCompatActivity {
     ListView listView;
     @ViewById(R.id.buttonPlay)
     ImageView buttonStream;
-    @ViewById(R.id.marqueeMod)
-    Marquee marqueeMod;
-    @ViewById(R.id.marqueeGenree)
-    Marquee marqueeGenre;
+    @ViewById(R.id.viewShowInformation)
+    ShowInformation viewShowInformation;
     @ViewById(android.R.id.empty)
     View empty;
 
@@ -217,8 +217,8 @@ public class StreamControlActivity extends AppCompatActivity {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
-                        marqueeMod.setText(moderator);
-                        marqueeGenre.setText(genre);
+                        if(viewShowInformation != null) viewShowInformation.setMetadata(new Metadata(moderator, genre, "", ""));
+
                         setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
                 };
@@ -477,9 +477,9 @@ public class StreamControlActivity extends AppCompatActivity {
     public void displayMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
-        if (getMetadata().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadata().getGenre());
-            marqueeMod.setText(getMetadata().getModerator());
+        Metadata metadata = getMetadata();
+        if (metadata.toSong().isValid() && isShouldPlay()) {
+            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata);
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
@@ -578,4 +578,19 @@ public class StreamControlActivity extends AppCompatActivity {
         this.metadata = metadata;
     }
 
+    @AfterInject
+    @Background
+    void loadShowData(){
+        try{
+            displayShowData(apiWrapper.getStats());
+        }catch(Exception e){
+            e.printStackTrace();
+            toastMessage(this, e.getMessage());
+        }
+    }
+
+    @UiThread
+    void displayShowData(Stats stats) {
+        viewShowInformation.setStats(stats);
+    }
 }

@@ -26,7 +26,7 @@ public class Metadata {
     private String genre = "";
     private String moderator = "";
 
-    private Metadata(String moderator, String genre, String interpret, String title) {
+    public Metadata(String moderator, String genre, String interpret, String title) {
         this.moderator = moderator;
         this.genre = genre;
         this.interpret = interpret;
