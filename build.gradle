@@ -165,6 +165,7 @@ task ktlintFormat(type: JavaExec) {
 
 
 kapt {
+    generateStubs = true
     arguments {
         arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
     }
