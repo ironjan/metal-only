@@ -573,7 +573,9 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData(){
         try{
             displayShowData(apiWrapper.getStats());
-        }catch(Exception e){
+        } catch(NoInternetException e){
+          toastMessage(this, getResources().getString(R.string.no_internet));
+        } catch(Exception e){
             e.printStackTrace();
             toastMessage(this, e.getMessage());
         }
