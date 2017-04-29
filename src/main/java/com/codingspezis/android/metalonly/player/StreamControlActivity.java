@@ -146,7 +146,8 @@ public class StreamControlActivity extends AppCompatActivity {
         listView.setEmptyView(empty);
         toggleStreamButton(false);
         displaySongs();
-        clearMetadata();
+
+        setMetadata(Metadata.DEFAULT_METADATA);
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
@@ -462,7 +463,6 @@ public class StreamControlActivity extends AppCompatActivity {
 
         setSupportProgressBarIndeterminateVisibility(false);
         setShouldPlay(false);
-        clearMetadata();
         toggleStreamButton(false);
         Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
         sendBroadcast(tmpIntent);
@@ -483,16 +483,6 @@ public class StreamControlActivity extends AppCompatActivity {
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
-    }
-
-    /**
-     * clears the metadata display
-     */
-    private void clearMetadata() {
-        if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
-
-        setMetadata(Metadata.DEFAULT_METADATA);
-        if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 
     @ItemClick(android.R.id.list)
