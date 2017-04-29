@@ -95,6 +95,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
 
+        // FIXME Disable in layout, enable after load
+        // FIXME distinguish: wish list full, no wishes possbile!
         if (!stats.isCanWish()) {
             editArtist.setText(no_wishes_short);
             editArtist.setEnabled(false);
