@@ -67,7 +67,7 @@ class WishSender {
             val response = client.newCall(request).execute()
 
             val responseBody = response.body().string()
-            if (response.code() == 200 && responseBody.contains("Wunsch/Gruss hinzugefügt.")) {
+            if (response.code() == 200 && responseBody.contains(BuildConfig.WISH_SUCCESS)) {
                     callback.onSuccess()
                 } else {
                     callback.onFail()
