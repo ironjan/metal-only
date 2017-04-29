@@ -40,11 +40,14 @@ open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout
     }
 
     @UiThread
-    internal open fun updateViews(genre: String, moderator: String) {
-        marqueeGenre?.text = genre
-        marqueeGenre?.visibility = View.VISIBLE
-        marqueeMod?.text = moderator
-        marqueeMod?.visibility = View.VISIBLE
+    internal open fun updateViews(genre: String?, moderator: String?) {
+        if(genre != null) update(marqueeGenre, genre)
+        if(moderator != null) update(marqueeMod, moderator)
+    }
+
+    private fun update(view: Marquee?, value: String) {
+        view?.text = value
+        view?.visibility = View.VISIBLE
         progress?.visibility = View.GONE
     }
 
