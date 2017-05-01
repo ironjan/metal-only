@@ -78,7 +78,7 @@ android {
         buildConfigField  "String", "API_PLAN_PATH", "\"plannew\""
         buildConfigField  "String", "API_PLAN_WITH_STATS_PATH", "\"all\""
 
-        buildConfigField  "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/?action=wunschscript&do=save\""
+        buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
 
         buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
         buildConfigField "String", "WISH_FORM_INVALID", "\"Fehler: Bitte Wunsch/Gruss und einen Nick angeben\""
