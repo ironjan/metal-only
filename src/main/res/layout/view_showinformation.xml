@@ -18,10 +18,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:visibility="gone"
-        android:shadowColor="#ff000000"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="4"
          />
 
     <com.codingspezis.android.metalonly.player.views.Marquee
