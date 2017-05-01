@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- 
+
+## [0.5.0]
 - Minor fixes
+- Adapting to new homepage
 
 ## [0.5.0]
 - Better system for Greetings and Wishes

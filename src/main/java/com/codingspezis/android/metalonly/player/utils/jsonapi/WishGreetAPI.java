@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
-import com.codingspezis.android.metalonly.player.utils.UrlConstants;
+import com.codingspezis.android.metalonly.player.BuildConfig;
 
 import org.androidannotations.rest.spring.annotations.Field;
 import org.androidannotations.rest.spring.annotations.Post;
@@ -11,7 +11,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 /**
  * Interface to generate the REST-Client for wishes and greetings
  */
-@Rest(converters = {FormHttpMessageConverter.class, StringHttpMessageConverter.class}, rootUrl = UrlConstants.METAL_ONLY_API_BASE_URL)
+@Rest(converters = {FormHttpMessageConverter.class, StringHttpMessageConverter.class}, rootUrl = BuildConfig.METAL_ONLY_API_BASE_URL)
 public interface WishGreetAPI {
 
     /**
@@ -21,7 +21,7 @@ public interface WishGreetAPI {
      * @param song the wished song
      * @param greet some greetings
      */
-    @Post(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
+    @Post(BuildConfig.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
     String postWishAndGreetings(@Field String nick, @Field String artist, @Field String song, @Field String greet);
 
     /**
@@ -29,6 +29,6 @@ public interface WishGreetAPI {
      * @param nick the user's nick
      * @param greet some greetings
      */
-    @Post(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
+    @Post(BuildConfig.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
     String postGreetings(@Field String nick, @Field String greet);
 }

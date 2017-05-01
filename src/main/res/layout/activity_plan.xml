@@ -5,4 +5,12 @@
     android:id="@android:id/content"
     android:layout_height="match_parent"
     tools:layout="@layout/fragment_plan">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:indeterminate="true"
+        android:id="@android:id/progress"/>
 </FrameLayout>

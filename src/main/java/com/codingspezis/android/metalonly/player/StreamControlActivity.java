@@ -14,10 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -27,19 +24,19 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.favorites.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
-import com.codingspezis.android.metalonly.player.plan.PlanGrabber;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
 import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
+import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
-import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
-import com.codingspezis.android.metalonly.player.views.Marquee;
+import com.codingspezis.android.metalonly.player.views.ShowInformation;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -48,6 +45,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +61,8 @@ import java.util.ArrayList;
 @EActivity(R.layout.activity_stream)
 @OptionsMenu(R.menu.mainmenu)
 @SuppressLint("Registered")
-public class StreamControlActivity extends AppCompatActivity
-implements PlanGrabber.PlanGrabberCallback{
+public class StreamControlActivity extends AppCompatActivity {
+
     // intent keys
     public static final String showToastMessage = "MO_SHOW_TOAST";
     // shared preferences keys
@@ -72,6 +70,9 @@ implements PlanGrabber.PlanGrabberCallback{
     final static long MIN_BOTTON_DELAY = 1000;
     private static final String TAG = StreamControlActivity.class.getSimpleName();
     private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+    public static final int LIST_ITEM_ACTION_FAVORITES = 0;
+    public static final int LIST_ITEM_ACTION_YOUTUBE = 1;
+    public static final int LIST_ITEM_ACTION_SHARE = 2;
     // button is not usable for MIN_BOTTON_DELAY msecs
     static long lastButtonToggle = 0;
     // GUI objects
@@ -82,10 +83,8 @@ implements PlanGrabber.PlanGrabberCallback{
     ListView listView;
     @ViewById(R.id.buttonPlay)
     ImageView buttonStream;
-    @ViewById(R.id.marqueeMod)
-    Marquee marqueeMod;
-    @ViewById(R.id.marqueeGenree)
-    Marquee marqueeGenre;
+    @ViewById(R.id.viewShowInformation)
+    ShowInformation viewShowInformation;
     @ViewById(android.R.id.empty)
     View empty;
 
@@ -147,7 +146,8 @@ implements PlanGrabber.PlanGrabberCallback{
         listView.setEmptyView(empty);
         toggleStreamButton(false);
         displaySongs();
-        clearMetadata();
+
+        setMetadata(Metadata.DEFAULT_METADATA);
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
@@ -218,8 +218,8 @@ implements PlanGrabber.PlanGrabberCallback{
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
-                        marqueeMod.setText(moderator);
-                        marqueeGenre.setText(genre);
+                        if(viewShowInformation != null) viewShowInformation.setMetadata(new Metadata(moderator, genre, "", ""));
+
                         setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
                 };
@@ -246,7 +246,7 @@ implements PlanGrabber.PlanGrabberCallback{
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-            -1);
+                -1);
         setMetadata(Metadata.DEFAULT_METADATA);
     }
 
@@ -257,9 +257,9 @@ implements PlanGrabber.PlanGrabberCallback{
         if (BuildConfig.DEBUG) LOGGER.debug("setUpBroadcastReceiver()");
         broadcastReceiver = new MainBroadcastReceiver(this);
         registerReceiver(broadcastReceiver, new IntentFilter(
-            PlayerService.INTENT_STATUS));
+                PlayerService.INTENT_STATUS));
         registerReceiver(broadcastReceiver, new IntentFilter(
-            PlayerService.INTENT_METADATA));
+                PlayerService.INTENT_METADATA));
         registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
     }
 
@@ -269,7 +269,7 @@ implements PlanGrabber.PlanGrabberCallback{
     private void setUpPlayerService() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpPlayerService()");
         Intent playerStartIntent = new Intent(getApplicationContext(),
-            PlayerService.class);
+                PlayerService.class);
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
@@ -336,7 +336,7 @@ implements PlanGrabber.PlanGrabberCallback{
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs()");
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
-            PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
+                PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
         ArrayList<Song> data = new ArrayList<>();
 
@@ -368,23 +368,23 @@ implements PlanGrabber.PlanGrabberCallback{
     }
 
     @OptionsItem(R.id.mnu_donation)
-    void startDonation(){
+    void startDonation() {
         Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
         startActivity(paypalIntent);
     }
 
     @OptionsItem(R.id.mnu_info)
-    void startAbout(){
+    void startAbout() {
         AboutActivity_.intent(this).start();
-    } 
+    }
 
     @OptionsItem(R.id.mnu_favorites)
-    void startFavorites(){
-        FavoritesActivity_.intent(this).start();        
+    void startFavorites() {
+        FavoritesActivity_.intent(this).start();
     }
 
     @OptionsItem(R.id.mnu_feedback)
-    void sendFeedback(){
+    void sendFeedback() {
         feedbackMailer.sendEmail();
     }
 
@@ -419,12 +419,7 @@ implements PlanGrabber.PlanGrabberCallback{
     }
 
     private void startPlanActivity() {
-        if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity()");
-
-        PlanGrabber pg = new PlanGrabber(this, UrlConstants.API_OLD_PLAN_URL);
-        pg.start();
-        if (BuildConfig.DEBUG) LOGGER.debug("startPlanActivity() done");
-
+        PlanActivity_.intent(this).start();
     }
 
     @Background
@@ -432,13 +427,13 @@ implements PlanGrabber.PlanGrabberCallback{
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
         Stats stats = apiWrapper.getStats();
-        if(stats.isNotModerated()){
+        if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
-                streamControlActivity.getString(R.string.no_moderator));
-        }else if(stats.canNeitherWishNorGreet()){
+                    streamControlActivity.getString(R.string.no_moderator));
+        } else if (stats.canNeitherWishNorGreet()) {
             alertMessage(streamControlActivity, streamControlActivity
-                .getString(R.string.no_wishes_and_regards));
-        }else{
+                    .getString(R.string.no_wishes_and_regards));
+        } else {
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
             streamControlActivity.startActivity(wishIntent);
         }
@@ -468,7 +463,6 @@ implements PlanGrabber.PlanGrabberCallback{
 
         setSupportProgressBarIndeterminateVisibility(false);
         setShouldPlay(false);
-        clearMetadata();
         toggleStreamButton(false);
         Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
         sendBroadcast(tmpIntent);
@@ -483,22 +477,12 @@ implements PlanGrabber.PlanGrabberCallback{
     public void displayMetadata() {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
-        if (getMetadata().toSong().isValid() && isShouldPlay()) {
-            marqueeGenre.setText(getMetadata().getGenre());
-            marqueeMod.setText(getMetadata().getModerator());
+        Metadata metadata = getMetadata();
+        if (metadata.toSong().isValid() && isShouldPlay()) {
+            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata);
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
-    }
-
-    /**
-     * clears the metadata display
-     */
-    private void clearMetadata() {
-        if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata()");
-
-        setMetadata(Metadata.DEFAULT_METADATA);
-        if (BuildConfig.DEBUG) LOGGER.debug("clearMetadata() done");
     }
 
     @ItemClick(android.R.id.list)
@@ -508,14 +492,14 @@ implements PlanGrabber.PlanGrabberCallback{
         final int index = position;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.history_options_array,
-            new DialogInterface.OnClickListener() {
+                new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    handleAction(historySaver.size() - index - 1, which);
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handleAction(historySaver.size() - index - 1, which);
+                    }
                 }
-            }
-            );
+        );
         builder.show();
         if (BuildConfig.DEBUG) LOGGER.debug("listItemClicked({}) done", position);
     }
@@ -530,39 +514,39 @@ implements PlanGrabber.PlanGrabberCallback{
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{})", index, action);
 
         switch (action) {
-            case 0: // add to favorites
-            Song song = historySaver.get(index);
-            if (favoritesSaver.isAlreadyIn(song) == -1) {
-                favoritesSaver.addSong(song.withClearedThumb());
-                Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-                .show();
-            } else {
-                Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-                .show();
-            }
-            break;
-            case 1: // YouTube
-            String searchStr = historySaver.get(index).getInterpret() + " - "
-            + historySaver.get(index).getTitle();
-            try {
-                searchStr = URLEncoder.encode(searchStr, "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
-                + searchStr);
-            Intent youtube = new Intent(Intent.ACTION_VIEW, url);
-            startActivity(youtube);
-            break;
-            case 2: // share
-            String message = historySaver.get(index).getInterpret() + " - "
-            + historySaver.get(index).getTitle();
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("text/plain");
-            share.putExtra(Intent.EXTRA_TEXT, message);
-            startActivity(Intent.createChooser(share, getResources()
-                .getStringArray(R.array.favorite_options_array)[2]));
-            break;
+            case LIST_ITEM_ACTION_FAVORITES: // add to favorites
+                Song song = historySaver.get(index);
+                if (favoritesSaver.isAlreadyIn(song) == -1) {
+                    favoritesSaver.addSong(song.withClearedThumb());
+                    Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            case LIST_ITEM_ACTION_YOUTUBE: // YouTube
+                String searchStr = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
+                try {
+                    searchStr = URLEncoder.encode(searchStr, "UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
+                        + searchStr);
+                Intent youtube = new Intent(Intent.ACTION_VIEW, url);
+                startActivity(youtube);
+                break;
+            case LIST_ITEM_ACTION_SHARE: // share
+                String message = historySaver.get(index).getInterpret() + " - "
+                        + historySaver.get(index).getTitle();
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(Intent.createChooser(share, getResources()
+                        .getStringArray(R.array.favorite_options_array)[2]));
+                break;
         }
         if (BuildConfig.DEBUG) LOGGER.debug("handleAction({},{}) done", index, action);
 
@@ -584,15 +568,21 @@ implements PlanGrabber.PlanGrabberCallback{
         this.metadata = metadata;
     }
 
-    public void onPlanLoadSuccess(String site){
-        PlanActivity_.intent(this).site(site).start();
+    @AfterInject
+    @Background
+    void loadShowData(){
+        try{
+            displayShowData(apiWrapper.getStats());
+        } catch(NoInternetException e){
+          toastMessage(this, getResources().getString(R.string.no_internet));
+        } catch(Exception e){
+            e.printStackTrace();
+            toastMessage(this, e.getMessage());
+        }
     }
 
-    public void onPlanLoadError(String message){
-        toastMessage(this, message);
-    }
-
-    public void onPlanLoadError(int stringId){
-        toastMessage(this, getResources().getString(stringId));
+    @UiThread
+    void displayShowData(Stats stats) {
+        viewShowInformation.setStats(stats);
     }
 }

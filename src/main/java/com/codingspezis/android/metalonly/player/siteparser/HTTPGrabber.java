@@ -105,47 +105,7 @@ public class HTTPGrabber extends Thread {
 
     @Override
     public void run() {
-        setProgressDialogVisible(true);
-        // timeout timer setup
-        timedout = false;
-        Timer timeoutTimer = new Timer(true);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                if (!canceled) {
-                    timedout = true;
-                    setProgressDialogVisible(false);
-                    if (listener != null) {
-                        listener.onTimeout();
-                    }
-                }
-            }
-        };
-        timeoutTimer.schedule(timerTask, timeoutDelay);
-        // HTTP part
-        URLConnection con;
-        try {
-            con = (new URL(URL)).openConnection();
-            con.connect();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
-            if (!canceled && !timedout) {
-                timeoutTimer.cancel();
-                setProgressDialogVisible(false);
-                if (listener != null) {
-                    listener.onSuccess(reader);
-                }
-            }
-            reader.close();
-        } catch (Exception e) {
-            canceled = true;
-            setProgressDialogVisible(false);
-            e.printStackTrace();
-            StreamControlActivity.toastMessage(context, e.getMessage());
-            if (listener != null) {
-                listener.onError(e.getMessage());
-            }
-        }
+        HTTPDownloadImplementation.instance(URL, listener, timeoutDelay).download();
     }
 
     /**

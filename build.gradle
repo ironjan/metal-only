@@ -72,6 +72,17 @@ android {
         targetSdkVersion 25
 
         applicationId "com.codingspezis.android.metalonly.player"
+
+        buildConfigField  "String", "METAL_ONLY_API_BASE_URL", "\"https://www.metal-only.de/botcon/mob.php?action=\""
+        buildConfigField  "String", "API_STATS_PATH", "\"stats\""
+        buildConfigField  "String", "API_PLAN_PATH", "\"plannew\""
+        buildConfigField  "String", "API_PLAN_WITH_STATS_PATH", "\"all\""
+
+        buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
+
+        buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
+        buildConfigField "String", "WISH_FORM_INVALID", "\"Fehler: Bitte Wunsch/Gruss und einen Nick angeben\""
+        buildConfigField "String", "WISH_NO_WISHES_POSSIBLE", "\"Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!\""
     }
 
 
@@ -84,16 +95,6 @@ android {
         }
     }
 
-    buildTypes {
-        debug {
-            // buildConfigField "int", "SYNC_INTERVAL", "60" // 1 minute
-        }
-
-        release {
-            // buildConfigField "int", "SYNC_INTERVAL", "60 * 60 * 12" // 12 hours
-        }
-    }
-
     if (project.hasProperty("metalonly.signing")
             && new File(project.property("metalonly.signing") + ".gradle").exists()) {
         apply from: project.property("metalonly.signing") + ".gradle";
@@ -101,6 +102,14 @@ android {
     }
     else{
         println("Project does not have producion signing config")
+    }
+    if (project.hasProperty("metalonly.variants")
+            && new File(project.property("metalonly.variants") + ".gradle").exists()) {
+        apply from: project.property("metalonly.variants") + ".gradle";
+        println("Applied metalonly.variants config")
+    }
+    else{
+        println("Project does not have metalonly.variants config")
     }
 
     lintOptions {
@@ -160,6 +169,7 @@ task ktlintFormat(type: JavaExec) {
 
 
 kapt {
+    generateStubs = true
     arguments {
         arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
     }
