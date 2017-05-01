@@ -22,7 +22,7 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="4"
-        android:textStyle="bold" />
+         />
 
     <com.codingspezis.android.metalonly.player.views.Marquee
         android:id="@+id/marqueeGenree"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:gravity="center_horizontal"
-        android:textStyle="bold" />
+         />
 
 
 </LinearLayout>
