@@ -44,6 +44,8 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
     @StringArrayRes
     String[] days;
 
+    @ViewById(android.R.id.progress)
+    View progress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +75,6 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
         NavUtils.navigateUpTo(this, intent);
     }
 
-    @ViewById(android.R.id.progress)
-    View progress;
-
     @UiThread
     void toastMessage(final Context context, final String msg) {
         (new Handler(context.getMainLooper())).post(new Runnable() {
@@ -89,7 +88,8 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
 
     @Override
     public void onSuccess(BufferedReader httpResponse) {
-        String site = "", line;
+        String site = "";
+        String line;
         try {
             while ((line = httpResponse.readLine()) != null) {
                 site += line;

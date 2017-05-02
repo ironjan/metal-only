@@ -1,7 +1,5 @@
 package com.codingspezis.android.metalonly.player.siteparser;
 
-import com.codingspezis.android.metalonly.player.StreamControlActivity;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;

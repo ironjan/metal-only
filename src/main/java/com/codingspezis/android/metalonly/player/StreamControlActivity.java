@@ -479,7 +479,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
         Metadata metadata = getMetadata();
         if (metadata.toSong().isValid() && isShouldPlay()) {
-            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata);
+            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
