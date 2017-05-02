@@ -41,7 +41,7 @@ import java.util.Locale;
 @OptionsMenu(R.menu.help)
 public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
-    private static final String KEY_SP_NICK = "moa_nickname";
+
     @ViewById(R.id.btnSend)
     Button buttonSend;
     @ViewById

@@ -12,12 +12,7 @@ import android.os.Handler;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.StreamControlActivity;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * this class is for sending HTTP GET & receiving response<br/>
@@ -32,8 +27,6 @@ public class HTTPGrabber extends Thread {
     protected OnHTTPGrabberListener listener;
     protected Handler handler;
     private ProgressDialog progressDialog;
-    private boolean canceled;
-    private boolean timedout;
 
     /**
      * constructor (does not communicate)
@@ -123,7 +116,6 @@ public class HTTPGrabber extends Thread {
                             true, new DialogInterface.OnCancelListener() {
                                 @Override
                                 public void onCancel(DialogInterface dialog) {
-                                    canceled = true;
                                     if (listener != null) {
                                         listener.onCancel();
                                     }
