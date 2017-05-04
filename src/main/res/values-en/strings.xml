@@ -132,6 +132,7 @@
     <string name="volume">Volume</string>
     <string name="plan_timeout">Timeout when loading plan</string>
     <string name="plan_load_cancelled">Loading plan was cancelled</string>
+    <string name="plan_failed_to_load">Could not load plan.</string>
 
     <!-- history -->
     <string-array name="history_options_array">

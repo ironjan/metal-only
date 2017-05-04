@@ -184,4 +184,5 @@
         <item>128 kB/s</item>
     </string-array>
     <string name="error_player32" translatable="false">AAC+ Decoder-Error</string>
+    <string name="plan_failed_to_load">Plan konnte nicht geladen werden.</string>
 </resources>
