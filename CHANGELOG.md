@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - 
 
+## [0.6.1]
+- Mod pictures in Song history fixed
+
 ## [0.6.0]
 - Minor fixes
 - Adapting to new homepage
