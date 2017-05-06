@@ -1,5 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 /**
  * <pre>
  * {
@@ -26,8 +28,9 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * }
  * </pre>
  */
+@JsonAutoDetect
 public class PlanWithStats {
-    private PlanWithStats() {
+    public PlanWithStats() {
     }
 
     Stats stats = Stats.getDefault();
