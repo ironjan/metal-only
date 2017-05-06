@@ -12,7 +12,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
  * Interface to generate the REST-Client
  */
 @Rest(converters = {MappingJackson2HttpMessageConverter.class }, rootUrl = BuildConfig.METAL_ONLY_API_BASE_URL)
-interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
+public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
     /**
      * Requests the show's stats
