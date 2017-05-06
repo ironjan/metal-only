@@ -71,6 +71,12 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         api.setRestErrorHandler(myErrorHandler);
     }
 
+
+    /**
+     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
+     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
+     * to call API methods.
+     */
     @Override
     public Stats getStats() {
         checkConnectivity();
@@ -85,19 +91,28 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         return result;
     }
 
+    /**
+     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
+     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
+     * to call API methods.
+     * @return the plan or null
+     */
     @Override
     public Plan getPlan() {
         checkConnectivity();
-        Plan plan = Plan.getDefault();
         try {
-            Plan apiPlan = api.getPlan();
-            plan = (apiPlan != null) ? apiPlan : plan;
+            return api.getPlan();
         } catch (RestClientException e) {
             Log.d(TAG, e.getMessage(), e);
+            return null;
         }
-        return plan;
     }
 
+    /**
+     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
+     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
+     * to call API methods.
+     */
     @Override
     public PlanWithStats getPlanWithStats() {
         checkConnectivity();
@@ -111,6 +126,11 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         return planWithStats;
     }
 
+    /**
+     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
+     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
+     * to call API methods.
+     */
     @Override
     public String postWishAndGreetings(String nick, String artist, String song, String greet) {
         checkConnectivity();
@@ -118,34 +138,18 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         return cleanWishGreetResponse(response);
     }
 
+    /**
+     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
+     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
+     * to call API methods.
+     */
     @Override
     public String postGreetings(String nick, String greet) {
         checkConnectivity();
         String response = wishGreetAPI.postGreetings(nick, greet);
         return cleanWishGreetResponse(response);
     }
-/*
 
-
-            if (!TextUtils.isEmpty(editNick.getText())) {
-                pairs.add(new BasicNameValuePair("nick", editNick.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editArtist.getText())
-                    && editArtist.isEnabled()) {
-                pairs.add(new BasicNameValuePair("artist", editArtist.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editTitle.getText())
-                    && editTitle.isEnabled()) {
-                pairs.add(new BasicNameValuePair("song", editTitle.getText()
-                        .toString()));
-            }
-            if (!TextUtils.isEmpty(editRegard.getText())) {
-                pairs.add(new BasicNameValuePair("greet", editRegard.getText()
-                        .toString()));
-            }
- */
     private String cleanWishGreetResponse(String response){
         if(response == null){
             return "Übermittlung fehlgeschlagen";
