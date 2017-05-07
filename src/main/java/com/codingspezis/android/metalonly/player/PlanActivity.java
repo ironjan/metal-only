@@ -28,17 +28,11 @@ import org.androidannotations.annotations.res.StringRes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 
 @EActivity(R.layout.activity_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberListener {
 
-    public static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm");
-    public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
-    public static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
-    private final int timeoutDelay = 30000;
     @StringRes
     String plan;
     @StringArrayRes
@@ -65,7 +59,8 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
     @AfterInject
     @Background
     void loadPlan(){
-        HTTPDownloadImplementation.instance(UrlConstants.API_OLD_PLAN_URL, this, timeoutDelay).download();
+        final int TIMEOUT_30_SECONDS = 30000;
+        HTTPDownloadImplementation.instance(UrlConstants.API_OLD_PLAN_URL, this, TIMEOUT_30_SECONDS).download();
     }
 
     @SuppressLint("InlinedApi")

@@ -25,22 +25,6 @@ public class PlanData {
         this.mod = mod;
     }
 
-    public CharSequence getDateString() {
-        CharSequence ret;
-        if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(Calendar.DAY_OF_WEEK)
-                || getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
-            ret = PlanActivity.DATE_FORMAT_DATE.format(getStart().getTime());
-        } else {
-            ret = PlanActivity.DATE_FORMAT_DATE_DAY.format(getStart().getTime()) + "/"
-                    + PlanActivity.DATE_FORMAT_DATE.format(getEnd().getTime());
-        }
-
-        return ret;
-    }
-
-    public String getDescription() {
-        return getTitle() + "\n" + getMod() + "\n" + getGenre() + "\n";
-    }
 
     public int getDuration() {
         return duration;
@@ -88,10 +72,6 @@ public class PlanData {
         return getEnd().getTimeInMillis();
     }
 
-    public CharSequence getTimeString() {
-        return PlanActivity.DATE_FORMAT_TIME.format(start.getTime()) + " - "
-                + PlanActivity.DATE_FORMAT_TIME.format(getEnd().getTime());
-    }
 
     public String getTitle() {
         return title;

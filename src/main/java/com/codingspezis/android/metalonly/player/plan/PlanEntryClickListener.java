@@ -1,5 +1,6 @@
 package com.codingspezis.android.metalonly.player.plan;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,10 +8,23 @@ import android.content.Intent;
 import com.codingspezis.android.metalonly.player.PlanActivity;
 import com.codingspezis.android.metalonly.player.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * ClickListener for entries in the plan shown by {@link PlanActivity}
  */
 public final class PlanEntryClickListener implements DialogInterface.OnClickListener {
+
+    private static final int ADD_TO_CALENDAR_ACTION = 0;
+    private static final int SHARE_ACTION = 1;
+
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat DATE_FORMAT_TIME = new SimpleDateFormat("HH:mm");
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat("dd.MM.yy");
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat DATE_FORMAT_DATE_DAY = new SimpleDateFormat("dd");
 
     private final PlanData data;
     private Context context;
@@ -23,10 +37,10 @@ public final class PlanEntryClickListener implements DialogInterface.OnClickList
     @Override
     public void onClick(DialogInterface dialog, int which) {
         switch (which) {
-            case 0:
+            case ADD_TO_CALENDAR_ACTION:
                 addEntryToCalendar(data);
                 break;
-            case 1:
+            case SHARE_ACTION:
                 shareEntry(data);
                 break;
         }
@@ -34,21 +48,21 @@ public final class PlanEntryClickListener implements DialogInterface.OnClickList
 
     private void addEntryToCalendar(final PlanData data) {
         Intent intent = new Intent(Intent.ACTION_EDIT);
-        createAddToCalenderIntent(data, intent);
+        String description = data.getMod() + "\n" + data.getGenre();
+
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("title", data.getTitle());
+        intent.putExtra("description", description);
+        intent.putExtra("beginTime", data.getStartTimeAsMillis());
+        intent.putExtra("endTime", data.getEndTimeAsMillis());
+
         context.startActivity(intent);
     }
 
-    private void createAddToCalenderIntent(final PlanData data, Intent intent) {
-        intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("title", "Metal Only");
-        intent.putExtra("description", data.getDescription());
-        intent.putExtra("beginTime", data.getStartTimeAsMillis());
-        intent.putExtra("endTime", data.getEndTimeAsMillis());
-    }
-
     private void shareEntry(final PlanData data) {
-        String message = data.getDateString() + " " + data.getTimeString() + "\n" + data.getTitle()
+        String message = getDateString(data) + " " + getTimeString(data) + "\n" + data.getTitle()
                 + "\n" + data.getMod() + "\n" + data.getGenre();
+
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
         share.putExtra(Intent.EXTRA_TEXT, message);
@@ -56,4 +70,22 @@ public final class PlanEntryClickListener implements DialogInterface.OnClickList
                 context.getResources().getStringArray(R.array.plan_options_array)[1]));
     }
 
+    public CharSequence getDateString(PlanData pd) {
+        CharSequence ret;
+        if (pd.getStart().get(Calendar.DAY_OF_WEEK) == pd.getEnd().get(Calendar.DAY_OF_WEEK)
+                || pd.getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
+            ret = DATE_FORMAT_DATE.format(pd.getStart().getTime());
+        } else {
+            ret = DATE_FORMAT_DATE_DAY.format(pd.getStart().getTime()) + "/"
+                    + DATE_FORMAT_DATE.format(pd.getEnd().getTime());
+        }
+
+        return ret;
+    }
+
+
+    public CharSequence getTimeString(PlanData pd) {
+        return DATE_FORMAT_TIME.format(pd.getStart().getTime()) + " - "
+                + DATE_FORMAT_TIME.format(pd.getEnd().getTime());
+    }
 }
