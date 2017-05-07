@@ -3,9 +3,9 @@ package com.codingspezis.android.metalonly.player.plan;
 /**
  * Represents a "real" entry in the plan, i.e. a moderated show
  */
-public class EntryItem extends Item {
+public class PlanRealEntryItem extends PlanItem {
 
-    public EntryItem(PlanData data) {
+    public PlanRealEntryItem(PlanData data) {
         this.data = data;
     }
 

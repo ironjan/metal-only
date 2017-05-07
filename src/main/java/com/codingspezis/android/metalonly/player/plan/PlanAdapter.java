@@ -18,12 +18,12 @@ public class PlanAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static LayoutInflater inflater = null;
-    private final ArrayList<Item> data;
+    private final ArrayList<PlanItem> data;
     @SuppressWarnings("unused")
     private final ImageLoader imageLoader;
     private Context context;
 
-    public PlanAdapter(Context context, ArrayList<Item> data) {
+    public PlanAdapter(Context context, ArrayList<PlanItem> data) {
         this.context = context;
 
         this.data = data;
@@ -50,10 +50,10 @@ public class PlanAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
-        final Item item = data.get(position);
+        final PlanItem item = data.get(position);
         if (item != null) {
             if (item.isSection()) {
-                v = inflateSectionView((SectionItem) item);
+                v = inflateSectionView((PlanSectionItem) item);
             } else {
                 v = inflateEntryItemView(position);
             }
@@ -69,7 +69,7 @@ public class PlanAdapter extends BaseAdapter {
         return view;
     }
 
-    private View inflateSectionView(final SectionItem item) {
+    private View inflateSectionView(final PlanSectionItem item) {
         SectionView view = SectionView_.build(context, null);
         view.setOnClickListener(null);
         view.setOnLongClickListener(null);
