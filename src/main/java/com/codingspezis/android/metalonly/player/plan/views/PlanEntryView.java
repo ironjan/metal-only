@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.utils.ImageLoader;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryDateHelper;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -37,7 +38,7 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Plan
     public void bind(PlanData planData) {
         txtTitle.setText(planData.getTitle());
         txtMod.setText(planData.getMod());
-        txtTime.setText(planData.getTimeString());
+        txtTime.setText(PlanEntryDateHelper.fullTimeString(planData));
         txtGenre.setText(planData.getGenre());
         imageLoader.DisplayImage(planData.getMod(), modImage);
         progress.setProgress(100 - planData.getProgress());
