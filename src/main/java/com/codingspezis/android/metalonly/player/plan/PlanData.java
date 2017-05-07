@@ -5,6 +5,14 @@ import com.codingspezis.android.metalonly.player.PlanActivity;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * This class is an extended version of {@link com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry}.
+ * It contains a lot of the same information (they represent the same data) and some "utility" methods.
+ * The later should be extracted to a more appropriate place (SRP) and {@link PlanData} should not
+ * be used anymore.
+ * @deprecated Use {@link com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry} for new
+ * classes.
+ */
 public class PlanData {
     private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
     private final String mod, genre, title;
