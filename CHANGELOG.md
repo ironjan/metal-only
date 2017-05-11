@@ -1,11 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format was based on [Keep a Changelog](http://keepachangelog.com/) until 0.6.1.
+Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
+
+This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 - 
+
+## [0.6.2]
+Fixed crash that sometimes occured after opening show schedule. 
+Also fixed the mod pictures in song history.
 
 ## [0.6.1]
 - Mod pictures in Song history fixed
