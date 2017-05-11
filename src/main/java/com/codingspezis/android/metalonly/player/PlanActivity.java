@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -97,17 +98,15 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
             // TODO show error message instead of closing...
             finish();
         }
-
-
-
     }
 
     @UiThread
     void onPlanLoaded(String site) {
+        // StateLoss is ok because the plan will be reloaded every time anyway...
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(android.R.id.content, PlanFragment.newInstance(site))
-                .commit();
+                .commitAllowingStateLoss();
         progress.setVisibility(View.GONE);
     }
 
