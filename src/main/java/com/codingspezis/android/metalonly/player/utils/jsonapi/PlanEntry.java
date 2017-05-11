@@ -24,18 +24,16 @@ import java.util.Date;
  */
 @JsonAutoDetect
 public class PlanEntry {
-    @SuppressLint("SimpleDateFormat")
-    public PlanEntry(){
-        // Set value here to catch wrong formats
-        dateStringFormat = new SimpleDateFormat("dd'.'MM'.'yy'T'HH':'mm");
-    }
-
     private static final String DAY_TIME_DIVIDER = "T";
     private final SimpleDateFormat dateStringFormat;
     private String day, time, moderato, show, genre;
     private int duration;
 
-
+    @SuppressLint("SimpleDateFormat")
+    public PlanEntry(){
+        // Set value here to catch wrong formats
+        dateStringFormat = new SimpleDateFormat("dd'.'MM'.'yy'T'HH':'mm");
+    }
 
     public Date getStartDate() {
         String dateString = day + DAY_TIME_DIVIDER + time;

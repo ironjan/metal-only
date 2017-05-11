@@ -16,11 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * </pre>
  */
 public class Stats {
-
-    public Stats() {
-    }
-
-
     private static final String WISH_GREET_FULL = "1";
 
     private String moderator = "Unbekannt";

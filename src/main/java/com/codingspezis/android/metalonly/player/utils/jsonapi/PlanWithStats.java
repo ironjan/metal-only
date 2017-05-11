@@ -30,9 +30,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  */
 @JsonAutoDetect
 public class PlanWithStats {
-    public PlanWithStats() {
-    }
-
     Stats stats = Stats.getDefault();
     PlanEntry[] plan = {};
 

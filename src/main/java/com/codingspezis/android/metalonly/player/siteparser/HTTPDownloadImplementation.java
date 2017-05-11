@@ -9,7 +9,6 @@ import java.util.TimerTask;
 
 public class HTTPDownloadImplementation {
     private boolean canceled;
-    private boolean timedout;
     private final String url;
     private final OnHTTPGrabberListener listener;
     private final long timeoutDelay;
@@ -59,7 +58,6 @@ public class HTTPDownloadImplementation {
     }
 
     private void timeout() {
-        timedout = true;
     }
 
     public static HTTPDownloadImplementation instance(String url, OnHTTPGrabberListener listener, long timeoutDelay) {

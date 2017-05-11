@@ -21,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonAutoDetect
 public class Plan {
-    public Plan(){/*Explicit default constructor for Jackson */ }
-
     PlanEntry[] plan = {};
 
     public PlanEntry[] getPlan() {
