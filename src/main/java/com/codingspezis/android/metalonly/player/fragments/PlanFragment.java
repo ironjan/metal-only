@@ -122,13 +122,6 @@ public class PlanFragment extends Fragment {
         list.setSelection(todayListStartIndex);
     }
 
-    public  ArrayList<PlanItem> convertToPlan(ArrayList<PlanData> listEvents) {
-        // TODO refactor this method
-
-        return planEntryToItemConverter.convertToPlan(listEvents);
-    }
-
-
     private ArrayList<PlanData> extractEvents(String site) {
         StringTokenizer tokenizer = new StringTokenizer(site, "}");
 
@@ -182,6 +175,4 @@ public class PlanFragment extends Fragment {
             // don't need to do stuff
         }
     }
-
-
 }
