@@ -19,6 +19,8 @@ open class PlanEntryToItemConverter {
     @StringArrayRes
     protected var days: Array<String>? = null
 
+    internal var todayStartIndex: Int = 0
+
     fun convertToPlan(listEvents: ArrayList<PlanData>): ArrayList<PlanItem> {
         // TODO refactor this method
         val listItems = ArrayList<PlanItem>()
@@ -40,12 +42,7 @@ open class PlanEntryToItemConverter {
                     nextDaySection = PlanSectionItem(days!![day])
                     listItems.add(nextDaySection)
                     if (isToday(day)) {
-                        // TODO setTodayListStartIndex(listItems.size());
-                    }
-                    val dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7
-                    if (day == dayOfWeek) {
-                        val pos = listItems.size - 1
-                        // TODO planFragment.getList().setSelection(pos);
+                        todayStartIndex = listItems.size - 1
                     }
                 }
             }
@@ -64,5 +61,9 @@ open class PlanEntryToItemConverter {
 
     private fun hasNextListItem(listEvents: ArrayList<PlanData>, i: Int): Boolean {
         return i < listEvents.size - 1
+    }
+
+    fun todayStartIndex(): Int{
+        return todayStartIndex
     }
 }

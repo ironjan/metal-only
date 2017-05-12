@@ -56,7 +56,6 @@ public class PlanFragment extends Fragment {
     String plan;
     @StringArrayRes
     String[] days;
-    private int todayListStartIndex;
 
     @FragmentArg
     String site;
@@ -119,7 +118,7 @@ public class PlanFragment extends Fragment {
 
         list.setEmptyView(empty);
         list.setAdapter(adapter);
-        list.setSelection(todayListStartIndex);
+        list.setSelection(planEntryToItemConverter.todayStartIndex());
     }
 
     private ArrayList<PlanData> extractEvents(String site) {
