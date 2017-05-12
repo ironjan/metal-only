@@ -36,8 +36,6 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
 
     @StringRes
     String plan;
-    @StringArrayRes
-    String[] days;
 
     @ViewById(android.R.id.progress)
     View progress;
