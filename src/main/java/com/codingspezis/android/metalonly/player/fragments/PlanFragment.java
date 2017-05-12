@@ -9,12 +9,12 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryToItemConverter;
 import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
 import com.codingspezis.android.metalonly.player.plan.PlanItem;
 import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
 import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
-import com.codingspezis.android.metalonly.player.plan.PlanSectionItem;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan;
@@ -48,6 +48,10 @@ public class PlanFragment extends Fragment {
     public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
             "{dd.MM.yy HH:mm");
     private static final String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
+
+    @Bean
+    PlanEntryToItemConverter planEntryToItemConverter;
+
     @StringRes
     String plan;
     @StringArrayRes
@@ -110,7 +114,7 @@ public class PlanFragment extends Fragment {
     @AfterViews
     void afterViews() {
         ArrayList<PlanData> listEvents = extractEvents(site);
-        ArrayList<PlanItem> listItems = convertToPlan(listEvents);
+        ArrayList<PlanItem> listItems = planEntryToItemConverter.convertToPlan(listEvents);
         PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
 
         list.setEmptyView(empty);
@@ -118,51 +122,12 @@ public class PlanFragment extends Fragment {
         list.setSelection(todayListStartIndex);
     }
 
-    private ArrayList<PlanItem> convertToPlan(ArrayList<PlanData> listEvents) {
+    public  ArrayList<PlanItem> convertToPlan(ArrayList<PlanData> listEvents) {
         // TODO refactor this method
-        ArrayList<PlanItem> listItems = new ArrayList<>();
-        Calendar cal = new GregorianCalendar();
 
-        int day = 0;
-
-        PlanSectionItem nextDaySection = new PlanSectionItem(days[day]);
-
-        listItems.add(nextDaySection);
-
-        for (int i = 0; i < listEvents.size(); i++) {
-            PlanData d = listEvents.get(i);
-            listItems.add(new PlanRealEntryItem(d));
-            if (hasNextListItem(listEvents, i)) {
-                PlanData nextItem = listEvents.get(i + 1);
-                if (notOnSameDay(d, nextItem)) {
-                    day++;
-                    nextDaySection = new PlanSectionItem(days[day]);
-                    listItems.add(nextDaySection);
-                    if (isToday(day))
-                        todayListStartIndex = listItems.size();
-                    int dayOfWeek = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
-                    if (day == dayOfWeek) {
-                        final int pos = listItems.size() - 1;
-                        list.setSelection(pos);
-                    }
-                }
-            }
-        }
-        return listItems;
+        return planEntryToItemConverter.convertToPlan(listEvents);
     }
 
-    private boolean isToday(int dayIndex) {
-        Calendar cal = new GregorianCalendar();
-        return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == dayIndex;
-    }
-
-    private boolean notOnSameDay(PlanData d, PlanData nextItem) {
-        return !d.sameDay(nextItem);
-    }
-
-    private boolean hasNextListItem(ArrayList<PlanData> listEvents, int i) {
-        return i < listEvents.size() - 1;
-    }
 
     private ArrayList<PlanData> extractEvents(String site) {
         StringTokenizer tokenizer = new StringTokenizer(site, "}");
