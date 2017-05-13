@@ -63,7 +63,7 @@ open class PlanEntryToItemConverter {
         return i < listEvents.size - 1
     }
 
-    fun todayStartIndex(): Int{
+    fun todayStartIndex(): Int {
         return todayStartIndex
     }
 }
