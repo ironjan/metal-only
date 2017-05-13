@@ -15,7 +15,6 @@ import java.util.GregorianCalendar;
  * classes.
  */
 public class PlanData implements PlanEntryAndDataUnification{
-    private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
     private final String mod, genre, title;
     private Calendar start;
     private int duration;
@@ -25,7 +24,6 @@ public class PlanData implements PlanEntryAndDataUnification{
         this.genre = genre;
         this.mod = mod;
     }
-
 
     public int getDuration() {
         return duration;
@@ -49,14 +47,6 @@ public class PlanData implements PlanEntryAndDataUnification{
         return mod;
     }
 
-    public int getProgress() {
-        Calendar cal = new GregorianCalendar();
-        float timeToEnd = getEnd().getTimeInMillis() - cal.getTimeInMillis();
-        float durationInMillis = getDuration() * HOUR_IN_MILLIS;
-
-        return (int) ((timeToEnd / durationInMillis) * 100);
-    }
-
     public Calendar getStart() {
         return start;
     }
@@ -65,23 +55,8 @@ public class PlanData implements PlanEntryAndDataUnification{
         this.start = start;
     }
 
-    public long getStartTimeAsMillis() {
-        return getStart().getTimeInMillis();
-    }
-
-    public long getEndTimeAsMillis() {
-        return getEnd().getTimeInMillis();
-    }
-
-
     public String getTitle() {
         return title;
-    }
-
-    public boolean sameDay(PlanData other) {
-        int thisDay = getStart().get(Calendar.DAY_OF_WEEK);
-        int otherDay = other.getStart().get(Calendar.DAY_OF_WEEK);
-        return thisDay == otherDay;
     }
 
     @Override
