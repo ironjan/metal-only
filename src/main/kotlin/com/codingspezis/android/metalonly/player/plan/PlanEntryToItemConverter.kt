@@ -6,7 +6,6 @@ import org.androidannotations.annotations.res.StringRes
 
 import java.util.ArrayList
 import java.util.Calendar
-import java.util.GregorianCalendar
 
 @EBean
 open class PlanEntryToItemConverter {
@@ -22,46 +21,37 @@ open class PlanEntryToItemConverter {
     internal var todayStartIndex: Int = 0
 
     fun convertToPlan(listEvents: ArrayList<ShowInformation>): ArrayList<PlanItem> {
-        // TODO refactor this method
         val listItems = ArrayList<PlanItem>()
 
-        var dayIndex = 0
-
-        listItems.add(PlanSectionItem(days!![dayIndex]))
+        var currentDayIndex = -1
 
         for (i in listEvents.indices) {
             val currentShow = listEvents[i]
-            listItems.add(PlanRealEntryItem(currentShow))
-
-            if (hasNextListItem(listEvents, i)) {
-                val nextShow = listEvents[i + 1]
-                val notOnSameDay = getDayIndex(currentShow) != getDayIndex(nextShow)
-                if (notOnSameDay) {
-                    dayIndex++
-                    listItems.add(PlanSectionItem(days!![dayIndex]))
-                    if (isToday(dayIndex)) {
-                        todayStartIndex = listItems.size - 1
-                    }
+            val currentShowDayIndex = getDayIndex(currentShow)
+            if (currentShowDayIndex != currentDayIndex) {
+                listItems.add(PlanSectionItem(days!![currentShowDayIndex]))
+                currentDayIndex++
+                if (isToday(currentDayIndex)) {
+                    todayStartIndex = listItems.size - 1
                 }
             }
+            listItems.add(PlanRealEntryItem(currentShow))
         }
         return listItems
     }
 
     private fun isToday(dayIndex: Int): Boolean {
-        val cal = GregorianCalendar()
-        return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == dayIndex
+        val cal = Calendar.getInstance()
+        return getGermanDayOfWeek(cal) == dayIndex
     }
 
     private fun getDayIndex(d: ShowInformation): Int {
         val cal = Calendar.getInstance()
         cal.time = d.startDate
-        return cal.get(Calendar.DAY_OF_WEEK)
+        return getGermanDayOfWeek(cal)
     }
 
-    private fun hasNextListItem(listEvents: ArrayList<ShowInformation>, i: Int): Boolean {
-        return i < listEvents.size - 1
-    }
+    private fun getGermanDayOfWeek(cal: Calendar) = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7
 
     fun todayStartIndex(): Int {
         return todayStartIndex
