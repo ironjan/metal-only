@@ -17,7 +17,7 @@ import java.util.Date;
  * {
  *  "day": "29.07.13",
  *  "time": "00:00",
- *  "duration": 15,
+ *  "durationInHours": 15,
  *  "moderator": "MetalHead",
  *  "show": "Keine Gruesse und Wuensche moeglich.",
  *  "genre": "Mixed Metal"
@@ -29,8 +29,7 @@ public class PlanEntry implements PlanEntryAndDataUnification{
     private static final String DAY_TIME_DIVIDER = "T";
     private final SimpleDateFormat dateStringFormat;
     private String day, time, moderato, show, genre;
-    /** given in hours */
-    private int duration;
+    private int durationInHours;
 
     @SuppressLint("SimpleDateFormat")
     public PlanEntry(){
@@ -86,13 +85,13 @@ public class PlanEntry implements PlanEntryAndDataUnification{
         this.genre = genre;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getDurationInHours() {
+        return durationInHours;
     }
 
     @JsonProperty("duration")
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDurationInHours(int durationInHours) {
+        this.durationInHours = durationInHours;
     }
 
     @JsonProperty("day")
@@ -124,7 +123,7 @@ public class PlanEntry implements PlanEntryAndDataUnification{
     public Date end() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getStartDate());
-        cal.add(Calendar.HOUR, duration);
+        cal.add(Calendar.HOUR, durationInHours);
         return cal.getTime();
     }
 }
