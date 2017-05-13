@@ -24,24 +24,22 @@ open class PlanEntryToItemConverter {
     fun convertToPlan(listEvents: ArrayList<ShowInformation>): ArrayList<PlanItem> {
         // TODO refactor this method
         val listItems = ArrayList<PlanItem>()
-        val cal = GregorianCalendar()
 
-        var day = 0
+        var dayIndex = 0
 
-        var nextDaySection = PlanSectionItem(days!![day])
-
-        listItems.add(nextDaySection)
+        listItems.add(PlanSectionItem(days!![dayIndex]))
 
         for (i in listEvents.indices) {
-            val d = listEvents[i]
-            listItems.add(PlanRealEntryItem(d))
+            val currentShow = listEvents[i]
+            listItems.add(PlanRealEntryItem(currentShow))
+
             if (hasNextListItem(listEvents, i)) {
-                val nextItem = listEvents[i + 1]
-                if (notOnSameDay(d, nextItem)) {
-                    day++
-                    nextDaySection = PlanSectionItem(days!![day])
-                    listItems.add(nextDaySection)
-                    if (isToday(day)) {
+                val nextShow = listEvents[i + 1]
+                val notOnSameDay = getDayIndex(currentShow) != getDayIndex(nextShow)
+                if (notOnSameDay) {
+                    dayIndex++
+                    listItems.add(PlanSectionItem(days!![dayIndex]))
+                    if (isToday(dayIndex)) {
                         todayStartIndex = listItems.size - 1
                     }
                 }
@@ -55,16 +53,10 @@ open class PlanEntryToItemConverter {
         return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == dayIndex
     }
 
-    private fun notOnSameDay(d: ShowInformation, nextItem: ShowInformation): Boolean {
-        val cal1 = Calendar.getInstance()
-        cal1.time = d.startDate
-        val thisDay = cal1.get(Calendar.DAY_OF_WEEK)
-
-        val cal2 = Calendar.getInstance()
-        cal2.time = nextItem.startDate
-        val nextItemDay = cal2.get(Calendar.DAY_OF_WEEK)
-
-        return thisDay != nextItemDay
+    private fun getDayIndex(d: ShowInformation): Int {
+        val cal = Calendar.getInstance()
+        cal.time = d.startDate
+        return cal.get(Calendar.DAY_OF_WEEK)
     }
 
     private fun hasNextListItem(listEvents: ArrayList<ShowInformation>, i: Int): Boolean {
