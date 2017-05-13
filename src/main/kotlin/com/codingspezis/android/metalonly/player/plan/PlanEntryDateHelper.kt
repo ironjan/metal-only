@@ -9,8 +9,6 @@ class PlanEntryDateHelper() {
         private val DATE_FORMAT_TIME = SimpleDateFormat("HH:mm")
         @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_DATE = SimpleDateFormat("dd.MM.yy")
-        @SuppressLint("SimpleDateFormat")
-        private val DATE_FORMAT_DATE_DAY = SimpleDateFormat("dd")
 
         fun formattedDateString(data: PlanEntryAndDataUnification): String {
             return DATE_FORMAT_DATE.format(data.start().time)
