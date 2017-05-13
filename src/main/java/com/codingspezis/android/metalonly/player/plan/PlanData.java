@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.plan;
 import com.codingspezis.android.metalonly.player.PlanActivity;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -13,7 +14,7 @@ import java.util.GregorianCalendar;
  * @deprecated Use {@link com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry} for new
  * classes.
  */
-public class PlanData {
+public class PlanData implements PlanEntryAndDataUnification{
     private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
     private final String mod, genre, title;
     private Calendar start;
@@ -81,5 +82,30 @@ public class PlanData {
         int thisDay = getStart().get(Calendar.DAY_OF_WEEK);
         int otherDay = other.getStart().get(Calendar.DAY_OF_WEEK);
         return thisDay == otherDay;
+    }
+
+    @Override
+    public String moderator() {
+        return getMod();
+    }
+
+    @Override
+    public String genre() {
+        return getGenre();
+    }
+
+    @Override
+    public String showTitle() {
+        return getTitle();
+    }
+
+    @Override
+    public Date start() {
+        return getStart().getTime();
+    }
+
+    @Override
+    public Date end() {
+        return getEnd().getTime();
     }
 }

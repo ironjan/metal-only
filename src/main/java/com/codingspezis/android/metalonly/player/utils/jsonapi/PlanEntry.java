@@ -3,11 +3,13 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,10 +25,11 @@ import java.util.Date;
  * </pre>
  */
 @JsonAutoDetect
-public class PlanEntry {
+public class PlanEntry implements PlanEntryAndDataUnification{
     private static final String DAY_TIME_DIVIDER = "T";
     private final SimpleDateFormat dateStringFormat;
     private String day, time, moderato, show, genre;
+    /** given in hours */
     private int duration;
 
     @SuppressLint("SimpleDateFormat")
@@ -97,4 +100,31 @@ public class PlanEntry {
         this.day = day;
     }
 
+    @Override
+    public String moderator() {
+        return getModerato();
+    }
+
+    @Override
+    public String genre() {
+        return getGenre();
+    }
+
+    @Override
+    public String showTitle() {
+        return getShow();
+    }
+
+    @Override
+    public Date start() {
+        return getStartDate();
+    }
+
+    @Override
+    public Date end() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getStartDate());
+        cal.add(Calendar.HOUR, duration);
+        return cal.getTime();
+    }
 }
