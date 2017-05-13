@@ -16,7 +16,7 @@ public interface OnHTTPGrabberListener {
 
     /**
      * this is called when HTTP GET was not successful until 5 seconds after
-     * start
+     * getStartDate
      */
     void onTimeout();
 

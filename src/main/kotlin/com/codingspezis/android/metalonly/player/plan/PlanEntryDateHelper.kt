@@ -11,15 +11,15 @@ class PlanEntryDateHelper() {
         private val DATE_FORMAT_DATE = SimpleDateFormat("dd.MM.yy")
 
         fun formattedDateString(data: ShowInformation): String {
-            return DATE_FORMAT_DATE.format(data.start().time)
+            return DATE_FORMAT_DATE.format(data.getStartDate().time)
         }
 
         fun startTimeString(data: ShowInformation): CharSequence {
-            return DATE_FORMAT_TIME.format(data.start().time)
+            return DATE_FORMAT_TIME.format(data.getStartDate().time)
         }
 
         fun endTimeString(data: ShowInformation): String {
-            return DATE_FORMAT_TIME.format(data.end().time)
+            return DATE_FORMAT_TIME.format(data.getEndDate().time)
         }
 
         /**

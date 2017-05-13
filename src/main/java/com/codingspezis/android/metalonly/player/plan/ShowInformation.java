@@ -7,9 +7,9 @@ import java.util.Date;
  * explicitely named differently to enforce delegation to existing methods.
  */
 public interface ShowInformation {
-    String moderator();
-    String genre();
-    String showTitle();
-    Date start();
-    Date end();
+    String getModerator();
+    String getGenre();
+    String getShowTitle();
+    Date getStartDate();
+    Date getEndDate();
 }

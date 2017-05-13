@@ -39,18 +39,18 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Show
 
     @Override
     public void bind(ShowInformation planData) {
-        txtTitle.setText(planData.showTitle());
-        txtMod.setText(planData.moderator());
+        txtTitle.setText(planData.getShowTitle());
+        txtMod.setText(planData.getModerator());
         txtTime.setText(PlanEntryDateHelper.fullTimeString(planData));
-        txtGenre.setText(planData.genre());
-        imageLoader.DisplayImage(planData.moderator(), modImage);
+        txtGenre.setText(planData.getGenre());
+        imageLoader.DisplayImage(planData.getModerator(), modImage);
         progress.setProgress(100 - computeShowProgress(planData));
     }
 
     private int computeShowProgress(ShowInformation planData) {
         Calendar cal = new GregorianCalendar();
-        float timeLeftInMillis = planData.end().getTime() - cal.getTimeInMillis();
-        float totalDurationInMillis = planData.end().getTime() - planData.start().getTime();
+        float timeLeftInMillis = planData.getEndDate().getTime() - cal.getTimeInMillis();
+        float totalDurationInMillis = planData.getEndDate().getTime() - planData.getStartDate().getTime();
 
         return (int) ((timeLeftInMillis / totalDurationInMillis) * 100);
     }

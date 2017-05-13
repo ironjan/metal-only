@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
  * this class comes in the original form from:
  * https://github.com/thest1/LazyList
  * <p/>
- * it works not longer with URLs but with moderator names of metal only some
+ * it works not longer with URLs but with getModerator names of metal only some
  * synchronized statements are also added
  */
 public class ImageLoader {

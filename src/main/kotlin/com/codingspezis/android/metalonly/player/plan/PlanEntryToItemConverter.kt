@@ -57,11 +57,11 @@ open class PlanEntryToItemConverter {
 
     private fun notOnSameDay(d: ShowInformation, nextItem: ShowInformation): Boolean {
         val cal1 = Calendar.getInstance()
-        cal1.time = d.start()
+        cal1.time = d.getStartDate()
         val thisDay = cal1.get(Calendar.DAY_OF_WEEK)
 
         val cal2 = Calendar.getInstance()
-        cal2.time = nextItem.start()
+        cal2.time = nextItem.getStartDate()
         val nextItemDay = cal2.get(Calendar.DAY_OF_WEEK)
 
         return thisDay != nextItemDay

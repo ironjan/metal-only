@@ -130,7 +130,7 @@ public class IcyStreamMeta {
             while ((c = (char) stream.read()) != -1) {
                 strHeaders.append(c);
                 if (strHeaders.length() > 5 && (strHeaders.substring((strHeaders.length() - 4), strHeaders.length()).equals("\r\n\r\n"))) {
-                    // end of headers
+                    // getEndDate of headers
                     break;
                 }
             }

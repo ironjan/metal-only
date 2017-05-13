@@ -19,22 +19,22 @@ class PlanEntryClickListener(private val data: ShowInformation, private val cont
 
     private fun addEntryToCalendar() {
         val intent = Intent(Intent.ACTION_EDIT)
-        val description = data.moderator() + "\n" + data.genre()
+        val description = data.getModerator() + "\n" + data.getGenre()
 
         intent.type = "vnd.android.cursor.item/event"
-        intent.putExtra("title", data.showTitle())
+        intent.putExtra("title", data.getShowTitle())
         intent.putExtra("description", description)
-        intent.putExtra("beginTime", data.start().time)
-        intent.putExtra("endTime", data.end().time)
+        intent.putExtra("beginTime", data.getStartDate().time)
+        intent.putExtra("endTime", data.getEndDate().time)
 
         context.startActivity(intent)
     }
 
     private fun shareEntry() {
         val message = """|${formattedDateString()} ${startTimeString()} - ${endTimeString()}
-                         |${data.showTitle()}
-                         |${data.moderator()}
-                         |${data.genre()}""".trimMargin()
+                         |${data.getShowTitle()}
+                         |${data.getModerator()}
+                         |${data.getGenre()}""".trimMargin()
 
         val share = Intent(Intent.ACTION_SEND)
         share.type = "text/plain"

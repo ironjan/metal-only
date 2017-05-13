@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Calendar;
 
 /**
- * parses interpret title genre and moderator from meta data
+ * parses interpret title getGenre and getModerator from meta data
  */
 public class Metadata {
 
@@ -109,8 +109,8 @@ public class Metadata {
         return "Metadata{" +
                 "interpret='" + interpret + '\'' +
                 ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", moderator='" + moderator + '\'' +
+                ", getGenre='" + genre + '\'' +
+                ", getModerator='" + moderator + '\'' +
                 '}';
     }
 }

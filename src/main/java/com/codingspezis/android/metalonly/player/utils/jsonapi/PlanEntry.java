@@ -18,9 +18,9 @@ import java.util.Date;
  *  "day": "29.07.13",
  *  "time": "00:00",
  *  "durationInHours": 15,
- *  "moderator": "MetalHead",
+ *  "getModerator": "MetalHead",
  *  "show": "Keine Gruesse und Wuensche moeglich.",
- *  "genre": "Mixed Metal"
+ *  "getGenre": "Mixed Metal"
  * }
  * </pre>
  */
@@ -37,18 +37,6 @@ public class PlanEntry implements ShowInformation {
         dateStringFormat = new SimpleDateFormat("dd'.'MM'.'yy'T'HH':'mm");
     }
 
-    public Date getStartDate() {
-        String dateString = day + DAY_TIME_DIVIDER + time;
-        Date startDate = null;
-        try {
-            startDate = dateStringFormat.parse(dateString);
-        } catch (ParseException e) {
-            Log.e(PlanEntry.class.getSimpleName(), "Error when parsing \""
-                    + dateString + "\" into date.");
-        }
-        return startDate;
-    }
-
     public String getTime() {
         return time;
     }
@@ -62,7 +50,7 @@ public class PlanEntry implements ShowInformation {
         return moderato;
     }
 
-    @JsonProperty("moderator")
+    @JsonProperty("getModerator")
     public void setModerato(String moderato) {
         this.moderato = moderato;
     }
@@ -76,11 +64,7 @@ public class PlanEntry implements ShowInformation {
         this.show = show;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    @JsonProperty("genre")
+    @JsonProperty("getGenre")
     public void setGenre(String genre) {
         this.genre = genre;
     }
@@ -100,27 +84,35 @@ public class PlanEntry implements ShowInformation {
     }
 
     @Override
-    public String moderator() {
+    public String getModerator() {
         return getModerato();
     }
 
     @Override
-    public String genre() {
-        return getGenre();
+    public String getGenre() {
+        return genre;
     }
 
     @Override
-    public String showTitle() {
+    public String getShowTitle() {
         return getShow();
     }
 
     @Override
-    public Date start() {
-        return getStartDate();
+    public Date getStartDate() {
+        String dateString = day + DAY_TIME_DIVIDER + time;
+        Date startDate = null;
+        try {
+            startDate = dateStringFormat.parse(dateString);
+        } catch (ParseException e) {
+            Log.e(PlanEntry.class.getSimpleName(), "Error when parsing \""
+                    + dateString + "\" into date.");
+        }
+        return startDate;
     }
 
     @Override
-    public Date end() {
+    public Date getEndDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getStartDate());
         cal.add(Calendar.HOUR, durationInHours);
