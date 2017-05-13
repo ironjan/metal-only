@@ -12,16 +12,16 @@ class PlanEntryDateHelper() {
         @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_DATE_DAY = SimpleDateFormat("dd")
 
-        fun formattedDateString(data: PlanData): String {
-            return DATE_FORMAT_DATE.format(data.start.time)
+        fun formattedDateString(data: PlanEntryAndDataUnification): String {
+            return DATE_FORMAT_DATE.format(data.start().time)
         }
 
-        fun startTimeString(data: PlanData): CharSequence {
-            return DATE_FORMAT_TIME.format(data.start.time)
+        fun startTimeString(data: PlanEntryAndDataUnification): CharSequence {
+            return DATE_FORMAT_TIME.format(data.start().time)
         }
 
-        fun endTimeString(data: PlanData): String {
-            return DATE_FORMAT_TIME.format(data.end.time)
+        fun endTimeString(data: PlanEntryAndDataUnification): String {
+            return DATE_FORMAT_TIME.format(data.end().time)
         }
 
         /**
@@ -30,7 +30,7 @@ class PlanEntryDateHelper() {
           * @return time information, e.g. "14:00 - 16:00"
           */
         @JvmStatic
-        fun fullTimeString(data: PlanData): String {
+        fun fullTimeString(data: PlanEntryAndDataUnification): String {
             return "${startTimeString(data)} - ${endTimeString(data)}"
         }
     }

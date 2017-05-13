@@ -8,7 +8,7 @@ import com.codingspezis.android.metalonly.player.R
 /**
  * ClickListener for entries in the plan shown by [PlanActivity]
  */
-class PlanEntryClickListener(private val data: PlanData, private val context: Context) : DialogInterface.OnClickListener {
+class PlanEntryClickListener(private val data: PlanEntryAndDataUnification, private val context: Context) : DialogInterface.OnClickListener {
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         when (which) {
@@ -19,22 +19,22 @@ class PlanEntryClickListener(private val data: PlanData, private val context: Co
 
     private fun addEntryToCalendar() {
         val intent = Intent(Intent.ACTION_EDIT)
-        val description = data.mod + "\n" + data.genre
+        val description = data.moderator() + "\n" + data.genre()
 
         intent.type = "vnd.android.cursor.item/event"
-        intent.putExtra("title", data.title)
+        intent.putExtra("title", data.showTitle())
         intent.putExtra("description", description)
-        intent.putExtra("beginTime", data.startTimeAsMillis)
-        intent.putExtra("endTime", data.endTimeAsMillis)
+        intent.putExtra("beginTime", data.start().time)
+        intent.putExtra("endTime", data.end().time)
 
         context.startActivity(intent)
     }
 
     private fun shareEntry() {
         val message = """|${formattedDateString()} ${startTimeString()} - ${endTimeString()}
-                         |${data.title}
-                         |${data.mod}
-                         |${data.genre}""".trimMargin()
+                         |${data.showTitle()}
+                         |${data.moderator()}
+                         |${data.genre()}""".trimMargin()
 
         val share = Intent(Intent.ACTION_SEND)
         share.type = "text/plain"

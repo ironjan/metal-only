@@ -8,18 +8,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.plan.PlanData;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
 import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryDateHelper;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * Custom view to display PlanData
  */
 @EViewGroup(R.layout.view_list_row_plan)
-public class PlanEntryView extends RelativeLayout implements CustomDataView<PlanData> {
+public class PlanEntryView extends RelativeLayout implements CustomDataView<PlanEntryAndDataUnification> {
 
     @ViewById
     TextView txtTitle, txtMod, txtTime, txtGenre;
@@ -35,12 +38,20 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Plan
     }
 
     @Override
-    public void bind(PlanData planData) {
-        txtTitle.setText(planData.getTitle());
-        txtMod.setText(planData.getMod());
+    public void bind(PlanEntryAndDataUnification planData) {
+        txtTitle.setText(planData.showTitle());
+        txtMod.setText(planData.moderator());
         txtTime.setText(PlanEntryDateHelper.fullTimeString(planData));
-        txtGenre.setText(planData.getGenre());
-        imageLoader.DisplayImage(planData.getMod(), modImage);
-        progress.setProgress(100 - planData.getProgress());
+        txtGenre.setText(planData.genre());
+        imageLoader.DisplayImage(planData.moderator(), modImage);
+        progress.setProgress(100 - computeShowProgress(planData));
+    }
+
+    private int computeShowProgress(PlanEntryAndDataUnification planData) {
+        Calendar cal = new GregorianCalendar();
+        float timeLeftInMillis = planData.end().getTime() - cal.getTimeInMillis();
+        float totalDurationInMillis = planData.end().getTime() - planData.start().getTime();
+
+        return (int) ((timeLeftInMillis / totalDurationInMillis) * 100);
     }
 }

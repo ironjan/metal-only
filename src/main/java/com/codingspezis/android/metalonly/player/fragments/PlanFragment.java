@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryToItemConverter;
 import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
 import com.codingspezis.android.metalonly.player.plan.PlanItem;
@@ -112,7 +113,7 @@ public class PlanFragment extends Fragment {
 
     @AfterViews
     void afterViews() {
-        ArrayList<PlanData> listEvents = extractEvents(site);
+        ArrayList<PlanEntryAndDataUnification> listEvents = extractEvents(site);
         ArrayList<PlanItem> listItems = planEntryToItemConverter.convertToPlan(listEvents);
         PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
 
@@ -121,14 +122,14 @@ public class PlanFragment extends Fragment {
         list.setSelection(planEntryToItemConverter.todayStartIndex());
     }
 
-    private ArrayList<PlanData> extractEvents(String site) {
+    private ArrayList<PlanEntryAndDataUnification> extractEvents(String site) {
         StringTokenizer tokenizer = new StringTokenizer(site, "}");
 
-        ArrayList<PlanData> listEvents = new ArrayList<>();
+        ArrayList<PlanEntryAndDataUnification> listEvents = new ArrayList<>();
 
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            PlanData planData = convertTokenToPlanEntry(token);
+            PlanEntryAndDataUnification planData = convertTokenToPlanEntry(token);
             if (null != planData) {
                 listEvents.add(planData);
             }
@@ -136,7 +137,7 @@ public class PlanFragment extends Fragment {
         return listEvents;
     }
 
-    private PlanData convertTokenToPlanEntry(String token) {
+    private PlanEntryAndDataUnification convertTokenToPlanEntry(String token) {
         try {
             if (hasModerator(token)) {
                 GregorianCalendar tmpCal = new GregorianCalendar();
@@ -166,7 +167,7 @@ public class PlanFragment extends Fragment {
     void entryClicked(Object clickedObject) {
         try {
             PlanRealEntryItem entryItem = (PlanRealEntryItem) clickedObject;
-            PlanData planData = entryItem.getPlanData();
+            PlanEntryAndDataUnification planData = entryItem.getPlanData();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(planData, getActivity()));
             builder.show();
