@@ -50,7 +50,7 @@ public class PlanEntry implements ShowInformation {
         return moderato;
     }
 
-    @JsonProperty("getModerator")
+    @JsonProperty("moderator")
     public void setModerato(String moderato) {
         this.moderato = moderato;
     }
@@ -64,7 +64,7 @@ public class PlanEntry implements ShowInformation {
         this.show = show;
     }
 
-    @JsonProperty("getGenre")
+    @JsonProperty("genre")
     public void setGenre(String genre) {
         this.genre = genre;
     }

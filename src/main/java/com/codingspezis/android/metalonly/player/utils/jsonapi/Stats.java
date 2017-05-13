@@ -92,7 +92,7 @@ public class Stats {
         return moderator;
     }
 
-    @JsonProperty("getModerator")
+    @JsonProperty("moderator")
     public void setModerator(String moderator) {
         this.moderator = moderator;
     }
