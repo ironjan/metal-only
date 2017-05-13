@@ -5,22 +5,20 @@ import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
-import com.codingspezis.android.metalonly.player.plan.PlanEntryToItemConverter;
-import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
-import com.codingspezis.android.metalonly.player.plan.PlanItem;
 import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
-import com.codingspezis.android.metalonly.player.plan.PlanData;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
+import com.codingspezis.android.metalonly.player.plan.PlanEntryToItemConverter;
+import com.codingspezis.android.metalonly.player.plan.PlanItem;
+import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -34,12 +32,9 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.StringTokenizer;
-
+import java.util.Collections;
 
 @EFragment(R.layout.fragment_plan)
 @SuppressLint({"SimpleDateFormat", "Registered"})
@@ -66,6 +61,12 @@ public class PlanFragment extends Fragment {
     @ViewById(android.R.id.empty)
     View empty;
 
+    @ViewById
+    TextView loadingMessageTextView;
+
+    @ViewById(android.R.id.progress)
+    ProgressBar loadingProgressBar;
+
     @RestService
     MetalOnlyAPI api;
 
@@ -78,16 +79,16 @@ public class PlanFragment extends Fragment {
                 .build();
     }
 
-    @AfterInject
+    @AfterViews
+    void bindEmptyViewToList(){
+        list.setEmptyView(empty);
+    }
+
+    @AfterViews
     @Background
     void loadPlan() {
-        if (!BuildConfig.DEBUG) {
-            // Currently, we only want to test this in debug
-            return;
-        }
-
         if (!apiWrapper.hasConnection()) {
-            showToast(R.string.no_internet);
+            updateEmptyViewOnFailure(R.string.no_internet);
             return;
         }
 
@@ -96,70 +97,26 @@ public class PlanFragment extends Fragment {
             planLoaded(plan);
         } catch (RestClientException e) {
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
-            showToast(R.string.plan_failed_to_load);
+            updateEmptyViewOnFailure(R.string.plan_failed_to_load);
         }
     }
 
     @UiThread
     void planLoaded(Plan plan) {
-            Toast.makeText(getActivity(), "Plan loaded...", Toast.LENGTH_LONG).show();
-    }
+        ArrayList<PlanEntryAndDataUnification> shows = new ArrayList<>();
+        Collections.addAll(shows, plan.getPlan());
 
-    @UiThread
-    void showToast(int stringId) {
-        Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
-    }
-
-    @AfterViews
-    void afterViews() {
-        ArrayList<PlanEntryAndDataUnification> listEvents = extractEvents(site);
-        ArrayList<PlanItem> listItems = planEntryToItemConverter.convertToPlan(listEvents);
+        ArrayList<PlanItem> listItems = planEntryToItemConverter.convertToPlan(shows);
         PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
 
-        list.setEmptyView(empty);
         list.setAdapter(adapter);
         list.setSelection(planEntryToItemConverter.todayStartIndex());
     }
 
-    private ArrayList<PlanEntryAndDataUnification> extractEvents(String site) {
-        StringTokenizer tokenizer = new StringTokenizer(site, "}");
-
-        ArrayList<PlanEntryAndDataUnification> listEvents = new ArrayList<>();
-
-        while (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-            PlanEntryAndDataUnification planData = convertTokenToPlanEntry(token);
-            if (null != planData) {
-                listEvents.add(planData);
-            }
-        }
-        return listEvents;
-    }
-
-    private PlanEntryAndDataUnification convertTokenToPlanEntry(String token) {
-        try {
-            if (hasModerator(token)) {
-                GregorianCalendar tmpCal = new GregorianCalendar();
-                tmpCal.setTimeInMillis(DATE_FORMAT_PARSER.parse(token.replaceAll(pattern, "$1"))
-                        .getTime());
-
-                PlanData planData = new PlanData(token.replaceAll(pattern, "$3"), token.replaceAll(
-                        pattern, "$4"), token.replaceAll(pattern, "$5"));
-                planData.setStart(tmpCal);
-                planData.setDuration(Integer.parseInt(token.replaceAll(pattern, "$2")));
-                return planData;
-            }
-        } catch (ParseException e) {
-            // drop entry with wrongly formatted date
-        }
-
-        return null;
-    }
-
-    private boolean hasModerator(String token) {
-        boolean metalHeadIsMod = token.replaceAll(pattern, "$3").equals("MetalHead");
-        boolean hasNoMod = token.replaceAll(pattern, "$3").equals("frei");
-        return !(metalHeadIsMod || hasNoMod);
+    @UiThread
+    void updateEmptyViewOnFailure(int stringResourceId) {
+        loadingMessageTextView.setText(stringResourceId);
+        loadingProgressBar.setVisibility(View.GONE);
     }
 
     @ItemClick(android.R.id.list)
