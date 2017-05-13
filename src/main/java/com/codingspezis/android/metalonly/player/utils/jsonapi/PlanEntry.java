@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
+import com.codingspezis.android.metalonly.player.plan.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,7 +25,7 @@ import java.util.Date;
  * </pre>
  */
 @JsonAutoDetect
-public class PlanEntry implements PlanEntryAndDataUnification{
+public class PlanEntry implements ShowInformation {
     private static final String DAY_TIME_DIVIDER = "T";
     private final SimpleDateFormat dateStringFormat;
     private String day, time, moderato, show, genre;

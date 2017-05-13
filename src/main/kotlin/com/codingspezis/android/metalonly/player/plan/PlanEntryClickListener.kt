@@ -8,7 +8,7 @@ import com.codingspezis.android.metalonly.player.R
 /**
  * ClickListener for entries in the plan shown by [PlanActivity]
  */
-class PlanEntryClickListener(private val data: PlanEntryAndDataUnification, private val context: Context) : DialogInterface.OnClickListener {
+class PlanEntryClickListener(private val data: ShowInformation, private val context: Context) : DialogInterface.OnClickListener {
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         when (which) {

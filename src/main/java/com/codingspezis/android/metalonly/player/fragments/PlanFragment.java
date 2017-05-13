@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
-import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
+import com.codingspezis.android.metalonly.player.plan.ShowInformation;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryToItemConverter;
 import com.codingspezis.android.metalonly.player.plan.PlanItem;
@@ -103,7 +103,7 @@ public class PlanFragment extends Fragment {
 
     @UiThread
     void planLoaded(Plan plan) {
-        ArrayList<PlanEntryAndDataUnification> shows = new ArrayList<>();
+        ArrayList<ShowInformation> shows = new ArrayList<>();
         Collections.addAll(shows, plan.getPlan());
 
         ArrayList<PlanItem> listItems = planEntryToItemConverter.convertToPlan(shows);
@@ -123,7 +123,7 @@ public class PlanFragment extends Fragment {
     void entryClicked(Object clickedObject) {
         try {
             PlanRealEntryItem entryItem = (PlanRealEntryItem) clickedObject;
-            PlanEntryAndDataUnification planData = entryItem.getPlanData();
+            ShowInformation planData = entryItem.getPlanData();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(planData, getActivity()));
             builder.show();

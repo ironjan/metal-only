@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.plan.PlanEntryAndDataUnification;
+import com.codingspezis.android.metalonly.player.plan.ShowInformation;
 import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryDateHelper;
 
@@ -19,10 +19,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Custom view to display PlanData
+ * Custom view to display {@link ShowInformation}
  */
 @EViewGroup(R.layout.view_list_row_plan)
-public class PlanEntryView extends RelativeLayout implements CustomDataView<PlanEntryAndDataUnification> {
+public class PlanEntryView extends RelativeLayout implements CustomDataView<ShowInformation> {
 
     @ViewById
     TextView txtTitle, txtMod, txtTime, txtGenre;
@@ -38,7 +38,7 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Plan
     }
 
     @Override
-    public void bind(PlanEntryAndDataUnification planData) {
+    public void bind(ShowInformation planData) {
         txtTitle.setText(planData.showTitle());
         txtMod.setText(planData.moderator());
         txtTime.setText(PlanEntryDateHelper.fullTimeString(planData));
@@ -47,7 +47,7 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Plan
         progress.setProgress(100 - computeShowProgress(planData));
     }
 
-    private int computeShowProgress(PlanEntryAndDataUnification planData) {
+    private int computeShowProgress(ShowInformation planData) {
         Calendar cal = new GregorianCalendar();
         float timeLeftInMillis = planData.end().getTime() - cal.getTimeInMillis();
         float totalDurationInMillis = planData.end().getTime() - planData.start().getTime();

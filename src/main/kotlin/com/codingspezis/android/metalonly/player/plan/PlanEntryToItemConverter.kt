@@ -21,7 +21,7 @@ open class PlanEntryToItemConverter {
 
     internal var todayStartIndex: Int = 0
 
-    fun convertToPlan(listEvents: ArrayList<PlanEntryAndDataUnification>): ArrayList<PlanItem> {
+    fun convertToPlan(listEvents: ArrayList<ShowInformation>): ArrayList<PlanItem> {
         // TODO refactor this method
         val listItems = ArrayList<PlanItem>()
         val cal = GregorianCalendar()
@@ -55,7 +55,7 @@ open class PlanEntryToItemConverter {
         return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 == dayIndex
     }
 
-    private fun notOnSameDay(d: PlanEntryAndDataUnification, nextItem: PlanEntryAndDataUnification): Boolean {
+    private fun notOnSameDay(d: ShowInformation, nextItem: ShowInformation): Boolean {
         val cal1 = Calendar.getInstance()
         cal1.time = d.start()
         val thisDay = cal1.get(Calendar.DAY_OF_WEEK)
@@ -67,7 +67,7 @@ open class PlanEntryToItemConverter {
         return thisDay != nextItemDay
     }
 
-    private fun hasNextListItem(listEvents: ArrayList<PlanEntryAndDataUnification>, i: Int): Boolean {
+    private fun hasNextListItem(listEvents: ArrayList<ShowInformation>, i: Int): Boolean {
         return i < listEvents.size - 1
     }
 

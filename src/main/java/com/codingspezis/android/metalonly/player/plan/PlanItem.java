@@ -7,9 +7,9 @@ package com.codingspezis.android.metalonly.player.plan;
  */
 public abstract class PlanItem {
 
-    protected PlanEntryAndDataUnification data = null;
+    protected ShowInformation data = null;
 
-    public PlanEntryAndDataUnification getPlanData() {
+    public ShowInformation getPlanData() {
         return data;
     }
 
