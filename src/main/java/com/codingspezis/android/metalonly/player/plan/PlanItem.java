@@ -3,9 +3,9 @@ package com.codingspezis.android.metalonly.player.plan;
 /**
  * Represents a plan entry.
  * <p/>
- * Base class for {@link EntryItem}, {@link SectionItem}
+ * Base class for {@link PlanRealEntryItem}, {@link PlanSectionItem}
  */
-public abstract class Item {
+public abstract class PlanItem {
 
     protected PlanData data = null;
 

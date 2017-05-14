@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtArtist"
         android:text="@string/titleDummy"
-        android:textColor="@android:color/white"
         android:textIsSelectable="false"
         android:textStyle="bold"
         android:maxLines="1" />

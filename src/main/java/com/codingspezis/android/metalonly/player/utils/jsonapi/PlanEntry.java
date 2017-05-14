@@ -3,6 +3,9 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,13 +22,18 @@ import java.util.Date;
  * }
  * </pre>
  */
+@JsonAutoDetect
 public class PlanEntry {
     private static final String DAY_TIME_DIVIDER = "T";
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateStringFormat = new SimpleDateFormat(
-            "dd'.'MM'.'YY'T'HH':'mm");
+    private final SimpleDateFormat dateStringFormat;
     private String day, time, moderato, show, genre;
     private int duration;
+
+    @SuppressLint("SimpleDateFormat")
+    public PlanEntry(){
+        // Set value here to catch wrong formats
+        dateStringFormat = new SimpleDateFormat("dd'.'MM'.'yy'T'HH':'mm");
+    }
 
     public Date getStartDate() {
         String dateString = day + DAY_TIME_DIVIDER + time;
@@ -43,6 +51,7 @@ public class PlanEntry {
         return time;
     }
 
+    @JsonProperty("time")
     public void setTime(String time) {
         this.time = time;
     }
@@ -51,6 +60,7 @@ public class PlanEntry {
         return moderato;
     }
 
+    @JsonProperty("moderator")
     public void setModerato(String moderato) {
         this.moderato = moderato;
     }
@@ -59,6 +69,7 @@ public class PlanEntry {
         return show;
     }
 
+    @JsonProperty("show")
     public void setShow(String show) {
         this.show = show;
     }
@@ -67,6 +78,7 @@ public class PlanEntry {
         return genre;
     }
 
+    @JsonProperty("genre")
     public void setGenre(String genre) {
         this.genre = genre;
     }
@@ -75,10 +87,12 @@ public class PlanEntry {
         return duration;
     }
 
+    @JsonProperty("duration")
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    @JsonProperty("day")
     public void setDay(String day) {
         this.day = day;
     }

@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.plan.SectionItem;
+import com.codingspezis.android.metalonly.player.plan.PlanSectionItem;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -24,7 +24,7 @@ public class SectionView extends LinearLayout {
         super(context, attrs);
     }
 
-    public void bind(SectionItem sectionItem) {
+    public void bind(PlanSectionItem sectionItem) {
         textTitle.setText(sectionItem.getTitle());
     }
 }

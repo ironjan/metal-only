@@ -4,31 +4,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.codingspezis.android.metalonly.player.views.Marquee
-        android:id="@+id/marqueeMod"
+    <com.codingspezis.android.metalonly.player.views.ShowInformation_
+        android:id="@+id/viewShowInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:shadowColor="#ff000000"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="4"
-        android:textStyle="bold" />
-
-    <com.codingspezis.android.metalonly.player.views.Marquee
-        android:id="@+id/marqueeGenree"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/marqueeMod"
-        android:gravity="center_horizontal"
-        android:textStyle="bold" />
+        android:minHeight="48dp"
+        android:gravity="center_horizontal" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
-        android:layout_below="@id/marqueeGenree"
+        android:layout_below="@id/viewShowInformation"
         tools:listitem="@layout/view_list_item_song_hist" />
 
     <FrameLayout
@@ -36,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
-        android:layout_below="@id/marqueeGenree">
+        android:layout_below="@id/viewShowInformation">
 
         <include layout="@layout/include_empty_stream_history" />
     </FrameLayout>

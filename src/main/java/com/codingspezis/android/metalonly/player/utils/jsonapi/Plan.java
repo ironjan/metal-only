@@ -1,5 +1,8 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * <pre>
  * {
@@ -16,16 +19,15 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
  * }
  * </pre>
  */
+@JsonAutoDetect
 public class Plan {
-    private Plan() {
-    }
-
     PlanEntry[] plan = {};
 
     public PlanEntry[] getPlan() {
         return plan;
     }
 
+    @JsonProperty("plan")
     public void setPlan(PlanEntry[] plan) {
         this.plan = plan;
     }

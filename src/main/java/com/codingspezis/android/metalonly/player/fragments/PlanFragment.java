@@ -5,22 +5,33 @@ import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.plan.EntryItem;
-import com.codingspezis.android.metalonly.player.plan.Item;
+import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
+import com.codingspezis.android.metalonly.player.plan.PlanItem;
 import com.codingspezis.android.metalonly.player.plan.PlanAdapter;
 import com.codingspezis.android.metalonly.player.plan.PlanData;
 import com.codingspezis.android.metalonly.player.plan.PlanEntryClickListener;
-import com.codingspezis.android.metalonly.player.plan.SectionItem;
+import com.codingspezis.android.metalonly.player.plan.PlanSectionItem;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringArrayRes;
 import org.androidannotations.annotations.res.StringRes;
+import org.androidannotations.rest.spring.annotations.RestService;
+import org.springframework.web.client.RestClientException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +63,11 @@ public class PlanFragment extends Fragment {
     @ViewById(android.R.id.empty)
     View empty;
 
+    @RestService
+    MetalOnlyAPI api;
+
+    @Bean
+    MetalOnlyAPIWrapper apiWrapper;
 
     public static PlanFragment newInstance(String site) {
         return PlanFragment_.builder()
@@ -59,11 +75,42 @@ public class PlanFragment extends Fragment {
                 .build();
     }
 
+    @AfterInject
+    @Background
+    void loadPlan() {
+        if (!BuildConfig.DEBUG) {
+            // Currently, we only want to test this in debug
+            return;
+        }
+
+        if (!apiWrapper.hasConnection()) {
+            showToast(R.string.no_internet);
+            return;
+        }
+
+        try {
+            Plan plan = api.getPlan();
+            planLoaded(plan);
+        } catch (RestClientException e) {
+            // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
+            showToast(R.string.plan_failed_to_load);
+        }
+    }
+
+    @UiThread
+    void planLoaded(Plan plan) {
+            Toast.makeText(getActivity(), "Plan loaded...", Toast.LENGTH_LONG).show();
+    }
+
+    @UiThread
+    void showToast(int stringId) {
+        Toast.makeText(getActivity(), stringId, Toast.LENGTH_LONG).show();
+    }
 
     @AfterViews
     void afterViews() {
         ArrayList<PlanData> listEvents = extractEvents(site);
-        ArrayList<Item> listItems = convertToPlan(listEvents);
+        ArrayList<PlanItem> listItems = convertToPlan(listEvents);
         PlanAdapter adapter = new PlanAdapter(getActivity(), listItems);
 
         list.setEmptyView(empty);
@@ -71,25 +118,25 @@ public class PlanFragment extends Fragment {
         list.setSelection(todayListStartIndex);
     }
 
-    private ArrayList<Item> convertToPlan(ArrayList<PlanData> listEvents) {
+    private ArrayList<PlanItem> convertToPlan(ArrayList<PlanData> listEvents) {
         // TODO refactor this method
-        ArrayList<Item> listItems = new ArrayList<>();
+        ArrayList<PlanItem> listItems = new ArrayList<>();
         Calendar cal = new GregorianCalendar();
 
         int day = 0;
 
-        SectionItem nextDaySection = new SectionItem(days[day]);
+        PlanSectionItem nextDaySection = new PlanSectionItem(days[day]);
 
         listItems.add(nextDaySection);
 
         for (int i = 0; i < listEvents.size(); i++) {
             PlanData d = listEvents.get(i);
-            listItems.add(new EntryItem(d));
+            listItems.add(new PlanRealEntryItem(d));
             if (hasNextListItem(listEvents, i)) {
                 PlanData nextItem = listEvents.get(i + 1);
                 if (notOnSameDay(d, nextItem)) {
                     day++;
-                    nextDaySection = new SectionItem(days[day]);
+                    nextDaySection = new PlanSectionItem(days[day]);
                     listItems.add(nextDaySection);
                     if (isToday(day))
                         todayListStartIndex = listItems.size();
@@ -161,7 +208,7 @@ public class PlanFragment extends Fragment {
     @ItemClick(android.R.id.list)
     void entryClicked(Object clickedObject) {
         try {
-            EntryItem entryItem = (EntryItem) clickedObject;
+            PlanRealEntryItem entryItem = (PlanRealEntryItem) clickedObject;
             PlanData planData = entryItem.getPlanData();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(planData, getActivity()));

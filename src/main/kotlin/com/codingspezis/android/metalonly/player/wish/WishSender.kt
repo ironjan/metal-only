@@ -1,13 +1,13 @@
 package com.codingspezis.android.metalonly.player.wish
 
 import android.text.TextUtils
-import com.codingspezis.android.metalonly.player.utils.UrlConstants
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.slf4j.LoggerFactory
 import java.io.IOException
+import com.codingspezis.android.metalonly.player.BuildConfig
 
 /**
  * Restored class since AA REST api doesn't work for wishes.
@@ -59,7 +59,7 @@ class WishSender {
                 .build()
 
         val request = Request.Builder()
-                .url(UrlConstants.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
+                .url(BuildConfig.METAL_ONLY_WUNSCHSCRIPT_POST_URL)
                 .method("POST", RequestBody.create(null, ByteArray(0)))
                 .post(requestBody)
                 .build()
@@ -67,7 +67,7 @@ class WishSender {
             val response = client.newCall(request).execute()
 
             val responseBody = response.body().string()
-            if (response.code() == 200 && responseBody.contains("Wunsch/Gruss hinzugefügt.")) {
+            if (response.code() == 200 && responseBody.contains(BuildConfig.WISH_SUCCESS)) {
                     callback.onSuccess()
                 } else {
                     callback.onFail()

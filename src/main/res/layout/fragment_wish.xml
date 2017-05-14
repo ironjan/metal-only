@@ -8,12 +8,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@android:id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:minHeight="48dp"
+            android:indeterminate="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@id/txtWishcount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
         <TextView
             android:id="@+id/textNick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editNick"
+            android:layout_below="@id/txtWishcount"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:text="@string/wish_nick"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -22,7 +43,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/editRegard"
+            android:layout_alignStart="@id/editRegard"
+            android:layout_below="@+id/txtWishcount"
             android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/textNick"
             android:layout_toRightOf="@id/textNick"
             android:ems="10"
             android:imeOptions="actionNext"
@@ -36,7 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editArtist"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/artist"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -47,6 +73,7 @@
             android:layout_below="@id/editNick"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/textArtist"
+            android:layout_toEndOf="@id/textArtist"
             android:ems="10"
             android:imeOptions="actionNext"
             android:inputType="text"
@@ -59,7 +86,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editTitle"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -68,9 +97,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/editNick"
+            android:layout_alignStart="@id/editNick"
             android:layout_below="@id/editArtist"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/textTitle"
+            android:layout_toEndOf="@id/textTitle"
             android:ems="10"
             android:imeOptions="actionNext"
             android:inputType="text"
@@ -83,7 +114,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editRegard"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/wish_regard"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -92,38 +125,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/editArtist"
+            android:layout_alignStart="@id/editArtist"
             android:layout_below="@id/editTitle"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/textRegard"
+            android:layout_toEndOf="@id/textRegard"
             android:ems="10"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
             android:minHeight="48dp" />
 
-        <ProgressBar
-            android:id="@android:id/progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:visibility="invisible"
-            android:minHeight="48dp"
-            android:indeterminate="true"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/editRegard" />
-        <TextView
-            android:id="@id/txtWishcount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_below="@id/editRegard"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Button
             android:id="@id/btnSend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtWishcount"
+            android:layout_below="@+id/editRegard"
             android:text="@string/wish_send" />
 
 

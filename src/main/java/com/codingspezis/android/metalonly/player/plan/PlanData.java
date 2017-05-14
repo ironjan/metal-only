@@ -5,6 +5,14 @@ import com.codingspezis.android.metalonly.player.PlanActivity;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * This class is an extended version of {@link com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry}.
+ * It contains a lot of the same information (they represent the same data) and some "utility" methods.
+ * The later should be extracted to a more appropriate place (SRP) and {@link PlanData} should not
+ * be used anymore.
+ * @deprecated Use {@link com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry} for new
+ * classes.
+ */
 public class PlanData {
     private static final int HOUR_IN_MILLIS = 60 * 60 * 1000;
     private final String mod, genre, title;
@@ -17,22 +25,6 @@ public class PlanData {
         this.mod = mod;
     }
 
-    public CharSequence getDateString() {
-        CharSequence ret;
-        if (getStart().get(Calendar.DAY_OF_WEEK) == getEnd().get(Calendar.DAY_OF_WEEK)
-                || getEnd().get(Calendar.HOUR_OF_DAY) == 0) {
-            ret = PlanActivity.DATE_FORMAT_DATE.format(getStart().getTime());
-        } else {
-            ret = PlanActivity.DATE_FORMAT_DATE_DAY.format(getStart().getTime()) + "/"
-                    + PlanActivity.DATE_FORMAT_DATE.format(getEnd().getTime());
-        }
-
-        return ret;
-    }
-
-    public String getDescription() {
-        return getTitle() + "\n" + getMod() + "\n" + getGenre() + "\n";
-    }
 
     public int getDuration() {
         return duration;
@@ -80,10 +72,6 @@ public class PlanData {
         return getEnd().getTimeInMillis();
     }
 
-    public CharSequence getTimeString() {
-        return PlanActivity.DATE_FORMAT_TIME.format(start.getTime()) + " - "
-                + PlanActivity.DATE_FORMAT_TIME.format(getEnd().getTime());
-    }
 
     public String getTitle() {
         return title;

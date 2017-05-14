@@ -22,7 +22,7 @@ class Song {
     constructor(interpret: String, title: String, thumb: String, date: Long) : super() {
         this.interpret = interpret
         this.title = title
-        this.thumb = thumb
+        this.thumb = thumb.replace(" OnAir", "")
         this.date = date
     }
 
@@ -31,11 +31,13 @@ class Song {
      * @param interpret song artist
      * @param title song title
      * @param thumb name of moderator's picture
+     *
+     * @deprecated Use the full constructor instead
      */
     @JvmOverloads constructor(interpret: String, title: String, thumb: String = "") : super() {
         this.interpret = interpret
         this.title = title
-        this.thumb = thumb
+        this.thumb = thumb.replace(" OnAir", "")
         this.date = Calendar.getInstance().timeInMillis
     }
 
