@@ -42,7 +42,7 @@ public class HTTPDownloadImplementation {
                     con.getInputStream()));
             if (!canceled && !timedout) {
                 timeoutTimer.cancel();
-                if (listener != null) {
+                if (listener != null) { //NOPMD Will be converted to null-safe access in kotlin
                     listener.onSuccess(reader);
                 }
             }
