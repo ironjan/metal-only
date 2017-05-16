@@ -34,7 +34,7 @@ open class FeedbackMailer {
                 "Model: ${Build.MODEL}"
 
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf<String>(mailaddress_codingspezis.toString()))
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
         try {
