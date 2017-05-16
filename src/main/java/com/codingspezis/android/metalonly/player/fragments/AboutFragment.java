@@ -22,6 +22,13 @@ import org.androidannotations.annotations.res.StringRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Very extensive fragment to display information about this app. Since this information may change
+ * easily, it should be externalized, e.g. to the README. The README is far more stable and easier
+ * to update.
+ *
+ * @todo #18: move relevant information to README
+ */
 @EFragment(R.layout.fragment_about)
 public class AboutFragment extends Fragment {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
