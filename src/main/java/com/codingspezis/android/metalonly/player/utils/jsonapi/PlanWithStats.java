@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  *  "stats":
  *   {
  *    "moderated": false,
- *    "moderator": "MetalHead",
+ *    "getModerator": "MetalHead",
  *    "sendung": "Keine Gruesse und Wuensche moeglich. (Mixed Metal)",
  *    "wunschvoll": "1",
  *    "grussvoll": "1",
@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
  *     "day": "29.07.13",
  *     "time": "00:00",
  *     "duration": 15,
- *     "moderator": "MetalHead",
+ *     "getModerator": "MetalHead",
  *     "show": "Keine Gruesse und Wuensche moeglich.",
- *     "genre": "Mixed Metal"
+ *     "getGenre": "Mixed Metal"
  *    }
  *   ]
  * }

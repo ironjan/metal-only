@@ -23,11 +23,11 @@ open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout
 
     @JvmField
     @ViewById(R.id.marqueeGenree)
-    public var marqueeGenre: Marquee? = null
+    protected var marqueeGenre: Marquee? = null
 
     @JvmField
     @ViewById(android.R.id.progress)
-    public var progress: View? = null
+    protected var progress: View? = null
 
     init {
         orientation = LinearLayout.VERTICAL

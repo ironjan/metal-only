@@ -441,7 +441,7 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     /**
-     * sets listening to true sends start intent to PlayerService shows
+     * sets listening to true sends getStartDate intent to PlayerService shows
      * connecting dialog
      */
     private void startListening() {

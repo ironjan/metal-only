@@ -16,7 +16,7 @@ class Song {
      * Creates a Song with the given parameters
      * @param interpret song artist
      * @param title song title
-     * @param thumb name of moderator's picture
+     * @param thumb name of getModerator's picture
      * @param date when this song was played
      */
     constructor(interpret: String, title: String, thumb: String, date: Long) : super() {
@@ -30,7 +30,7 @@ class Song {
      * Wrapper for [.Song] with date set to the moment this constructor is called
      * @param interpret song artist
      * @param title song title
-     * @param thumb name of moderator's picture
+     * @param thumb name of getModerator's picture
      *
      * @deprecated Use the full constructor instead
      */

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * <pre>
  * {
  *     "moderated": false,
- *     "moderator": "MetalHead",
+ *     "getModerator": "MetalHead",
  *     "sendung": "Keine Gruesse und Wuensche moeglich. (Mixed Metal)",
  *     "wunschvoll": "1",
  *     "grussvoll": "1",

@@ -5,7 +5,7 @@ package com.codingspezis.android.metalonly.player.plan;
  */
 public class PlanRealEntryItem extends PlanItem {
 
-    public PlanRealEntryItem(PlanData data) {
+    public PlanRealEntryItem(ShowInformation data) {
         this.data = data;
     }
 

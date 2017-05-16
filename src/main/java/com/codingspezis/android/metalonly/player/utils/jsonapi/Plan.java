@@ -11,9 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *    "day": "29.07.13",
  *    "time": "00:00",
  *    "duration": 15,
- *    "moderator": "MetalHead",
+ *    "getModerator": "MetalHead",
  *    "show": "Keine Gruesse und Wuensche moeglich.",
- *    "genre": "Mixed Metal"
+ *    "getGenre": "Mixed Metal"
  *   }
  *  ]
  * }
