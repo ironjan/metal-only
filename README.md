@@ -3,7 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e64554aa306945dbbe50e64ad605c37e)](https://www.codacy.com/app/lippertsjan/metal-only?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ironjan/metal-only&amp;utm_campaign=Badge_Grade)
 
  * LICENSE: [Apache-Lizenz, Version 2.0.](https://github.com/ironjan/metal-only/blob/master/LICENSE.txt)
- * AUTHORS: (TODO: Link to github authors page)
+ * AUTHORS: https://github.com/ironjan/metal-only/graphs/contributors
 
 Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf
 Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält 
