@@ -1,6 +1,5 @@
 package com.codingspezis.android.metalonly.player;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.codingspezis.android.metalonly.player.fragments.WishFragment;
-import com.codingspezis.android.metalonly.player.wish.AllowedActions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

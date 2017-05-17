@@ -40,10 +40,6 @@ import java.util.Collections;
 @SuppressLint({"SimpleDateFormat", "Registered"})
 public class PlanFragment extends Fragment {
 
-    public static final SimpleDateFormat DATE_FORMAT_PARSER = new SimpleDateFormat(
-            "{dd.MM.yy HH:mm");
-    private static final String pattern = "(.*?)_(.*?)_(.*)_(.*)_(.*)";
-
     @Bean
     PlanEntryToItemConverter planEntryToItemConverter;
 

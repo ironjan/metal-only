@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.widget.ListView;
 
@@ -17,7 +16,6 @@ import com.codingspezis.android.metalonly.player.fragments.FavoritesFragment_;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -30,8 +28,6 @@ public class FavoritesActivity extends AppCompatActivity {
     public static final String JSON_FILE_FAV = "mo_fav.json";
     @ViewById
     ListView list;
-
-    private Menu menu;
 
     @AfterViews
     void bindFragment() {
