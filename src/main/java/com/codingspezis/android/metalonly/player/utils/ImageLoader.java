@@ -27,21 +27,24 @@ import java.util.concurrent.Executors;
 public class ImageLoader {
 
     final int stub_id = R.drawable.mo_wait;
-    private final Map<ImageView, String> imageViews = Collections
-            .synchronizedMap(new WeakHashMap<ImageView, String>());
-    MemoryCache memoryCache = new MemoryCache();
-    FileCache fileCache;
-    ExecutorService executorService;
-    Handler handler = new Handler(); // handler to display images in UI thread
+    private final Map<ImageView, String> imageViews =
+            Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+
+    private final MemoryCache memoryCache = new MemoryCache();
+    private final FileCache fileCache;
+    private final ExecutorService executorService;
+    private final Handler handler = new Handler();
 
     public ImageLoader(Context context) {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
     }
 
-    public void DisplayImage(String moderator, ImageView imageView) {
+    public void displayImage(String moderator, ImageView imageView) {
         imageViews.put(imageView, moderator);
+
         Bitmap bitmap = memoryCache.get(moderator);
+
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
@@ -56,33 +59,28 @@ public class ImageLoader {
     }
 
     synchronized Bitmap getBitmap(String moderator) {
-        // from internal private storage
-        Bitmap b = fileCache.decodeMod(moderator); // decodeFile(f);
+        Bitmap b = fileCache.decodeMod(moderator);
         if (b != null) {
             return b;
         }
-        // from web
+
         try {
-            //
-            Bitmap bitmap;
-            String absoluteUrl = UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator;
-            URL imageUrl = new URL(absoluteUrl);
-            HttpURLConnection conn = (HttpURLConnection) imageUrl
-                    .openConnection();
+            URL imageUrl = new URL(UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator);
+
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(30000);
             conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
+
             InputStream is = conn.getInputStream();
-            //
-            OutputStream os = fileCache.getOutputStream(moderator); // new
-            // FileOutputStream(f);
+            OutputStream os = fileCache.getOutputStream(moderator);
+
             Utils.CopyStream(is, os);
 
             is.close();
             os.close();
 
-            bitmap = fileCache.decodeMod(moderator); // decodeFile(f);
-            return bitmap;
+            return fileCache.decodeMod(moderator);
         } catch (Throwable ex) {
             ex.printStackTrace();
             if (ex instanceof OutOfMemoryError) {
@@ -97,17 +95,11 @@ public class ImageLoader {
         return tag == null || !tag.equals(photoToLoad.moderator);
     }
 
-    public void clearCache() {
-        memoryCache.clear();
-        fileCache.clear();
-    }
-
-    // Task for the queue
     class PhotoToLoad {
-        public String moderator;
-        public ImageView imageView;
+        final String moderator;
+        final ImageView imageView;
 
-        public PhotoToLoad(String moderator, ImageView imageView) {
+        PhotoToLoad(String moderator, ImageView imageView) {
             this.moderator = moderator;
             this.imageView = imageView;
         }

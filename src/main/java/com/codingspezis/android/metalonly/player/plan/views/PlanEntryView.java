@@ -43,7 +43,7 @@ public class PlanEntryView extends RelativeLayout implements CustomDataView<Show
         txtMod.setText(planData.getModerator());
         txtTime.setText(PlanEntryDateHelper.fullTimeString(planData));
         txtGenre.setText(planData.getGenre());
-        imageLoader.DisplayImage(planData.getModerator(), modImage);
+        imageLoader.displayImage(planData.getModerator(), modImage);
         progress.setProgress(100 - computeShowProgress(planData));
     }
 

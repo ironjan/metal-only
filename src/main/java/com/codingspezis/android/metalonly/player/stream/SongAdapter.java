@@ -68,7 +68,7 @@ public class SongAdapter extends BaseAdapter {
 
         ImageView image = (ImageView) view.findViewById(R.id.modImage);
         String thumb = song.getThumb();
-        imageLoader.DisplayImage(thumb, image);
+        imageLoader.displayImage(thumb, image);
 
         return view;
     }
