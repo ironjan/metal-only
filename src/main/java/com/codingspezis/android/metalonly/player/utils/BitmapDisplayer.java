@@ -23,9 +23,9 @@ class BitmapDisplayer implements Runnable {
         }
 
         if (bitmap != null) {
-            modImageLoadingQueueItem.imageView.setImageBitmap(bitmap);
+            modImageLoadingQueueItem.getImageView().setImageBitmap(bitmap);
         } else {
-            modImageLoadingQueueItem.imageView.setImageResource(this.imageLoader.stub_id);
+            modImageLoadingQueueItem.getImageView().setImageResource(this.imageLoader.stub_id);
         }
     }
 }

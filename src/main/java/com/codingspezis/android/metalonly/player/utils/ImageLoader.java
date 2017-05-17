@@ -91,8 +91,8 @@ public class ImageLoader {
     }
 
     boolean imageViewReused(ModImageLoadingQueueItem modImageLoadingQueueItem) {
-        String tag = imageViews.get(modImageLoadingQueueItem.imageView);
-        return tag == null || !tag.equals(modImageLoadingQueueItem.moderator);
+        String tag = imageViews.get(modImageLoadingQueueItem.getImageView());
+        return tag == null || !tag.equals(modImageLoadingQueueItem.getModerator());
     }
 
     class PhotosLoader implements Runnable {
@@ -108,8 +108,8 @@ public class ImageLoader {
                 if (imageViewReused(modImageLoadingQueueItem)) {
                     return;
                 }
-                Bitmap bmp = getBitmap(modImageLoadingQueueItem.moderator);
-                memoryCache.put(modImageLoadingQueueItem.moderator, bmp);
+                Bitmap bmp = getBitmap(modImageLoadingQueueItem.getModerator());
+                memoryCache.put(modImageLoadingQueueItem.getModerator(), bmp);
                 if (imageViewReused(modImageLoadingQueueItem)) {
                     return;
                 }
