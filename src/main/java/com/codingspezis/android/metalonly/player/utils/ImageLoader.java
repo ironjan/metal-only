@@ -54,7 +54,7 @@ public class ImageLoader {
     }
 
     private void queuePhoto(String moderator, ImageView imageView) {
-        PhotoToLoad p = new PhotoToLoad(moderator, imageView);
+        ModImageLoadingQueueItem p = new ModImageLoadingQueueItem(moderator, imageView);
         executorService.submit(new PhotosLoader(p));
     }
 
@@ -90,41 +90,31 @@ public class ImageLoader {
         }
     }
 
-    boolean imageViewReused(PhotoToLoad photoToLoad) {
-        String tag = imageViews.get(photoToLoad.imageView);
-        return tag == null || !tag.equals(photoToLoad.moderator);
-    }
-
-    class PhotoToLoad {
-        final String moderator;
-        final ImageView imageView;
-
-        PhotoToLoad(String moderator, ImageView imageView) {
-            this.moderator = moderator;
-            this.imageView = imageView;
-        }
+    boolean imageViewReused(ModImageLoadingQueueItem modImageLoadingQueueItem) {
+        String tag = imageViews.get(modImageLoadingQueueItem.imageView);
+        return tag == null || !tag.equals(modImageLoadingQueueItem.moderator);
     }
 
     class PhotosLoader implements Runnable {
-        PhotoToLoad photoToLoad;
+        ModImageLoadingQueueItem modImageLoadingQueueItem;
 
-        PhotosLoader(PhotoToLoad photoToLoad) {
-            this.photoToLoad = photoToLoad;
+        PhotosLoader(ModImageLoadingQueueItem modImageLoadingQueueItem) {
+            this.modImageLoadingQueueItem = modImageLoadingQueueItem;
         }
 
         @Override
         public void run() {
             try {
-                if (imageViewReused(photoToLoad)) {
+                if (imageViewReused(modImageLoadingQueueItem)) {
                     return;
                 }
-                Bitmap bmp = getBitmap(photoToLoad.moderator);
-                memoryCache.put(photoToLoad.moderator, bmp);
-                if (imageViewReused(photoToLoad)) {
+                Bitmap bmp = getBitmap(modImageLoadingQueueItem.moderator);
+                memoryCache.put(modImageLoadingQueueItem.moderator, bmp);
+                if (imageViewReused(modImageLoadingQueueItem)) {
                     return;
                 }
                 BitmapDisplayer bd = new BitmapDisplayer(ImageLoader.this, bmp,
-                        photoToLoad);
+                        modImageLoadingQueueItem);
                 handler.post(bd);
             } catch (Throwable th) {
                 th.printStackTrace();
