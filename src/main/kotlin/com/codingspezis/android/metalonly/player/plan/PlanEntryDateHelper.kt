@@ -9,19 +9,17 @@ class PlanEntryDateHelper() {
         private val DATE_FORMAT_TIME = SimpleDateFormat("HH:mm")
         @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_DATE = SimpleDateFormat("dd.MM.yy")
-        @SuppressLint("SimpleDateFormat")
-        private val DATE_FORMAT_DATE_DAY = SimpleDateFormat("dd")
 
-        fun formattedDateString(data: PlanData): String {
-            return DATE_FORMAT_DATE.format(data.start.time)
+        fun formattedDateString(data: ShowInformation): String {
+            return DATE_FORMAT_DATE.format(data.startDate.time)
         }
 
-        fun startTimeString(data: PlanData): CharSequence {
-            return DATE_FORMAT_TIME.format(data.start.time)
+        fun startTimeString(data: ShowInformation): CharSequence {
+            return DATE_FORMAT_TIME.format(data.startDate.time)
         }
 
-        fun endTimeString(data: PlanData): String {
-            return DATE_FORMAT_TIME.format(data.end.time)
+        fun endTimeString(data: ShowInformation): String {
+            return DATE_FORMAT_TIME.format(data.endDate.time)
         }
 
         /**
@@ -30,7 +28,7 @@ class PlanEntryDateHelper() {
           * @return time information, e.g. "14:00 - 16:00"
           */
         @JvmStatic
-        fun fullTimeString(data: PlanData): String {
+        fun fullTimeString(data: ShowInformation): String {
             return "${startTimeString(data)} - ${endTimeString(data)}"
         }
     }

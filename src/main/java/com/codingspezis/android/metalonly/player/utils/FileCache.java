@@ -21,12 +21,12 @@ import java.util.Calendar;
  * https://github.com/thest1/LazyList
  * <p/>
  * we modified it so that it works with internal storage and a cache duration of
- * 7 days it works not longer with URLs but with moderator names of metal only
+ * 7 days it works not longer with URLs but with getModerator names of metal only
  * some synchronized statements are also added
  */
 public class FileCache {
 
-    // moderator thumbs are cached 7 days in internal file storage
+    // getModerator thumbs are cached 7 days in internal file storage
     public static final long WEEK_IN_MILLISECS = 7 * 24 * 60 * 60 * 1000;
     private static final String TAG = FileCache.class.getSimpleName();
     private final Context context;
@@ -36,10 +36,10 @@ public class FileCache {
     }
 
     /**
-     * checks if thumb of moderator is already loaded
+     * checks if thumb of getModerator is already loaded
      *
      * @param context   context of private storage
-     * @param moderator The moderator's name
+     * @param moderator The getModerator's name
      * @return file name of thumb if exists - null otherwise
      */
     public static String hasThumb(Context context, String moderator) {

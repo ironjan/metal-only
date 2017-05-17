@@ -26,7 +26,6 @@ public class HTTPDownloadImplementation {
             @Override
             public void run() {
                 if (!canceled) {
-                    timeout();
                     if (listener != null) {
                         listener.onTimeout();
                     }
@@ -43,7 +42,7 @@ public class HTTPDownloadImplementation {
                     con.getInputStream()));
             if (!canceled && !timedout) {
                 timeoutTimer.cancel();
-                if (listener != null) {
+                if (listener != null) { //NOPMD Will be converted to null-safe access in kotlin
                     listener.onSuccess(reader);
                 }
             }
@@ -55,9 +54,6 @@ public class HTTPDownloadImplementation {
                 listener.onError(e.getMessage());
             }
         }
-    }
-
-    private void timeout() {
     }
 
     public static HTTPDownloadImplementation instance(String url, OnHTTPGrabberListener listener, long timeoutDelay) {

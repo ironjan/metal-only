@@ -56,163 +56,17 @@
             android:src="@drawable/grey_horizontal_line"
             tools:ignore="ContentDescription" />
 
+
+
         <TextView
-            android:id="@+id/textSherlockName"
+            android:id="@+id/textAboutFurtherInfos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/divider"
             android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_sherlock"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textSherlockLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textSherlockName"
-            android:layout_marginTop="@dimen/elementMargin"
             android:autoLink="web"
-            android:text="@string/url_sherlock"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/textSherlockLicenseApache"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textSherlockName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/apl2"
-            android:textColor="@color/turkis" />
-
-        <TextView
-            android:id="@+id/textLazyListName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textSherlockLink"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_lazylist"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textLazyListLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textLazyListName"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:text="@string/url_lazylist" />
-
-        <TextView
-            android:id="@+id/textLazyListLicenseMIT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textLazyListName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/mit"
-            android:textColor="@color/turkis" />
-
-        <TextView
-            android:id="@+id/textAndroidannotationsName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textLazyListLink"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_androidannotations"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textAndroidannotationsLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textAndroidannotationsName"
-            android:layout_marginBottom="@dimen/elementMargin"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:text="@string/url_androidannotations"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/textAndroidannotationsLicenseApache"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textAndroidannotationsName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/apl2"
-            android:textColor="@color/turkis" />
-
-        <TextView
-            android:id="@+id/textSpringName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textAndroidannotationsLink"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_spring"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textSpringLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textSpringName"
-            android:layout_marginBottom="@dimen/elementMargin"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:text="@string/url_spring"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/textSpringLicenseApache"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textSpringName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/apl2"
-            android:textColor="@color/turkis" />
-
-
-        <TextView
-            android:id="@+id/textJacksonName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textSpringLink"
-            android:layout_marginTop="@dimen/elementMarginDouble"
-            android:text="@string/about_jackson"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textJacksonLink"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textJacksonName"
-            android:layout_marginBottom="@dimen/elementMargin"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:autoLink="web"
-            android:text="@string/url_jackson"
-            android:maxLines="1" />
-
-        <TextView
-            android:id="@+id/textJacksonLicenseApache"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textJacksonName"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/elementMargin"
-            android:text="@string/apl2"
-            android:textColor="@color/turkis" />
+            android:text="@string/aboutFurtherInfos" />
 
     </RelativeLayout>
 

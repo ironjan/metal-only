@@ -156,5 +156,6 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="moderator">Moderator</string>
+    <string name="aboutFurtherInfos">More info - including the used libraries etc. - can be found in the GitHub project: https://github.com/ironjan/metal-only</string>
 
 </resources>
