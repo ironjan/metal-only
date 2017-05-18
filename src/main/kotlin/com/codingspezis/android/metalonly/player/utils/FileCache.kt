@@ -1,8 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
@@ -10,27 +8,27 @@ import android.util.Log
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.StreamControlActivity
 
-import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
 
 /**
- * this class comes in the original form from:
- * https://github.com/thest1/LazyList
+ * A file cache based on [https://github.com/thest1/LazyList](https://github.com/thest1/LazyList). It
+ * was modified to work with internal storage and a cache duration of 1 week. We don't use URLs
+ * anymore but moderator names (as this is what the cache is for). We also added some synchornized
+ * statements.
  *
+ * @todo Can "isTooOld" etc. use regular file attributes?
  *
- * we modified it so that it works with internal storage and a cache duration of
- * 7 days it works not longer with URLs but with getModerator names of metal only
- * some synchronized statements are also added
+ * @todo Why were the synchronized statements necessary?
  */
 class FileCache(private val context: Context) {
 
     @Synchronized @Throws(FileNotFoundException::class)
     fun getOutputStream(moderator: String): FileOutputStream {
-        val fileName = moderator.hashCode().toString()
-        if (hasThumb(context, fileName) != null) {
+        val fileName = computeFileName(moderator)
+        if (hasThumb(context, fileName)) {
             context.deleteFile(fileName)
         }
 
@@ -48,9 +46,15 @@ class FileCache(private val context: Context) {
      * *
      * @return
      */
-    @Synchronized fun decodeMod(moderator: String): Bitmap? {
-        val fileName = hasThumb(context, moderator)
-        if (fileName != null) {
+    @Synchronized fun decodeMod(moderator: String?): Bitmap? {
+        if(moderator == null){
+            /* Java interop. We do not know for sure that moderator is != null */
+            return null
+        }
+
+        val fileName = computeFileName(moderator)
+
+        if (hasThumb(context, moderator)) {
             try {
                 // decode image size
                 val o = BitmapFactory.Options()
@@ -97,9 +101,8 @@ class FileCache(private val context: Context) {
     }
 
     companion object {
-
-        // getModerator thumbs are cached 7 days in internal file storage
         val WEEK_IN_MILLISECS = (7 * 24 * 60 * 60 * 1000).toLong()
+
         private val TAG = FileCache::class.java.simpleName
 
         /**
@@ -110,17 +113,14 @@ class FileCache(private val context: Context) {
          * *
          * @return file name of thumb if exists - null otherwise
          */
-        fun hasThumb(context: Context, moderator: String): String? {
-            val fileName = moderator.hashCode().toString()
-            val files = context.fileList()
+        fun hasThumb(context: Context, moderator: String): Boolean =
+                context.fileList().contains(computeFileName(moderator))
 
-            for (file in files) {
-                if (file == fileName) {
-                    return file
-                }
-            }
-            return null
-        }
+        /**
+         * Computes a hash of the moderator's name to be used as filename.
+         * @todo remove this method and just use the name.
+         */
+        private fun computeFileName(moderator: String) = moderator.hashCode().toString()
 
         /**
          * checks cache duration of special file
