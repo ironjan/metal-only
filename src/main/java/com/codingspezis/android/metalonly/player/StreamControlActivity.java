@@ -533,7 +533,7 @@ public class StreamControlActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Uri url = Uri.parse(UrlConstants.YOUTUBE_SEARCH_URL
+                Uri url = Uri.parse(UrlConstants.INSTANCE.getYOUTUBE_SEARCH_URL()
                         + searchStr);
                 Intent youtube = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(youtube);

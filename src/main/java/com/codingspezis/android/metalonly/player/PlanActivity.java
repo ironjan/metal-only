@@ -57,7 +57,7 @@ public class PlanActivity extends AppCompatActivity implements OnHTTPGrabberList
     @Background
     void loadPlan(){
         final int TIMEOUT_30_SECONDS = 30000;
-        HTTPDownloadImplementation.instance(UrlConstants.API_OLD_PLAN_URL, this, TIMEOUT_30_SECONDS).download();
+        HTTPDownloadImplementation.instance(UrlConstants.INSTANCE.getAPI_OLD_PLAN_URL(), this, TIMEOUT_30_SECONDS).download();
     }
 
     @SuppressLint("InlinedApi")

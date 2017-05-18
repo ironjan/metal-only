@@ -49,7 +49,7 @@ public class PayPalDonationActivity extends AppCompatActivity {
     }
 
     protected void showHelp() {
-        Uri metalOnly = Uri.parse(UrlConstants.METAL_ONLY_DONATION_URL);
+        Uri metalOnly = Uri.parse(UrlConstants.INSTANCE.getMETAL_ONLY_DONATION_URL());
         Intent homepage = new Intent(Intent.ACTION_VIEW, metalOnly);
         startActivity(homepage);
     }

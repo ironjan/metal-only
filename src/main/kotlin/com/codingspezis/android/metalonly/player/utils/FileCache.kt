@@ -47,7 +47,7 @@ class FileCache(private val context: Context) {
      * @return
      */
     @Synchronized fun decodeMod(moderator: String?): Bitmap? {
-        if(moderator == null){
+        if (moderator == null) {
             /* Java interop. We do not know for sure that moderator is != null */
             return null
         }
@@ -107,10 +107,8 @@ class FileCache(private val context: Context) {
 
         /**
          * checks if thumb of getModerator is already loaded
-         * @param context   context of private storage
-         * *
+         * @param context context of private storage
          * @param moderator The getModerator's name
-         * *
          * @return file name of thumb if exists - null otherwise
          */
         fun hasThumb(context: Context, moderator: String): Boolean =
@@ -124,11 +122,8 @@ class FileCache(private val context: Context) {
 
         /**
          * checks cache duration of special file
-
-         * @param context  context for shared preferences
-         * *
+         * @param context context for shared preferences
          * @param fileName name of file
-         * *
          * @return true if file is older than cache duration
          */
         fun isTooOld(context: Context, fileName: String): Boolean {
