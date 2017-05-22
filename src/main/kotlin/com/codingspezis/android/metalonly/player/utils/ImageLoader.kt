@@ -33,10 +33,15 @@ class ImageLoader(context: Context) {
     fun displayImage(moderator: String, imageView: ImageView) {
         imageViews.put(imageView, moderator)
 
-        val bitmap = memoryCache[moderator]
+        val memCachedBm = memoryCache[moderator]
+        if (memCachedBm != null) {
+            imageView.setImageBitmap(memCachedBm)
+            return
+        }
 
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap)
+        val fileCachedBm = fileCache[moderator]
+        if (fileCachedBm != null){
+            imageView.setImageBitmap(fileCachedBm)
             return
         }
 
@@ -50,11 +55,6 @@ class ImageLoader(context: Context) {
     }
 
     @Synchronized internal fun getBitmap(moderator: String): Bitmap? {
-        val b = fileCache[moderator]
-        if (b != null) {
-            return b
-        }
-
         try {
             val imageUrl = URL(UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator)
 
