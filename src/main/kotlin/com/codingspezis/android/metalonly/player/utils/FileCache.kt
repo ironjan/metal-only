@@ -46,7 +46,7 @@ class FileCache(private val context: Context) {
      * *
      * @return
      */
-    @Synchronized fun decodeMod(moderator: String?): Bitmap? {
+    @Synchronized operator fun get(moderator: String?): Bitmap? {
         if (moderator == null) {
             /* Java interop. We do not know for sure that moderator is != null */
             return null

@@ -4,13 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Handler
 import android.widget.ImageView
-
 import com.codingspezis.android.metalonly.player.R
-
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.Collections
-import java.util.WeakHashMap
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -28,14 +25,10 @@ class ImageLoader(context: Context) {
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
     private val memoryCache = MemoryCache()
-    private val fileCache: FileCache
-    private val executorService: ExecutorService
+    private val fileCache: FileCache = FileCache(context)
+    /** @todo use actual number of cpu cores here */
+    private val executorService: ExecutorService = Executors.newFixedThreadPool(5)
     private val handler = Handler()
-
-    init {
-        fileCache = FileCache(context)
-        executorService = Executors.newFixedThreadPool(5)
-    }
 
     fun displayImage(moderator: String, imageView: ImageView) {
         imageViews.put(imageView, moderator)
@@ -44,10 +37,11 @@ class ImageLoader(context: Context) {
 
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap)
-        } else {
-            queuePhoto(moderator, imageView)
-            imageView.setImageResource(stub_id)
+            return
         }
+
+        queuePhoto(moderator, imageView)
+        imageView.setImageResource(stub_id)
     }
 
     private fun queuePhoto(moderator: String, imageView: ImageView) {
@@ -56,7 +50,7 @@ class ImageLoader(context: Context) {
     }
 
     @Synchronized internal fun getBitmap(moderator: String): Bitmap? {
-        val b = fileCache.decodeMod(moderator)
+        val b = fileCache[moderator]
         if (b != null) {
             return b
         }
@@ -77,7 +71,7 @@ class ImageLoader(context: Context) {
             `is`.close()
             os.close()
 
-            return fileCache.decodeMod(moderator)
+            return fileCache[moderator]
         } catch (ex: Throwable) {
             ex.printStackTrace()
             if (ex is OutOfMemoryError) {
