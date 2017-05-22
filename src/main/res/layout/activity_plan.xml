@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentPlan"
+    class="com.codingspezis.android.metalonly.player.fragments.PlanFragment_"
     android:layout_width="match_parent"
-    android:id="@android:id/content"
     android:layout_height="match_parent"
-    tools:layout="@layout/fragment_plan">
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:indeterminate="true"
-        android:id="@android:id/progress"/>
-</FrameLayout>
+    tools:layout="@layout/fragment_plan" />
