@@ -32,7 +32,6 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.rest.spring.annotations.RestService;
 import org.springframework.web.client.RestClientException;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -69,11 +68,8 @@ public class PlanFragment extends Fragment {
     @Bean
     MetalOnlyAPIWrapper apiWrapper;
 
-    public static PlanFragment newInstance(String site) {
-        return PlanFragment_.builder()
-                .site(site)
-                .build();
-    }
+    @StringRes
+    String plan_failed_to_load, no_internet;
 
     @AfterViews
     void bindEmptyViewToList(){
@@ -84,7 +80,7 @@ public class PlanFragment extends Fragment {
     @Background
     void loadPlan() {
         if (!apiWrapper.hasConnection()) {
-            updateEmptyViewOnFailure(R.string.no_internet);
+            updateEmptyViewOnFailure(no_internet);
             return;
         }
 
@@ -93,7 +89,8 @@ public class PlanFragment extends Fragment {
             planLoaded(plan);
         } catch (RestClientException e) {
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
-            updateEmptyViewOnFailure(R.string.plan_failed_to_load);
+            String text = plan_failed_to_load + ":\n" + e.getMessage();
+            updateEmptyViewOnFailure(text);
         }
     }
 
@@ -110,8 +107,8 @@ public class PlanFragment extends Fragment {
     }
 
     @UiThread
-    void updateEmptyViewOnFailure(int stringResourceId) {
-        loadingMessageTextView.setText(stringResourceId);
+    void updateEmptyViewOnFailure(String text) {
+        loadingMessageTextView.setText(text);
         loadingProgressBar.setVisibility(View.GONE);
     }
 
