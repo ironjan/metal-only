@@ -203,4 +203,14 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     public void setRestErrorHandler(RestErrorHandler handler) {
         /* Ignore all calls */
     }
+
+    /**
+     * The API implementation has some custom settings that are applied in the Wrapper. Use this
+     * method to get a correct API implementation.
+     *
+     * @return the adapted API with our settings
+     */
+    public MetalOnlyAPI getApi(){
+        return api;
+    }
 }
