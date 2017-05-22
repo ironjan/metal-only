@@ -35,14 +35,10 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     @SystemService
     ConnectivityManager cm;
 
-    @Bean
-    MyErrorHandler myErrorHandler;
-
     @AfterInject
-    void adaptSettings() {
+    void adaptApiSettings() {
         changeTimeout();
         disableKeepAlive();
-        addErrorHandler();
     }
 
     private void changeTimeout() {
@@ -66,11 +62,6 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     private void disableKeepAlive() {
         System.setProperty("http.keepAlive", "false");
     }
-
-    private void addErrorHandler() {
-        api.setRestErrorHandler(myErrorHandler);
-    }
-
 
     /**
      * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
