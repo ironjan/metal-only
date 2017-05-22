@@ -56,36 +56,13 @@ class FileCache(private val context: Context) {
 
         if (hasThumb(context, moderator)) {
             try {
-                // decode image size
-                val o = BitmapFactory.Options()
-                o.inJustDecodeBounds = true
-                val stream1 = context.openFileInput(fileName)
 
-                BitmapFactory.decodeStream(stream1, null, o)
-                stream1.close()
+                val options = BitmapFactory.Options()
+                options.inSampleSize = scalingFactor(fileName)
 
-                // Find the correct scale value. It should be the power of 2.
-                val REQUIRED_SIZE = 70
-                var width_tmp = o.outWidth
-                var height_tmp = o.outHeight
-                var scale = 1
-                while (true) {
-                    if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
-                        break
-                    }
-
-                    width_tmp /= 2
-                    height_tmp /= 2
-                    scale *= 2
-                }
-
-                // decode with inSampleSize
-                val o2 = BitmapFactory.Options()
-                o2.inSampleSize = scale
-                val stream2 = context.openFileInput(fileName)
-
-                val bitmap = BitmapFactory.decodeStream(stream2, null, o2)
-                stream2.close()
+                val inputStream = context.openFileInput(fileName)
+                val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream.close()
 
                 return bitmap
             } catch (e: IOException) {
@@ -96,12 +73,34 @@ class FileCache(private val context: Context) {
         return null
     }
 
+    private fun scalingFactor(fileName: String): Int {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+
+        val inputStream = context.openFileInput(fileName)
+        BitmapFactory.decodeStream(inputStream, null, options)
+        inputStream.close()
+
+        var scalingFactor = 1
+        while (options.outWidth / 2 < MIN_SIZE || options.outHeight / 2 < MIN_SIZE) {
+            options.outWidth = options.outWidth / 2
+            options.outHeight = options.outHeight / 2
+            scalingFactor *= 2
+        }
+        return scalingFactor
+    }
+
     fun clear() {
         clear(context)
     }
 
     companion object {
         val WEEK_IN_MILLISECS = (7 * 24 * 60 * 60 * 1000).toLong()
+
+        /**
+         * The minimum width and height for images
+         */
+        val MIN_SIZE = 64
 
         private val TAG = FileCache::class.java.simpleName
 
