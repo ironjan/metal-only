@@ -5,7 +5,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
 import org.androidannotations.rest.spring.annotations.RestService;
@@ -17,7 +16,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * A wrapper aroung the Rest-Api implementation to catch exceptions etc.
+ * A wrapper around the Rest-Api implementation to adapt its settings. The REST API should not be
+ * used directly; only the wrapped one should be used.
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
@@ -42,20 +42,18 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     }
 
     private void changeTimeout() {
-        final ClientHttpRequestFactory requestFactory = api.getRestTemplate()
-                .getRequestFactory();
+        final ClientHttpRequestFactory requestFactory = api.getRestTemplate().getRequestFactory();
+
         if (requestFactory instanceof SimpleClientHttpRequestFactory) {
-            Log.d("HTTP", "HttpUrlConnection is used");
-            ((SimpleClientHttpRequestFactory) requestFactory)
-                    .setConnectTimeout(TIME_OUT);
-            ((SimpleClientHttpRequestFactory) requestFactory)
-                    .setReadTimeout(TIME_OUT);
+            SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) requestFactory;
+
+            factory.setConnectTimeout(TIME_OUT);
+            factory.setReadTimeout(TIME_OUT);
         } else if (requestFactory instanceof HttpComponentsClientHttpRequestFactory) {
-            Log.d("HTTP", "HttpClient is used");
-            ((HttpComponentsClientHttpRequestFactory) requestFactory)
-                    .setReadTimeout(TIME_OUT);
-            ((HttpComponentsClientHttpRequestFactory) requestFactory)
-                    .setConnectTimeout(TIME_OUT);
+            HttpComponentsClientHttpRequestFactory factory = (HttpComponentsClientHttpRequestFactory) requestFactory;
+
+            factory.setReadTimeout(TIME_OUT);
+            factory.setConnectTimeout(TIME_OUT);
         }
     }
 
