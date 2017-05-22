@@ -1,11 +1,4 @@
-
-import junit.framework.TestSuite;
-
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
-import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
