@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.fragments;
+package com.codingspezis.android.metalonly.player.plan;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
