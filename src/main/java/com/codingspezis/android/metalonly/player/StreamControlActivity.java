@@ -206,7 +206,7 @@ public class StreamControlActivity extends AppCompatActivity {
                     String genre = stats.getGenre();
                     updateShowInfo(moderator, genre);
                 } catch (NoInternetException e) {
-                    // do nothing  if there is no internet connection
+                    // FIXME show something to the user...
                 }
             }
 
