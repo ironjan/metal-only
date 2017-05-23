@@ -12,6 +12,5 @@ public final class UrlConstants {
      */
     public static final String STREAM_URL_128 = "http://server1.blitz-stream.de:4400";
 
-    public static final String API_OLD_PLAN_URL = "https://www.metal-only.de/botcon/mob.php?action=plan";
     public static final String METAL_ONLY_MODERATOR_PIC_BASE_URL = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=";
 }
