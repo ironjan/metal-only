@@ -17,6 +17,7 @@ import com.codingspezis.android.metalonly.player.plan.PlanItem;
 import com.codingspezis.android.metalonly.player.plan.PlanRealEntryItem;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan;
 
 import org.androidannotations.annotations.AfterViews;
@@ -85,9 +86,11 @@ public class PlanFragment extends Fragment {
         }
 
         try {
-            Plan plan = api.getPlan();
-            planLoaded(plan);
-        } catch (RestClientException e) {
+            apiResponseReceived(api.getPlan());
+        } catch(NoInternetException e) {
+            updateEmptyViewOnFailure(no_internet);
+        }
+        catch (RestClientException e) {
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
             String text = plan_failed_to_load + ":\n" + e.getMessage();
             updateEmptyViewOnFailure(text);
@@ -95,7 +98,13 @@ public class PlanFragment extends Fragment {
     }
 
     @UiThread
-    void planLoaded(Plan plan) {
+    void apiResponseReceived(Plan plan) {
+        // TODO check, if we're still visible?
+        if(plan == null){
+            updateEmptyViewOnFailure(plan_failed_to_load);
+            return;
+        }
+
         ArrayList<ShowInformation> shows = new ArrayList<>();
         Collections.addAll(shows, plan.getPlan());
 

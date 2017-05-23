@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * A wrapper around the Rest-Api implementation to adapt its settings. The REST API should not be
- * used directly; only the wrapped one should be used.
+ * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
@@ -81,20 +81,14 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     }
 
     /**
-     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
-     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
-     * to call API methods.
      * @return the plan or null
+     * @throws NoInternetException if no internet connection is present
+     * @throws RestClientException rethrow of underlying API implementation exception
      */
     @Override
-    public Plan getPlan() {
+    public Plan getPlan() throws RestClientException, NoInternetException {
         checkConnectivity();
-        try {
-            return api.getPlan();
-        } catch (RestClientException e) {
-            Log.d(TAG, e.getMessage(), e);
-            return null;
-        }
+        return api.getPlan();
     }
 
     /**
@@ -139,18 +133,18 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         return cleanWishGreetResponse(response);
     }
 
-    private String cleanWishGreetResponse(String response){
-        if(response == null){
+    private String cleanWishGreetResponse(String response) {
+        if (response == null) {
             return "Übermittlung fehlgeschlagen";
-        }
-        else if (response.contains("Wunsch/Gruss hinzugefügt.")){
+        } else if (response.contains("Wunsch/Gruss hinzugefügt.")) {
             return "Wunsch/Gruss hinzugefügt.";
-        }else if(response.contains("Bitte Wunsch/Gruss und einen Nick angeben")){
+        } else if (response.contains("Bitte Wunsch/Gruss und einen Nick angeben")) {
             return "Bitte Wunsch/Gruss und einen Nick angeben";
-        }else {
+        } else {
             return "Wunsch/Gruss wurde übermittelt.";
         }
     }
+
     private void checkConnectivity() {
         if (!hasConnection()) {
             throw new NoInternetException();
@@ -204,13 +198,4 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         /* Ignore all calls */
     }
 
-    /**
-     * The API implementation has some custom settings that are applied in the Wrapper. Use this
-     * method to get a correct API implementation.
-     *
-     * @return the adapted API with our settings
-     */
-    public MetalOnlyAPI getApi(){
-        return api;
-    }
 }
