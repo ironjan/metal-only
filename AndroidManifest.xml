@@ -53,10 +53,6 @@
             android:label="@string/menu_info"
             android:launchMode="singleTask" >
         </activity>
-        <activity
-            android:name=".LicenseActivity"
-            android:launchMode="singleTask" >
-        </activity>
 
         <service
             android:name="com.codingspezis.android.metalonly.player.stream.PlayerService"
