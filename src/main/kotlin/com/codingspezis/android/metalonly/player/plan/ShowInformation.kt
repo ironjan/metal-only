@@ -3,8 +3,7 @@ package com.codingspezis.android.metalonly.player.plan
 import java.util.Date
 
 /**
- * Unification interface. Combines the common ops between both data classes. The operations are
- * explicitely named differently to enforce delegation to existing methods.
+ * Interface for ShowInformation.
  */
 interface ShowInformation {
     val moderator: String

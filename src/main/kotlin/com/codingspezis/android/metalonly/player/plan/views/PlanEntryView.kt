@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.plan.ShowInformation
 import com.codingspezis.android.metalonly.player.utils.ImageLoader
-import com.codingspezis.android.metalonly.player.plan.PlanEntryDateHelper
+import com.codingspezis.android.metalonly.player.plan.ShowInformationDateHelper
 
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.ViewById
@@ -47,7 +47,7 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
     override fun bind(t: ShowInformation) {
         txtTitle?.text = t.showTitle
         txtMod?.text = t.moderator
-        txtTime?.text = PlanEntryDateHelper.fullTimeString(t)
+        txtTime?.text = ShowInformationDateHelper.fullTimeString(t)
         txtGenre?.text = t.genre
         imageLoader.displayImage(t.moderator, modImage)
         progress?.progress = 100 - computeShowProgress(t)

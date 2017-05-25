@@ -206,7 +206,7 @@ public class StreamControlActivity extends AppCompatActivity {
                     String genre = stats.getGenre();
                     updateShowInfo(moderator, genre);
                 } catch (NoInternetException e) {
-                    // FIXME show something to the user...
+                    // FIXME show share to the user...
                 }
             }
 
@@ -495,8 +495,8 @@ public class StreamControlActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        handleAction(historySaver.size() - index - 1, which);
+                    public void onClick(DialogInterface dialog, int action) {
+                        handleAction(historySaver.size() - index - 1, action);
                     }
                 }
         );

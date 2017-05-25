@@ -22,44 +22,45 @@ open class PlanFragment : Fragment() {
 
     @JvmField
     @FragmentArg
-    internal var site: String? = null
+    var site: String? = null
 
     @JvmField
     @ViewById(android.R.id.list)
-    internal var list: ListView? = null
+    var list: ListView? = null
 
     @JvmField
     @ViewById
-    internal var loadingMessageTextView: TextView? = null
+    var loadingMessageTextView: TextView? = null
     @JvmField
     @ViewById(android.R.id.progress)
-    internal var loadingProgressBar: ProgressBar? = null
+    var loadingProgressBar: ProgressBar? = null
     @JvmField
     @StringRes
-    internal var plan_failed_to_load: String? = null
+    var plan_failed_to_load: String? = null
     @JvmField
     @ViewById(android.R.id.empty)
-    internal var empty: View? = null
+    var empty: View? = null
 
     @JvmField
     @RestService
-    internal var api: MetalOnlyAPI? = null
+    var api: MetalOnlyAPI? = null
 
     @JvmField
     @Bean
-    internal var planEntryToItemConverter: PlanEntryToItemConverter? = null
+    var planEntryToItemConverter: PlanEntryToItemConverter? = null
     @JvmField
     @Bean
-    internal var apiWrapper: MetalOnlyAPIWrapper? = null
+    var apiWrapper: MetalOnlyAPIWrapper? = null
 
+    @JvmField
     @StringRes
-    internal var plan: String? = null
+    var plan: String? = null
     @JvmField
     @StringArrayRes
-    internal var days: Array<String>? = null
+    var days: Array<String>? = null
     @JvmField
     @StringRes
-    internal var no_internet: String? = null
+    var no_internet: String? = null
 
     @AfterViews
     internal fun bindEmptyViewToList() {
