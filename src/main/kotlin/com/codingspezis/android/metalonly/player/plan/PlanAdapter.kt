@@ -11,12 +11,6 @@ import com.codingspezis.android.metalonly.player.utils.ImageLoader
 import java.util.*
 
 class PlanAdapter(private val context: Context, private val data: ArrayList<PlanItem>) : BaseAdapter() {
-    private val imageLoader: ImageLoader
-
-    init {
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        imageLoader = ImageLoader(context.applicationContext)
-    }
 
     override fun getCount(): Int {
         return data.size
@@ -48,15 +42,8 @@ class PlanAdapter(private val context: Context, private val data: ArrayList<Plan
 
     private fun inflateSectionView(item: PlanSectionItem): View {
         val view = SectionView_.build(context, null)
-        view.setOnClickListener(null)
-        view.setOnLongClickListener(null)
-        view.isLongClickable = false
         view.bind(item)
         return view
-    }
-
-    companion object {
-        private var inflater: LayoutInflater? = null
     }
 
 }

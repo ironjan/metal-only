@@ -175,6 +175,15 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     }
 
     /**
+     * Checks if the device has <b>no</b> internet connection.
+     *
+     * @return <code>true</code>, if the phone is not connected to the internet.
+     */
+    public boolean hasNoInternetConnection(){
+        return !hasConnection();
+    }
+
+    /**
      * Do not use this method.
      */
     @Override
