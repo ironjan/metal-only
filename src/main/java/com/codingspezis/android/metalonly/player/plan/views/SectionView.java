@@ -15,7 +15,7 @@ import org.androidannotations.annotations.ViewById;
  * A view to divide sections in plans.
  */
 @EViewGroup(R.layout.view_plan_section)
-public class SectionView extends LinearLayout {
+public class SectionView extends LinearLayout implements CustomDataView<PlanSectionItem> {
 
     @ViewById(android.R.id.title)
     TextView textTitle;

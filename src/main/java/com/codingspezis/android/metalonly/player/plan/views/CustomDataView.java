@@ -1,15 +1,13 @@
 package com.codingspezis.android.metalonly.player.plan.views;
 
-import com.codingspezis.android.metalonly.player.plan.ShowInformation;
-
 /**
- * Interface to provide a binding method.
+ * Provides a data binding method for custom views.
  */
 public interface CustomDataView<T> {
     /**
      * Binds t to the view
      *
-     * @param planData the item to be displayed
+     * @param t the item to be displayed
      */
-    void bind(ShowInformation planData);
+    void bind(T t);
 }
