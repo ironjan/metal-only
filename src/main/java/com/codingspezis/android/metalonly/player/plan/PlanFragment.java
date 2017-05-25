@@ -126,7 +126,7 @@ public class PlanFragment extends Fragment {
         try {
             PlanRealEntryItem entryItem = (PlanRealEntryItem) clickedObject;
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(entryItem.planData, getActivity()));
+            builder.setItems(R.array.plan_options_array, new PlanEntryClickListener(entryItem.getShowInformation(), getActivity()));
             builder.show();
         } catch (ClassCastException e) {
             // don't need to do stuff

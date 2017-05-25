@@ -3,14 +3,10 @@ package com.codingspezis.android.metalonly.player.plan
 /**
  * Represents a plan entry.
  *
- *
- * Base class for [PlanRealEntryItem], [PlanSectionItem]
+ * Base for [PlanRealEntryItem], [PlanSectionItem]
  */
-abstract class PlanItem {
+interface PlanItem {
 
-    @JvmField
-    internal var planData: ShowInformation? = null
-
-    abstract val isSection: Boolean
+    val isSection: Boolean
 
 }

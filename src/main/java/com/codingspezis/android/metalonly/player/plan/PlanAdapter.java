@@ -64,7 +64,7 @@ public class PlanAdapter extends BaseAdapter {
 
     private View inflateEntryItemView(int position) {
         PlanEntryView view = PlanEntryView_.build(context, null);
-        ShowInformation tmpData = data.get(position).planData;
+        ShowInformation tmpData = ((PlanRealEntryItem) data.get(position)).getShowInformation();
         view.bind(tmpData);
         return view;
     }
