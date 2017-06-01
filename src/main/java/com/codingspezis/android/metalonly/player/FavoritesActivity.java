@@ -7,11 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.widget.ListView;
 
-import com.codingspezis.android.metalonly.player.fragments.FavoritesFragment;
-import com.codingspezis.android.metalonly.player.fragments.FavoritesFragment_;
+import com.codingspezis.android.metalonly.player.favorites.FavoritesFragment;
+import com.codingspezis.android.metalonly.player.favorites.FavoritesFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

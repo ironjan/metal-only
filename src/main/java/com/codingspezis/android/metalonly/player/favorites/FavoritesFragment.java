@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.fragments;
+package com.codingspezis.android.metalonly.player.favorites;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,9 +17,6 @@ import android.widget.ListView;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
-import com.codingspezis.android.metalonly.player.favorites.Song;
-import com.codingspezis.android.metalonly.player.favorites.SongAdapterFavorites;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
