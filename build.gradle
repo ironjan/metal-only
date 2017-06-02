@@ -7,7 +7,7 @@ def versionBuild = 0  // bump for dogfood builds, public betas, etc.
 
 buildscript {
     ext.kotlin_version = '1.1.2-3'
-    ext.kotlin_version = '1.1.1'
+
     repositories {
         mavenCentral()
         maven { url 'http://repo1.maven.org/maven2' }
@@ -69,10 +69,12 @@ android {
           versionName "${versionMajor}.${versionMinor}.${versionPatch}-${versionBuild}"
         }
 
-        minSdkVersion 11
+        minSdkVersion 18
         targetSdkVersion 25
 
         applicationId "com.codingspezis.android.metalonly.player"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField  "String", "METAL_ONLY_API_BASE_URL", "\"https://www.metal-only.de/botcon/mob.php?action=\""
         buildConfigField  "String", "API_STATS_PATH", "\"stats\""
@@ -120,8 +122,8 @@ android {
 
 def androidannotationsVersion = '4.2.0'
 dependencies {
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
 
 
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
@@ -139,6 +141,14 @@ dependencies {
 
     ktlint 'com.github.shyiko:ktlint:0.6.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    testCompile 'junit:junit:4.12'
+
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support:support-annotations:25.3.0'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }
 
 task wrapper(type: Wrapper) {
