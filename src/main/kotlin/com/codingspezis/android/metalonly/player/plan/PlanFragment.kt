@@ -8,13 +8,24 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.utils.jsonapi.*
-import org.androidannotations.annotations.*
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException
+import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan
+import com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry
+import org.androidannotations.annotations.AfterViews
+import org.androidannotations.annotations.Background
+import org.androidannotations.annotations.Bean
+import org.androidannotations.annotations.EFragment
+import org.androidannotations.annotations.FragmentArg
+import org.androidannotations.annotations.ItemClick
+import org.androidannotations.annotations.UiThread
+import org.androidannotations.annotations.ViewById
 import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes
 import org.androidannotations.rest.spring.annotations.RestService
 import org.springframework.web.client.RestClientException
-import java.util.*
+import java.util.Collections
 
 @EFragment(R.layout.fragment_plan)
 @SuppressLint("SimpleDateFormat", "Registered")
