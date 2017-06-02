@@ -7,7 +7,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.codingspezis.android.metalonly.player.fragments.WishFragment;
+import com.codingspezis.android.metalonly.player.wish.WishFragment;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

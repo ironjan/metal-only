@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.fragments;
+package com.codingspezis.android.metalonly.player.favorites;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,9 +17,6 @@ import android.widget.ListView;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
-import com.codingspezis.android.metalonly.player.favorites.Song;
-import com.codingspezis.android.metalonly.player.favorites.SongAdapterFavorites;
-import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
@@ -63,7 +60,7 @@ public class FavoritesFragment extends Fragment {
     private SongSaver favoritesSaver;
 
     /**
-     * asks if user is sure to delete something
+     * asks if user is sure to delete share
      *
      * @param yes what is to do if user clicks yes
      * @param no  what is to do if user clicks no
@@ -111,7 +108,7 @@ public class FavoritesFragment extends Fragment {
         alert.setNegativeButton(R.string.abort, null);
         alert.setPositiveButton(R.string.ok, new OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int action) {
                 EditText artist = (EditText) v.findViewById(R.id.edit_artist);
                 EditText txtTitle = (EditText) v.findViewById(R.id.edit_title);
 
@@ -232,8 +229,8 @@ public class FavoritesFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setItems(R.array.favorite_options_array, new OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                handleAction(favoritesSaver.size() - position - 1, which);
+            public void onClick(DialogInterface dialog, int action) {
+                handleAction(favoritesSaver.size() - position - 1, action);
             }
         });
         builder.show();
@@ -243,7 +240,7 @@ public class FavoritesFragment extends Fragment {
     void deleteAllClicked() {
         askSureDelete(getActivity(), new OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int action) {
                 favoritesSaver.clear();
                 displayFavorites();
             }
