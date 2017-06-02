@@ -3,7 +3,10 @@ package com.codingspezis.android.metalonly.player.plan
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 
-class PlanEntryDateHelper() {
+/**
+ * Singleton helper class to convert {@link ShowInformation} dates to readable {@link String}s.
+ */
+class ShowInformationDateHelper {
     companion object {
         @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_TIME = SimpleDateFormat("HH:mm")

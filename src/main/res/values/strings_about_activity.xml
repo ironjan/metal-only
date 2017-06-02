@@ -3,7 +3,9 @@
 
     <string name="mailaddress_codingspezis" translatable="false">lippertsjan+metalonly@gmail.com</string>
     <string name="url_codingspezis" translatable="false">http://ironjan.de/metal-only</string>
-    <string name="aboutThisApp">Diese App bringt den Internetstream von http://www.metal-only.de auf Android!&lt;br/>\n&lt;br/>\nEntwickelt wird die App auf https://github.com/ironjan/metal-only. Wir freuen uns sehr über Mit-Entwickler!</string>
+    <string name="aboutThisApp">Diese App bringt den Internetstream von http://www.metal-only.de auf Android!
+        \n\n
+        Entwickelt wird die App auf https://github.com/ironjan/metal-only. Wir freuen uns sehr über Mit-Entwickler!</string>
     <string name="about_category_app" translatable="false">App</string>
     <string name="about_name">Name:</string>
     <string name="about_version">Version:</string>

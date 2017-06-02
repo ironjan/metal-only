@@ -65,7 +65,7 @@ public class HTTPGrabber extends Thread {
                             new OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog,
-                                                    int which) {
+                                                    int action) {
                                     Intent tmpIntent = new Intent(
                                             Intent.ACTION_MAIN);
                                     tmpIntent

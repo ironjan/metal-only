@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.fragments;
+package com.codingspezis.android.metalonly.player.wish;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
