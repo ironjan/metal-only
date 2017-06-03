@@ -13,6 +13,7 @@ import android.widget.Toast
 
 import com.codingspezis.android.metalonly.player.R
 import org.androidannotations.annotations.AfterViews
+import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EFragment
 import org.androidannotations.annotations.ViewById
 import org.androidannotations.annotations.res.StringRes
@@ -31,7 +32,8 @@ open class PayPalDonationFragment: Fragment() {
     @ViewById(R.id.btnSend)
     protected var btnSend: Button? = null
 
-    private var prefs: SharedPreferences? = null
+    /** @todo move this to AA pref */
+    private val prefs: SharedPreferences? by lazy { PreferenceManager.getDefaultSharedPreferences(activity) }
 
     private var donator: String? = null
 
@@ -43,21 +45,17 @@ open class PayPalDonationFragment: Fragment() {
 
     @AfterViews
     fun afterViews() {
-        bindActions()
+        bindEditDonationKeyBoardActions()
         fetchPrefValues()
-        bindPrefValues()
     }
 
 
-    private fun bindActions() {
+    private fun bindEditDonationKeyBoardActions() {
         editDonationValue!!.filters = arrayOf<InputFilter>(CurrencyFormatInputFilter())
-
-        btnSend!!.setOnClickListener { sendDonation() }
 
         // just setting in xml does not work...
         editDonationValue!!.imeOptions = EditorInfo.IME_ACTION_GO
-        editDonationValue!!.setImeActionLabel(actionLabel,
-                EditorInfo.IME_ACTION_GO)
+        editDonationValue!!.setImeActionLabel(actionLabel, EditorInfo.IME_ACTION_GO)
 
         editDonationValue!!.setOnEditorActionListener { _, actionId, _ ->
                     when (actionId) {
@@ -74,38 +72,27 @@ open class PayPalDonationFragment: Fragment() {
     }
 
     private fun fetchPrefValues() {
-        prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         donator = prefs!!.getString(getString(R.string.paypal_key_sender), "")
-        try {
-            donationValue = prefs!!.getFloat(getString(R.string.paypal_key_value), -1.0f)
-        } catch (e: ClassCastException) {
-            fetchDeprecatedDonationValuePref()
-        }
-    }
-
-    private fun fetchDeprecatedDonationValuePref() {
-        // Because this pref was a String in earlier versions
-        try {
-            val donationValueDeprecated = prefs!!.getString(getString(R.string.paypal_key_value), "-1.0")
-            donationValue = java.lang.Float.valueOf(donationValueDeprecated)!!
-        } catch (ex: NumberFormatException) {
-            donationValue = -1.0f
-        }
-    }
-
-    private fun bindPrefValues() {
         editDonator!!.setText(donator)
+
+        try {
+            donationValue = prefs!!.getFloat(getString(R.string.paypal_key_value), 0.0f)
+        } catch (e: ClassCastException) {
+            donationValue = 0.0f /* We do not fix the deprecated value, we just ignore it */
+        }
+
         if (donationValue > 0.0f) {
-            editDonationValue!!.setText(donationValue.toString() + "")
+            editDonationValue!!.setText("$donationValue")
         }
     }
 
+    @Click(R.id.btnSend)
     protected fun sendDonation() {
         updateValues()
 
         if (donationValue <= 0) {
-            Toast.makeText(activity, "Der Spendenbetrag kann nicht leer sein.",
-                    Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Der Spendenbetrag kann nicht leer sein.", Toast.LENGTH_LONG)
+                    .show()
             return
         }
 
