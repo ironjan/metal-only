@@ -195,7 +195,7 @@
     <string name="aboutDontSendCrashReports">Das automatische Senden von Absturz- und Fehlerberichten hilft dabei, die App zu verbessern. Da ich nur Fehler beheben kann, die mir bekannt sind, würde ich dich bitten, hier keinen Haken zu setzen. Die Einstellung wird erst zum nächsten Neustart der App aktiv.</string>
     <string name="wish_list_full">Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich.</string>
     <string name="wish_list_full_short">Sorry, Playlist ist voll.</string>
-
+    <string name="compliance_payment_policy">Metal Only e.V. ist ein </string>
     <string name="unexpectedError">Ein unerwarteter Fehler ist aufgetreten. Bitte melde dies über “Feedback senden”.</string>
 
 </resources>
