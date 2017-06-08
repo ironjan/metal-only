@@ -19,7 +19,7 @@ import org.androidannotations.annotations.ViewById
 import org.androidannotations.annotations.res.StringRes
 
 @EFragment(R.layout.fragment_donation_paypal)
-open class PayPalDonationFragment: Fragment() {
+open class PayPalDonationFragment : Fragment() {
 
     @JvmField
     @ViewById(R.id.editDonator)
@@ -48,7 +48,6 @@ open class PayPalDonationFragment: Fragment() {
         bindEditDonationKeyBoardActions()
         fetchPrefValues()
     }
-
 
     private fun bindEditDonationKeyBoardActions() {
         editDonationValue!!.filters = arrayOf<InputFilter>(CurrencyFormatInputFilter())
