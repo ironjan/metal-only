@@ -107,7 +107,7 @@ class FileCache(private val context: Context) {
         /**
          * checks if thumb of getModerator is already loaded
          * @param context context of private storage
-         * @param moderator The getModerator's name
+         * @param moderator The moderator's name
          * @return file name of thumb if exists - null otherwise
          */
         fun hasThumb(context: Context, moderator: String): Boolean =
@@ -115,9 +115,8 @@ class FileCache(private val context: Context) {
 
         /**
          * Computes a hash of the moderator's name to be used as filename.
-         * @todo remove this method and just use the name.
          */
-        private fun computeFileName(moderator: String) = moderator.hashCode().toString()
+        private fun computeFileName(moderator: String) = moderator
 
         /**
          * checks cache duration of special file
