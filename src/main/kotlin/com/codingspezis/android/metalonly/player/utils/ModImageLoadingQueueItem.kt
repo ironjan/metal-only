@@ -5,4 +5,4 @@ import android.widget.ImageView
 /**
  * Represents one mod image in the loading queue.
  */
-internal class ModImageLoadingQueueItem(val moderator: String, val imageView: ImageView)
+internal data class ModImageLoadingQueueItem(val moderator: String, val imageView: ImageView)
