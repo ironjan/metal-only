@@ -12,7 +12,6 @@ internal class MemoryCache : Cache {
     private var allocatedBytes: Long = 0
     private val maxMemoryInBytes: Long = Runtime.getRuntime().maxMemory() / 4
 
-
     override fun set(moderator: String, newBitmap: Bitmap?) {
         try {
             val oldBitmap: Bitmap? = if (MEMORY_CACHE.containsKey(moderator)) MEMORY_CACHE[moderator]

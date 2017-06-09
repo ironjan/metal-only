@@ -40,7 +40,7 @@ class FileCache(private val context: Context) : Cache {
 
     override fun set(moderator: String, newBitmap: Bitmap?) {
         val outputStream = getOutputStream(moderator)
-        newBitmap!!.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        newBitmap!!.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         outputStream.close()
     }
 
@@ -133,6 +133,4 @@ class FileCache(private val context: Context) : Cache {
             }
         }
     }
-
-
 }
