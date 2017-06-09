@@ -147,13 +147,17 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Override
     public void onPause() {
+        saveInputInPrefs();
+        super.onPause();
+    }
+
+    private void saveInputInPrefs() {
         wishPrefs.edit()
                 .nick().put(editNick.getText().toString())
                 .artist().put(editArtist.getText().toString())
                 .title().put(editTitle.getText().toString())
                 .greeting().put(editRegard.getText().toString()).
                 apply();
-        super.onPause();
     }
 
     /**
@@ -248,6 +252,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @Override
     public void onSuccess() {
         notifyUser(R.string.sent);
+        clearSongAndWish();
         getActivity().finish();
     }
 
@@ -270,10 +275,15 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @Click(R.id.btnClear)
-    @UiThread
     void btnClearClicked(){
+        clearSongAndWish();
+    }
+
+    @UiThread
+    void clearSongAndWish() {
         editArtist.setText("");
         editTitle.setText("");
         editRegard.setText("");
+        saveInputInPrefs();
     }
 }
