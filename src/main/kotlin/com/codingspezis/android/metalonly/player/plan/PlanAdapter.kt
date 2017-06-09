@@ -1,14 +1,11 @@
 package com.codingspezis.android.metalonly.player.plan
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.codingspezis.android.metalonly.player.plan.views.PlanEntryView_
 import com.codingspezis.android.metalonly.player.plan.views.SectionView_
-import com.codingspezis.android.metalonly.player.utils.ImageLoader
-import java.util.*
 
 class PlanAdapter(private val context: Context, private val data: ArrayList<PlanItem>) : BaseAdapter() {
 
