@@ -268,4 +268,12 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.wish_send);
     }
+
+    @Click(R.id.btnClear)
+    @UiThread
+    void btnClearClicked(){
+        editArtist.setText("");
+        editTitle.setText("");
+        editRegard.setText("");
+    }
 }
