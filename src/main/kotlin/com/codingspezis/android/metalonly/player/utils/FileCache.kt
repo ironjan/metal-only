@@ -17,25 +17,34 @@ import java.util.Calendar
 /**
  * A file cache based on [https://github.com/thest1/LazyList](https://github.com/thest1/LazyList). It
  * was modified to work with internal storage and a cache duration of 1 week. We don't use URLs
- * anymore but moderator names (as this is what the cache is for). We also added some synchornized
+ * anymore but moderator names (as this is what the cache is for). We also added some synchronized
  * statements.
  *
  * @todo Why were the synchronized statements necessary?
  */
 class FileCache(private val context: Context) : Cache {
+    init {
+        removeDeprecatedPrefCache()
+    }
+
+    /**
+     * Clears the previously used pref values for caching. The pref values contained the name of the
+     * moderator and the lastModified time; they are not used anymore.
+     *
+     * @todo Remove in 0.7 or 0.8
+     */
+    private fun removeDeprecatedPrefCache() {
+        val preferences = context.getSharedPreferences(context.getString(R.string.app_name), 0)
+        val editor = preferences.edit()
+        preferences.all.keys
+                .filter { it.startsWith(StreamControlActivity.KEY_SP_MODTHUMBDATE) }
+                .forEach { editor.remove(it) }
+        editor.apply()
+    }
+
     @Synchronized @Throws(FileNotFoundException::class)
     fun getOutputStream(moderator: String): FileOutputStream {
-        val fileName = computeFileName(moderator)
-        if (existsAndIsRecent(context, fileName)) {
-            context.deleteFile(fileName)
-        }
-
-        val editor = context.getSharedPreferences(context.getString(R.string.app_name), 0).edit()
-        editor.putLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, Calendar
-                .getInstance().timeInMillis)
-        editor.apply()
-
-        return context.openFileOutput(fileName, Context.MODE_PRIVATE)
+        return context.openFileOutput(moderator, Context.MODE_PRIVATE)
     }
 
     override fun set(moderator: String, newBitmap: Bitmap?) {
@@ -56,7 +65,7 @@ class FileCache(private val context: Context) : Cache {
             return null
         }
 
-        val fileName = computeFileName(moderator)
+        val fileName = moderator
 
         if (existsAndIsRecent(context, moderator)) {
             try {
@@ -108,15 +117,10 @@ class FileCache(private val context: Context) : Cache {
         private val TAG = FileCache::class.java.simpleName
 
         /**
-         * Computes a hash of the moderator's name to be used as filename.
-         */
-        private fun computeFileName(moderator: String) = moderator
-
-        /**
          * checks cache duration of special file
          * @param context context for shared preferences
          * @param fileName name of file
-         * @return true if file is older than cache duration
+         * @return true if file exists and is recent enough
          */
         fun existsAndIsRecent(context: Context, fileName: String): Boolean {
             val file = File("${context.filesDir.absolutePath}/$fileName")
