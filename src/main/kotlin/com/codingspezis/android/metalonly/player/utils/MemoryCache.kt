@@ -8,33 +8,34 @@ import java.util.Collections
  * A memory cache based on  [https://github.com/thest1/LazyList](https://github.com/thest1/LazyList
  * which uses 25% of the available heap to allocate images.
  */
-internal class MemoryCache {
+internal class MemoryCache : Cache {
     private var allocatedBytes: Long = 0
     private val maxMemoryInBytes: Long = Runtime.getRuntime().maxMemory() / 4
 
-    operator fun get(id: String): Bitmap? {
+
+    override fun set(moderator: String, newBitmap: Bitmap?) {
         try {
-            return if (MEMORY_CACHE.containsKey(id)) MEMORY_CACHE[id]
+            val oldBitmap: Bitmap? = if (MEMORY_CACHE.containsKey(moderator)) MEMORY_CACHE[moderator]
+            else null
+
+            deallocate(oldBitmap)
+            MEMORY_CACHE.put(moderator, newBitmap!!)
+            allocate(newBitmap)
+
+            reduceAllocationSpaceToMaximum()
+        } catch (t: Throwable) {
+            t.printStackTrace()
+        }
+    }
+
+    override operator fun get(moderator: String?): Bitmap? {
+        try {
+            return if (MEMORY_CACHE.containsKey(moderator)) MEMORY_CACHE[moderator]
             else null
         } catch (ex: NullPointerException) {
             /* NPE may happen here  http://code.google.com/p/osmdroid/issues/detail?id=78 so we ignore */
             return null
         }
-    }
-
-    fun put(id: String, newBitmap: Bitmap) {
-        try {
-            val bitmap: Bitmap? = if (MEMORY_CACHE.containsKey(id)) MEMORY_CACHE[id]
-            else null
-            deallocate(bitmap)
-            MEMORY_CACHE.put(id, newBitmap)
-            allocate(newBitmap)
-
-            reduceAllocationSpaceToMaximum()
-        } catch (th: Throwable) {
-            th.printStackTrace()
-        }
-
     }
 
     private fun reduceAllocationSpaceToMaximum() {
@@ -66,7 +67,7 @@ internal class MemoryCache {
         else 0
     }
 
-    fun clear() {
+    override fun clear() {
         try {
             MEMORY_CACHE.clear()
             allocatedBytes = 0

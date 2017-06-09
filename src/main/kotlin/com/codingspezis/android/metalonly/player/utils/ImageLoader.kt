@@ -2,6 +2,7 @@ package com.codingspezis.android.metalonly.player.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Handler
 import android.widget.ImageView
 import com.codingspezis.android.metalonly.player.R
@@ -24,8 +25,9 @@ class ImageLoader(context: Context) {
     internal val stub_id = R.drawable.mo_wait
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
-    private val memoryCache = MemoryCache()
-    private val fileCache: FileCache = FileCache(context)
+    private val memoryCache: Cache = MemoryCache()
+    private val fileCache: Cache = FileCache(context)
+
     /** @todo use actual number of cpu cores here */
     private val executorService: ExecutorService = Executors.newFixedThreadPool(5)
     private val handler = Handler()
@@ -41,16 +43,13 @@ class ImageLoader(context: Context) {
 
         val fileCachedBm = fileCache[moderator]
         if (fileCachedBm != null){
+            memoryCache[moderator] = fileCachedBm
             imageView.setImageBitmap(fileCachedBm)
             return
         }
 
-        queuePhoto(moderator, imageView)
-        imageView.setImageResource(stub_id)
-    }
-
-    private fun queuePhoto(moderator: String, imageView: ImageView) {
         executorService.submit(ImageDownloader(ModImageLoadingQueueItem(moderator, imageView)))
+        imageView.setImageResource(stub_id)
     }
 
     internal fun imageViewReused(modImageLoadingQueueItem: ModImageLoadingQueueItem): Boolean {
@@ -67,7 +66,9 @@ class ImageLoader(context: Context) {
                 }
 
                 val bitmap = downloadImage(queueItem.moderator)
-                memoryCache.put(queueItem.moderator, bitmap!!)
+
+                memoryCache[queueItem.moderator] = bitmap
+
                 if (imageViewReused(queueItem)) {
                     return
                 }
@@ -87,13 +88,12 @@ class ImageLoader(context: Context) {
                 conn.readTimeout = 30000
                 conn.instanceFollowRedirects = true
 
-                val `is` = conn.inputStream
-                val os = fileCache.getOutputStream(moderator)
+                val inputStream = conn.inputStream
 
-                CopyStreamImplementation.copy(`is`, os)
+                val bitmap = BitmapFactory.decodeStream(inputStream, null, BitmapFactory.Options())
+                fileCache[moderator] = bitmap
+                inputStream.close()
 
-                `is`.close()
-                os.close()
 
                 return fileCache[moderator]
             } catch (ex: Throwable) {

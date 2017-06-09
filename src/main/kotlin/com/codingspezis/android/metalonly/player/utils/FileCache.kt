@@ -7,6 +7,7 @@ import android.util.Log
 
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.StreamControlActivity
+import java.io.File
 
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -19,16 +20,13 @@ import java.util.Calendar
  * anymore but moderator names (as this is what the cache is for). We also added some synchornized
  * statements.
  *
- * @todo Can "isTooOld" etc. use regular file attributes?
- *
  * @todo Why were the synchronized statements necessary?
  */
-class FileCache(private val context: Context) {
-
+class FileCache(private val context: Context) : Cache {
     @Synchronized @Throws(FileNotFoundException::class)
     fun getOutputStream(moderator: String): FileOutputStream {
         val fileName = computeFileName(moderator)
-        if (hasThumb(context, fileName)) {
+        if (existsAndIsRecent(context, fileName)) {
             context.deleteFile(fileName)
         }
 
@@ -40,13 +38,19 @@ class FileCache(private val context: Context) {
         return context.openFileOutput(fileName, Context.MODE_PRIVATE)
     }
 
+    override fun set(moderator: String, newBitmap: Bitmap?) {
+        val outputStream = getOutputStream(moderator)
+        newBitmap!!.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        outputStream.close()
+    }
+
     /**
      * decodes image and scales it to reduce memory consumption
      * @param moderator
      * *
      * @return
      */
-    @Synchronized operator fun get(moderator: String?): Bitmap? {
+    @Synchronized override operator fun get(moderator: String?): Bitmap? {
         if (moderator == null) {
             /* Java interop. We do not know for sure that moderator is != null */
             return null
@@ -54,7 +58,7 @@ class FileCache(private val context: Context) {
 
         val fileName = computeFileName(moderator)
 
-        if (hasThumb(context, moderator)) {
+        if (existsAndIsRecent(context, moderator)) {
             try {
 
                 val options = BitmapFactory.Options()
@@ -90,10 +94,9 @@ class FileCache(private val context: Context) {
         return scalingFactor
     }
 
-    fun clear() {
+    override fun clear() {
         clear(context)
     }
-
     companion object {
         val WEEK_IN_MILLISECS = (7 * 24 * 60 * 60 * 1000).toLong()
 
@@ -103,15 +106,6 @@ class FileCache(private val context: Context) {
         val MIN_SIZE = 64
 
         private val TAG = FileCache::class.java.simpleName
-
-        /**
-         * checks if thumb of getModerator is already loaded
-         * @param context context of private storage
-         * @param moderator The moderator's name
-         * @return file name of thumb if exists - null otherwise
-         */
-        fun hasThumb(context: Context, moderator: String): Boolean =
-                context.fileList().contains(computeFileName(moderator))
 
         /**
          * Computes a hash of the moderator's name to be used as filename.
@@ -124,22 +118,21 @@ class FileCache(private val context: Context) {
          * @param fileName name of file
          * @return true if file is older than cache duration
          */
-        fun isTooOld(context: Context, fileName: String): Boolean {
-            val settings = context.getSharedPreferences(context.getString(R.string.app_name), 0)
-            val modThumDate = settings.getLong(StreamControlActivity.KEY_SP_MODTHUMBDATE + fileName, 0)
-            val currentDate = Calendar.getInstance().timeInMillis
+        fun existsAndIsRecent(context: Context, fileName: String): Boolean {
+            val file = File("${context.filesDir.absolutePath}/$fileName")
+            val currentTimeInMillis = Calendar.getInstance().timeInMillis
+            val timeSinceLastModification = currentTimeInMillis - file.lastModified()
 
-            return currentDate - modThumDate > WEEK_IN_MILLISECS
+            return timeSinceLastModification < WEEK_IN_MILLISECS
         }
 
         @Synchronized fun clear(context: Context) {
             val files = context.fileList()
             for (file in files) {
-                if (isTooOld(context, file)) {
-                    context.deleteFile(file)
-                }
+                context.deleteFile(file)
             }
         }
     }
+
 
 }
