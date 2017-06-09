@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils
 
 import android.graphics.Bitmap
+import com.codingspezis.android.metalonly.player.R
 
 /**
  * Class to bind a Bitmap to an ImageView on the UIThread
@@ -15,7 +16,7 @@ internal class BitmapDisplayer(private val imageLoader: ImageLoader, var bitmap:
         if (bitmap != null) {
             modImageLoadingQueueItem.imageView.setImageBitmap(bitmap)
         } else {
-            modImageLoadingQueueItem.imageView.setImageResource(this.imageLoader.stub_id)
+            modImageLoadingQueueItem.imageView.setImageResource(R.drawable.mo_wait)
         }
     }
 }

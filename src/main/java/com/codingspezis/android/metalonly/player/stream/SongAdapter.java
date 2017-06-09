@@ -66,9 +66,9 @@ public class SongAdapter extends BaseAdapter {
             txtTime.setText("");
         }
 
-        ImageView image = (ImageView) view.findViewById(R.id.modImage);
-        String thumb = song.getThumb();
-        imageLoader.displayImage(thumb, image);
+        ImageView imageView = (ImageView) view.findViewById(R.id.modImage);
+        String moderator = song.getThumb();
+        imageLoader.loadImage(moderator, imageView);
 
         return view;
     }

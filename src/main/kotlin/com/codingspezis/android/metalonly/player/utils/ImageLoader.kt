@@ -5,10 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.widget.ImageView
-import com.codingspezis.android.metalonly.player.R
+import org.androidannotations.api.UiThreadExecutor
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.*
+import java.util.Collections
+import java.util.WeakHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -22,34 +23,36 @@ import java.util.concurrent.Executors
  */
 class ImageLoader(context: Context) {
 
-    internal val stub_id = R.drawable.mo_wait
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
     private val memoryCache: Cache = MemoryCache()
     private val fileCache: Cache = FileCache(context)
 
     /** @todo use actual number of cpu cores here */
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(5)
+    private val executorService: ExecutorService = Executors.newFixedThreadPool(8)
     private val handler = Handler()
 
-    fun displayImage(moderator: String, imageView: ImageView) {
+    fun loadImage(moderator: String, imageView: ImageView) {
         imageViews.put(imageView, moderator)
 
         val memCachedBm = memoryCache[moderator]
         if (memCachedBm != null) {
-            imageView.setImageBitmap(memCachedBm)
+            replaceImage(imageView, memCachedBm)
             return
         }
 
         val fileCachedBm = fileCache[moderator]
-        if (fileCachedBm != null){
+        if (fileCachedBm != null) {
             memoryCache[moderator] = fileCachedBm
-            imageView.setImageBitmap(fileCachedBm)
+            replaceImage(imageView, fileCachedBm)
             return
         }
 
         executorService.submit(ImageDownloader(ModImageLoadingQueueItem(moderator, imageView)))
-        imageView.setImageResource(stub_id)
+    }
+
+    internal fun replaceImage(imageView: ImageView, bitmap: Bitmap) {
+        UiThreadExecutor.runTask("", { imageView.setImageBitmap(bitmap) }, 0L)
     }
 
     internal fun imageViewReused(modImageLoadingQueueItem: ModImageLoadingQueueItem): Boolean {
@@ -93,7 +96,6 @@ class ImageLoader(context: Context) {
                 val bitmap = BitmapFactory.decodeStream(inputStream, null, BitmapFactory.Options())
                 fileCache[moderator] = bitmap
                 inputStream.close()
-
 
                 return fileCache[moderator]
             } catch (ex: Throwable) {
