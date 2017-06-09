@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Locale;
 
 @EFragment(R.layout.fragment_wish)
-@OptionsMenu(R.menu.help)
+@OptionsMenu(R.menu.wishmenu)
 public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
 
@@ -184,6 +184,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @Click(R.id.btnSend)
+    @OptionsItem(R.id.ic_menu_send)
     void sendButtonClicked() {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
