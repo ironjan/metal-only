@@ -50,8 +50,7 @@ class ImageLoader(context: Context) {
     }
 
     private fun queuePhoto(moderator: String, imageView: ImageView) {
-        val p = ModImageLoadingQueueItem(moderator, imageView)
-        executorService.submit(PhotosLoader(p))
+        executorService.submit(ImageDownloader(ModImageLoadingQueueItem(moderator, imageView)))
     }
 
     internal fun imageViewReused(modImageLoadingQueueItem: ModImageLoadingQueueItem): Boolean {
@@ -59,19 +58,20 @@ class ImageLoader(context: Context) {
         return tag == null || tag != modImageLoadingQueueItem.moderator
     }
 
-    internal inner class PhotosLoader(var modImageLoadingQueueItem: ModImageLoadingQueueItem) : Runnable {
+    internal inner class ImageDownloader(var queueItem: ModImageLoadingQueueItem) : Runnable {
 
         override fun run() {
             try {
-                if (imageViewReused(modImageLoadingQueueItem)) {
+                if (imageViewReused(queueItem)) {
                     return
                 }
-                val bmp = downloadImage(modImageLoadingQueueItem.moderator)
-                memoryCache.put(modImageLoadingQueueItem.moderator, bmp!!)
-                if (imageViewReused(modImageLoadingQueueItem)) {
+
+                val bitmap = downloadImage(queueItem.moderator)
+                memoryCache.put(queueItem.moderator, bitmap!!)
+                if (imageViewReused(queueItem)) {
                     return
                 }
-                val bd = BitmapDisplayer(this@ImageLoader, bmp, modImageLoadingQueueItem)
+                val bd = BitmapDisplayer(this@ImageLoader, bitmap, queueItem)
                 handler.post(bd)
             } catch (th: Throwable) {
                 th.printStackTrace()
