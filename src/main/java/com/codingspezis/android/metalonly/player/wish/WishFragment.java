@@ -189,6 +189,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
         if (haveValidData()) {
+            showLoading(true);
             sendWishGreet();
         } else {
             notifyUser(R.string.invalid_input);
@@ -252,6 +253,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Override
     public void onSuccess() {
+        showLoading(false);
         notifyUser(R.string.sent);
         clearSongAndWish();
         getActivity().finish();
@@ -259,12 +261,14 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Override
     public void onFail() {
+        showLoading(false);
         notifyUser(R.string.sending_error);
         enableSendButton();
     }
 
     @Override
     public void onException(Exception e) {
+        showLoading(false);
         notifyUser(e.getMessage());
         enableSendButton();
     }
