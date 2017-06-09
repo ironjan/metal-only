@@ -13,26 +13,16 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:visibility="invisible"
-            android:minHeight="48dp"
             android:indeterminate="true"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
-        <TextView
-            android:id="@id/txtWishcount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/textNick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editNick"
-            android:layout_below="@id/txtWishcount"
+            android:layout_below="@android:id/progress"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:text="@string/wish_nick"
@@ -44,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/editRegard"
             android:layout_alignStart="@id/editRegard"
-            android:layout_below="@+id/txtWishcount"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/textNick"
             android:layout_toRightOf="@id/textNick"
@@ -135,17 +124,26 @@
             android:inputType="textMultiLine"
             android:minHeight="48dp" />
 
+        <TextView
+            android:id="@id/txtWishcount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_below="@id/editRegard"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Button
             android:id="@id/btnSend"
             android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editRegard"
+            android:layout_below="@+id/txtWishcount"
             android:text="@string/wish_send" />
 
         <Button
             android:id="@+id/btnClear"
             android:layout_below="@id/btnSend"
+            android:layout_marginTop="8dp"
             android:text="@string/clear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
