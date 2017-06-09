@@ -30,17 +30,20 @@
         </activity-alias>
         <activity
             android:name=".PlanActivity_"
+            android:exported="true"
             android:launchMode="singleTask" >
         </activity>
         <activity
             android:name=".WishActivity"
             android:label="@string/wish_regards"
+            android:exported="true"
             android:launchMode="singleTask" >
         </activity>
         <activity
             android:name=".PayPalDonationActivity"
             android:label="@string/paypal"
             android:launchMode="singleTask"
+            android:exported="true"
             android:windowSoftInputMode="stateUnchanged" >
         </activity>
         <activity
@@ -51,6 +54,7 @@
         <activity
             android:name=".AboutActivity_"
             android:label="@string/menu_info"
+            android:exported="true"
             android:launchMode="singleTask" >
         </activity>
 
