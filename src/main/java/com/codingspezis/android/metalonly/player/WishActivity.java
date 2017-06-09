@@ -33,23 +33,7 @@ public class WishActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_wish);
 
-
-        showContentFragment();
-
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
-    }
-
-    private void showContentFragment() {
-        if (BuildConfig.DEBUG) LOGGER.debug("showContentFragment()");
-
-        Bundle bundle = getIntent().getExtras();
-        WishFragment fragment = WishFragment.newInstance(bundle);
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(android.R.id.content, fragment);
-        ft.commit();
-
-        if (BuildConfig.DEBUG) LOGGER.debug("showContentFragment() done");
     }
 
     @Override

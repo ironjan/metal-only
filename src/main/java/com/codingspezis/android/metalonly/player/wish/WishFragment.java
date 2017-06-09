@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Locale;
 
 @EFragment(R.layout.fragment_wish)
-@OptionsMenu(R.menu.help)
+@OptionsMenu(R.menu.wishmenu)
 public class WishFragment extends Fragment implements WishSender.Callback {
     private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
 
@@ -147,13 +147,17 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Override
     public void onPause() {
+        saveInputInPrefs();
+        super.onPause();
+    }
+
+    private void saveInputInPrefs() {
         wishPrefs.edit()
                 .nick().put(editNick.getText().toString())
                 .artist().put(editArtist.getText().toString())
                 .title().put(editTitle.getText().toString())
                 .greeting().put(editRegard.getText().toString()).
                 apply();
-        super.onPause();
     }
 
     /**
@@ -180,10 +184,12 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @Click(R.id.btnSend)
+    @OptionsItem(R.id.ic_menu_send)
     void sendButtonClicked() {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
         if (haveValidData()) {
+            showLoading(true);
             sendWishGreet();
         } else {
             notifyUser(R.string.invalid_input);
@@ -247,18 +253,22 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Override
     public void onSuccess() {
+        showLoading(false);
         notifyUser(R.string.sent);
+        clearSongAndWish();
         getActivity().finish();
     }
 
     @Override
     public void onFail() {
+        showLoading(false);
         notifyUser(R.string.sending_error);
         enableSendButton();
     }
 
     @Override
     public void onException(Exception e) {
+        showLoading(false);
         notifyUser(e.getMessage());
         enableSendButton();
     }
@@ -267,5 +277,18 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void enableSendButton() {
         buttonSend.setEnabled(true);
         buttonSend.setText(R.string.wish_send);
+    }
+
+    @Click(R.id.btnClear)
+    void btnClearClicked(){
+        clearSongAndWish();
+    }
+
+    @UiThread
+    void clearSongAndWish() {
+        editArtist.setText("");
+        editTitle.setText("");
+        editRegard.setText("");
+        saveInputInPrefs();
     }
 }

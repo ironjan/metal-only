@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/mnu_help"
-        android:title="@string/menu_help" />
+        android:title="@string/menu_help"
+        android:icon="@drawable/ic_action_help_dark"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/ic_menu_send"
+        android:orderInCategory="10"
+        android:title="@string/wish_send"
+        android:icon="@drawable/ic_social_send_now_dark"
+        app:showAsAction="always" />
 
 </menu>
