@@ -54,34 +54,6 @@ class ImageLoader(context: Context) {
         executorService.submit(PhotosLoader(p))
     }
 
-    @Synchronized internal fun getBitmap(moderator: String): Bitmap? {
-        try {
-            val imageUrl = URL(UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator)
-
-            val conn = imageUrl.openConnection() as HttpURLConnection
-            conn.connectTimeout = 30000
-            conn.readTimeout = 30000
-            conn.instanceFollowRedirects = true
-
-            val `is` = conn.inputStream
-            val os = fileCache.getOutputStream(moderator)
-
-            CopyStreamImplementation.copy(`is`, os)
-
-            `is`.close()
-            os.close()
-
-            return fileCache[moderator]
-        } catch (ex: Throwable) {
-            ex.printStackTrace()
-            if (ex is OutOfMemoryError) {
-                memoryCache.clear()
-            }
-            return null
-        }
-
-    }
-
     internal fun imageViewReused(modImageLoadingQueueItem: ModImageLoadingQueueItem): Boolean {
         val tag = imageViews[modImageLoadingQueueItem.imageView]
         return tag == null || tag != modImageLoadingQueueItem.moderator
@@ -94,18 +66,43 @@ class ImageLoader(context: Context) {
                 if (imageViewReused(modImageLoadingQueueItem)) {
                     return
                 }
-                val bmp = getBitmap(modImageLoadingQueueItem.moderator)
+                val bmp = downloadImage(modImageLoadingQueueItem.moderator)
                 memoryCache.put(modImageLoadingQueueItem.moderator, bmp!!)
                 if (imageViewReused(modImageLoadingQueueItem)) {
                     return
                 }
-                val bd = BitmapDisplayer(this@ImageLoader, bmp,
-                        modImageLoadingQueueItem)
+                val bd = BitmapDisplayer(this@ImageLoader, bmp, modImageLoadingQueueItem)
                 handler.post(bd)
             } catch (th: Throwable) {
                 th.printStackTrace()
             }
+        }
 
+        @Synchronized internal fun downloadImage(moderator: String): Bitmap? {
+            try {
+                val imageUrl = URL(UrlConstants.METAL_ONLY_MODERATOR_PIC_BASE_URL + moderator)
+
+                val conn = imageUrl.openConnection() as HttpURLConnection
+                conn.connectTimeout = 30000
+                conn.readTimeout = 30000
+                conn.instanceFollowRedirects = true
+
+                val `is` = conn.inputStream
+                val os = fileCache.getOutputStream(moderator)
+
+                CopyStreamImplementation.copy(`is`, os)
+
+                `is`.close()
+                os.close()
+
+                return fileCache[moderator]
+            } catch (ex: Throwable) {
+                ex.printStackTrace()
+                if (ex is OutOfMemoryError) {
+                    memoryCache.clear()
+                }
+                return null
+            }
         }
     }
 
