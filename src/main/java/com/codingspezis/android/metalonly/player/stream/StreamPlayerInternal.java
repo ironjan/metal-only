@@ -186,7 +186,7 @@ public class StreamPlayerInternal implements AudioStream {
     private void resetPlayer() throws IOException {
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setDataSource(UrlConstants.STREAM_URL_128);
+        mediaPlayer.setDataSource(UrlConstants.INSTANCE.getSTREAM_URL_128());
         metadataListener.stop();
         timeoutListener.stop();
     }

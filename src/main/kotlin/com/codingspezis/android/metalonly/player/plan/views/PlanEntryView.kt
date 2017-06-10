@@ -49,7 +49,7 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
         txtMod?.text = t.moderator
         txtTime?.text = ShowInformationDateHelper.fullTimeString(t)
         txtGenre?.text = t.genre
-        imageLoader.displayImage(t.moderator, modImage)
+        imageLoader.loadImage(t.moderator, modImage!!)
         progress?.progress = 100 - computeShowProgress(t)
     }
 

@@ -23,7 +23,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_bg" />
+        android:src="@drawable/mo_wait" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

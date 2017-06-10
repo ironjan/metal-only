@@ -1,3 +1,3 @@
 #!/bin/bash
-./gradlew ktlint test lint
+./gradlew ktlint test lint connectedAndroidTest
 
