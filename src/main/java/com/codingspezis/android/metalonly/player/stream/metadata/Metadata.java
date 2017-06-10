@@ -37,7 +37,7 @@ public class Metadata {
      * Parses the given data string into a Metadata object
      *
      * @param data the string to be parsed
-     * @return a new Metadata object. Silently returns default object if something goes wrong
+     * @return a new Metadata object. Silently returns default object if share goes wrong
      */
     public static Metadata fromString(String data) {
         final String genre, moderator, interpret, title;

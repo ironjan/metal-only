@@ -10,17 +10,19 @@ import com.codingspezis.android.metalonly.player.R
  */
 class PlanEntryClickListener(private val data: ShowInformation, private val context: Context) : DialogInterface.OnClickListener {
 
-    override fun onClick(dialog: DialogInterface, which: Int) {
-        when (which) {
+    val share: String by lazy { context.resources.getStringArray(R.array.plan_options_array)[1] }
+
+    override fun onClick(dialog: DialogInterface, action: Int) {
+        when (action) {
             ADD_TO_CALENDAR_ACTION -> addEntryToCalendar()
             SHARE_ACTION -> shareEntry()
         }
     }
 
     private fun addEntryToCalendar() {
-        val intent = Intent(Intent.ACTION_EDIT)
         val description = data.moderator + "\n" + data.genre
 
+        val intent = Intent(Intent.ACTION_EDIT)
         intent.type = "vnd.android.cursor.item/event"
         intent.putExtra("title", data.showTitle)
         intent.putExtra("description", description)
@@ -36,23 +38,22 @@ class PlanEntryClickListener(private val data: ShowInformation, private val cont
                          |${data.moderator}
                          |${data.genre}""".trimMargin()
 
-        val share = Intent(Intent.ACTION_SEND)
-        share.type = "text/plain"
-        share.putExtra(Intent.EXTRA_TEXT, message)
-        context.startActivity(Intent.createChooser(share,
-                context.resources.getStringArray(R.array.plan_options_array)[1]))
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, message)
+        context.startActivity(Intent.createChooser(intent, share))
     }
 
     fun formattedDateString(): String {
-        return PlanEntryDateHelper.formattedDateString(data)
+        return ShowInformationDateHelper.formattedDateString(data)
     }
 
     fun startTimeString(): CharSequence {
-        return PlanEntryDateHelper.startTimeString(data)
+        return ShowInformationDateHelper.startTimeString(data)
     }
 
     fun endTimeString(): String {
-        return PlanEntryDateHelper.endTimeString(data)
+        return ShowInformationDateHelper.endTimeString(data)
     }
 
     companion object {

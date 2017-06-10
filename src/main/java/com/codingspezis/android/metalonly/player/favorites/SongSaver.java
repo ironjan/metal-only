@@ -31,7 +31,7 @@ public class SongSaver {
     private String fileName;
     private int limit;
     private LinkedList<Song> songList; // main data
-    private boolean changes; // is there something to save?
+    private boolean changes; // is there share to save?
 
 
     /**

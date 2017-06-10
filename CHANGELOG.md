@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.4]
+Rewrote the handling of moderator pictures (old pictures should be replaced by new ones now) and 
+added a "Clear" button to Wish/Greet. Also, cleaned up the code a lot.
+
+## [0.6.3]
+Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
+history. Also, cleaned up the code base.
+
 ## [0.6.2]
 Fixed crash that sometimes occured after opening show schedule. 
 Also fixed the mod pictures in song history.

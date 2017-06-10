@@ -21,7 +21,7 @@ public class MetadataListener implements Runnable {
         err = false;
         icyStreamMeta = new IcyStreamMeta();
         try {
-            icyStreamMeta.setStreamUrl(new URL(UrlConstants.STREAM_URL_128));
+            icyStreamMeta.setStreamUrl(new URL(UrlConstants.INSTANCE.getSTREAM_URL_128()));
         } catch (MalformedURLException e) {
             // this should never happen
             err = true;
