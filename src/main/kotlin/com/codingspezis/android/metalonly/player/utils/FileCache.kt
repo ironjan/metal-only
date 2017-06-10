@@ -67,7 +67,7 @@ class FileCache(private val context: Context) : Cache {
 
         val fileName = moderator
 
-        if (existsAndIsRecent(context, moderator)) {
+        if (isRecent(moderator)) {
             try {
 
                 val options = BitmapFactory.Options()
@@ -103,9 +103,45 @@ class FileCache(private val context: Context) : Cache {
         return scalingFactor
     }
 
+    init {
+        cleanUp()
+    }
+
     override fun clear() {
         clear(context)
     }
+
+    /**
+     * checks cache duration of special file
+     * @param fileName name of file
+     * @return true if file exists and is recent enough
+     */
+    fun isRecent(fileName: String): Boolean {
+        val file = getActualFile(fileName)
+        val currentTimeInMillis = Calendar.getInstance().timeInMillis
+        val timeSinceLastModification = currentTimeInMillis - file.lastModified()
+
+        return timeSinceLastModification < WEEK_IN_MILLISECS
+    }
+
+    /**
+     * Returns a [File] pointing to the given file in the internal app storage
+     * @return a [File] pointing to the given file in the internal app storage
+     */
+    private fun getActualFile(fileName: String): File =
+            File("${context.filesDir.absolutePath}/$fileName")
+
+    @Synchronized fun clear(context: Context) {
+        context.fileList()
+                .forEach { file -> context.deleteFile(file) }
+    }
+
+    override fun cleanUp() {
+        context.fileList()
+                .filterNot { moderator -> isRecent(moderator) }
+                .forEach { moderator -> getActualFile(moderator).deleteOnExit() }
+    }
+
     companion object {
         val WEEK_IN_MILLISECS = (7 * 24 * 60 * 60 * 1000).toLong()
 
@@ -116,25 +152,5 @@ class FileCache(private val context: Context) : Cache {
 
         private val TAG = FileCache::class.java.simpleName
 
-        /**
-         * checks cache duration of special file
-         * @param context context for shared preferences
-         * @param fileName name of file
-         * @return true if file exists and is recent enough
-         */
-        fun existsAndIsRecent(context: Context, fileName: String): Boolean {
-            val file = File("${context.filesDir.absolutePath}/$fileName")
-            val currentTimeInMillis = Calendar.getInstance().timeInMillis
-            val timeSinceLastModification = currentTimeInMillis - file.lastModified()
-
-            return timeSinceLastModification < WEEK_IN_MILLISECS
-        }
-
-        @Synchronized fun clear(context: Context) {
-            val files = context.fileList()
-            for (file in files) {
-                context.deleteFile(file)
-            }
-        }
     }
 }

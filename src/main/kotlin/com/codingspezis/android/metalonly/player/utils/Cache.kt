@@ -9,4 +9,5 @@ interface Cache {
     operator fun get(moderator: String?): Bitmap?
     operator fun set(moderator: String, newBitmap: Bitmap?)
     fun clear()
+    fun cleanUp()
 }

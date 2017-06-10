@@ -21,7 +21,7 @@ internal class MemoryCache : Cache {
             MEMORY_CACHE.put(moderator, newBitmap!!)
             allocate(newBitmap)
 
-            reduceAllocationSpaceToMaximum()
+            cleanUp()
         } catch (t: Throwable) {
             t.printStackTrace()
         }
@@ -37,7 +37,7 @@ internal class MemoryCache : Cache {
         }
     }
 
-    private fun reduceAllocationSpaceToMaximum() {
+    override fun cleanUp() {
         Log.i(TAG, "MEMORY_CACHE allocatedBytes=$allocatedBytes length=${MEMORY_CACHE.size}")
 
         if (allocatedBytes > maxMemoryInBytes) {
