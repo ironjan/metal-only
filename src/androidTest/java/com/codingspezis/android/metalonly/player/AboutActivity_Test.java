@@ -32,6 +32,8 @@ public class AboutActivity_Test {
 
     @Test
     public void aboutActivity_Test() {
+        String expectedVersionInformation = BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")";
+
         ViewInteraction textView = onView(
                 allOf(withId(R.id.textAppName), withText("Metal Only"),
                         childAtPosition(
@@ -44,7 +46,7 @@ public class AboutActivity_Test {
         textView.check(matches(withText("Metal Only")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.textAppVersion), withText("0.6.3 (60300)"),
+                allOf(withId(R.id.textAppVersion), withText(expectedVersionInformation),
                         childAtPosition(
                                 allOf(withId(R.id.RelativeLayout1),
                                         childAtPosition(
@@ -52,7 +54,6 @@ public class AboutActivity_Test {
                                                 0)),
                                 1),
                         isDisplayed()));
-        String expectedVersionInformation = BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
         textView2.check(matches(withText(expectedVersionInformation)));
 
     }
