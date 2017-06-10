@@ -1,6 +1,6 @@
-import org.junit.Test;
+package com.codingspezis.android.metalonly.player.favorites;
 
-import com.codingspezis.android.metalonly.player.favorites.Song;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
