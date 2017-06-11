@@ -104,7 +104,7 @@ android {
         println("Applied production signing config")
     }
     else{
-        println("Project does not have producion signing config")
+        println("Project does not have production signing config")
     }
     if (project.hasProperty("metalonly.variants")
             && new File(project.property("metalonly.variants") + ".gradle").exists()) {
