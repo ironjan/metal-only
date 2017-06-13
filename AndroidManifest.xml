@@ -49,6 +49,7 @@
         <activity
             android:name=".FavoritesActivity_"
             android:label="@string/menu_favorites"
+            android:exported="true"
             android:launchMode="singleTop" >
         </activity>
         <activity
