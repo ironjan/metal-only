@@ -8,7 +8,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
@@ -22,11 +21,13 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapp
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +164,8 @@ public class FavoritesFragment extends Fragment {
         }
     }
 
-    private void wishSong(final int index) {
+    @Background
+    void wishSong(final int index) {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(getActivity())) {
             Stats stats = apiWrapper.getStats();
             if (stats.isNotModerated()) {
@@ -184,7 +186,7 @@ public class FavoritesFragment extends Fragment {
     }
 
 
-    @MainThread
+    @UiThread
     void alertMessage(final Context context, final String msg) {
         if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
 
