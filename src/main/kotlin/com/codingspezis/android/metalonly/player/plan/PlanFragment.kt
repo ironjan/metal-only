@@ -100,9 +100,11 @@ open class PlanFragment : Fragment() {
 
     @UiThread
     internal open fun apiResponseReceived(plan: Plan?) {
-        // TODO check, if we're still visible?
         if (plan == null) {
             updateEmptyViewOnFailure(plan_failed_to_load!!)
+            return
+        }
+        if (activity == null) {
             return
         }
 
