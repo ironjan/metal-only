@@ -9,6 +9,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.5]
+Rewrote the handling of moderator pictures (old pictures should be replaced by new ones now) and 
+added a "Clear" button to Wish/Greet. Also, cleaned up the code a lot and fixed a crash when 
+wishing a favorited song.
+
 ## [0.6.4]
 Rewrote the handling of moderator pictures (old pictures should be replaced by new ones now) and 
 added a "Clear" button to Wish/Greet. Also, cleaned up the code a lot.
