@@ -1,3 +1,3 @@
 #!/bin/bash
 ./gradlew --daemon clean ktlint lint test assembleRelease && \
-caja build/outputs/apk/
+caja app/build/outputs/apk/
