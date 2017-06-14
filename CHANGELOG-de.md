@@ -14,8 +14,11 @@ App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder s
 neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. 
 
 Zudem wurde der Quellcode aufgeräumt und ein Absturz beim Wünschen von Favoriten behoben.
-## [0.6.4]
 
+## [0.6.4]
+App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
+neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. Zudem wurde 
+der Quellcode aufgeräumt.
 
 ## [0.6.3]
 Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
