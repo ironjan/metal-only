@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
@@ -24,6 +25,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
@@ -47,6 +49,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editArtist,
             editTitle,
             editRegard;
+    @ViewById
+    Button btnSend;
+
+    @FragmentArg(WishActivity.KEY_DEFAULT_INTERPRET)
+    String interpret;
+    @FragmentArg(WishActivity.KEY_DEFAULT_TITLE)
+    String title;
 
     @ViewById(android.R.id.progress)
     ProgressBar progress;
@@ -136,11 +145,18 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @AfterViews
-    void loadNick() {
+    void loadUiValues() {
+        boolean wasGivenFragmentArgs = (interpret != null) && (title != null);
+        if(wasGivenFragmentArgs) {
+            editArtist.setText(interpret);
+            editTitle.setText(title);
+        } else {
+            editTitle.setText(wishPrefs.title().get());
+            editRegard.setText(wishPrefs.greeting().get());
+            editArtist.setText(wishPrefs.artist().get());
+        }
+
         editNick.setText(wishPrefs.nick().get());
-        editArtist.setText(wishPrefs.artist().get());
-        editTitle.setText(wishPrefs.title().get());
-        editRegard.setText(wishPrefs.greeting().get());
     }
 
     @Override
