@@ -81,6 +81,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @Pref
     WishPrefs_ wishPrefs;
+    private boolean didNotCompleteLoadingStats = true;
 
     public WishFragment() {
     }
@@ -120,15 +121,16 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
         wishCount.setText(sb.toString());
         showLoading(false);
+        didNotCompleteLoadingStats = false;
     }
 
     @UiThread
     void showLoading(boolean isLoading) {
         if (isLoading) {
-            editRegard.setVisibility(View.INVISIBLE);
+            btnSend.setEnabled(false);
             progress.setVisibility(View.VISIBLE);
         } else {
-            editRegard.setVisibility(View.VISIBLE);
+            btnSend.setEnabled(true);
             progress.setVisibility(View.INVISIBLE);
         }
     }
@@ -202,6 +204,9 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void sendButtonClicked() {
         if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
 
+        if(didNotCompleteLoadingStats){
+            return;
+        }
         if (haveValidData()) {
             showLoading(true);
             sendWishGreet();
