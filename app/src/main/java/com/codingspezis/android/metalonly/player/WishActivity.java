@@ -6,6 +6,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.codingspezis.android.metalonly.player.wish.WishFragment;
+import com.codingspezis.android.metalonly.player.wish.WishFragment_;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +32,18 @@ public class WishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_wish);
+
+        Intent intent = getIntent();
+        Bundle extras = (intent != null) ? intent.getExtras() : null;
+        Bundle fragmentArgs = (extras != null) ? extras : new Bundle();
+
+
+        WishFragment wishFragment = WishFragment_.newInstance(fragmentArgs);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, wishFragment)
+                .commitAllowingStateLoss();
 
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
