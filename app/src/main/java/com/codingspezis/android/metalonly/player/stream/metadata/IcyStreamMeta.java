@@ -126,9 +126,10 @@ public class IcyStreamMeta {
         } else {
             // Headers are sent within a stream
             StringBuilder strHeaders = new StringBuilder();
-            char c;
-            while ((c = (char) stream.read()) != -1) {
-                strHeaders.append(c);
+            int charInt;
+            while ((charInt = stream.read()) != -1) {
+                //noinspection NumericCastThatLosesPrecision loop condition makes sure that charInt is in [0, 255]
+                strHeaders.append(((char) charInt));
                 if (strHeaders.length() > 5 && (strHeaders.substring((strHeaders.length() - 4), strHeaders.length()).equals("\r\n\r\n"))) {
                     // getEndDate of headers
                     break;
