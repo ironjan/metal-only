@@ -25,6 +25,13 @@ public class IcyStreamMeta {
     private boolean isError;
     private Map<String, String> data;
 
+    /**
+     * Arbitrary, high number to limit the StringBuffer's size that is used to extract metadata.
+     * Hopefully this value is also small enough to prevent the OOM errors from <a href="https://github.com/ironjan/metal-only/issues/68>#68</a>.
+     */
+    private static final int MAX_STRING_BUFFER_SIZE = 4096;
+    private static final int INITIAL_STRING_BUFFER_SIZE = 128;
+
     public IcyStreamMeta() {
         isError = false;
     }
@@ -125,9 +132,13 @@ public class IcyStreamMeta {
             metaDataOffset = Integer.parseInt(headers.get("icy-metaint").get(0));
         } else {
             // Headers are sent within a stream
-            StringBuilder strHeaders = new StringBuilder();
+            StringBuilder strHeaders = new StringBuilder(INITIAL_STRING_BUFFER_SIZE);
             int charInt;
             while ((charInt = stream.read()) != -1) {
+                if(strHeaders.length() >= MAX_STRING_BUFFER_SIZE){
+                    strHeaders.delete(0, MAX_STRING_BUFFER_SIZE/2);
+                }
+
                 //noinspection NumericCastThatLosesPrecision loop condition makes sure that charInt is in [0, 255]
                 strHeaders.append(((char) charInt));
                 if (strHeaders.length() > 5 && (strHeaders.substring((strHeaders.length() - 4), strHeaders.length()).equals("\r\n\r\n"))) {
