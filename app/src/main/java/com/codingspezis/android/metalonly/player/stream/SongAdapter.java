@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.core.Song;
 import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 
 import java.text.DateFormat;

@@ -2,6 +2,8 @@ package com.codingspezis.android.metalonly.player.favorites;
 
 import android.content.Context;
 
+import com.codingspezis.android.metalonly.player.core.Song;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

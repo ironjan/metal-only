@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.core.Song;
 
 import java.util.Calendar;
 

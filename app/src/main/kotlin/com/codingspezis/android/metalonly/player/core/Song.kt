@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.favorites
+package com.codingspezis.android.metalonly.player.core
 
 import java.util.Calendar
 
