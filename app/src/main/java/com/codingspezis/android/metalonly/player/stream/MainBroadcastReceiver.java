@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.StreamControlActivity;
-import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
 
 /**
  * broadcast receiver class for communication between other activities or
@@ -41,14 +41,14 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.streamControlActivity.setShouldPlay(true);
                 this.streamControlActivity.toggleStreamButton(true);
-                this.streamControlActivity.setMetadata(Metadata.fromString(metadata));
+                this.streamControlActivity.setMetadata(MetadataFactory.fromString(metadata));
                 this.streamControlActivity.displayMetadata();
             } else {
                 this.streamControlActivity.toggleStreamButton(false);
             }
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            this.streamControlActivity.setMetadata(Metadata.fromString(metadata));
+            this.streamControlActivity.setMetadata(MetadataFactory.fromString(metadata));
             this.streamControlActivity.refreshShowInfo();
             this.streamControlActivity.displaySongs();
         }
