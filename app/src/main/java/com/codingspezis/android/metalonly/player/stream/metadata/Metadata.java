@@ -1,10 +1,6 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.favorites.Song;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Calendar;
 
@@ -19,8 +15,7 @@ public class Metadata {
     public static final String DEFAULT_MODEDRATOR = "MetalHead OnAir";
     public static final String DEFAULT_GENRE = "Mixed Metal";
     public static final Metadata DEFAULT_METADATA = new Metadata("", "", "", "");
-    private static final String TAG = Metadata.class.getSimpleName();
-    private static final Logger LOGGER = LoggerFactory.getLogger(TAG);
+
     private String interpret = "";
     private String title = "";
     private String genre = "";
@@ -68,18 +63,14 @@ public class Metadata {
      * @return number of char '*' containing in str
      */
     private static int numberOfStars(String toCount) {
-        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({})", toCount);
-
         final String withoutStars = toCount.replaceAll("\\*", "");
 
         final int lengthWithStars = toCount.length();
         final int lengthWithoutStars = withoutStars.length();
 
         final int result = lengthWithStars - lengthWithoutStars;
-        if (BuildConfig.DEBUG) LOGGER.debug("numberOfStars({}) -> ", toCount, result);
 
         return result;
-
     }
 
     public String getTitle() {
@@ -95,12 +86,10 @@ public class Metadata {
     }
 
     public Song toSong() {
-        if (BuildConfig.DEBUG) LOGGER.debug("toSong()");
         long date = Calendar.getInstance().getTimeInMillis();
 
         Song song = new Song(interpret, title, moderator, date);
 
-        if (BuildConfig.DEBUG) LOGGER.debug("toSong() -> {}", song);
         return song;
     }
 
