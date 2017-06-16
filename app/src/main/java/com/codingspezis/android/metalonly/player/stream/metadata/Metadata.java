@@ -12,7 +12,7 @@ public class Metadata {
     public static final int REQUIRED_NUMBER_OF_STARS = 3;
     public static final int MODERATOR_SLICE = 1;
     public static final int GENRE_SLICE = 2;
-    public static final String DEFAULT_MODEDRATOR = "MetalHead OnAir";
+    public static final String DEFAULT_MODERATOR = "MetalHead OnAir";
     public static final String DEFAULT_GENRE = "Mixed Metal";
     public static final Metadata DEFAULT_METADATA = new Metadata("", "", "", "");
 
@@ -43,7 +43,7 @@ public class Metadata {
                 moderator = slices[MODERATOR_SLICE].trim();
                 data = slices[0].trim();
             } else {
-                moderator = DEFAULT_MODEDRATOR;
+                moderator = DEFAULT_MODERATOR;
                 genre = DEFAULT_GENRE;
             }
             interpret = data.substring(0, data.indexOf(" - ")).trim();
