@@ -5,7 +5,7 @@ import java.util.Calendar
 /**
  * class for holding a song
  */
-class Song {
+public class Song {
     val interpret: String
     val title: String
     val date: Long
