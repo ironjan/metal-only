@@ -1,7 +1,5 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import android.os.Build;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -20,6 +18,12 @@ import java.util.regex.Pattern;
  */
 public class IcyStreamMeta {
 
+    /**
+     * The value of Build.VERSION_CODES.KITKAT inlined to decouple this class from android.os.Build
+     */
+    private static final int KITKAT_VERSION_CODE = 19;
+    private final int SDK_INT;
+
     protected URL streamUrl;
     private Map<String, String> metadata;
     private boolean isError;
@@ -32,7 +36,8 @@ public class IcyStreamMeta {
     private static final int MAX_STRING_BUFFER_SIZE = 4096;
     private static final int INITIAL_STRING_BUFFER_SIZE = 128;
 
-    public IcyStreamMeta() {
+    public IcyStreamMeta(int sdk_int) {
+        SDK_INT = sdk_int;
         isError = false;
     }
 
@@ -114,8 +119,8 @@ public class IcyStreamMeta {
     }
 
     synchronized private void retreiveMetadata() throws IOException {
-        URLConnection con;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        final URLConnection con;
+        if (SDK_INT >= KITKAT_VERSION_CODE)
             con = new IcyURLConnection(streamUrl);
         else
             con = streamUrl.openConnection();
