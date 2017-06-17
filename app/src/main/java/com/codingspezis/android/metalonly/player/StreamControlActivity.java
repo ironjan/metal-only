@@ -148,7 +148,7 @@ public class StreamControlActivity extends AppCompatActivity {
         toggleStreamButton(false);
         displaySongs();
 
-        setMetadata(MetadataFactory.DEFAULT_METADATA);
+        setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
@@ -219,7 +219,7 @@ public class StreamControlActivity extends AppCompatActivity {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
-                        if(viewShowInformation != null) viewShowInformation.setMetadata(MetadataFactory.createMetadata(moderator, genre, "", ""));
+                        if(viewShowInformation != null) viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
 
                         setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
@@ -248,7 +248,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
-        setMetadata(MetadataFactory.DEFAULT_METADATA);
+        setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
     }
 
     /**
