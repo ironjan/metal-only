@@ -75,22 +75,12 @@ public class IcyURLConnection extends HttpURLConnection {
     protected HashMap<String, List<String>> headers;
     protected String responseLine;
 
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors
-    ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Creates new instance for the given URL.
      */
     public IcyURLConnection(URL url) {
         super(url);
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    // URLConnection
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Opens a communications link to the resource referenced by this URL,
@@ -185,7 +175,6 @@ public class IcyURLConnection extends HttpURLConnection {
         requestProps.put(key, list);
     }
 
-
     @Override
     public synchronized void addRequestProperty(String key, String value) {
         if (requestProps == null) requestProps = new HashMap<>();
@@ -202,11 +191,6 @@ public class IcyURLConnection extends HttpURLConnection {
     public Map<String, List<String>> getRequestProperties() {
         return requestProps;
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    // HttpURLConnection
-    ////////////////////////////////////////////////////////////////////////////
 
     @Override
     public synchronized void disconnect() {
@@ -232,11 +216,6 @@ public class IcyURLConnection extends HttpURLConnection {
         return false;
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Protected
-    ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Creates a new unconnected Socket instance.
      * Subclasses may use this method to override the default socket implementation.
@@ -244,7 +223,6 @@ public class IcyURLConnection extends HttpURLConnection {
     protected Socket createSocket() {
         return new Socket();
     }
-
 
     /**
      * Reads one response header line and adds it to the headers map.
