@@ -123,7 +123,7 @@ public class PlayerService extends Service {
      * @param metadata meta data to parse to song
      */
     void addSongToHistory(String metadata) {
-        Song song = (MetadataFactory.fromString(metadata)).toSong();
+        Song song = (MetadataFactory.createFromString(metadata)).toSong();
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);

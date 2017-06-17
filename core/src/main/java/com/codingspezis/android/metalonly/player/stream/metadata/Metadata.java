@@ -9,16 +9,12 @@ import java.util.Calendar;
  */
 public class Metadata {
 
-    static final String DEFAULT_MODERATOR = "MetalHead OnAir";
-    static final String DEFAULT_GENRE = "Mixed Metal";
-    public static final Metadata DEFAULT_METADATA = new Metadata("", "", "", "");
-
     private String interpret = "";
     private String title = "";
     private String genre = "";
     private String moderator = "";
 
-    public Metadata(String moderator, String genre, String interpret, String title) {
+    Metadata(String moderator, String genre, String interpret, String title) {
         this.moderator = moderator;
         this.genre = genre;
         this.interpret = interpret;
@@ -45,13 +41,4 @@ public class Metadata {
         return song;
     }
 
-    @Override
-    public String toString() {
-        return "Metadata{" +
-                "interpret='" + interpret + '\'' +
-                ", title='" + title + '\'' +
-                ", getGenre='" + genre + '\'' +
-                ", getModerator='" + moderator + '\'' +
-                '}';
-    }
 }

@@ -41,14 +41,14 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.streamControlActivity.setShouldPlay(true);
                 this.streamControlActivity.toggleStreamButton(true);
-                this.streamControlActivity.setMetadata(MetadataFactory.fromString(metadata));
+                this.streamControlActivity.setMetadata(MetadataFactory.createFromString(metadata));
                 this.streamControlActivity.displayMetadata();
             } else {
                 this.streamControlActivity.toggleStreamButton(false);
             }
             // meta data
         } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            this.streamControlActivity.setMetadata(MetadataFactory.fromString(metadata));
+            this.streamControlActivity.setMetadata(MetadataFactory.createFromString(metadata));
             this.streamControlActivity.refreshShowInfo();
             this.streamControlActivity.displaySongs();
         }
