@@ -15,12 +15,12 @@ object MetadataFactory {
     /**
      * Parses the given data string into a Metadata object
 
-     * @param data the string to be parsed
+     * @param dataRaw the string to be parsed
      * *
      * @return a new Metadata object. Silently returns default object if share goes wrong
      */
-    fun createFromString(data: String): Metadata {
-        var data = data
+    fun createFromString(dataRaw: String): Metadata {
+        var data = dataRaw
         try {
             val genre: String
             val moderator: String
