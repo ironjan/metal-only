@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.3-1]
+Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
+history. Also, cleaned up the code base. Hotfix: adapt App to new Homepage API
+
 ## [0.6.3]
 Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
 history. Also, cleaned up the code base.
