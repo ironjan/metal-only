@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.codingspezis.android.metalonly.player.plan.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.text.ParseException;
@@ -25,6 +26,7 @@ import java.util.Date;
  * </pre>
  */
 @JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlanEntry implements ShowInformation {
     private static final String DAY_TIME_DIVIDER = "T";
     private final SimpleDateFormat dateStringFormat;
