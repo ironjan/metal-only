@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * </pre>
  */
 @JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Plan {
     PlanEntry[] plan = {};
 
