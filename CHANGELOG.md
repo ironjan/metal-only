@@ -23,6 +23,10 @@ wishing a favorited song.
 Rewrote the handling of moderator pictures (old pictures should be replaced by new ones now) and 
 added a "Clear" button to Wish/Greet. Also, cleaned up the code a lot.
 
+## [0.6.3-1]
+Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
+history. Also, cleaned up the code base. Hotfix: adapt App to new Homepage API
+
 ## [0.6.3]
 Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
 history. Also, cleaned up the code base.
