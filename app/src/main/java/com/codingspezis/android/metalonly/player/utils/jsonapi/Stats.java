@@ -1,5 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * }
  * </pre>
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Stats {
     private static final String WISH_GREET_FULL = "1";
 
