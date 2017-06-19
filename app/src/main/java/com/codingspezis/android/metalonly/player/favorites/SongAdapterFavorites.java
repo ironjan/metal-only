@@ -47,7 +47,7 @@ public class SongAdapterFavorites extends BaseAdapter {
         TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
 
         txtTitle.setText(song.getTitle());
-        txtArtist.setText(song.getInterpret());
+        txtArtist.setText(song.getArtist());
 
         return view;
     }

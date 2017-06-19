@@ -106,10 +106,10 @@ public class SongSaver {
                 for (int i = 0; i < songList.size(); i++) {
                     Song song = songList.get(i);
                     JSONObject jSong = new JSONObject();
-                    jSong.put(JSON_STRING_INTERPRET, song.getInterpret());
+                    jSong.put(JSON_STRING_INTERPRET, song.getArtist());
                     jSong.put(JSON_STRING_TITLE, song.getTitle());
-                    jSong.put(JSON_STRING_THUMB, song.getThumb());
-                    jSong.put(JSON_LONG_DATE, song.getDate());
+                    jSong.put(JSON_STRING_THUMB, song.getModerator());
+                    jSong.put(JSON_LONG_DATE, song.getPlayedAtAsLong());
                     jSongs.put(jSong);
                 }
                 JSONObject jObj = new JSONObject();
@@ -166,7 +166,7 @@ public class SongSaver {
      */
     public int isAlreadyIn(Song song) {
         for (int i = songList.size() - 1; i >= 0; i--) {
-            if (songList.get(i).getInterpret().equals(song.getInterpret()) &&
+            if (songList.get(i).getArtist().equals(song.getArtist()) &&
                     songList.get(i).getTitle().equals(song.getTitle()))
                 return i;
         }

@@ -527,7 +527,7 @@ public class StreamControlActivity extends AppCompatActivity {
                 }
                 break;
             case LIST_ITEM_ACTION_YOUTUBE: // YouTube
-                String searchStr = historySaver.get(index).getInterpret() + " - "
+                String searchStr = historySaver.get(index).getArtist() + " - "
                         + historySaver.get(index).getTitle();
                 try {
                     searchStr = URLEncoder.encode(searchStr, "UTF-8");
@@ -540,7 +540,7 @@ public class StreamControlActivity extends AppCompatActivity {
                 startActivity(youtube);
                 break;
             case LIST_ITEM_ACTION_SHARE: // share
-                String message = historySaver.get(index).getInterpret() + " - "
+                String message = historySaver.get(index).getArtist() + " - "
                         + historySaver.get(index).getTitle();
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");

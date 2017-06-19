@@ -51,9 +51,9 @@ public class SongAdapter extends BaseAdapter {
         final TextView txtDate = (TextView) view.findViewById(R.id.txtDate);
 
         txtTitle.setText(song.getTitle());
-        txtArtist.setText(song.getInterpret());
+        txtArtist.setText(song.getArtist());
         try {
-            final Date dateAsDate = new Date(song.getDate());
+            final Date dateAsDate = new Date(song.getPlayedAtAsLong());
             String day = DateFormat.getDateInstance(DateFormat.SHORT,
                     Locale.GERMAN).format(dateAsDate);
             String time = DateFormat.getTimeInstance(DateFormat.SHORT,
@@ -67,7 +67,7 @@ public class SongAdapter extends BaseAdapter {
         }
 
         ImageView imageView = (ImageView) view.findViewById(R.id.modImage);
-        String moderator = song.getThumb();
+        String moderator = song.getModerator();
         imageLoader.loadImage(moderator, imageView);
 
         return view;

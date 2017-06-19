@@ -1,25 +1,18 @@
 package com.codingspezis.android.metalonly.player.core
 
-import java.util.Date
-
 /**
  * Represents a song with its properties. <code>thumb</code> is a cleaned variant of <code>thumbRaw</code>,
  * i.e. <code>thumb</code> without <code>" OnAir"</code>.
- *
- * TODO Clean up the overrides and remove duplicate fields
  */
-data class Song(val interpret: String, override val title: String, val thumbRaw: String, val date: Long)
+data class Song(override val artist: String, override val title: String, private val thumbRaw: String, override val playedAtAsLong: Long)
     : Track, HistoricSongExtension {
-    val thumb: String = thumbRaw.replace(" OnAir", "")
-    fun withClearedThumb(): Song {
-        return Song(interpret, title, "", date)
-    }
+
+    override val moderator: String = thumbRaw.replace(" OnAir", "")
+
     val isValid: Boolean
-        get() = interpret.isNotEmpty() && title.isNotEmpty()
+        get() = artist.isNotEmpty() && title.isNotEmpty()
 
-    override val moderator: String = thumb
-
-    override val artist: String = interpret
-
-    override val datePlayed: Date = Date(date)
+    fun withClearedThumb(): Song {
+        return Song(artist, title, "", playedAtAsLong)
+    }
 }

@@ -177,7 +177,7 @@ public class FavoritesFragment extends Fragment {
             } else {
                 // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
                 Bundle bundle = new Bundle();
-                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).getInterpret());
+                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver.get(index).getArtist());
                 bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver.get(index).getTitle());
                 Intent wishIntent = new Intent(getActivity(), WishActivity.class);
                 wishIntent.putExtras(bundle);
@@ -201,7 +201,7 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void searchSongOnYoutube(final int index) {
-        String searchStr = favoritesSaver.get(index).getInterpret() + " - "
+        String searchStr = favoritesSaver.get(index).getArtist() + " - "
                 + favoritesSaver.get(index).getTitle();
         try {
             searchStr = URLEncoder.encode(searchStr, "UTF-8");
@@ -214,7 +214,7 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void shareSong(final int index) {
-        String message = favoritesSaver.get(index).getInterpret() + " - "
+        String message = favoritesSaver.get(index).getArtist() + " - "
                 + favoritesSaver.get(index).getTitle();
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
@@ -255,7 +255,7 @@ public class FavoritesFragment extends Fragment {
     void shareAllClicked() {
         String message = "";
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-            message += favoritesSaver.get(i).getInterpret() + " - " + favoritesSaver.get(i).getTitle() + "\n";
+            message += favoritesSaver.get(i).getArtist() + " - " + favoritesSaver.get(i).getTitle() + "\n";
         }
         // open share dialog
         Intent share = new Intent(Intent.ACTION_SEND);
