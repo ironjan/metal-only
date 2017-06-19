@@ -118,10 +118,10 @@ public class FavoritesFragment extends Fragment {
                 String interpret = artist.getText().toString();
                 String title = txtTitle.getText().toString();
 
-                HistoricTrack song = new HistoricTrack(interpret, title, "", Calendar.getInstance().getTimeInMillis());
+                HistoricTrack track = new HistoricTrack(interpret, title, "", Calendar.getInstance().getTimeInMillis());
 
-                if (song.isValid() && favoritesSaver.isAlreadyIn(song) < 0) {
-                    favoritesSaver.addSong(song);
+                if (track.isValid() && favoritesSaver.isAlreadyIn(track) < 0) {
+                    favoritesSaver.addSong(track);
                     displayFavorites();
                 }
             }

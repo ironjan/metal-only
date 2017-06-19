@@ -11,19 +11,19 @@ import static org.junit.Assert.assertThat;
 public class HistoricTrackTest {
     @Test
     public void testSongWithOutOnAirStaysUnchanged() {
-        HistoricTrack song = new HistoricTrack("interpret", "title", "thumb", 0L);
-    	assertThat(song.getTitle(), is(equalTo("title")));
-    	assertThat(song.getArtist(), is(equalTo("interpret")));
-    	assertThat(song.getModerator(), is(equalTo("thumb")));
-    	assertThat(song.getPlayedAtAsLong(), is(equalTo(0L)));
+        HistoricTrack track = new HistoricTrack("interpret", "title", "thumb", 0L);
+    	assertThat(track.getTitle(), is(equalTo("title")));
+    	assertThat(track.getArtist(), is(equalTo("interpret")));
+    	assertThat(track.getModerator(), is(equalTo("thumb")));
+    	assertThat(track.getPlayedAtAsLong(), is(equalTo(0L)));
     }
 
     @Test
     public void testSongWithOnAirRemovedOnAir() {
-        HistoricTrack song = new HistoricTrack("interpret", "title", "MetalHead OnAir", 0L);
-    	assertThat(song.getTitle(), is(equalTo("title")));
-    	assertThat(song.getArtist(), is(equalTo("interpret")));
-    	assertThat(song.getModerator(), is(equalTo("MetalHead")));
-    	assertThat(song.getPlayedAtAsLong(), is(equalTo(0L)));
+        HistoricTrack track = new HistoricTrack("interpret", "title", "MetalHead OnAir", 0L);
+    	assertThat(track.getTitle(), is(equalTo("title")));
+    	assertThat(track.getArtist(), is(equalTo("interpret")));
+    	assertThat(track.getModerator(), is(equalTo("MetalHead")));
+    	assertThat(track.getPlayedAtAsLong(), is(equalTo(0L)));
     }
 }

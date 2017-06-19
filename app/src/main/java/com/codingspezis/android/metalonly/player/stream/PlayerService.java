@@ -123,21 +123,21 @@ public class PlayerService extends Service {
      * @param metadata meta data to parse to song
      */
     void addSongToHistory(String metadata) {
-        HistoricTrack song = (MetadataFactory.INSTANCE.createFromString(metadata)).toSong();
+        HistoricTrack track = (MetadataFactory.INSTANCE.createFromString(metadata)).historicTrack();
         boolean canAdd = false;
-        if (song.isValid()) {
-            int index = historySaver.isAlreadyIn(song);
+        if (track.isValid()) {
+            int index = historySaver.isAlreadyIn(track);
             if (index == -1) {
                 canAdd = true;
             } else {
-                long timeDiff = song.getPlayedAtAsLong() - historySaver.get(index).getPlayedAtAsLong();
+                long timeDiff = track.getPlayedAtAsLong() - historySaver.get(index).getPlayedAtAsLong();
                 if (timeDiff > TIME_15_MINUTES_IN_MILLIS) {
                     canAdd = true;
                 }
             }
         }
         if (canAdd) {
-            historySaver.queeIn(song);
+            historySaver.queeIn(track);
             historySaver.saveSongsToStorage();
         }
 

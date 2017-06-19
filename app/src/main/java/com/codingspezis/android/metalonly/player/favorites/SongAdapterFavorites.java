@@ -41,13 +41,13 @@ public class SongAdapterFavorites extends BaseAdapter {
         if (convertView == null) {
             view = inflater.inflate(R.layout.view_list_item_song_fav, null);
         }
-        HistoricTrack song = data.get(position);
+        HistoricTrack track = data.get(position);
 
         TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
 
-        txtTitle.setText(song.getTitle());
-        txtArtist.setText(song.getArtist());
+        txtTitle.setText(track.getTitle());
+        txtArtist.setText(track.getArtist());
 
         return view;
     }

@@ -342,8 +342,7 @@ public class StreamControlActivity extends AppCompatActivity {
         ArrayList<HistoricTrack> data = new ArrayList<>();
 
         for (int i = historySaver.size() - 1; i >= 0; i--) {
-            final HistoricTrack song = historySaver.get(i);
-            data.add(song);
+            data.add(historySaver.get(i));
         }
 
         SongAdapter adapter = new SongAdapter(this, data);
@@ -479,7 +478,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
         Metadata metadata = getMetadata();
-        if (metadata.toSong().isValid() && isShouldPlay()) {
+        if (metadata.historicTrack().isValid() && isShouldPlay()) {
             if(viewShowInformation != null) viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
@@ -516,9 +515,9 @@ public class StreamControlActivity extends AppCompatActivity {
 
         switch (action) {
             case LIST_ITEM_ACTION_FAVORITES: // add to favorites
-                HistoricTrack song = historySaver.get(index);
-                if (favoritesSaver.isAlreadyIn(song) == -1) {
-                    favoritesSaver.addSong(song.withClearedThumb());
+                HistoricTrack track = historySaver.get(index);
+                if (favoritesSaver.isAlreadyIn(track) == -1) {
+                    favoritesSaver.addSong(track.withClearedThumb());
                     Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
                             .show();
                 } else {

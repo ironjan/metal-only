@@ -9,12 +9,10 @@ import java.util.Calendar
  */
 data class Metadata internal constructor(val moderator: String, val genre: String, private val interpret: String, val title: String) {
 
-    fun toSong(): HistoricTrack {
+    fun historicTrack(): HistoricTrack {
         val date = Calendar.getInstance().timeInMillis
 
-        val song = HistoricTrack(interpret, title, moderator, date)
-
-        return song
+        return HistoricTrack(interpret, title, moderator, date)
     }
 
 }

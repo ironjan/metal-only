@@ -4,15 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
-
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats
-
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.UiThread
 import org.androidannotations.annotations.ViewById
-import kotlin.jvm.JvmField
 
 @EViewGroup(R.layout.view_showinformation)
 open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
@@ -34,7 +31,7 @@ open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout
     }
 
     fun setMetadata(metadata: Metadata) {
-        if (metadata.toSong().isValid) {
+        if (metadata.historicTrack().isValid) {
             updateViews(metadata.genre, metadata.moderator)
         }
     }
