@@ -6,7 +6,7 @@ import java.util.Date
  * Represents a song with its properties. <code>thumb</code> is a cleaned variant of <code>thumbRaw</code>,
  * i.e. <code>thumb</code> without <code>" OnAir"</code>.
  *
- * TODO Clean up the overrides and remove dupolicate fields
+ * TODO Clean up the overrides and remove duplicate fields
  */
 data class Song(val interpret: String, override val title: String, val thumbRaw: String, val date: Long)
     : Track, HistoricSongExtension {
