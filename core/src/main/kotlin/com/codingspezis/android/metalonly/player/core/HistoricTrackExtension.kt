@@ -1,5 +1,5 @@
 package com.codingspezis.android.metalonly.player.core
 
-interface HistoricSongExtension : ModeratorInformation{
+interface HistoricTrackExtension : ModeratorInformation{
     val playedAtAsLong: Long
 }

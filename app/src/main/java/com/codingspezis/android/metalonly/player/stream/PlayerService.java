@@ -14,7 +14,7 @@ import android.telephony.TelephonyManager;
 
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.StreamControlActivity_;
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
 
@@ -123,7 +123,7 @@ public class PlayerService extends Service {
      * @param metadata meta data to parse to song
      */
     void addSongToHistory(String metadata) {
-        Song song = (MetadataFactory.INSTANCE.createFromString(metadata)).toSong();
+        HistoricTrack song = (MetadataFactory.INSTANCE.createFromString(metadata)).toSong();
         boolean canAdd = false;
         if (song.isValid()) {
             int index = historySaver.isAlreadyIn(song);

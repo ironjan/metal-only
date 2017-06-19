@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
@@ -79,7 +79,7 @@ public class FavoritesFragment extends Fragment {
     @AfterViews
     void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
-        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<Song>(0));
+        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<HistoricTrack>(0));
         list.setAdapter(adapter);
         list.setEmptyView(empty);
         displayFavorites();
@@ -118,7 +118,7 @@ public class FavoritesFragment extends Fragment {
                 String interpret = artist.getText().toString();
                 String title = txtTitle.getText().toString();
 
-                Song song = new Song(interpret, title, "", Calendar.getInstance().getTimeInMillis());
+                HistoricTrack song = new HistoricTrack(interpret, title, "", Calendar.getInstance().getTimeInMillis());
 
                 if (song.isValid() && favoritesSaver.isAlreadyIn(song) < 0) {
                     favoritesSaver.addSong(song);
@@ -134,7 +134,7 @@ public class FavoritesFragment extends Fragment {
      */
     private void displayFavorites() {
         list.removeAllViewsInLayout();
-        ArrayList<Song> songs = new ArrayList<>();
+        ArrayList<HistoricTrack> songs = new ArrayList<>();
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
             songs.add(favoritesSaver.get(i));
         }

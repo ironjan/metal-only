@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.stream.metadata
 
-import com.codingspezis.android.metalonly.player.core.Song
+import com.codingspezis.android.metalonly.player.core.HistoricTrack
 
 import java.util.Calendar
 
@@ -9,10 +9,10 @@ import java.util.Calendar
  */
 data class Metadata internal constructor(val moderator: String, val genre: String, private val interpret: String, val title: String) {
 
-    fun toSong(): Song {
+    fun toSong(): HistoricTrack {
         val date = Calendar.getInstance().timeInMillis
 
-        val song = Song(interpret, title, moderator, date)
+        val song = HistoricTrack(interpret, title, moderator, date)
 
         return song
     }

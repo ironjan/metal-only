@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
@@ -339,10 +339,10 @@ public class StreamControlActivity extends AppCompatActivity {
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
                 PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
-        ArrayList<Song> data = new ArrayList<>();
+        ArrayList<HistoricTrack> data = new ArrayList<>();
 
         for (int i = historySaver.size() - 1; i >= 0; i--) {
-            final Song song = historySaver.get(i);
+            final HistoricTrack song = historySaver.get(i);
             data.add(song);
         }
 
@@ -516,7 +516,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
         switch (action) {
             case LIST_ITEM_ACTION_FAVORITES: // add to favorites
-                Song song = historySaver.get(index);
+                HistoricTrack song = historySaver.get(index);
                 if (favoritesSaver.isAlreadyIn(song) == -1) {
                     favoritesSaver.addSong(song.withClearedThumb());
                     Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)

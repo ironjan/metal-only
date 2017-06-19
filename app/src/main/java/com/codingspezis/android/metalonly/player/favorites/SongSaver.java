@@ -2,7 +2,7 @@ package com.codingspezis.android.metalonly.player.favorites;
 
 import android.content.Context;
 
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +32,7 @@ public class SongSaver {
     private Context context;
     private String fileName;
     private int limit;
-    private LinkedList<Song> songList; // main data
+    private LinkedList<HistoricTrack> songList; // main data
     private boolean changes; // is there share to save?
 
 
@@ -83,7 +83,7 @@ public class SongSaver {
                 String title = jSong.getString(JSON_STRING_TITLE);
                 String thumb = jSong.getString(JSON_STRING_THUMB);
                 long date = jSong.getLong(JSON_LONG_DATE);
-                Song song = new Song(interpret, title, thumb, date);
+                HistoricTrack song = new HistoricTrack(interpret, title, thumb, date);
                 queeIn(song);
             }
         } catch (FileNotFoundException e) {
@@ -104,7 +104,7 @@ public class SongSaver {
             try {
                 JSONArray jSongs = new JSONArray();
                 for (int i = 0; i < songList.size(); i++) {
-                    Song song = songList.get(i);
+                    HistoricTrack song = songList.get(i);
                     JSONObject jSong = new JSONObject();
                     jSong.put(JSON_STRING_INTERPRET, song.getArtist());
                     jSong.put(JSON_STRING_TITLE, song.getTitle());
@@ -133,7 +133,7 @@ public class SongSaver {
      * @param song song to add
      * @return true if adding was successful - false otherwise
      */
-    public boolean addSong(Song song) {
+    public boolean addSong(HistoricTrack song) {
         if (song.isValid() &&
                 isAlreadyIn(song) == -1 &&
                 limit > songList.size()) {
@@ -150,7 +150,7 @@ public class SongSaver {
      *
      * @param song song to add
      */
-    public boolean queeIn(Song song) {
+    public boolean queeIn(HistoricTrack song) {
         while (limit <= songList.size()) {
             songList.remove();
         }
@@ -164,7 +164,7 @@ public class SongSaver {
      * @param song song to check
      * @return index of last entry of song if it is in the list - -1 otherwise
      */
-    public int isAlreadyIn(Song song) {
+    public int isAlreadyIn(HistoricTrack song) {
         for (int i = songList.size() - 1; i >= 0; i--) {
             if (songList.get(i).getArtist().equals(song.getArtist()) &&
                     songList.get(i).getTitle().equals(song.getTitle()))
@@ -202,7 +202,7 @@ public class SongSaver {
      * @param i index of requested song
      * @return i-th song of list of songs
      */
-    public Song get(int i) {
+    public HistoricTrack get(int i) {
         return songList.get(i);
     }
 
