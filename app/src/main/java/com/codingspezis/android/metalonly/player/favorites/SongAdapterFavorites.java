@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.core.HistoricTrack;
+import com.codingspezis.android.metalonly.player.core.Track;
 
 import java.util.ArrayList;
 
@@ -25,10 +25,10 @@ public class SongAdapterFavorites extends BaseAdapter {
     public static final String KEY_DATE = "MO_HK_DATE";
 
     private final Activity activity;
-    private final ArrayList<HistoricTrack> data;
+    private final ArrayList<Track> data;
     private final LayoutInflater inflater;
 
-    public SongAdapterFavorites(Activity a, ArrayList<HistoricTrack> songs) {
+    public SongAdapterFavorites(Activity a, ArrayList<Track> songs) {
         activity = a;
         data = songs;
         inflater = (LayoutInflater) activity
@@ -41,7 +41,7 @@ public class SongAdapterFavorites extends BaseAdapter {
         if (convertView == null) {
             view = inflater.inflate(R.layout.view_list_item_song_fav, null);
         }
-        HistoricTrack track = data.get(position);
+        Track track = data.get(position);
 
         TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
@@ -67,9 +67,9 @@ public class SongAdapterFavorites extends BaseAdapter {
         return arg0;
     }
 
-    public void replaceData(ArrayList<HistoricTrack> songs) {
-        this.data.clear();
-        this.data.addAll(songs);
+    public void replaceData(ArrayList<Track> trackList) {
+        data.clear();
+        data.addAll(trackList);
         notifyDataSetChanged();
     }
 }

@@ -17,6 +17,7 @@ import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
+import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
@@ -79,7 +80,7 @@ public class FavoritesFragment extends Fragment {
     @AfterViews
     void bindContent(){
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
-        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<HistoricTrack>(0));
+        adapter = new SongAdapterFavorites(getActivity(), new ArrayList<Track>(0));
         list.setAdapter(adapter);
         list.setEmptyView(empty);
         displayFavorites();
@@ -134,11 +135,11 @@ public class FavoritesFragment extends Fragment {
      */
     private void displayFavorites() {
         list.removeAllViewsInLayout();
-        ArrayList<HistoricTrack> songs = new ArrayList<>();
+        ArrayList<Track> trackList = new ArrayList<>();
         for (int i = favoritesSaver.size() - 1; i >= 0; i--) {
-            songs.add(favoritesSaver.get(i));
+            trackList.add(favoritesSaver.get(i));
         }
-        adapter.replaceData(songs);
+        adapter.replaceData(trackList);
     }
 
     /**
