@@ -3,7 +3,7 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.codingspezis.android.metalonly.player.plan.ShowInformation;
+import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

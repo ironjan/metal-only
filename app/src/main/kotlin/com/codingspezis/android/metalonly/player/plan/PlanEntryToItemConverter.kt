@@ -1,5 +1,6 @@
 package com.codingspezis.android.metalonly.player.plan
 
+import com.codingspezis.android.metalonly.player.core.ShowInformation
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes

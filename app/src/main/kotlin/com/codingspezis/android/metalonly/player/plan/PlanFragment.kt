@@ -8,6 +8,7 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
+import com.codingspezis.android.metalonly.player.core.ShowInformation
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException

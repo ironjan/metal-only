@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import com.codingspezis.android.metalonly.player.R
+import com.codingspezis.android.metalonly.player.core.ShowInformation
+import com.codingspezis.android.metalonly.player.helper.ShowInformationDateHelper
 
 /**
  * ClickListener for entries in the plan shown by [PlanActivity]
