@@ -14,17 +14,12 @@ import java.util.regex.Pattern
  * CREDIT TO:
  * http://stackoverflow.com/questions/8970548/how-to-get-metadata-of-a-streaming-online-radio
  */
-internal class IcyStreamMeta(private val SDK_INT: Int) {
+class IcyStreamMeta(private val SDK_INT: Int, val streamUrl: URL) {
 
-    private var streamUrl: URL? = null
     private var metadata: Map<String, String>? = null
     var isError: Boolean = false
         private set
     private var data: Map<String, String>? = null
-
-    init {
-        isError = false
-    }
 
     /**
      * Get artist using stream's title
@@ -108,7 +103,6 @@ internal class IcyStreamMeta(private val SDK_INT: Int) {
 
         con.setRequestProperty("Icy-MetaData", "1")
         con.setRequestProperty("Connection", "close")
-        con.setRequestProperty("Accept", null)
 
         con.connect()
 
@@ -180,12 +174,6 @@ internal class IcyStreamMeta(private val SDK_INT: Int) {
         metadata = parseMetadata(metaData.toString())
 
         stream.close()
-    }
-
-    fun setStreamUrl(streamUrl: URL) {
-        metadata = null
-        this.streamUrl = streamUrl
-        isError = false
     }
 
     companion object {

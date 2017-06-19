@@ -172,6 +172,7 @@ public class StreamControlActivity extends AppCompatActivity {
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
+        buttonPlayClicked();
     }
 
     @Override
