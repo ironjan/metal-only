@@ -124,7 +124,7 @@ public class StreamPlayerInternal implements AudioStream {
      * sets up the metadata listener
      */
     private void setupMetadataListener() {
-        metadataListener = new MetadataListener(UrlConstants.INSTANCE.getSTREAM_URL_128());
+        metadataListener = new MetadataListener(context);
         metadataListener.setOnMetadataReceivedListener(new OnMetadataReceivedListener() {
             @Override
             public void onMetadataReceived(String metadata) {

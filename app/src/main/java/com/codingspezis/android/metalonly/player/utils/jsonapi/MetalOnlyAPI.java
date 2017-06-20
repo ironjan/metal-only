@@ -7,6 +7,7 @@ import org.androidannotations.rest.spring.annotations.Rest;
 import org.androidannotations.rest.spring.api.RestClientErrorHandling;
 import org.androidannotations.rest.spring.api.RestClientSupport;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestClientException;
 
 /**
  * Interface to generate the REST-Client
@@ -39,5 +40,12 @@ public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport
     PlanWithStats getPlanWithStats();
 
 
-
+    /**
+     * Gets the current track via API
+     * @return the currently played track
+     * @throws RestClientException when a REST related exception occurs
+     * @throws NoInternetException when this method is called without internet connection
+     */
+    @Get("track")
+    TrackWrapper getTrack();
 }

@@ -1,30 +1,39 @@
 package com.codingspezis.android.metalonly.player.stream.metadata;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import android.content.Context;
+import android.content.Intent;
+
+import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.codingspezis.android.metalonly.player.core.Track;
+import com.codingspezis.android.metalonly.player.stream.track_info.IntentConstants;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper_;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
+import com.codingspezis.android.metalonly.player.utils.jsonapi.TrackWrapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestClientException;
 
 public class MetadataListener implements Runnable {
 
-    private static final int REFRESH_INTERVAL = 20 * 1000;
-    private IcyStreamMeta icyStreamMeta;
+    private static final int _15_MIN_IN_MILLIS = 15 * 1000;
+    private static final int UPDATE_INTERVAL = (BuildConfig.DEBUG) ? 5000 : _15_MIN_IN_MILLIS;
+    private final Logger LOGGER = LoggerFactory.getLogger(MetadataListener.class);
+    private final MetalOnlyAPIWrapper apiWrapper;
     private OnMetadataReceivedListener onMetadataReceivedListener;
     private boolean active;
     private boolean err;
+    private final Context context;
 
     /**
      * constructor
      *
-     * @param streamUrl
      */
-    public MetadataListener(String streamUrl) {
+    public MetadataListener(Context context) {
+        this.context = context;
         err = false;
-        try {
-            icyStreamMeta = new IcyStreamMeta(REFRESH_INTERVAL, new URL(streamUrl));
-        } catch (MalformedURLException e) {
-            // this should never happen
-            err = true;
-        }
+        this.apiWrapper = MetalOnlyAPIWrapper_.getInstance_(context);
     }
 
     /**
@@ -44,7 +53,7 @@ public class MetadataListener implements Runnable {
     }
 
     /**
-     * gets meta data every REFRESH_INTERVAL milliseconds
+     * gets meta data every 15 seconds
      */
     @Override
     public void run() {
@@ -52,18 +61,24 @@ public class MetadataListener implements Runnable {
         String metadata;
         while (active && !err) {
             try {
-                icyStreamMeta.refreshMeta();
-                metadata = icyStreamMeta.getStreamTitle();
-                if (metadata.trim().length() != 0) {
-                    if (onMetadataReceivedListener != null && active)
-                        onMetadataReceivedListener.onMetadataReceived(metadata);
+                TrackWrapper trackWrapper = apiWrapper.getTrack();
+
+                if(trackWrapper != null){
+                    final Track track = trackWrapper.getTrack();
+                    Intent intent = new Intent(IntentConstants.INTENT_NEW_TRACK);
+                    intent.putExtra(IntentConstants.KEY_ARTIST, track.getArtist());
+                    intent.putExtra(IntentConstants.KEY_TITLE, track.getTitle());
+                    context.sendBroadcast(intent);
                 }
-            } catch (IOException e) {
-                if (onMetadataReceivedListener != null && active)
-                    onMetadataReceivedListener.onMetadataError(e);
+            } catch (RestClientException e) {
+                /** FIXME handle this */
+                LOGGER.error(e.getMessage(), e);
+            } catch (NoInternetException e) {
+                /** FIXME handle this */
+                LOGGER.error(e.getMessage(), e);
             }
             try {
-                Thread.sleep(REFRESH_INTERVAL);
+                Thread.sleep(UPDATE_INTERVAL);
             } catch (InterruptedException e) {
                 // everything is fine
             }
