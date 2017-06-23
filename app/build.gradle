@@ -69,7 +69,7 @@ android {
           versionName "${versionMajor}.${versionMinor}.${versionPatch}-${versionBuild}"
         }
 
-        minSdkVersion 18
+        minSdkVersion 11
         targetSdkVersion 25
 
         applicationId "com.codingspezis.android.metalonly.player"
