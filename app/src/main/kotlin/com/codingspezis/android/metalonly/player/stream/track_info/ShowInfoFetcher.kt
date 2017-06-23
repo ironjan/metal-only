@@ -12,10 +12,12 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.RestClientException
 
-class ShowInfoFetcher
 /**
- * constructor
+ * A [Runnable] that will fetch the current show information (moderator and track) in regular
+ * intervals. It runs in ":PlayerProcess" and can therefore use [LocalBroadcastManager] to
+ * share the infos with [PlayerService].
  */
+class ShowInfoFetcher
 (private val context: Context) : Runnable {
     private val LOGGER = LoggerFactory.getLogger(ShowInfoFetcher::class.java)
     private val api: MetalOnlyAPI_ = MetalOnlyAPI_(context)
