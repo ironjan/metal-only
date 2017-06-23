@@ -3,12 +3,10 @@ package com.codingspezis.android.metalonly.player.stream.track_info
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
-
 import com.codingspezis.android.metalonly.player.BuildConfig
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI_
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats
-
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.RestClientException
 
@@ -23,8 +21,6 @@ class ShowInfoFetcher
     private val api: MetalOnlyAPI_ = MetalOnlyAPI_(context)
     private var active: Boolean = false
 
-    private val err: Boolean = false
-
     /**
      * stops the meta data receiver
      */
@@ -37,19 +33,22 @@ class ShowInfoFetcher
      */
     override fun run() {
         active = true
-        while (active && !err) {
+        while (active) {
             try {
                 val stats = api.stats
 
                 if (stats != null) {
-                        broadcastCurrentShowInfo(stats)
+                    broadcastCurrentShowInfo(stats)
                 }
             } catch (e: RestClientException) {
-                /** FIXME handle this  */
+                /* Currently, all exceptions are evil. We need to find a better method to handle
+                 * these - currently, there is nothing to do and we just stop execution to not waste
+                 * any battery or data. */
                 LOGGER.error(e.message, e)
+                active = false
             } catch (e: NoInternetException) {
-                /** FIXME handle this  */
-                LOGGER.error(e.message, e)
+                /* We will sleep for some time. If internet fails, [stop] will be called by the
+                 * stream  managing class*/
                 sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL)
             }
 
