@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 
 import java.text.DateFormat;
@@ -24,11 +24,11 @@ import java.util.Locale;
 public class SongAdapter extends BaseAdapter {
 
     private final Activity activity;
-    private final ArrayList<Song> data;
+    private final ArrayList<HistoricTrack> data;
     private final LayoutInflater inflater;
     private final ImageLoader imageLoader;
 
-    public SongAdapter(Activity a, ArrayList<Song> d) {
+    public SongAdapter(Activity a, ArrayList<HistoricTrack> d) {
         activity = a;
         data = d;
         inflater = (LayoutInflater) activity
@@ -43,17 +43,17 @@ public class SongAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.view_list_item_song_hist, null);
         }
 
-        Song song = data.get(position);
+        HistoricTrack track = data.get(position);
 
         final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         final TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
         final TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
         final TextView txtDate = (TextView) view.findViewById(R.id.txtDate);
 
-        txtTitle.setText(song.getTitle());
-        txtArtist.setText(song.getInterpret());
+        txtTitle.setText(track.getTitle());
+        txtArtist.setText(track.getArtist());
         try {
-            final Date dateAsDate = new Date(song.getDate());
+            final Date dateAsDate = new Date(track.getPlayedAtAsLong());
             String day = DateFormat.getDateInstance(DateFormat.SHORT,
                     Locale.GERMAN).format(dateAsDate);
             String time = DateFormat.getTimeInstance(DateFormat.SHORT,
@@ -67,7 +67,7 @@ public class SongAdapter extends BaseAdapter {
         }
 
         ImageView imageView = (ImageView) view.findViewById(R.id.modImage);
-        String moderator = song.getThumb();
+        String moderator = track.getModerator();
         imageLoader.loadImage(moderator, imageView);
 
         return view;

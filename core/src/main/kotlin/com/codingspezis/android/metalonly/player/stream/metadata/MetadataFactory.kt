@@ -19,8 +19,8 @@ object MetadataFactory {
      * *
      * @return a new Metadata object. Silently returns default object if share goes wrong
      */
-    fun createFromString(dataRaw: String): Metadata {
-        var data = dataRaw
+    fun createFromString(dataRaw: String?): Metadata {
+        var data = dataRaw ?: ""
         try {
             val genre: String
             val moderator: String

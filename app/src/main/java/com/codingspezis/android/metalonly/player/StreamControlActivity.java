@@ -2,6 +2,7 @@ package com.codingspezis.android.metalonly.player;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
@@ -30,6 +31,7 @@ import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
+import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
@@ -100,6 +102,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private SongSaver historySaver;
     // other variables
     private boolean shouldPlay = false;
+    private BroadcastReceiver showInfoBroadcastReceiver;
 
     /**
      * @param context
@@ -172,6 +175,9 @@ public class StreamControlActivity extends AppCompatActivity {
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
+        if(BuildConfig.DEBUG){
+            buttonPlayClicked();
+        }
     }
 
     @Override
@@ -238,6 +244,7 @@ public class StreamControlActivity extends AppCompatActivity {
         Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
         sendBroadcast(tmpIntent);
         unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(showInfoBroadcastReceiver);
         super.onDestroy();
     }
 
@@ -259,9 +266,18 @@ public class StreamControlActivity extends AppCompatActivity {
         broadcastReceiver = new MainBroadcastReceiver(this);
         registerReceiver(broadcastReceiver, new IntentFilter(
                 PlayerService.INTENT_STATUS));
-        registerReceiver(broadcastReceiver, new IntentFilter(
-                PlayerService.INTENT_METADATA));
         registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
+
+        showInfoBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // FIXME do usefult hings
+//                setMetadata(MetadataFactory.INSTANCE.createFromString(metadata));
+                refreshShowInfo();
+                displaySongs();
+            }
+        };
+        registerReceiver(showInfoBroadcastReceiver, ShowInfoIntentConstants.INSTANCE.getIntentFilter());
     }
 
     /**
@@ -339,11 +355,10 @@ public class StreamControlActivity extends AppCompatActivity {
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
                 PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         listView.removeAllViewsInLayout();
-        ArrayList<Song> data = new ArrayList<>();
+        ArrayList<HistoricTrack> data = new ArrayList<>();
 
         for (int i = historySaver.size() - 1; i >= 0; i--) {
-            final Song song = historySaver.get(i);
-            data.add(song);
+            data.add(historySaver.get(i));
         }
 
         SongAdapter adapter = new SongAdapter(this, data);
@@ -479,7 +494,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata()");
 
         Metadata metadata = getMetadata();
-        if (metadata.toSong().isValid() && isShouldPlay()) {
+        if (metadata.historicTrack().isValid() && isShouldPlay()) {
             if(viewShowInformation != null) viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
@@ -516,9 +531,9 @@ public class StreamControlActivity extends AppCompatActivity {
 
         switch (action) {
             case LIST_ITEM_ACTION_FAVORITES: // add to favorites
-                Song song = historySaver.get(index);
-                if (favoritesSaver.isAlreadyIn(song) == -1) {
-                    favoritesSaver.addSong(song.withClearedThumb());
+                HistoricTrack track = historySaver.get(index);
+                if (favoritesSaver.isAlreadyIn(track) == -1) {
+                    favoritesSaver.addSong(track.withClearedThumb());
                     Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
                             .show();
                 } else {
@@ -527,7 +542,7 @@ public class StreamControlActivity extends AppCompatActivity {
                 }
                 break;
             case LIST_ITEM_ACTION_YOUTUBE: // YouTube
-                String searchStr = historySaver.get(index).getInterpret() + " - "
+                String searchStr = historySaver.get(index).getArtist() + " - "
                         + historySaver.get(index).getTitle();
                 try {
                     searchStr = URLEncoder.encode(searchStr, "UTF-8");
@@ -540,7 +555,7 @@ public class StreamControlActivity extends AppCompatActivity {
                 startActivity(youtube);
                 break;
             case LIST_ITEM_ACTION_SHARE: // share
-                String message = historySaver.get(index).getInterpret() + " - "
+                String message = historySaver.get(index).getArtist() + " - "
                         + historySaver.get(index).getTitle();
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");

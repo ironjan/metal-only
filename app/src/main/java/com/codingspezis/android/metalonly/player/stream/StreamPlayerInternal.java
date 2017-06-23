@@ -8,8 +8,7 @@ import android.os.PowerManager;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.stream.metadata.MetadataListener;
-import com.codingspezis.android.metalonly.player.stream.metadata.OnMetadataReceivedListener;
+import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoFetcher;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ public class StreamPlayerInternal implements AudioStream {
     private static MediaPlayer mediaPlayer;
     private Context context;
     private OnStreamListener onStreamListener;
-    private MetadataListener metadataListener;
+    private ShowInfoFetcher metadataListener;
     private TimeoutListener timeoutListener;
     private PowerManager.WakeLock wakeLock;
     private WifiManager.WifiLock wifiLock;
@@ -71,7 +70,7 @@ public class StreamPlayerInternal implements AudioStream {
      */
     public StreamPlayerInternal(Context context) {
         this.context = context;
-        setupMetadataListener();
+        metadataListener = new ShowInfoFetcher(this.context);
         setupTimeoutListener();
         createLocks(context);
         createPlayer();
@@ -118,26 +117,6 @@ public class StreamPlayerInternal implements AudioStream {
             wakeLock.release();
         if (wifiLock.isHeld())
             wifiLock.release();
-    }
-
-    /**
-     * sets up the metadata listener
-     */
-    private void setupMetadataListener() {
-        metadataListener = new MetadataListener(UrlConstants.INSTANCE.getSTREAM_URL_128());
-        metadataListener.setOnMetadataReceivedListener(new OnMetadataReceivedListener() {
-            @Override
-            public void onMetadataReceived(String metadata) {
-                if (onStreamListener != null)
-                    onStreamListener.metadataReceived(metadata);
-            }
-
-            @Override
-            public void onMetadataError(Exception exception) {
-                if (onStreamListener != null)
-                    onStreamListener.errorOccurred(exception.getMessage(), true);
-            }
-        });
     }
 
     /**

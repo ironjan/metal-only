@@ -109,6 +109,12 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         return planWithStats;
     }
 
+    @Override
+    public TrackWrapper getTrack() {
+        checkConnectivity();
+        return api.getTrack();
+    }
+
     /**
      * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
      * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
@@ -179,7 +185,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
      *
      * @return <code>true</code>, if the phone is not connected to the internet.
      */
-    public boolean hasNoInternetConnection(){
+    public boolean hasNoInternetConnection() {
         return !hasConnection();
     }
 

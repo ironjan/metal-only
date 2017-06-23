@@ -1,6 +1,6 @@
-package com.codingspezis.android.metalonly.player.plan
+package com.codingspezis.android.metalonly.player.helper
 
-import android.annotation.SuppressLint
+import com.codingspezis.android.metalonly.player.core.ShowInformation
 import java.text.SimpleDateFormat
 
 /**
@@ -8,9 +8,7 @@ import java.text.SimpleDateFormat
  */
 class ShowInformationDateHelper {
     companion object {
-        @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_TIME = SimpleDateFormat("HH:mm")
-        @SuppressLint("SimpleDateFormat")
         private val DATE_FORMAT_DATE = SimpleDateFormat("dd.MM.yy")
 
         fun formattedDateString(data: ShowInformation): String {

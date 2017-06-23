@@ -2,7 +2,7 @@ package com.codingspezis.android.metalonly.player.favorites;
 
 import android.content.Context;
 
-import com.codingspezis.android.metalonly.player.core.Song;
+import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +32,7 @@ public class SongSaver {
     private Context context;
     private String fileName;
     private int limit;
-    private LinkedList<Song> songList; // main data
+    private LinkedList<HistoricTrack> trackList; // main data
     private boolean changes; // is there share to save?
 
 
@@ -50,7 +50,7 @@ public class SongSaver {
             this.limit = Integer.MAX_VALUE;
         else
             this.limit = limit;
-        songList = new LinkedList<>();
+        trackList = new LinkedList<>();
         readSongsFromStorage();
         changes = false;
     }
@@ -76,15 +76,15 @@ public class SongSaver {
             isr.close();
             JSONObject jObj = new JSONObject(s);
             JSONArray jSongs = jObj.getJSONArray(JSON_ARRAY_SONGS);
-            songList.clear();
+            trackList.clear();
             for (int i = 0; i < jSongs.length(); i++) {
                 JSONObject jSong = jSongs.getJSONObject(i);
                 String interpret = jSong.getString(JSON_STRING_INTERPRET);
                 String title = jSong.getString(JSON_STRING_TITLE);
                 String thumb = jSong.getString(JSON_STRING_THUMB);
                 long date = jSong.getLong(JSON_LONG_DATE);
-                Song song = new Song(interpret, title, thumb, date);
-                queeIn(song);
+                HistoricTrack track = new HistoricTrack(interpret, title, thumb, date);
+                queueIn(track);
             }
         } catch (FileNotFoundException e) {
             // everything is fine - just nothing saved
@@ -103,13 +103,13 @@ public class SongSaver {
         if (somethingChanged()) {
             try {
                 JSONArray jSongs = new JSONArray();
-                for (int i = 0; i < songList.size(); i++) {
-                    Song song = songList.get(i);
+                for (int i = 0; i < trackList.size(); i++) {
+                    HistoricTrack track = trackList.get(i);
                     JSONObject jSong = new JSONObject();
-                    jSong.put(JSON_STRING_INTERPRET, song.getInterpret());
-                    jSong.put(JSON_STRING_TITLE, song.getTitle());
-                    jSong.put(JSON_STRING_THUMB, song.getThumb());
-                    jSong.put(JSON_LONG_DATE, song.getDate());
+                    jSong.put(JSON_STRING_INTERPRET, track.getArtist());
+                    jSong.put(JSON_STRING_TITLE, track.getTitle());
+                    jSong.put(JSON_STRING_THUMB, track.getModerator());
+                    jSong.put(JSON_LONG_DATE, track.getPlayedAtAsLong());
                     jSongs.put(jSong);
                 }
                 JSONObject jObj = new JSONObject();
@@ -128,16 +128,16 @@ public class SongSaver {
 
 
     /**
-     * adds song to song list
+     * adds track to track list
      *
-     * @param song song to add
+     * @param track track to add
      * @return true if adding was successful - false otherwise
      */
-    public boolean addSong(Song song) {
-        if (song.isValid() &&
-                isAlreadyIn(song) == -1 &&
-                limit > songList.size()) {
-            songList.add(song);
+    public boolean addSong(HistoricTrack track) {
+        if (track.isValid() &&
+                isAlreadyIn(track) == -1 &&
+                limit > trackList.size()) {
+            trackList.add(track);
             changes = true;
             return true;
         }
@@ -146,33 +146,42 @@ public class SongSaver {
 
 
     /**
-     * adds song to song list - if limit is reached first in will be deleted
+     * adds track to track list - if limit is reached first in will be deleted
      *
-     * @param song song to add
+     * @param track track to add
      */
-    public boolean queeIn(Song song) {
-        while (limit <= songList.size()) {
-            songList.remove();
+    public boolean queueIn(HistoricTrack track) {
+        while (limit <= trackList.size()) {
+            trackList.remove();
         }
-        return addSong(song);
+        return addSong(track);
     }
 
 
     /**
-     * checks if song is already in list of songs
+     * checks if track is already in list of songs
      *
-     * @param song song to check
-     * @return index of last entry of song if it is in the list - -1 otherwise
+     * @param track track to check
+     * @return index of last entry of track if it is in the list - -1 otherwise
+     * @deprecated Move to {@link SongSaver#contains(HistoricTrack)}
      */
-    public int isAlreadyIn(Song song) {
-        for (int i = songList.size() - 1; i >= 0; i--) {
-            if (songList.get(i).getInterpret().equals(song.getInterpret()) &&
-                    songList.get(i).getTitle().equals(song.getTitle()))
+    public int isAlreadyIn(HistoricTrack track) {
+        for (int i = trackList.size() - 1; i >= 0; i--) {
+            if (trackList.get(i).getArtist().equals(track.getArtist()) &&
+                    trackList.get(i).getTitle().equals(track.getTitle()))
                 return i;
         }
         return -1;
     }
 
+    /**
+     * Checks if the given track is already in the list of songs
+     * @param track track to check
+     * @return <code>true</code>, if the song is known. <code>false</code> otherwise
+     */
+    public boolean contains(HistoricTrack track){
+        return isAlreadyIn(track) != -1;
+    }
 
     /**
      * removes song at position i
@@ -181,7 +190,7 @@ public class SongSaver {
      */
     public void removeAt(int i) {
         changes = true;
-        songList.remove(i);
+        trackList.remove(i);
     }
 
 
@@ -189,9 +198,9 @@ public class SongSaver {
      * removes every song of the list
      */
     public void clear() {
-        while (!songList.isEmpty()) {
+        while (!trackList.isEmpty()) {
             changes = true;
-            songList.remove();
+            trackList.remove();
         }
     }
 
@@ -202,8 +211,8 @@ public class SongSaver {
      * @param i index of requested song
      * @return i-th song of list of songs
      */
-    public Song get(int i) {
-        return songList.get(i);
+    public HistoricTrack get(int i) {
+        return trackList.get(i);
     }
 
 
@@ -219,7 +228,7 @@ public class SongSaver {
      * @return returns the size of list of songs
      */
     public int size() {
-        return songList.size();
+        return trackList.size();
     }
 
 

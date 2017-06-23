@@ -6,15 +6,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
-
 import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.plan.ShowInformation
+import com.codingspezis.android.metalonly.player.core.ShowInformation
+import com.codingspezis.android.metalonly.player.helper.ShowInformationDateHelper
 import com.codingspezis.android.metalonly.player.utils.ImageLoader
-import com.codingspezis.android.metalonly.player.plan.ShowInformationDateHelper
-
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.ViewById
-
 import java.util.GregorianCalendar
 
 /**

@@ -1,7 +1,12 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
+import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
+import com.codingspezis.android.metalonly.player.core.Track;
+import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <pre>
@@ -17,14 +22,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * </pre>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Stats {
+public class Stats implements BasicShowInformation, WishAndGreetConstraints{
     private static final String WISH_GREET_FULL = "1";
 
     private String moderator = "Unbekannt";
     private String sendung = "Ladefehler";
-    private boolean canWish = false;
-    private boolean canGreet = false;
-    private boolean moderated = false;
+    private boolean canWish;
+    private boolean canGreet;
+    private boolean moderated;
+    private Track track;
 
     public boolean isCanWish() {
         return canWish;
@@ -106,6 +112,14 @@ public class Stats {
         return genre;
     }
 
+    public Track getTrack() {
+        return track;
+    }
+
+    public void setTrack(SimpleTrack track) {
+        this.track = track;
+    }
+
     private void updateGenre() {
         int positionOfOpeningParenthesis = sendung.indexOf("(");
         int positionOfClosingParenthesis = sendung.indexOf(")");
@@ -129,5 +143,26 @@ public class Stats {
 
     public boolean canNeitherWishNorGreet() {
         return !(canWish || canGreet);
+    }
+
+    @NotNull
+    @Override
+    public String getShowTitle() {
+        return sendung;
+    }
+
+    @Override
+    public boolean getCanWish() {
+        return canWish;
+    }
+
+    @Override
+    public boolean getCanGreet() {
+        return canGreet;
+    }
+
+    @Override
+    public int getGreetLimit() {
+        return greetingLimit;
     }
 }
