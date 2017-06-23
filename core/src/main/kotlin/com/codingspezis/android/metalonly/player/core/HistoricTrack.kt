@@ -14,4 +14,15 @@ data class HistoricTrack(override val artist: String,
     fun withClearedThumb(): HistoricTrack {
         return HistoricTrack(artist, title, "", playedAtAsLong)
     }
+
+    /**
+     * Compares everything except [playedAtAsLong].
+     */
+    fun limitedEquals(other: HistoricTrack?): Boolean {
+        if (other == null) return false
+        else
+            return artist == other.artist
+                    && moderator == other.moderator
+                    && title == other.title
+    }
 }

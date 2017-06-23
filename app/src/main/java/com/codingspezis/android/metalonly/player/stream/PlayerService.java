@@ -54,6 +54,8 @@ public class PlayerService extends Service {
     private TelephonyManager telephonyManager;
     private SongSaver historySaver;
 
+    private HistoricTrack lastKnownTrack;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -83,10 +85,15 @@ public class PlayerService extends Service {
                 String moderator = extras.getString(ShowInfoIntentConstants.INSTANCE.getKEY_MODERATOR());
 
                 HistoricTrack track = new HistoricTrack(artist, title, moderator, System.currentTimeMillis());
-                addTrackToSongHistory(track);
+                boolean haveReceivedNewSongInformation = !track.limitedEquals(lastKnownTrack);
+                if(haveReceivedNewSongInformation){
+                    lastKnownTrack = track;
+                    addTrackToSongHistory(track);
 
-                // Repeat as global broadcast to notify activity in other process
-                sendBroadcast(intent);
+                    // Repeat as global broadcast to notify activity in other process
+                    sendBroadcast(intent);
+                }
+
             }
         }, ShowInfoIntentConstants.INSTANCE.getIntentFilter());
         audioStream = new StreamPlayerInternal(this);
