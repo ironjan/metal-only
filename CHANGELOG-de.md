@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.6-2]
+
+& Absturz behoben.
+
 ## [0.6.6]
 App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
 neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. 
