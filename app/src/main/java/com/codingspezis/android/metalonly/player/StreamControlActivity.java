@@ -2,6 +2,7 @@ package com.codingspezis.android.metalonly.player;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
+import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
@@ -100,6 +102,7 @@ public class StreamControlActivity extends AppCompatActivity {
     private SongSaver historySaver;
     // other variables
     private boolean shouldPlay = false;
+    private BroadcastReceiver showInfoBroadcastReceiver;
 
     /**
      * @param context
@@ -241,6 +244,7 @@ public class StreamControlActivity extends AppCompatActivity {
         Intent tmpIntent = new Intent(PlayerService.INTENT_EXIT);
         sendBroadcast(tmpIntent);
         unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(showInfoBroadcastReceiver);
         super.onDestroy();
     }
 
@@ -262,9 +266,18 @@ public class StreamControlActivity extends AppCompatActivity {
         broadcastReceiver = new MainBroadcastReceiver(this);
         registerReceiver(broadcastReceiver, new IntentFilter(
                 PlayerService.INTENT_STATUS));
-        registerReceiver(broadcastReceiver, new IntentFilter(
-                PlayerService.INTENT_METADATA));
         registerReceiver(broadcastReceiver, new IntentFilter(showToastMessage));
+
+        showInfoBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                // FIXME do usefult hings
+//                setMetadata(MetadataFactory.INSTANCE.createFromString(metadata));
+                refreshShowInfo();
+                displaySongs();
+            }
+        };
+        registerReceiver(showInfoBroadcastReceiver, ShowInfoIntentConstants.INSTANCE.getIntentFilter());
     }
 
     /**

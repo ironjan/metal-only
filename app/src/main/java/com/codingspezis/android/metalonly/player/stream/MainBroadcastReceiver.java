@@ -47,10 +47,6 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
                 this.streamControlActivity.toggleStreamButton(false);
             }
             // meta data
-        } else if (intent.getAction().equals(PlayerService.INTENT_METADATA)) {
-            this.streamControlActivity.setMetadata(MetadataFactory.INSTANCE.createFromString(metadata));
-            this.streamControlActivity.refreshShowInfo();
-            this.streamControlActivity.displaySongs();
         }
 
         if (BuildConfig.DEBUG) LOGGER.debug("onReceive({},{}) done", context, intent);
