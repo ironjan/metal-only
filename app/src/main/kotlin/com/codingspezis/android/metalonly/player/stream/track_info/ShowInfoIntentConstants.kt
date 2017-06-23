@@ -5,4 +5,6 @@ object ShowInfoIntentConstants {
     val KEY_ARTIST = "ARTIST"
     val KEY_TITLE = "TITLE"
     val KEY_MODERATOR = "MODERATOR"
+
+    val IntentFilter = android.content.IntentFilter(INTENT_NEW_TRACK)
 }
