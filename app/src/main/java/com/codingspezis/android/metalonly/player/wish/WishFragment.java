@@ -19,7 +19,6 @@ import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapp
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -86,7 +85,11 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     public WishFragment() {
     }
 
-    @AfterInject
+    /**
+     * Loads the actions that are allowed in this show. Needs to be called {@link AfterViews}
+     * because we're updating the UI when getting a result.
+     */
+    @AfterViews
     @Background
     void loadAllowedActions() {
         if (HTTPGrabber.isOnline(getActivity())) {
