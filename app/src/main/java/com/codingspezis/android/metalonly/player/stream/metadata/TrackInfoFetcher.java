@@ -2,6 +2,7 @@ package com.codingspezis.android.metalonly.player.stream.metadata;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.core.Track;
@@ -15,34 +16,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestClientException;
 
-public class MetadataListener implements Runnable {
+public class TrackInfoFetcher implements Runnable {
 
     private static final int _15_MIN_IN_MILLIS = 15 * 1000;
     private static final int UPDATE_INTERVAL = (BuildConfig.DEBUG) ? 5000 : _15_MIN_IN_MILLIS;
-    private final Logger LOGGER = LoggerFactory.getLogger(MetadataListener.class);
+    private static final int NO_INTERNET_SLEEP_INTERVAL = 30 * 1000;
+    private final Logger LOGGER = LoggerFactory.getLogger(TrackInfoFetcher.class);
     private final MetalOnlyAPIWrapper apiWrapper;
-    private OnMetadataReceivedListener onMetadataReceivedListener;
     private boolean active;
     private boolean err;
     private final Context context;
 
     /**
      * constructor
-     *
      */
-    public MetadataListener(Context context) {
+    public TrackInfoFetcher(Context context) {
         this.context = context;
-        err = false;
-        this.apiWrapper = MetalOnlyAPIWrapper_.getInstance_(context);
-    }
-
-    /**
-     * sets the onMetadataReceivedListener
-     *
-     * @param onMetadataReceivedListener listener to set
-     */
-    public void setOnMetadataReceivedListener(OnMetadataReceivedListener onMetadataReceivedListener) {
-        this.onMetadataReceivedListener = onMetadataReceivedListener;
+        apiWrapper = MetalOnlyAPIWrapper_.getInstance_(context);
     }
 
     /**
@@ -58,17 +48,15 @@ public class MetadataListener implements Runnable {
     @Override
     public void run() {
         active = true;
-        String metadata;
         while (active && !err) {
             try {
                 TrackWrapper trackWrapper = apiWrapper.getTrack();
 
-                if(trackWrapper != null){
+                if (trackWrapper != null) {
                     final Track track = trackWrapper.getTrack();
-                    Intent intent = new Intent(IntentConstants.INTENT_NEW_TRACK);
-                    intent.putExtra(IntentConstants.KEY_ARTIST, track.getArtist());
-                    intent.putExtra(IntentConstants.KEY_TITLE, track.getTitle());
-                    context.sendBroadcast(intent);
+                    if (track != null) {
+                        broadcastTrackInfo(track);
+                    }
                 }
             } catch (RestClientException e) {
                 /** FIXME handle this */
@@ -76,12 +64,25 @@ public class MetadataListener implements Runnable {
             } catch (NoInternetException e) {
                 /** FIXME handle this */
                 LOGGER.error(e.getMessage(), e);
+                sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL);
             }
-            try {
-                Thread.sleep(UPDATE_INTERVAL);
-            } catch (InterruptedException e) {
-                // everything is fine
-            }
+
+            sleepFetcherFor(UPDATE_INTERVAL);
+        }
+    }
+
+    private void broadcastTrackInfo(Track track) {
+        Intent intent = new Intent(IntentConstants.INTENT_NEW_TRACK);
+        intent.putExtra(IntentConstants.KEY_ARTIST, track.getArtist());
+        intent.putExtra(IntentConstants.KEY_TITLE, track.getTitle());
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    private void sleepFetcherFor(int interval) {
+        try {
+            Thread.sleep(interval);
+        } catch (InterruptedException e) {
+            // everything is fine
         }
     }
 }
