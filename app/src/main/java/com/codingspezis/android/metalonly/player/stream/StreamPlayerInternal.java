@@ -8,7 +8,7 @@ import android.os.PowerManager;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.stream.metadata.TrackInfoFetcher;
+import com.codingspezis.android.metalonly.player.stream.track_info.TrackInfoFetcher;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import org.slf4j.Logger;
