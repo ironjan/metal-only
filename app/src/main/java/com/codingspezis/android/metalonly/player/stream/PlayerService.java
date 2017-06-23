@@ -4,11 +4,14 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
@@ -17,6 +20,7 @@ import com.codingspezis.android.metalonly.player.StreamControlActivity_;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
+import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
 
 /**
  * service that is managing stream player
@@ -69,6 +73,22 @@ public class PlayerService extends Service {
                 INTENT_STATUS_REQUEST));
         registerReceiver(playerBCReceiver, new IntentFilter(INTENT_EXIT));
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Bundle extras = intent.getExtras();
+
+                String artist = extras.getString(ShowInfoIntentConstants.INSTANCE.getKEY_ARTIST());
+                String title = extras.getString(ShowInfoIntentConstants.INSTANCE.getKEY_TITLE());
+                String moderator = extras.getString(ShowInfoIntentConstants.INSTANCE.getKEY_MODERATOR());
+
+                HistoricTrack track = new HistoricTrack(artist, title, moderator, System.currentTimeMillis());
+                addTrackToSongHistory(track);
+
+                // Repeat as global broadcast to notify activity in other process
+                sendBroadcast(intent);
+            }
+        }, ShowInfoIntentConstants.INSTANCE.getIntentFilter());
         audioStream = new StreamPlayerInternal(this);
     }
 
@@ -84,7 +104,7 @@ public class PlayerService extends Service {
         CharSequence tickerText = getString(R.string.playing);
         long when = System.currentTimeMillis();
         CharSequence contentTitle = getString(R.string.app_name);
-        Intent notificationIntent = StreamControlActivity_.intent(this ).get();
+        Intent notificationIntent = StreamControlActivity_.intent(this).get();
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -124,6 +144,10 @@ public class PlayerService extends Service {
      */
     void addSongToHistory(String metadata) {
         HistoricTrack track = (MetadataFactory.INSTANCE.createFromString(metadata)).historicTrack();
+        addTrackToSongHistory(track);
+    }
+
+    private void addTrackToSongHistory(HistoricTrack track) {
         boolean canAdd = false;
         if (track.isValid()) {
             int index = historySaver.isAlreadyIn(track);
@@ -140,7 +164,6 @@ public class PlayerService extends Service {
             historySaver.queeIn(track);
             historySaver.saveSongsToStorage();
         }
-
     }
 
     /**
