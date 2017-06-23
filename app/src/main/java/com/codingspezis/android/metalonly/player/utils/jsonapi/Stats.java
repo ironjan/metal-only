@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
+import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,7 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
     private boolean canWish;
     private boolean canGreet;
     private boolean moderated;
+    private Track track;
 
     public boolean isCanWish() {
         return canWish;
@@ -108,6 +110,14 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
             updateGenre();
         }
         return genre;
+    }
+
+    public Track getTrack() {
+        return track;
+    }
+
+    public void setTrack(SimpleTrack track) {
+        this.track = track;
     }
 
     private void updateGenre() {

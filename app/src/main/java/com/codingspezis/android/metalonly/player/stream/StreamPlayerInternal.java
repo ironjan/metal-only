@@ -8,7 +8,7 @@ import android.os.PowerManager;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.stream.track_info.TrackInfoFetcher;
+import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoFetcher;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class StreamPlayerInternal implements AudioStream {
     private static MediaPlayer mediaPlayer;
     private Context context;
     private OnStreamListener onStreamListener;
-    private TrackInfoFetcher metadataListener;
+    private ShowInfoFetcher metadataListener;
     private TimeoutListener timeoutListener;
     private PowerManager.WakeLock wakeLock;
     private WifiManager.WifiLock wifiLock;
@@ -70,7 +70,7 @@ public class StreamPlayerInternal implements AudioStream {
      */
     public StreamPlayerInternal(Context context) {
         this.context = context;
-        metadataListener = new TrackInfoFetcher(this.context);
+        metadataListener = new ShowInfoFetcher(this.context);
         setupTimeoutListener();
         createLocks(context);
         createPlayer();
