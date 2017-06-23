@@ -120,7 +120,7 @@ android {
     }
 }
 
-def androidannotationsVersion = '4.2.0'
+def androidannotationsVersion = '4.3.1'
 dependencies {
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.android.support:appcompat-v7:25.3.0'
@@ -149,6 +149,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    compile project(path: ':core')
 }
 
 task wrapper(type: Wrapper) {

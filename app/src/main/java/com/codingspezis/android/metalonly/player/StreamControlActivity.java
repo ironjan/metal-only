@@ -22,13 +22,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.favorites.Song;
+import com.codingspezis.android.metalonly.player.core.Song;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
 import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
+import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
@@ -147,7 +148,7 @@ public class StreamControlActivity extends AppCompatActivity {
         toggleStreamButton(false);
         displaySongs();
 
-        setMetadata(Metadata.DEFAULT_METADATA);
+        setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
     }
 
@@ -218,7 +219,7 @@ public class StreamControlActivity extends AppCompatActivity {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
-                        if(viewShowInformation != null) viewShowInformation.setMetadata(new Metadata(moderator, genre, "", ""));
+                        if(viewShowInformation != null) viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
 
                         setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
@@ -247,7 +248,7 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
         favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
                 -1);
-        setMetadata(Metadata.DEFAULT_METADATA);
+        setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
     }
 
     /**

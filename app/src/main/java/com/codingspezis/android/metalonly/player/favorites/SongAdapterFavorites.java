@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.codingspezis.android.metalonly.player.R;
+import com.codingspezis.android.metalonly.player.core.Song;
 
 import java.util.ArrayList;
 

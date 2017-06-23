@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
+import com.codingspezis.android.metalonly.player.core.Song;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
 import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
@@ -34,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Displays favorites and allows to handle them
@@ -116,7 +118,7 @@ public class FavoritesFragment extends Fragment {
                 String interpret = artist.getText().toString();
                 String title = txtTitle.getText().toString();
 
-                Song song = new Song(interpret, title);
+                Song song = new Song(interpret, title, "", Calendar.getInstance().getTimeInMillis());
 
                 if (song.isValid() && favoritesSaver.isAlreadyIn(song) < 0) {
                     favoritesSaver.addSong(song);

@@ -10,8 +10,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 Some text.
 
 ## [0.6.6-2]
+App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
+neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. 
 
-& Absturz behoben.
+Zudem wurde der Quellcode aufgeräumt und das Wünschen von Favoriten wurde repariert.
+
+Hotfix: App an neue API angepasst & Absturz behoben.
+
+## [0.6.6-1]
+App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
+neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. 
+
+Zudem wurde der Quellcode aufgeräumt und das Wünschen von Favoriten wurde repariert.
+
+Hotfix: adapted App to new Homepage API.
 
 ## [0.6.6]
 App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
@@ -29,6 +41,12 @@ Zudem wurde der Quellcode aufgeräumt und ein Absturz beim Wünschen von Favorit
 App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
 neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. Zudem wurde 
 der Quellcode aufgeräumt.
+
+## [0.6.3-1]
+Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 
+history. Also, cleaned up the code base.
+
+Hotfix: adapted App to new Homepage API.
 
 ## [0.6.3]
 Fixed a crash that sometimes occurred after opening the show schedule the mod pictures in song 

@@ -1,10 +1,11 @@
 package com.codingspezis.android.metalonly.player.favorites;
 
+import com.codingspezis.android.metalonly.player.core.Song;
+
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-
 import static org.junit.Assert.assertThat;
 
 public class SongTest {

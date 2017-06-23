@@ -66,19 +66,14 @@ import java.util.Map;
  *  java.net.URLConnection = url.openConnection(); // should be instance of IcyURLConnection
  * </pre>
  */
-public class IcyURLConnection extends HttpURLConnection {
+class IcyURLConnection extends HttpURLConnection {
 
-    protected Socket socket;
-    protected OutputStream outputStream;
-    protected InputStream inputStream;
-    protected HashMap<String, List<String>> requestProps;
-    protected HashMap<String, List<String>> headers;
-    protected String responseLine;
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors
-    ////////////////////////////////////////////////////////////////////////////
+    private Socket socket;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private HashMap<String, List<String>> requestProps;
+    private final HashMap<String, List<String>> headers = new HashMap<>();
+    private String responseLine;
 
     /**
      * Creates new instance for the given URL.
@@ -86,11 +81,6 @@ public class IcyURLConnection extends HttpURLConnection {
     public IcyURLConnection(URL url) {
         super(url);
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    // URLConnection
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Opens a communications link to the resource referenced by this URL,
@@ -103,15 +93,14 @@ public class IcyURLConnection extends HttpURLConnection {
 
         socket = createSocket();
 
+        int port = url.getPort() != -1 ? url.getPort() : url.getDefaultPort();
         socket.connect(
-                new InetSocketAddress(url.getHost(), url.getPort() != -1 ? url.getPort() : url.getDefaultPort()),
+                new InetSocketAddress(url.getHost(), port),
                 getConnectTimeout());
 
         Map<String, List<String>> requestProps = getRequestProperties();
 
         connected = true;
-
-        headers = new HashMap<>();
 
         outputStream = socket.getOutputStream();
         inputStream = socket.getInputStream();
@@ -131,10 +120,11 @@ public class IcyURLConnection extends HttpURLConnection {
 
         responseLine = readResponseLine();
 
-        for (String line = readLine(); line != null && line.length() != 0; ) {
-            parseHeaderLine(line);
+        String line;
+        do {
             line = readLine();
-        }
+            parseHeaderLine(line);
+        } while ((line != null) && (!line.isEmpty()));
     }
 
 
@@ -152,21 +142,18 @@ public class IcyURLConnection extends HttpURLConnection {
 
     @Override
     public String getHeaderField(String name) {
-        HashMap<String, List<String>> lmap = headers;
+        List<String> list = headers.get(name);
 
-        if (lmap != null) {
-            List<String> list = lmap.get(name);
-
-            if (list != null && !list.isEmpty()) return list.get(0);
+        if ((list == null) || list.isEmpty()) {
+            return null;
         }
-
-        return null;
+        return list.get(0);
     }
 
 
     @Override
     public String getHeaderField(int n) {
-        return n == 0 ? responseLine : null;
+        return (n == 0) ? responseLine : null;
     }
 
 
@@ -178,20 +165,25 @@ public class IcyURLConnection extends HttpURLConnection {
 
     @Override
     public synchronized void setRequestProperty(String key, String value) {
-        if (requestProps == null) requestProps = new HashMap<>();
+        if (requestProps == null) {
+            requestProps = new HashMap<>();
+        }
 
         List<String> list = new ArrayList<>();
         list.add(value);
         requestProps.put(key, list);
     }
 
-
     @Override
     public synchronized void addRequestProperty(String key, String value) {
-        if (requestProps == null) requestProps = new HashMap<>();
+        if (requestProps == null) {
+            requestProps = new HashMap<>();
+        }
 
         List<String> list = requestProps.get(key);
-        if (list == null) list = new ArrayList<>();
+        if (list == null) {
+            list = new ArrayList<>();
+        }
 
         list.add(value);
         requestProps.put(key, list);
@@ -202,11 +194,6 @@ public class IcyURLConnection extends HttpURLConnection {
     public Map<String, List<String>> getRequestProperties() {
         return requestProps;
     }
-
-
-    ////////////////////////////////////////////////////////////////////////////
-    // HttpURLConnection
-    ////////////////////////////////////////////////////////////////////////////
 
     @Override
     public synchronized void disconnect() {
@@ -222,7 +209,7 @@ public class IcyURLConnection extends HttpURLConnection {
 
         inputStream = null;
         outputStream = null;
-        headers = null;
+        headers.clear();
         responseLine = null;
     }
 
@@ -232,24 +219,18 @@ public class IcyURLConnection extends HttpURLConnection {
         return false;
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Protected
-    ////////////////////////////////////////////////////////////////////////////
-
     /**
      * Creates a new unconnected Socket instance.
      * Subclasses may use this method to override the default socket implementation.
      */
-    protected Socket createSocket() {
+    private Socket createSocket() {
         return new Socket();
     }
-
 
     /**
      * Reads one response header line and adds it to the headers map.
      */
-    protected void parseHeaderLine(String line) throws IOException {
+    private void parseHeaderLine(String line) throws IOException {
         int len = 2;
         int n = line.indexOf(": ");
 
@@ -262,22 +243,26 @@ public class IcyURLConnection extends HttpURLConnection {
         String key = line.substring(0, n);
         String val = line.substring(n + len);
 
+        addHeaderValue(key, val);
+    }
+
+    private void addHeaderValue(String key, String val) {
         List<String> list = headers.get(key);
 
-        if (list != null) {
-            list.add(val);
-        } else {
-            list = new ArrayList<>();
-            list.add(val);
-            headers.put(key, list);
+        if (list == null) {
+            list = new ArrayList<>(1);
         }
+
+        list.add(val);
+
+        headers.put(key, list);
     }
 
 
     /**
      * Reads the first response line.
      */
-    protected String readResponseLine() throws IOException {
+    private String readResponseLine() throws IOException {
         String line = readLine();
 
         if (line != null) {
@@ -297,7 +282,7 @@ public class IcyURLConnection extends HttpURLConnection {
      *
      * @return the line without any new-line character.
      */
-    protected String readLine() throws IOException {
+    private String readLine() throws IOException {
         StringBuilder sb = new StringBuilder();
 
         int c;
@@ -314,7 +299,7 @@ public class IcyURLConnection extends HttpURLConnection {
     /**
      * Writes one request line.
      */
-    protected void writeLine(String line) throws IOException {
+    private void writeLine(String line) throws IOException {
         line += '\r';
         line += '\n';
         outputStream.write(line.getBytes("UTF-8"));
