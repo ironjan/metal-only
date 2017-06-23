@@ -161,7 +161,7 @@ public class PlayerService extends Service {
             }
         }
         if (canAdd) {
-            historySaver.queeIn(track);
+            historySaver.queueIn(track);
             historySaver.saveSongsToStorage();
         }
     }

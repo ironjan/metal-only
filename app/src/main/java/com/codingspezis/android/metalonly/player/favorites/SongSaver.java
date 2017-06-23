@@ -84,7 +84,7 @@ public class SongSaver {
                 String thumb = jSong.getString(JSON_STRING_THUMB);
                 long date = jSong.getLong(JSON_LONG_DATE);
                 HistoricTrack track = new HistoricTrack(interpret, title, thumb, date);
-                queeIn(track);
+                queueIn(track);
             }
         } catch (FileNotFoundException e) {
             // everything is fine - just nothing saved
@@ -150,7 +150,7 @@ public class SongSaver {
      *
      * @param track track to add
      */
-    public boolean queeIn(HistoricTrack track) {
+    public boolean queueIn(HistoricTrack track) {
         while (limit <= trackList.size()) {
             trackList.remove();
         }
