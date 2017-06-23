@@ -163,6 +163,7 @@ public class SongSaver {
      *
      * @param track track to check
      * @return index of last entry of track if it is in the list - -1 otherwise
+     * @deprecated Move to {@link SongSaver#contains(HistoricTrack)}
      */
     public int isAlreadyIn(HistoricTrack track) {
         for (int i = trackList.size() - 1; i >= 0; i--) {
@@ -173,6 +174,14 @@ public class SongSaver {
         return -1;
     }
 
+    /**
+     * Checks if the given track is already in the list of songs
+     * @param track track to check
+     * @return <code>true</code>, if the song is known. <code>false</code> otherwise
+     */
+    public boolean contains(HistoricTrack track){
+        return isAlreadyIn(track) != -1;
+    }
 
     /**
      * removes song at position i
