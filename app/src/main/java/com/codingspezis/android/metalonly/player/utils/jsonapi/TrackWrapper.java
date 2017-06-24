@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class TrackWrapper {
     private Track track;
 
-    public TrackWrapper() {
-    }
-
     public Track getTrack() {
         return track;
     }
