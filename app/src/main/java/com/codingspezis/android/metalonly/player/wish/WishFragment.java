@@ -82,9 +82,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     WishPrefs_ wishPrefs;
     private boolean didNotCompleteLoadingStats = true;
 
-    public WishFragment() {
-    }
-
     /**
      * Loads the actions that are allowed in this show. Needs to be called {@link AfterViews}
      * because we're updating the UI when getting a result.
