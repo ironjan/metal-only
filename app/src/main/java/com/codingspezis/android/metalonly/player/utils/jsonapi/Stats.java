@@ -32,6 +32,10 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
     private boolean moderated;
     private Track track;
 
+    private int wishLimit = 0;
+    private int greetingLimit = 0;
+    private String genre = "Metal";
+
     public boolean isCanWish() {
         return canWish;
     }
@@ -40,14 +44,10 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
         return canGreet;
     }
 
+
     public boolean isModerated() {
         return moderated;
     }
-
-
-    private int wishLimit = 0;
-    private int greetingLimit = 0;
-    private String genre = "Metal";
 
     public static Stats getDefault() {
         return new Stats();
