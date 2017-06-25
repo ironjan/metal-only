@@ -1,179 +1,25 @@
-// use semantic versioning: http://semver.org/
-// only change _after_ merge requests
-def versionMajor = 0  // incompatible API changes
-def versionMinor = 6  // added functionality in a backwards-compatible manner
-def versionPatch = 4  // backwards-compatible bug fixes
-def versionBuild = 0  // bump for dogfood builds, public betas, etc.
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     ext.kotlin_version = '1.1.2-3'
 
     repositories {
-        mavenCentral()
-        maven { url 'http://repo1.maven.org/maven2' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         jcenter()
     }
-
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-repositories {
-    mavenCentral()
-    maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'project-report'
-apply plugin: 'com.github.ben-manes.versions'
-
-configurations {
-    apt
-    ktlint
-}
-
-
-def getSourceSetName(variant) {
-    return new File(variant.dirName).getName();
-}
-
-
-android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
-
-    packagingOptions {
-        // prevents Error: duplicate files during packaging of APK
-        // no wildcard support yet
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-    }
-
-
-
-    defaultConfig {
-        versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
-        if (versionBuild == 0) {
-          versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        }
-        else {
-          versionName "${versionMajor}.${versionMinor}.${versionPatch}-${versionBuild}"
-        }
-
-        minSdkVersion 18
-        targetSdkVersion 25
-
-        applicationId "com.codingspezis.android.metalonly.player"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        buildConfigField  "String", "METAL_ONLY_API_BASE_URL", "\"https://www.metal-only.de/botcon/mob.php?action=\""
-        buildConfigField  "String", "API_STATS_PATH", "\"stats\""
-        buildConfigField  "String", "API_PLAN_PATH", "\"plannew\""
-        buildConfigField  "String", "API_PLAN_WITH_STATS_PATH", "\"all\""
-
-        buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
-
-        buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
-        buildConfigField "String", "WISH_FORM_INVALID", "\"Fehler: Bitte Wunsch/Gruss und einen Nick angeben\""
-        buildConfigField "String", "WISH_NO_WISHES_POSSIBLE", "\"Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!\""
-    }
-
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java {
-                srcDirs += "src/main/kotlin"
-            }
-        }
-    }
-
-    if (project.hasProperty("metalonly.signing")
-            && new File(project.property("metalonly.signing") + ".gradle").exists()) {
-        apply from: project.property("metalonly.signing") + ".gradle";
-        println("Applied production signing config")
-    }
-    else{
-        println("Project does not have producion signing config")
-    }
-    if (project.hasProperty("metalonly.variants")
-            && new File(project.property("metalonly.variants") + ".gradle").exists()) {
-        apply from: project.property("metalonly.variants") + ".gradle";
-        println("Applied metalonly.variants config")
-    }
-    else{
-        println("Project does not have metalonly.variants config")
-    }
-
-    lintOptions {
-        disable 'InvalidPackage'
+allprojects {
+    repositories {
+        jcenter()
     }
 }
 
-def androidannotationsVersion = '4.2.0'
-dependencies {
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-
-
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
-    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-
-    compile 'org.slf4j:slf4j-android:1.7.22'
-
-    compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
-    kapt "org.androidannotations:androidannotations:$androidannotationsVersion"
-    compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
-    kapt "org.androidannotations:rest-spring:$androidannotationsVersion"
-
-    compile fileTree(dir: 'libs', include: '*.jar')
-
-    ktlint 'com.github.shyiko:ktlint:0.6.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-
-    testCompile 'junit:junit:4.12'
-
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:25.3.0'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
-}
-
-task ktlint(type: JavaExec) {
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "src/**/*.kt"
-}
-
-check.dependsOn ktlint
-
-task ktlintFormat(type: JavaExec) {
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "-F", "src/**/*.kt"
-}
-
-
-kapt {
-    generateStubs = true
-    arguments {
-        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
-    }
-}
-

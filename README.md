@@ -26,7 +26,8 @@ entwickelt. News gibt es primär unter [http://ironjan.de/metal-only](http://iro
       * [Getting Started](#getting-started)
       * [Useful Knowledge](#useful-knowledge)
   * [Used Libraries and Software](#used-libraries-and-software)
- 
+  * [Project Organization](#project-organization)
+
 ## Helping
 
 ### Send Feedback and Report Errors
@@ -77,3 +78,7 @@ Build Time dependencise (i.e. not-packaged):
 
  * [ktlint](https://github.com/shyiko/ktlint) (MIT LICENSE)
  
+## Project Organization
+
+The project has been split into multiple modules to enforce encapsulation. The `core` module will 
+contain only models and code that does not depend on Android specifics.  

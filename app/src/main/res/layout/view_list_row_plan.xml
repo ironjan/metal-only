@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/CustomVerticalProgressBar"
+        android:layout_width="4dip"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:max="100"
+        android:minHeight="48dp"
+        android:progress="100" />
+
+    <ImageView
+        android:id="@id/modImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mo_wait" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/modImage">
+
+        <TextView
+            android:id="@id/txtMod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtTitle"
+            android:layout_alignParentRight="true"
+            android:text="@string/moderator"
+            android:textIsSelectable="false"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@id/txtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtGenre"
+            android:layout_alignRight="@id/txtMod"
+            android:layout_below="@id/txtMod"
+            android:text="@string/time"
+            android:textIsSelectable="false"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/txtMod"
+            android:text="@string/titleDummy"
+            android:textIsSelectable="false"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@id/txtGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/txtTitle"
+            android:layout_below="@id/txtTitle"
+            android:layout_toLeftOf="@id/txtTime"
+            android:text="@string/genreDummy"
+            android:textIsSelectable="false"
+            android:maxLines="1" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

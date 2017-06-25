@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <com.codingspezis.android.metalonly.player.views.ShowInformation_
+        android:id="@+id/viewShowInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:gravity="center_horizontal" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonBar"
+        android:layout_below="@id/viewShowInformation"
+        tools:listitem="@layout/view_list_item_song_hist" />
+
+    <FrameLayout
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonBar"
+        android:layout_below="@id/viewShowInformation">
+
+        <include layout="@layout/include_empty_stream_history" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_stripes"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnWish"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_pen" />
+
+        <ImageView
+            android:id="@+id/buttonPlay"
+            android:layout_width="@dimen/streamPlayButtonWidth"
+            android:layout_height="@dimen/streamPlayButtonHeigth"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_transparent"
+            android:contentDescription="@string/play_paus"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_play5" />
+
+        <ImageButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="@dimen/bigButton"
+            android:layout_height="@dimen/bigButton"
+            android:background="@drawable/bg_btn_transparent"
+            android:cropToPadding="true"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/mo_calendar" />
+    </LinearLayout>
+
+</RelativeLayout>
