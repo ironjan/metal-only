@@ -7,7 +7,7 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Some text.
+Das System zum Holen von Infos über die aktuelle Show wurde neu geschrieben.
 
 ## [0.6.6-2]
 App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
