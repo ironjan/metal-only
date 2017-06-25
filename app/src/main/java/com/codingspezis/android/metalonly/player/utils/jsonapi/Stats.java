@@ -3,6 +3,7 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
+import com.codingspezis.android.metalonly.player.utils.GenreExtractor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -56,12 +57,12 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
     @JsonProperty("sendung")
     public void setSendung(String sendung) {
         this.sendung = sendung;
-        updateGenre();
+        genre = GenreExtractor.INSTANCE.extract(this.sendung);
     }
 
     @JsonProperty("wunschvoll")
     public void setCanWish(String wunschvollString) {
-        this.canWish = !(WISH_GREET_FULL.equals(wunschvollString));
+        canWish = !(WISH_GREET_FULL.equals(wunschvollString));
     }
 
     public int getWishLimit() {
@@ -70,7 +71,7 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
 
     @JsonProperty("grussvoll")
     public void setCanGreet(String grussvoll) {
-        this.canGreet = !(WISH_GREET_FULL.equals(grussvoll));
+        canGreet = !(WISH_GREET_FULL.equals(grussvoll));
     }
 
     @JsonProperty("wunschlimit")
@@ -107,7 +108,7 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
 
     public String getGenre() {
         if (genre == null) {
-            updateGenre();
+            genre = GenreExtractor.INSTANCE.extract(sendung);
         }
         return genre;
     }
@@ -118,22 +119,6 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
 
     public void setTrack(SimpleTrack track) {
         this.track = track;
-    }
-
-    private void updateGenre() {
-        int positionOfOpeningParenthesis = sendung.indexOf("(");
-        int positionOfClosingParenthesis = sendung.indexOf(")");
-        int startOfGenreName = positionOfOpeningParenthesis + 1;
-        int lengthOfGenre = positionOfClosingParenthesis - startOfGenreName;
-
-
-        boolean hasNoGenre = (positionOfOpeningParenthesis == -1
-                || positionOfClosingParenthesis == -1
-                || lengthOfGenre <= 0);
-
-        this.genre = (hasNoGenre)
-                ? ""
-                : sendung.substring(startOfGenreName, positionOfClosingParenthesis);
     }
 
 
