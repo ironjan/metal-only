@@ -14,8 +14,9 @@ Die App kann über Google Play [heruntergeladen](https://play.google.com/store/a
 Feature-Wünsche können an [lippertsjan+metal-only@gmail.com](mailto:lippertsjan+metal-only@gmail.com) 
 gesendet werden.
 
-Ursprünglich wurde die App von [@rbrtslmn](https://github.com/rbrtslmn) und [@michael-busch](https://github.com/michael-busch) 
-entwickelt. News gibt es primär unter [http://ironjan.de/metal-only](http://ironjan.de/metal-only).
+Ursprünglich wurde die App von [@rbrtslmn](https://github.com/rbrtslmn) und 
+[@michael-busch](https://github.com/michael-busch) entwickelt. News gibt es 
+primär unter [http://ironjan.de/metal-only](http://ironjan.de/metal-only).
 
 
 ## Table of Contents
@@ -32,21 +33,26 @@ entwickelt. News gibt es primär unter [http://ironjan.de/metal-only](http://iro
 
 ### Send Feedback and Report Errors
 
-The easiest option is to use the feedback functionality in the app. It automatically includes the most important information in the email template. 
-If it's not possible to use the feedback function, try to answer the following questions:
+The easiest option is to use the feedback functionality in the app. It 
+automatically includes the most important information in the email template. 
+If it's not possible to use the feedback function, try to answer the following 
+questions:
 
  * Which device do you have and which Android version is running on it?
  * What did you do?
  * What happened and what would you exptected to happen instead?
 
-You can add the issues directly to the issue tracker:    [https://github.com/ironjan/metal-only/issues](https://github.com/ironjan/metal-only/issues)
+You can add the issues directly to the issue tracker: 
+[https://github.com/ironjan/metal-only/issues](https://github.com/ironjan/metal-only/issues)
 
 ### Help with App Development
 
-We're using the [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide) build system. I strongly recommend [Android Studio](https://developer.android.com/sdk/index.html) to develop. 
+We're using the [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide)
+build system. I strongly recommend [Android Studio](https://developer.android.com/sdk/index.html)
+to develop. 
 
-Currently, the app is mainly written in Java but a migration to kotlin has been started in May 2017.
-New code should be written in kotlin if possible.
+Currently, the app is mainly written in Java but a migration to kotlin has been 
+started in May 2017. New code should be written in kotlin if possible.
 
 ### Getting started
 
@@ -62,8 +68,10 @@ See also https://gun.io/blog/how-to-github-fork-branch-and-pull-request/
 
 #### Useful Knowledge
 
-It may be useful to check for dependency updates once in a while. We're using a gradle plugin for that: Execute ```./gradlew dependencyUpdates```
-to list updates. Note: for some reason, the report may include false positives, i.e. non-existing updates. 
+It may be useful to check for dependency updates once in a while. We're using a 
+gradle plugin for that: Execute ```./gradlew dependencyUpdates``` to list 
+updates. Note: for some reason, the report may include false positives, i.e. 
+non-existing updates. 
 
 ### Used Libraries and Software
 
@@ -80,5 +88,6 @@ Build Time dependencise (i.e. not-packaged):
  
 ## Project Organization
 
-The project has been split into multiple modules to enforce encapsulation. The `core` module will 
-contain only models and code that does not depend on Android specifics.  
+The project has been split into multiple modules to enforce encapsulation. The 
+`core` module will contain only models and code that does not depend on Android
+specifics.  
