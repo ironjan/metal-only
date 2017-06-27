@@ -88,6 +88,23 @@ Build Time dependencise (i.e. not-packaged):
  
 ## Project Organization
 
-The project has been split into multiple modules to enforce encapsulation. The 
-`core` module will contain only models and code that does not depend on Android
-specifics.  
+The project has been split into multiple modules to enforce encapsulation. See 
+[Understanding Onion Architecture](http://blog.thedigitalgroup.com/chetanv/2015/07/06/understanding-onion-architecture/)
+for more information. In addition to the onion architecture, we will also 
+split out some functionality for easier re-use later, e.g. the json API 
+implementation. The current goal is to split the project into the following 
+sub-modules:
+
+ * `core` will contain only data models and code related to these models. 
+   There should be no dependency on Android. It corresponds to the *domain 
+   layer*.
+ * `json_lib` will contain the json model and the API implementation. It may 
+   enable the re-use of the API implementation in other projects. The service 
+   implementatios rely on this library.
+ * `services` will hold implementations of our business logic. This layer 
+   responds to requests from the UI or system handles. It's a intermediate 
+   between the app and the infrastructure layer.
+ * `infrastructure` provides specific implementations for the service layer 
+   to handle logging and data storage.
+ * `app` will contain Android-specific implementations like `Activities` and 
+   `Services` that calls on the service layer
