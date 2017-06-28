@@ -1,13 +1,30 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
-    ext.kotlin_version = '1.1.2-3'
+    ext {
+        compileSdkVersion = 25
+        buildToolsVersion = "25.0.2"
+        minSdkVersion = 11
+        targetSdkVersion = 25
+
+        jdk_compatibility = "1.7"
+        appcompat_v7_version = "25.3.0"
+        junit_version = "4.12"   
+        kotlin_version = "1.1.3"
+        androidannotations_version = "4.3.1"
+        espresso_version = "2.2.2"
+        support_v4_version = "25.3.0"
+    }
 
     repositories {
         jcenter()
+        mavenCentral()
+        maven { url "http://repo1.maven.org/maven2" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath "com.android.tools.build:gradle:2.3.3"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.14.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -22,4 +39,8 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "1.10"
 }

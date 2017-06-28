@@ -98,9 +98,9 @@ sub-modules:
  * `core` will contain only data models and code related to these models. 
    There should be no dependency on Android. It corresponds to the *domain 
    layer*.
- * `json_lib` will contain the json model and the API implementation. It may 
-   enable the re-use of the API implementation in other projects. The service 
-   implementatios rely on this library.
+ * `:metal-only-client-library` will contain the json model and the API 
+   implementation. It may enable the re-use of the API implementation in 
+   other projects. The service implementations rely on this library.
  * `services` will hold implementations of our business logic. This layer 
    responds to requests from the UI or system handles. It's a intermediate 
    between the app and the infrastructure layer.
