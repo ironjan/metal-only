@@ -4,6 +4,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.github.ironjan.metalonly.client_library.DemoInterface;
+
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.SystemService;
@@ -20,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
  * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
+public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI, DemoInterface {
 
     private static final int TIME_OUT = 30 * 1000;
 

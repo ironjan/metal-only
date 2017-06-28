@@ -139,8 +139,12 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+
     compile project(path: ':core')
     apk project(path: ':core')
+
+    compile project(path: ':metal-only-client-library')
+    apk project(path: ':metal-only-client-library')
 }
 
 task wrapper(type: Wrapper) {
