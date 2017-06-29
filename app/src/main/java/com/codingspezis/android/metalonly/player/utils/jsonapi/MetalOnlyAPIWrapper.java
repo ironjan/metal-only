@@ -5,6 +5,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.github.ironjan.metalonly.client_library.DemoInterface;
+import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Plan;
 import com.github.ironjan.metalonly.client_library.PlanWithStats;
 import com.github.ironjan.metalonly.client_library.Stats;

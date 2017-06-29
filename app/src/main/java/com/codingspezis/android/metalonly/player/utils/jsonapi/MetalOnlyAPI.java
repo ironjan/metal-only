@@ -1,6 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils.jsonapi;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Plan;
 import com.github.ironjan.metalonly.client_library.PlanWithStats;
 import com.github.ironjan.metalonly.client_library.Stats;
