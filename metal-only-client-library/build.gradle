@@ -22,11 +22,8 @@ android {
     }
 
     sourceSets {
-        main {
-            java {
-                srcDirs += "src/main/kotlin"
-            }
-        }
+        main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += 'src/test/kotlin'
     }
 }
 
@@ -36,7 +33,7 @@ dependencies {
     androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: "com.android.support", module: "support-annotations"
     })
-    
+
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
     testCompile "junit:junit:$junit_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

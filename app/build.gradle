@@ -59,10 +59,9 @@ android {
     sourceSets {
         main {
             manifest.srcFile "AndroidManifest.xml"
-            java {
-                srcDirs += "src/main/kotlin"
-            }
+            java.srcDirs += "src/main/kotlin"
         }
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     if (project.hasProperty("metalonly.signing")
