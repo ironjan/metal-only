@@ -1,11 +1,6 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
-import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.Plan;
-import com.github.ironjan.metalonly.client_library.PlanWithStats;
-import com.github.ironjan.metalonly.client_library.Stats;
-import com.github.ironjan.metalonly.client_library.TrackWrapper;
 
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Rest;

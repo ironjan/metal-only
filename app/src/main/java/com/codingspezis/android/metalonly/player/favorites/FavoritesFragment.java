@@ -19,7 +19,7 @@ import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
 import com.github.ironjan.metalonly.client_library.Stats;
 
 import org.androidannotations.annotations.AfterViews;

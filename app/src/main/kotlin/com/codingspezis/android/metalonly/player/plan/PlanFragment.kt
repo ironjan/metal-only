@@ -7,10 +7,9 @@ import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.core.ShowInformation
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPI
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background

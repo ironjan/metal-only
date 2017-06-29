@@ -1,15 +1,8 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-
-import com.github.ironjan.metalonly.client_library.DemoInterface;
-import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.Plan;
-import com.github.ironjan.metalonly.client_library.PlanWithStats;
-import com.github.ironjan.metalonly.client_library.Stats;
-import com.github.ironjan.metalonly.client_library.TrackWrapper;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
