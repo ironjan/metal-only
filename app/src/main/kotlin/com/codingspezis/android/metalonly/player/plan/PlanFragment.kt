@@ -12,8 +12,6 @@ import com.codingspezis.android.metalonly.player.core.ShowInformation
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI
 import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper
 import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan
-import com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
 import org.androidannotations.annotations.Bean
@@ -100,7 +98,7 @@ open class PlanFragment : Fragment() {
     }
 
     @UiThread
-    internal open fun apiResponseReceived(plan: Plan?) {
+    internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
         if (plan == null) {
             updateEmptyViewOnFailure(plan_failed_to_load!!)
             return
@@ -110,7 +108,7 @@ open class PlanFragment : Fragment() {
         }
 
         val shows = ArrayList<ShowInformation>()
-        Collections.addAll<PlanEntry>(shows, *plan.plan)
+        Collections.addAll<com.github.ironjan.metalonly.client_library.PlanEntry>(shows, *plan.plan)
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
         val adapter = PlanAdapter(activity, listItems)

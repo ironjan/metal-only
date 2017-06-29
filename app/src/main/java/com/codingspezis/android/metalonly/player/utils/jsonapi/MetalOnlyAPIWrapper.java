@@ -5,6 +5,10 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.github.ironjan.metalonly.client_library.DemoInterface;
+import com.github.ironjan.metalonly.client_library.Plan;
+import com.github.ironjan.metalonly.client_library.PlanWithStats;
+import com.github.ironjan.metalonly.client_library.Stats;
+import com.github.ironjan.metalonly.client_library.TrackWrapper;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;

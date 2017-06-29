@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import android.annotation.SuppressLint;
 import android.util.Log;

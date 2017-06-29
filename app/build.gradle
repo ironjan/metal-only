@@ -88,9 +88,9 @@ android {
 
 dependencies {
     apk project(path: ":core")
-    apk project(path: ":metal-only-client-library")
-
     compile project(path: ":core")
+
+    apk project(path: ":metal-only-client-library")
     compile project(path: ":metal-only-client-library")
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
