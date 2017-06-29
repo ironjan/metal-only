@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.utils
+package com.github.ironjan.metalonly.client_library
 
 import junit.framework.Assert
 import org.junit.Test

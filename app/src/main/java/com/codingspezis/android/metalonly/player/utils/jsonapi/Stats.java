@@ -3,9 +3,9 @@ package com.codingspezis.android.metalonly.player.utils.jsonapi;
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
-import com.codingspezis.android.metalonly.player.utils.GenreExtractor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.ironjan.metalonly.client_library.GenreExtractor;
 
 import org.jetbrains.annotations.NotNull;
 
