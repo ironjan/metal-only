@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
  * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI, DemoInterface {
+public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
 
     private static final int TIME_OUT = 30 * 1000;
 
