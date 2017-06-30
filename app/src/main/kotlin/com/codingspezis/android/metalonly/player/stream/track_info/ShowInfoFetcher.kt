@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI_
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPI_
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.RestClientException

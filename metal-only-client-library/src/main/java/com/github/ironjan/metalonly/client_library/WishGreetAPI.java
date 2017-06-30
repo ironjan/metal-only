@@ -1,7 +1,5 @@
 package com.github.ironjan.metalonly.client_library;
 
-import com.codingspezis.android.metalonly.player.BuildConfig;
-
 import org.androidannotations.rest.spring.annotations.Field;
 import org.androidannotations.rest.spring.annotations.Post;
 import org.androidannotations.rest.spring.annotations.Rest;

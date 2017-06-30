@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.core.ShowInformation
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPI
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper
