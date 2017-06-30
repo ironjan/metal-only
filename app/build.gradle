@@ -43,6 +43,12 @@ android {
         targetSdkVersion project.properties.targetSdkVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
+
+        buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
+        buildConfigField "String", "WISH_FORM_INVALID", "\"Fehler: Bitte Wunsch/Gruss und einen Nick angeben\""
+        buildConfigField "String", "WISH_NO_WISHES_POSSIBLE", "\"Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!\""
     }
 
     sourceSets {
