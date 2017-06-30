@@ -1,6 +1,4 @@
-package com.codingspezis.android.metalonly.player.favorites;
-
-import com.codingspezis.android.metalonly.player.core.HistoricTrack;
+package com.codingspezis.android.metalonly.player.core;
 
 import org.junit.Test;
 

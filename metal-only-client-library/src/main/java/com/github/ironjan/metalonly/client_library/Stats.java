@@ -1,9 +1,8 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
-import com.codingspezis.android.metalonly.player.utils.GenreExtractor;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

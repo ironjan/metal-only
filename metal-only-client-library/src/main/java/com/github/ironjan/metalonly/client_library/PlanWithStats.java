@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

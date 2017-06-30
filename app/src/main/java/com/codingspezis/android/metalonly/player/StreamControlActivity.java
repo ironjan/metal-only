@@ -34,10 +34,10 @@ import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory
 import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.NoInternetException;
+import com.github.ironjan.metalonly.client_library.Stats;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;

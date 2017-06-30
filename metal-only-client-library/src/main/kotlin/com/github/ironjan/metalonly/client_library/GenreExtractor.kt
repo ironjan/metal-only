@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.utils
+package com.github.ironjan.metalonly.client_library
 
 internal object GenreExtractor {
     fun extract(showTitle: String): String {

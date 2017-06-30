@@ -1,6 +1,4 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
-
-import com.codingspezis.android.metalonly.player.BuildConfig;
+package com.github.ironjan.metalonly.client_library;
 
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Rest;

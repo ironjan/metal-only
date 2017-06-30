@@ -44,11 +44,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        buildConfigField  "String", "METAL_ONLY_API_BASE_URL", "\"https://www.metal-only.de/botcon/mob.php?action=\""
-        buildConfigField  "String", "API_STATS_PATH", "\"stats\""
-        buildConfigField  "String", "API_PLAN_PATH", "\"plannew\""
-        buildConfigField  "String", "API_PLAN_WITH_STATS_PATH", "\"all\""
-
         buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
 
         buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
@@ -59,10 +54,9 @@ android {
     sourceSets {
         main {
             manifest.srcFile "AndroidManifest.xml"
-            java {
-                srcDirs += "src/main/kotlin"
-            }
+            java.srcDirs += "src/main/kotlin"
         }
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     if (project.hasProperty("metalonly.signing")
@@ -89,9 +83,9 @@ android {
 
 dependencies {
     apk project(path: ":core")
-    apk project(path: ":metal-only-client-library")
-
     compile project(path: ":core")
+
+    apk project(path: ":metal-only-client-library")
     compile project(path: ":metal-only-client-library")
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"

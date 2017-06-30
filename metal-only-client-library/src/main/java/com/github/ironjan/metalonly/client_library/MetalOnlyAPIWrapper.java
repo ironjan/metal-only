@@ -1,10 +1,8 @@
-package com.codingspezis.android.metalonly.player.utils.jsonapi;
+package com.github.ironjan.metalonly.client_library;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-
-import com.github.ironjan.metalonly.client_library.DemoInterface;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -22,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
  * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
-public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI, DemoInterface {
+public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
 
     private static final int TIME_OUT = 30 * 1000;
 
