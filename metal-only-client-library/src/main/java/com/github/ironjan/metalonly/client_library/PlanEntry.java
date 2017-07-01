@@ -120,4 +120,9 @@ public class PlanEntry implements ShowInformation {
         cal.add(Calendar.HOUR, durationInHours);
         return cal.getTime();
     }
+
+    @Override
+    public boolean isNotModerated() {
+        return (moderato == null) || !moderato.startsWith("MetalHead");
+    }
 }

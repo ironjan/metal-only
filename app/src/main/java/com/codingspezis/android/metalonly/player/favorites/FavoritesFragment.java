@@ -16,11 +16,11 @@ import android.widget.ListView;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
+import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
-import com.github.ironjan.metalonly.client_library.Stats;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -170,10 +170,10 @@ public class FavoritesFragment extends Fragment {
     @Background
     void wishSong(final int index) {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(getActivity())) {
-            Stats stats = apiWrapper.getStats();
+            ExtendedShowInformation stats = apiWrapper.getStats();
             if (stats.isNotModerated()) {
                 alertMessage(getActivity(), getString(R.string.no_moderator));
-            } else if (stats.canNeitherWishNorGreet()) {
+            } else if (stats.getCanNeitherWishNorGreet()) {
                 alertMessage(getActivity(), getString(R.string.no_wishes_and_regards));
             } else {
                 // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)

@@ -1,8 +1,7 @@
 package com.github.ironjan.metalonly.client_library;
 
-import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
+import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.Track;
-import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * </pre>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Stats implements BasicShowInformation, WishAndGreetConstraints{
+public class Stats implements ExtendedShowInformation{
     private static final String WISH_GREET_FULL = "1";
 
     private String moderator = "Unbekannt";
@@ -42,11 +41,6 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
 
     public boolean isCanGreet() {
         return canGreet;
-    }
-
-
-    public boolean isModerated() {
-        return moderated;
     }
 
     public static Stats getDefault() {
@@ -125,7 +119,8 @@ public class Stats implements BasicShowInformation, WishAndGreetConstraints{
         return !moderated;
     }
 
-    public boolean canNeitherWishNorGreet() {
+    @Override
+    public boolean getCanNeitherWishNorGreet() {
         return !(canWish || canGreet);
     }
 

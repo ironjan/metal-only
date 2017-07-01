@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
+import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
@@ -443,11 +444,11 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        Stats stats = apiWrapper.getStats();
+        ExtendedShowInformation stats = apiWrapper.getStats();
         if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
                     streamControlActivity.getString(R.string.no_moderator));
-        } else if (stats.canNeitherWishNorGreet()) {
+        } else if (stats.getCanNeitherWishNorGreet()) {
             alertMessage(streamControlActivity, streamControlActivity
                     .getString(R.string.no_wishes_and_regards));
         } else {
