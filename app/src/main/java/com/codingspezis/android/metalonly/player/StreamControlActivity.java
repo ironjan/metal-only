@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
@@ -208,7 +209,7 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    Stats stats = apiWrapper.getStats();
+                    BasicShowInformation stats = apiWrapper.getStats();
                     String moderator = stats.getModerator();
                     String genre = stats.getGenre();
                     updateShowInfo(moderator, genre);
