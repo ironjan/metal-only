@@ -8,7 +8,6 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.core.ShowInformation
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPI
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper
 import com.github.ironjan.metalonly.client_library.NoInternetException
@@ -24,7 +23,6 @@ import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes
 import org.androidannotations.rest.spring.annotations.RestService
 import org.springframework.web.client.RestClientException
-import java.util.Collections
 
 @EFragment(R.layout.fragment_plan)
 @SuppressLint("SimpleDateFormat", "Registered")
@@ -107,8 +105,7 @@ open class PlanFragment : Fragment() {
             return
         }
 
-        val shows = ArrayList<ShowInformation>()
-        Collections.addAll<com.github.ironjan.metalonly.client_library.PlanEntry>(shows, *plan.plan)
+        val shows = plan.entries
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
         val adapter = PlanAdapter(activity, listItems)

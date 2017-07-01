@@ -1,8 +1,13 @@
 package com.github.ironjan.metalonly.client_library;
 
+import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <pre>
@@ -23,19 +28,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Plan {
-    PlanEntry[] plan = {};
+    List<ShowInformation> entries = new ArrayList<>();
 
-    public PlanEntry[] getPlan() {
-        return plan;
+    public List<ShowInformation> getEntries(){
+        List<ShowInformation> copy = new ArrayList<>(entries.size());
+        Collections.copy(copy, entries);
+        return copy;
     }
 
     @JsonProperty("plan")
-    public void setPlan(PlanEntry[] plan) {
-        this.plan = plan;
-    }
-
-    public static Plan getDefault() {
-        return new Plan();
+    public void setPlanEntries(PlanEntry[] plan) {
+        entries.clear();
+        Collections.addAll(entries, plan);
     }
 
 
