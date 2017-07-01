@@ -16,7 +16,7 @@ public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport
     /**
      * Requests the show's stats
      *
-     * @return the show's stats. Will not be null.
+     * @return the show's stats. May be null when errors occur.
      */
     @Get(BuildConfig.API_STATS_PATH)
     Stats getStats();
@@ -24,7 +24,7 @@ public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport
     /**
      * Requests this week's sending plan
      *
-     * @return this week's sending plan. Will not be null.
+     * @return this week's sending plan. May be null when errors occur.
      */
     @Get(BuildConfig.API_PLAN_PATH)
     Plan getPlan();
@@ -32,7 +32,7 @@ public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport
     /**
      * Requests this week's sending plan including stats
      *
-     * @return this week's sending plan including stats. Will not be null.
+     * @return this week's sending plan including stats. May be null when errors occur.
      */
     @Get(BuildConfig.API_PLAN_WITH_STATS_PATH)
     PlanWithStats getPlanWithStats();
@@ -40,7 +40,7 @@ public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport
 
     /**
      * Gets the current track via API
-     * @return the currently played track
+     * @return the currently played track. May be null when errors occur.
      * @throws RestClientException when a REST related exception occurs
      * @throws NoInternetException when this method is called without internet connection
      */
