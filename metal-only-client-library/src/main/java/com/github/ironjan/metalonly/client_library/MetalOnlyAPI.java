@@ -8,7 +8,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestClientException;
 
 /**
- * Interface to generate the REST-Client
+ * Interface to generate the REST-Client.
+ *
+ * This interface should be internal, as should be the generated code. Interaction with the client
+ * should only be done via interfaces defined in core.
+ * TODO Wrap the API code behind a delegator that only uses core interfaces
  */
 @Rest(converters = {MappingJackson2HttpMessageConverter.class }, rootUrl = BuildConfig.METAL_ONLY_API_BASE_URL)
 public interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
