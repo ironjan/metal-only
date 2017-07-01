@@ -81,7 +81,7 @@ public class StreamControlActivity extends AppCompatActivity {
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
     @Bean
-    MetalOnlyAPIWrapper apiWrapper;
+    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)

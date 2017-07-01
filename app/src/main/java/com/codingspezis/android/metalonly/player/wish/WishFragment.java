@@ -76,7 +76,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     TextView wishCount;
 
     @Bean
-    MetalOnlyAPIWrapper apiWrapper;
+    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
 
     @Pref
     WishPrefs_ wishPrefs;

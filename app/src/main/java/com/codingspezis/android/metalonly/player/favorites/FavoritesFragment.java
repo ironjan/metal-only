@@ -58,7 +58,7 @@ public class FavoritesFragment extends Fragment {
     View empty;
 
     @Bean
-    MetalOnlyAPIWrapper apiWrapper;
+    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
     private SongAdapterFavorites adapter;
 
     private SongSaver favoritesSaver;

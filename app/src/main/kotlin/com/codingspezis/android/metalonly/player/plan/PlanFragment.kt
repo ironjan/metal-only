@@ -60,7 +60,7 @@ open class PlanFragment : Fragment() {
     var planEntryToItemConverter: PlanEntryToItemConverter? = null
     @JvmField
     @Bean
-    var apiWrapper: MetalOnlyAPIWrapper? = null
+    var apiWrapper: MetalOnlyAPIWrapper? = null // TODO investigate usage
 
     @JvmField
     @StringRes
