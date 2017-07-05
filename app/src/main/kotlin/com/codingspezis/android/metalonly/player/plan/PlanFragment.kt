@@ -78,11 +78,6 @@ open class PlanFragment : Fragment() {
     @AfterViews
     @Background
     internal open fun loadPlan() {
-        if (apiWrapper!!.hasNoInternetConnection()) {
-            updateEmptyViewOnFailure(no_internet!!)
-            return
-        }
-
         try {
             apiResponseReceived(api!!.plan)
         } catch (e: NoInternetException) {

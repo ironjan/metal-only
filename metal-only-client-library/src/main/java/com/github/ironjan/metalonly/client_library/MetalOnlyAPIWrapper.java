@@ -169,7 +169,7 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
      *
      * @return <code>true</code>, if the phone is not connected to the internet.
      */
-    public boolean hasNoInternetConnection() {
+    private boolean hasNoInternetConnection() {
         final boolean hasConnection;
         final NetworkInfo wifiNetwork = cm
                 .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
