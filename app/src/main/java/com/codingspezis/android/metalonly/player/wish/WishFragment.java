@@ -19,6 +19,7 @@ import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
+import com.github.ironjan.metalonly.client_library.WishSender;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
