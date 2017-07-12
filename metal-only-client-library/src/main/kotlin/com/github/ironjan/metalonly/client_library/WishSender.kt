@@ -1,20 +1,16 @@
-package com.codingspezis.android.metalonly.player.wish
+package com.github.ironjan.metalonly.client_library
 
 import android.text.TextUtils
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import org.slf4j.LoggerFactory
 import java.io.IOException
-import com.codingspezis.android.metalonly.player.BuildConfig
 
 /**
  * Restored class since AA REST api doesn't work for wishes.
  */
 class WishSender {
-    private val SENDER_LOGGER = LoggerFactory.getLogger(WishSender::class.java.simpleName)
-
     private val nick: String
     private val artist: String?
     private val title: String?

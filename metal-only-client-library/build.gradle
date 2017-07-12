@@ -47,6 +47,7 @@ dependencies {
     })
 
     compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
+    compile "com.squareup.okhttp3:okhttp:3.6.0"
     compile "org.springframework.android:spring-android-rest-template:1.0.1.RELEASE"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"

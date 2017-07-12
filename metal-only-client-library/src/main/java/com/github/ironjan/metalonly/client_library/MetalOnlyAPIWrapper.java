@@ -18,6 +18,13 @@ import org.springframework.web.client.RestTemplate;
 /**
  * A wrapper around the Rest-Api implementation to adapt its settings. The REST API should not be
  * used directly.
+ * <p>
+ * There are some TODOs "investigate usage". These roughly translate to "how is the Wrapper
+ * currently used?". The external classes should not rely on the wrapper catching exceptions but
+ * catch these themselves.
+ * <p>
+ * Note that this class should only be internal, as well as all others. See {@link MetalOnlyAPI} for
+ * more details on this topic.
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
@@ -152,32 +159,9 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
     }
 
     private void checkConnectivity() {
-        if (!hasConnection()) {
+        if (hasNoInternetConnection()) {
             throw new NoInternetException();
         }
-    }
-
-    /**
-     * Checks if the device has Internet connection.
-     *
-     * @return <code>true</code> if the phone is connected to the Internet.
-     */
-    public boolean hasConnection() {
-        final NetworkInfo wifiNetwork = cm
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetwork != null && wifiNetwork.isConnected()) {
-            return true;
-        }
-
-        final NetworkInfo mobileNetwork = cm
-                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (mobileNetwork != null && mobileNetwork.isConnected()) {
-            return true;
-        }
-
-        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
-
     }
 
     /**
@@ -185,8 +169,22 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
      *
      * @return <code>true</code>, if the phone is not connected to the internet.
      */
-    public boolean hasNoInternetConnection() {
-        return !hasConnection();
+    private boolean hasNoInternetConnection() {
+        final boolean hasConnection;
+        final NetworkInfo wifiNetwork = cm
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        final NetworkInfo mobileNetwork = cm
+                .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiNetwork != null && wifiNetwork.isConnected()) {
+            hasConnection = true;
+        } else if (mobileNetwork != null && mobileNetwork.isConnected()) {
+            hasConnection = true;
+        } else {
+            final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            hasConnection = activeNetwork != null && activeNetwork.isConnected();
+        }
+
+        return !hasConnection;
     }
 
     /**

@@ -21,7 +21,7 @@ open class PlanEntryToItemConverter {
 
     internal var todayStartIndex: Int = 0
 
-    fun convertToPlan(listEvents: ArrayList<ShowInformation>): ArrayList<PlanItem> {
+    fun convertToPlan(listEvents: List<ShowInformation>): ArrayList<PlanItem> {
         val listItems = ArrayList<PlanItem>()
 
         var currentDayIndex = -1

@@ -14,10 +14,12 @@ import android.widget.Toast;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
+import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
+import com.github.ironjan.metalonly.client_library.WishSender;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -65,7 +67,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             app_name,
             no_wishes_short;
 
-    private Stats stats = Stats.getDefault();
+    private WishAndGreetConstraints stats = Stats.getDefault();
 
     @ViewById
     TextView textArtist,
@@ -76,7 +78,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     TextView wishCount;
 
     @Bean
-    MetalOnlyAPIWrapper apiWrapper;
+    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
 
     @Pref
     WishPrefs_ wishPrefs;
@@ -98,21 +100,21 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @UiThread
-    void updateStats(Stats stats) {
+    void updateStats(WishAndGreetConstraints stats) {
         this.stats = stats;
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
 
         // FIXME Disable in layout, enable after load
         // FIXME distinguish: wish list full, no wishes possbile!
-        if (!stats.isCanWish()) {
+        if (!stats.getCanWish()) {
             editArtist.setText(no_wishes_short);
             editArtist.setEnabled(false);
             editTitle.setText(no_wishes_short);
             editTitle.setEnabled(false);
         }
 
-        if (!stats.isCanGreet()) {
+        if (!stats.getCanGreet()) {
             editRegard.setText(no_regards);
             editRegard.setEnabled(false);
 
@@ -226,7 +228,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if (stats.isCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+            if (stats.getCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
                 new WishSender(this, nick, greet, artist, title).send();
             } else {
                 new WishSender(this, nick, greet, null, null).send();
