@@ -128,6 +128,10 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @UiThread
     void showLoading(boolean isLoading) {
+        if((btnSend == null) || (progress == null)){
+            return;
+        }
+
         if (isLoading) {
             btnSend.setEnabled(false);
             progress.setVisibility(View.VISIBLE);

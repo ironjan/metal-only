@@ -81,7 +81,7 @@ open class PlanFragment : Fragment() {
         try {
             apiResponseReceived(api!!.plan)
         } catch (e: NoInternetException) {
-            updateEmptyViewOnFailure(no_internet!!)
+            updateEmptyViewOnFailure(no_internet)
         } catch (e: RestClientException) {
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
             val text = plan_failed_to_load + ":\n" + e.message
@@ -93,7 +93,7 @@ open class PlanFragment : Fragment() {
     @UiThread
     internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
         if (plan == null) {
-            updateEmptyViewOnFailure(plan_failed_to_load!!)
+            updateEmptyViewOnFailure(plan_failed_to_load)
             return
         }
         if (activity == null) {
@@ -110,9 +110,11 @@ open class PlanFragment : Fragment() {
     }
 
     @UiThread
-    internal open fun updateEmptyViewOnFailure(text: String) {
-        loadingMessageTextView!!.text = text
-        loadingProgressBar!!.visibility = View.GONE
+    internal open fun updateEmptyViewOnFailure(text: String?) {
+        if (text != null) {
+            loadingMessageTextView?.text = text
+            loadingProgressBar?.visibility = View.GONE
+        }
     }
 
     @ItemClick(android.R.id.list)
