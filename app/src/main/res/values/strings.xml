@@ -187,4 +187,5 @@
     <string name="plan_failed_to_load">Plan konnte nicht geladen werden.</string>
     <string name="aboutFurtherInfos">Mehr Infos - inklusive der verwendeten Bibliotheken etc. - gibt es in der README.md unter auf GitHub unter https://github.com/ironjan/metal-only</string>
     <string name="clear">Wunsch &amp; Gruß leeren</string>
+    <string name="stats_failed_to_load">Wunsch- und Gruß-Infos konnten nicht geladen werden.</string>
 </resources>

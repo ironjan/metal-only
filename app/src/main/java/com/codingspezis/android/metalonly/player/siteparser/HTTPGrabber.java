@@ -10,9 +10,6 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 
 import com.codingspezis.android.metalonly.player.R;
-import com.codingspezis.android.metalonly.player.StreamControlActivity;
-
-import java.net.URL;
 
 /**
  * this class is for sending HTTP GET & receiving response<br/>
@@ -130,13 +127,6 @@ public class HTTPGrabber extends Thread {
             }
         };
         handler.post(progressRun);
-    }
-
-    /**
-     * displays timeout message
-     */
-    protected void displayTimeoutMSG() {
-        StreamControlActivity.toastMessage(context, context.getString(R.string.timeout));
     }
 
 }

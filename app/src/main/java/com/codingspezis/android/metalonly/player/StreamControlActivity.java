@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
@@ -37,7 +38,7 @@ import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoInten
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
 
@@ -82,8 +83,6 @@ public class StreamControlActivity extends AppCompatActivity {
     static long lastButtonToggle = 0;
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
-    @Bean
-    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)
@@ -105,23 +104,6 @@ public class StreamControlActivity extends AppCompatActivity {
     // other variables
     private boolean shouldPlay = false;
     private BroadcastReceiver showInfoBroadcastReceiver;
-
-    /**
-     * @param context
-     * @param msg
-     */
-    public static void toastMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
-    }
 
     /**
      * @param context
@@ -210,12 +192,16 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    BasicShowInformation stats = apiWrapper.getStats();
-                    String moderator = stats.getModerator();
-                    String genre = stats.getGenre();
-                    updateShowInfo(moderator, genre);
+                    BasicShowInformation stats = getClient().getStats();
+                    if (stats != null) {
+                        String moderator = stats.getModerator();
+                        String genre = stats.getGenre();
+                        updateShowInfo(moderator, genre);
+                    } else {
+                        showToast(R.string.stats_failed_to_load);
+                    }
                 } catch (NoInternetException e) {
-                    // FIXME show share to the user...
+                    showToast(R.string.no_internet);
                 }
             }
 
@@ -238,6 +224,11 @@ public class StreamControlActivity extends AppCompatActivity {
         };
         new Thread(runnable).start();
 
+    }
+
+    @NonNull
+    private MetalOnlyClient getClient() {
+        return MetalOnlyClient.Companion.getClient(StreamControlActivity.this);
     }
 
     @Override
@@ -444,7 +435,9 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        ExtendedShowInformation stats = apiWrapper.getStats();
+        Stats apiStats = getClient().getStats();
+        ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
+
         if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
                     streamControlActivity.getString(R.string.no_moderator));
@@ -497,7 +490,8 @@ public class StreamControlActivity extends AppCompatActivity {
 
         Metadata metadata = getMetadata();
         if (metadata.historicTrack().isValid() && isShouldPlay()) {
-            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
+            if (viewShowInformation != null)
+                viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
@@ -536,11 +530,9 @@ public class StreamControlActivity extends AppCompatActivity {
                 HistoricTrack track = historySaver.get(index);
                 if (favoritesSaver.isAlreadyIn(track) == -1) {
                     favoritesSaver.addSong(track.withClearedThumb());
-                    Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-                            .show();
+                    showToast(R.string.fav_added);
                 } else {
-                    Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-                            .show();
+                    showToast(R.string.fav_already_in);
                 }
                 break;
             case LIST_ITEM_ACTION_YOUTUBE: // YouTube
@@ -570,6 +562,18 @@ public class StreamControlActivity extends AppCompatActivity {
 
     }
 
+    @UiThread
+    void showToast(int stringResId) {
+        Toast.makeText(this, stringResId, Toast.LENGTH_LONG)
+                .show();
+    }
+
+    @UiThread
+    void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG)
+                .show();
+    }
+
     public boolean isShouldPlay() {
         return shouldPlay;
     }
@@ -588,19 +592,26 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @AfterInject
     @Background
-    void loadShowData(){
-        try{
-            displayShowData(apiWrapper.getStats());
-        } catch(NoInternetException e){
-          toastMessage(this, getResources().getString(R.string.no_internet));
-        } catch(Exception e){
+    void loadShowData() {
+        try {
+            displayShowData(getClient().getStats());
+        } catch (NoInternetException e) {
+            showToast(R.string.no_internet);
+        } catch (Exception e) {
             e.printStackTrace();
-            toastMessage(this, e.getMessage());
+            showToast(e.getMessage());
         }
     }
 
     @UiThread
     void displayShowData(Stats stats) {
-        viewShowInformation.setStats(stats);
+        if (viewShowInformation != null) {
+            if (stats != null) {
+                viewShowInformation.setStats(stats);
+            } else {
+                // TODO Show something like "could not load" instead?
+                viewShowInformation.setStats(new Stats());
+            }
+        }
     }
 }
