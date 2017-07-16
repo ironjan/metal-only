@@ -110,23 +110,6 @@ public class StreamControlActivity extends AppCompatActivity {
      * @param context
      * @param msg
      */
-    public static void toastMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("toastMessage({},{}) done", context, msg);
-    }
-
-    /**
-     * @param context
-     * @param msg
-     */
     public static void alertMessage(final Context context, final String msg) {
         if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
 
@@ -215,7 +198,7 @@ public class StreamControlActivity extends AppCompatActivity {
                     String genre = stats.getGenre();
                     updateShowInfo(moderator, genre);
                 } catch (NoInternetException e) {
-                    // FIXME show share to the user...
+                    showToast(R.string.no_internet);
                 }
             }
 
@@ -536,11 +519,9 @@ public class StreamControlActivity extends AppCompatActivity {
                 HistoricTrack track = historySaver.get(index);
                 if (favoritesSaver.isAlreadyIn(track) == -1) {
                     favoritesSaver.addSong(track.withClearedThumb());
-                    Toast.makeText(this, R.string.fav_added, Toast.LENGTH_LONG)
-                            .show();
+                    showToast(R.string.fav_added);
                 } else {
-                    Toast.makeText(this, R.string.fav_already_in, Toast.LENGTH_LONG)
-                            .show();
+                    showToast(R.string.fav_already_in);
                 }
                 break;
             case LIST_ITEM_ACTION_YOUTUBE: // YouTube
@@ -570,6 +551,17 @@ public class StreamControlActivity extends AppCompatActivity {
 
     }
 
+    @UiThread
+    void showToast(int stringResId) {
+        Toast.makeText(this, stringResId, Toast.LENGTH_LONG)
+                .show();
+    }
+    @UiThread
+    void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG)
+                .show();
+    }
+
     public boolean isShouldPlay() {
         return shouldPlay;
     }
@@ -592,10 +584,10 @@ public class StreamControlActivity extends AppCompatActivity {
         try{
             displayShowData(apiWrapper.getStats());
         } catch(NoInternetException e){
-          toastMessage(this, getResources().getString(R.string.no_internet));
+          showToast(R.string.no_internet);
         } catch(Exception e){
             e.printStackTrace();
-            toastMessage(this, e.getMessage());
+            showToast(e.getMessage());
         }
     }
 
