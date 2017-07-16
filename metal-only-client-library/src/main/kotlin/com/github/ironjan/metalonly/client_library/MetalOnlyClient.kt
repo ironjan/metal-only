@@ -3,12 +3,16 @@ package com.github.ironjan.metalonly.client_library
 import android.content.Context
 import org.springframework.web.client.RestClientException
 
+/**
+ * Interface to be used for calling the Metal Only Client.
+ */
 public interface MetalOnlyClient {
     /**
      * Requests the show's stats
      *
      * @return the show's stats. May be null when errors occur.
      */
+    @Throws(RestClientException::class, NoInternetException::class)
     fun getStats(): Stats?
 
     /**
@@ -32,6 +36,9 @@ public interface MetalOnlyClient {
 
     companion object {
 
+        /**
+         * Gets a singleton instance of the client for usage.
+         */
         fun getClient(context: Context): MetalOnlyClient {
             return MetalOnlyAPIWrapper_.getInstance_(context);
         }

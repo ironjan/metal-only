@@ -1,6 +1,5 @@
 package com.github.ironjan.metalonly.client_library
 
-import android.content.Context
 import android.net.ConnectivityManager
 import org.androidannotations.annotations.AfterInject
 import org.androidannotations.annotations.EBean
@@ -13,15 +12,6 @@ import org.springframework.web.client.RestClientException
 /**
  * A wrapper around the Rest-Api implementation to adapt its settings. The REST API should not be
  * used directly.
- *
- *
- * There are some TODOs "investigate usage". These roughly translate to "how is the Wrapper
- * currently used?". The external classes should not rely on the wrapper catching exceptions but
- * catch these themselves.
- *
- *
- * Note that this class should only be internal, as well as all others. See [MetalOnlyAPI] for
- * more details on this topic.
  */
 @EBean(scope = EBean.Scope.Singleton)
 open class MetalOnlyAPIWrapper : MetalOnlyClient {

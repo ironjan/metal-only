@@ -43,6 +43,18 @@ public class Stats implements ExtendedShowInformation{
         return canGreet;
     }
 
+    /**
+     * Stats(moderator = "Unbekannt",
+     *       sendung = "Ladefehler",
+     *       canWish = false,
+     *       canGreet = false,
+     *       moderated = false,
+     *       track = null,
+     *       wishLimit = 0,
+     *       greetingLimit = 0,
+     *       )
+     * @return Stats with values as desribed above.
+     */
     public static Stats getDefault() {
         return new Stats();
     }
