@@ -38,12 +38,14 @@ public class SongAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
+        final View view;
+        if (convertView == null) {
             view = inflater.inflate(R.layout.view_list_item_song_hist, null);
+        } else {
+            view = convertView;
         }
 
-        HistoricTrack track = data.get(position);
+        final HistoricTrack track = data.get(position);
 
         final TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
         final TextView txtArtist = (TextView) view.findViewById(R.id.txtArtist);
@@ -66,9 +68,14 @@ public class SongAdapter extends BaseAdapter {
             txtTime.setText("");
         }
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.modImage);
-        String moderator = track.getModerator();
-        imageLoader.loadImage(moderator, imageView);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ImageView imageView = (ImageView) view.findViewById(R.id.modImage);
+                String moderator = track.getModerator();
+                imageLoader.loadImage(moderator, imageView);
+            }
+        });
 
         return view;
     }

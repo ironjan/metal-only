@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.6-4]
+
+Restructured app-internals and fixed some defects.
+
+## [0.6.6-3]
+Rewrote the part of the app responsible for showing current song information.
+
 ## [0.6.6-2]
 
 Rewrote the handling of moderator pictures (old pictures should be replaced by new ones now) and 

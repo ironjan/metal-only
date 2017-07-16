@@ -8,12 +8,9 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.core.ShowInformation
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPI
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper
-import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Plan
-import com.codingspezis.android.metalonly.player.utils.jsonapi.PlanEntry
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPI
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper
+import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
 import org.androidannotations.annotations.Bean
@@ -26,7 +23,6 @@ import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes
 import org.androidannotations.rest.spring.annotations.RestService
 import org.springframework.web.client.RestClientException
-import java.util.Collections
 
 @EFragment(R.layout.fragment_plan)
 @SuppressLint("SimpleDateFormat", "Registered")
@@ -62,7 +58,7 @@ open class PlanFragment : Fragment() {
     var planEntryToItemConverter: PlanEntryToItemConverter? = null
     @JvmField
     @Bean
-    var apiWrapper: MetalOnlyAPIWrapper? = null
+    var apiWrapper: MetalOnlyAPIWrapper? = null // TODO investigate usage
 
     @JvmField
     @StringRes
@@ -82,15 +78,10 @@ open class PlanFragment : Fragment() {
     @AfterViews
     @Background
     internal open fun loadPlan() {
-        if (apiWrapper!!.hasNoInternetConnection()) {
-            updateEmptyViewOnFailure(no_internet!!)
-            return
-        }
-
         try {
             apiResponseReceived(api!!.plan)
         } catch (e: NoInternetException) {
-            updateEmptyViewOnFailure(no_internet!!)
+            updateEmptyViewOnFailure(no_internet)
         } catch (e: RestClientException) {
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
             val text = plan_failed_to_load + ":\n" + e.message
@@ -100,17 +91,16 @@ open class PlanFragment : Fragment() {
     }
 
     @UiThread
-    internal open fun apiResponseReceived(plan: Plan?) {
+    internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
         if (plan == null) {
-            updateEmptyViewOnFailure(plan_failed_to_load!!)
+            updateEmptyViewOnFailure(plan_failed_to_load)
             return
         }
         if (activity == null) {
             return
         }
 
-        val shows = ArrayList<ShowInformation>()
-        Collections.addAll<PlanEntry>(shows, *plan.plan)
+        val shows = plan.entries
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
         val adapter = PlanAdapter(activity, listItems)
@@ -120,9 +110,11 @@ open class PlanFragment : Fragment() {
     }
 
     @UiThread
-    internal open fun updateEmptyViewOnFailure(text: String) {
-        loadingMessageTextView!!.text = text
-        loadingProgressBar!!.visibility = View.GONE
+    internal open fun updateEmptyViewOnFailure(text: String?) {
+        if (text != null) {
+            loadingMessageTextView?.text = text
+            loadingProgressBar?.visibility = View.GONE
+        }
     }
 
     @ItemClick(android.R.id.list)

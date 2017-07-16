@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.6-4]
+
+Überarbeitung der internen App-Struktur und einige Fehlerbehebungen.
+
+## [0.6.6-3]
+Das System zum Holen von Infos über die aktuelle Show wurde neu geschrieben.
+
 ## [0.6.6-2]
 App Code zum Verwalten der Moderatoren-Bilder wurde überarbeitet (alte Bilder sollten nun durch 
 neue ersetzt werden) und ein "Leeren"-Button wurde zu Wünschen & Grüßen hinzugefügt. 

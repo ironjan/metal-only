@@ -3,60 +3,31 @@
 def versionMajor = 0  // incompatible API changes
 def versionMinor = 6  // added functionality in a backwards-compatible manner
 def versionPatch = 6  // backwards-compatible bug fixes
-def versionBuild = 2  // bump for dogfood builds, public betas, etc.
+def versionBuild = 4  // bump for dogfood builds, public betas, etc.
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url 'http://repo1.maven.org/maven2' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-repositories {
-    mavenCentral()
-    maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'project-report'
-apply plugin: 'com.github.ben-manes.versions'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "project-report"
+apply plugin: "com.github.ben-manes.versions"
 
 configurations {
     apt
     ktlint
 }
 
-
-def getSourceSetName(variant) {
-    return new File(variant.dirName).getName();
-}
-
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion project.properties.compileSdkVersion
+    buildToolsVersion project.properties.buildToolsVersion
 
     packagingOptions {
         // prevents Error: duplicate files during packaging of APK
         // no wildcard support yet
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
+        exclude "META-INF/LICENSE"
+        exclude "META-INF/NOTICE"
+        exclude "META-INF/notice.txt"
+        exclude "META-INF/license.txt"
     }
-
-
 
     defaultConfig {
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
@@ -67,17 +38,11 @@ android {
           versionName "${versionMajor}.${versionMinor}.${versionPatch}-${versionBuild}"
         }
 
-        minSdkVersion 11
-        targetSdkVersion 25
-
         applicationId "com.codingspezis.android.metalonly.player"
+        minSdkVersion project.properties.minSdkVersion
+        targetSdkVersion project.properties.targetSdkVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        buildConfigField  "String", "METAL_ONLY_API_BASE_URL", "\"https://www.metal-only.de/botcon/mob.php?action=\""
-        buildConfigField  "String", "API_STATS_PATH", "\"stats\""
-        buildConfigField  "String", "API_PLAN_PATH", "\"plannew\""
-        buildConfigField  "String", "API_PLAN_WITH_STATS_PATH", "\"all\""
 
         buildConfigField "String", "METAL_ONLY_WUNSCHSCRIPT_POST_URL", "\"https://www.metal-only.de/wunschgruss.html?do=save\""
 
@@ -86,14 +51,12 @@ android {
         buildConfigField "String", "WISH_NO_WISHES_POSSIBLE", "\"Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!\""
     }
 
-
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java {
-                srcDirs += "src/main/kotlin"
-            }
+            manifest.srcFile "AndroidManifest.xml"
+            java.srcDirs += "src/main/kotlin"
         }
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     if (project.hasProperty("metalonly.signing")
@@ -114,37 +77,43 @@ android {
     }
 
     lintOptions {
-        disable 'InvalidPackage'
+        disable "InvalidPackage"
     }
 }
 
-def androidannotationsVersion = '4.3.1'
 dependencies {
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.6'
-    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'org.slf4j:slf4j-android:1.7.22'
-    compile "org.androidannotations:androidannotations-api:$androidannotationsVersion"
-    kapt "org.androidannotations:androidannotations:$androidannotationsVersion"
-    compile "org.androidannotations:rest-spring-api:$androidannotationsVersion"
-    kapt "org.androidannotations:rest-spring:$androidannotationsVersion"
-    compile fileTree(include: '*.jar', dir: 'libs')
-    ktlint 'com.github.shyiko:ktlint:0.6.1'
+    apk project(path: ":core")
+    compile project(path: ":core")
+
+    apk project(path: ":metal-only-client-library")
+    compile project(path: ":metal-only-client-library")
+    
+    compile "com.android.support:appcompat-v7:$appcompat_v7_version"
+    compile "com.android.support:support-v4:$support_v4_version"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
+    compile "org.springframework.android:spring-android-rest-template:1.0.1.RELEASE"
+    compile "org.slf4j:slf4j-android:1.7.22"
+    compile "org.androidannotations:androidannotations-api:$androidannotations_version"
+    compile "org.androidannotations:rest-spring-api:$androidannotations_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:25.3.0'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    compile project(path: ':core')
-    apk project(path: ':core')
+        
+    kapt "org.androidannotations:androidannotations:$androidannotations_version"
+    kapt "org.androidannotations:rest-spring:$androidannotations_version"
+    
+    ktlint "com.github.shyiko:ktlint:0.6.1"
+    
+    testCompile "junit:junit:$junit_version"
+    
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
+        exclude group: "com.android.support", module: "support-annotations"
+    })
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.10'
+kapt {
+    generateStubs = true
+    arguments {
+        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+    }
 }
 
 task ktlint(type: JavaExec) {
@@ -160,12 +129,3 @@ task ktlintFormat(type: JavaExec) {
     classpath = configurations.ktlint
     args "-F", "src/**/*.kt"
 }
-
-
-kapt {
-    generateStubs = true
-    arguments {
-        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
-    }
-}
-

@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.LinearLayout
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.UiThread
 import org.androidannotations.annotations.ViewById
@@ -48,7 +47,7 @@ open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout
         progress?.visibility = View.GONE
     }
 
-    fun setStats(stats: Stats) {
+    fun setStats(stats: com.github.ironjan.metalonly.client_library.Stats) {
         updateViews(stats.genre, stats.moderator)
     }
 }

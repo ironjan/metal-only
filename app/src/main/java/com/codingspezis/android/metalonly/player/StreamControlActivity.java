@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
+import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
@@ -34,10 +36,10 @@ import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory
 import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.MetalOnlyAPIWrapper;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.NoInternetException;
-import com.codingspezis.android.metalonly.player.utils.jsonapi.Stats;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
+import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.NoInternetException;
+import com.github.ironjan.metalonly.client_library.Stats;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -81,7 +83,7 @@ public class StreamControlActivity extends AppCompatActivity {
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
     @Bean
-    MetalOnlyAPIWrapper apiWrapper;
+    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)
@@ -208,7 +210,7 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    Stats stats = apiWrapper.getStats();
+                    BasicShowInformation stats = apiWrapper.getStats();
                     String moderator = stats.getModerator();
                     String genre = stats.getGenre();
                     updateShowInfo(moderator, genre);
@@ -442,11 +444,11 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        Stats stats = apiWrapper.getStats();
+        ExtendedShowInformation stats = apiWrapper.getStats();
         if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
                     streamControlActivity.getString(R.string.no_moderator));
-        } else if (stats.canNeitherWishNorGreet()) {
+        } else if (stats.getCanNeitherWishNorGreet()) {
             alertMessage(streamControlActivity, streamControlActivity
                     .getString(R.string.no_wishes_and_regards));
         } else {
