@@ -194,9 +194,13 @@ public class StreamControlActivity extends AppCompatActivity {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
                     BasicShowInformation stats = apiWrapper.getStats();
-                    String moderator = stats.getModerator();
-                    String genre = stats.getGenre();
-                    updateShowInfo(moderator, genre);
+                    if (stats != null) {
+                        String moderator = stats.getModerator();
+                        String genre = stats.getGenre();
+                        updateShowInfo(moderator, genre);
+                    } else {
+                        showToast(R.string.stats_failed_to_load);
+                    }
                 } catch (NoInternetException e) {
                     showToast(R.string.no_internet);
                 }
@@ -427,7 +431,9 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        ExtendedShowInformation stats = apiWrapper.getStats();
+        Stats apiStats = apiWrapper.getStats();
+        ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
+
         if (stats.isNotModerated()) {
             alertMessage(streamControlActivity,
                     streamControlActivity.getString(R.string.no_moderator));
@@ -480,7 +486,8 @@ public class StreamControlActivity extends AppCompatActivity {
 
         Metadata metadata = getMetadata();
         if (metadata.historicTrack().isValid() && isShouldPlay()) {
-            if(viewShowInformation != null) viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
+            if (viewShowInformation != null)
+                viewShowInformation.setMetadata(metadata); //NOPMD This will be optimized automatically by the kotlin converter
         }
         if (BuildConfig.DEBUG) LOGGER.debug("displayMetadata() done");
 
@@ -556,6 +563,7 @@ public class StreamControlActivity extends AppCompatActivity {
         Toast.makeText(this, stringResId, Toast.LENGTH_LONG)
                 .show();
     }
+
     @UiThread
     void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG)
@@ -580,12 +588,12 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @AfterInject
     @Background
-    void loadShowData(){
-        try{
+    void loadShowData() {
+        try {
             displayShowData(apiWrapper.getStats());
-        } catch(NoInternetException e){
-          showToast(R.string.no_internet);
-        } catch(Exception e){
+        } catch (NoInternetException e) {
+            showToast(R.string.no_internet);
+        } catch (Exception e) {
             e.printStackTrace();
             showToast(e.getMessage());
         }
@@ -593,6 +601,13 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @UiThread
     void displayShowData(Stats stats) {
-        viewShowInformation.setStats(stats);
+        if (viewShowInformation != null) {
+            if (stats != null) {
+                viewShowInformation.setStats(stats);
+            } else {
+                // TODO Show something like "could not load" instead?
+                viewShowInformation.setStats(new Stats());
+            }
+        }
     }
 }

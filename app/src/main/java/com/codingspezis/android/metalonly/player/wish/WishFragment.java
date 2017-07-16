@@ -18,7 +18,6 @@ import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.Stats;
 import com.github.ironjan.metalonly.client_library.WishSender;
 
 import org.androidannotations.annotations.AfterViews;
@@ -67,7 +66,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             app_name,
             no_wishes_short;
 
-    private WishAndGreetConstraints stats = Stats.getDefault();
+    private WishAndGreetConstraints stats;
 
     @ViewById
     TextView textArtist,
@@ -232,7 +231,9 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             final String title = editTitle.getText().toString();
             final String greet = editRegard.getText().toString();
 
-            if (stats.getCanWish() && !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)) {
+            boolean canWish = (stats != null) && stats.getCanWish();
+            boolean hasWish = !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title);
+            if (canWish && hasWish) {
                 new WishSender(this, nick, greet, artist, title).send();
             } else {
                 new WishSender(this, nick, greet, null, null).send();

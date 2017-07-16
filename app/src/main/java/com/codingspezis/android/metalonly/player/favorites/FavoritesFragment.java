@@ -21,6 +21,7 @@ import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.core.Track;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.Stats;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -78,13 +79,14 @@ public class FavoritesFragment extends Fragment {
     }
 
     @AfterViews
-    void bindContent(){
+    void bindContent() {
         favoritesSaver = new SongSaver(getActivity(), JSON_FILE_FAV, -1);
         adapter = new SongAdapterFavorites(getActivity(), new ArrayList<Track>(0));
         list.setAdapter(adapter);
         list.setEmptyView(empty);
         displayFavorites();
     }
+
     @Override
     public void onPause() {
         favoritesSaver.saveSongsToStorage();
@@ -170,7 +172,9 @@ public class FavoritesFragment extends Fragment {
     @Background
     void wishSong(final int index) {
         if (!HTTPGrabber.displayNetworkSettingsIfNeeded(getActivity())) {
-            ExtendedShowInformation stats = apiWrapper.getStats();
+            Stats apiStats = apiWrapper.getStats();
+            ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
+
             if (stats.isNotModerated()) {
                 alertMessage(getActivity(), getString(R.string.no_moderator));
             } else if (stats.getCanNeitherWishNorGreet()) {
@@ -186,6 +190,7 @@ public class FavoritesFragment extends Fragment {
                 getActivity().startActivity(wishIntent);
             }
         }
+
     }
 
 

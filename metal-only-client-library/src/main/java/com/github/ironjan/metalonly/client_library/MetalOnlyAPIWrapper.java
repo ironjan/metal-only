@@ -68,23 +68,10 @@ public class MetalOnlyAPIWrapper implements MetalOnlyAPI, WishGreetAPI {
         System.setProperty("http.keepAlive", "false");
     }
 
-    /**
-     * @deprecated The wrapper seemed like a nice idea - but catching all exceptions leads to
-     * undefined/unwanted behaviour in the calling classes. The wrapper should not be used anymore
-     * to call API methods.
-     */
     @Override
     public Stats getStats() {
         checkConnectivity();
-
-        Stats result = Stats.getDefault();
-        try {
-            Stats apiStats = api.getStats();
-            result = (apiStats != null) ? apiStats : result;
-        } catch (RestClientException e) {
-            Log.d(TAG, e.getMessage(), e);
-        }
-        return result;
+        return api.getStats();
     }
 
     /**
