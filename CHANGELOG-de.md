@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+## [0.6.6-4]
+
+Überarbeitung der internen App-Struktur und einige Fehlerbehebungen.
+
 ## [0.6.6-3]
 Das System zum Holen von Infos über die aktuelle Show wurde neu geschrieben.
 
