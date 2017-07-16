@@ -16,13 +16,12 @@ import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.WishSender;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
@@ -76,9 +75,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
 
-    @Bean
-    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
-
     @Pref
     WishPrefs_ wishPrefs;
     private boolean didNotCompleteLoadingStats = true;
@@ -92,7 +88,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void loadAllowedActions() {
         if (HTTPGrabber.isOnline(getActivity())) {
             showLoading(true);
-            updateStats(apiWrapper.getStats());
+            updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
         } else {
             notifyUser(R.string.no_internet);
         }

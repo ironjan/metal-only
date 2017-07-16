@@ -1,5 +1,6 @@
 package com.github.ironjan.metalonly.client_library
 
+import android.content.Context
 import android.net.ConnectivityManager
 import org.androidannotations.annotations.AfterInject
 import org.androidannotations.annotations.EBean
@@ -23,7 +24,7 @@ import org.springframework.web.client.RestClientException
  * more details on this topic.
  */
 @EBean(scope = EBean.Scope.Singleton)
-open class MetalOnlyAPIWrapper {
+open class MetalOnlyAPIWrapper : MetalOnlyClient {
 
     @JvmField
     @RestService
@@ -59,7 +60,7 @@ open class MetalOnlyAPIWrapper {
         System.setProperty("http.keepAlive", "false")
     }
 
-    fun getStats(): Stats {
+    override fun getStats(): Stats {
         checkConnectivity()
         return api!!.stats
     }
@@ -72,12 +73,12 @@ open class MetalOnlyAPIWrapper {
      * @throws RestClientException rethrow of underlying API implementation exception
      */
     @Throws(RestClientException::class, NoInternetException::class)
-    fun getPlan(): Plan {
+    override fun getPlan(): Plan {
         checkConnectivity()
         return api!!.plan
     }
 
-    fun getTrack(): TrackWrapper {
+    override fun getTrack(): TrackWrapper {
         checkConnectivity()
         return api!!.track
     }
@@ -118,3 +119,4 @@ open class MetalOnlyAPIWrapper {
     }
 
 }
+

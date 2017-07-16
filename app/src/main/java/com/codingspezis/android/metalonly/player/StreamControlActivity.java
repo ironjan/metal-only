@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
@@ -37,7 +38,7 @@ import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoInten
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper;
+import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
 
@@ -82,8 +83,6 @@ public class StreamControlActivity extends AppCompatActivity {
     static long lastButtonToggle = 0;
     // GUI objects
     private final StreamControlActivity streamControlActivity = this;
-    @Bean
-    MetalOnlyAPIWrapper apiWrapper; // TODO investigate usage
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)
@@ -193,7 +192,7 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    BasicShowInformation stats = apiWrapper.getStats();
+                    BasicShowInformation stats = getClient().getStats();
                     if (stats != null) {
                         String moderator = stats.getModerator();
                         String genre = stats.getGenre();
@@ -225,6 +224,11 @@ public class StreamControlActivity extends AppCompatActivity {
         };
         new Thread(runnable).start();
 
+    }
+
+    @NonNull
+    private MetalOnlyClient getClient() {
+        return MetalOnlyClient.Companion.getClient(StreamControlActivity.this);
     }
 
     @Override
@@ -431,7 +435,7 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        Stats apiStats = apiWrapper.getStats();
+        Stats apiStats = getClient().getStats();
         ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
 
         if (stats.isNotModerated()) {
@@ -590,7 +594,7 @@ public class StreamControlActivity extends AppCompatActivity {
     @Background
     void loadShowData() {
         try {
-            displayShowData(apiWrapper.getStats());
+            displayShowData(getClient().getStats());
         } catch (NoInternetException e) {
             showToast(R.string.no_internet);
         } catch (Exception e) {
