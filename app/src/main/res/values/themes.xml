@@ -18,4 +18,8 @@
 
     </style>
 
+    <style name="AppTheme.ToolBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorLink">@color/turkis</item>
+    </style>
+
 </resources>
