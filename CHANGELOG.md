@@ -7,7 +7,7 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Some text.
+Fixed crash when opening the time table.
 
 ## [0.6.6-4]
 

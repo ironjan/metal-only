@@ -31,8 +31,8 @@ public class Plan {
     List<ShowInformation> entries = new ArrayList<>();
 
     public List<ShowInformation> getEntries(){
-        List<ShowInformation> copy = new ArrayList<>(entries.size());
-        Collections.copy(copy, entries);
+        List<ShowInformation> copy = new ArrayList<>(entries);
+        copy.addAll(entries);
         return copy;
     }
 
