@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorLink">@color/turkis</item>
+
+        <!--<item name="android:colorPrimary" tools:ignore="NewApi">@color/material_primary</item>-->
+        <!--<item name="colorPrimary">@color/material_primary</item>-->
+
+        <!--<item name="android:colorPrimaryDark" tools:ignore="NewApi">@color/material_primary_dark-->
+        <!--</item>-->
+        <!--<item name="colorPrimaryDark">@color/material_primary_dark</item>-->
+
+        <!--<item name="android:colorAccent" tools:ignore="NewApi">@color/material_accent</item>-->
+        <!--<item name="colorAccent">@color/material_accent</item>-->
+
+        <!--<item name="android:textColor">@color/material_text_primary</item>-->
+
+    </style>
+
+</resources>
