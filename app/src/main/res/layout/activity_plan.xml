@@ -5,4 +5,5 @@
     class="com.codingspezis.android.metalonly.player.plan.PlanFragment_"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout="@layout/fragment_plan" />
+    tools:layout="@layout/fra
+    gment_plan" />

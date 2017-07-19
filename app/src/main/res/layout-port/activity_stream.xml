@@ -4,18 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" />
-
     <com.codingspezis.android.metalonly.player.views.ShowInformation_
         android:id="@+id/viewShowInformation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:minHeight="48dp"
         android:gravity="center_horizontal" />
 

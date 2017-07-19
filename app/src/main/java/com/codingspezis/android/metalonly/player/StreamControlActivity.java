@@ -11,13 +11,14 @@ import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -130,17 +131,26 @@ public class StreamControlActivity extends AppCompatActivity {
     private void setUpGUIObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects()");
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.drawable.mo_banner);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
         listView.setEmptyView(empty);
         toggleStreamButton(false);
         displaySongs();
 
         setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
         if (BuildConfig.DEBUG) LOGGER.debug("setUpGUIObjects() done");
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
+
+        // TODO is setTheme necessary?
+        setTheme(R.style.AppTheme);
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        setSupportProgressBarIndeterminateVisibility(false);
+
+        if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
 
     @AfterViews

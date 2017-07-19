@@ -15,7 +15,7 @@
             android:name=".StreamControlActivity_"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.ToolBar" >
+            android:theme="@android:style/Theme.NoTitleBar" >
 
         </activity>
 
