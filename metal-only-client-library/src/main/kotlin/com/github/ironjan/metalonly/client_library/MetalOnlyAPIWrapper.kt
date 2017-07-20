@@ -55,13 +55,6 @@ open class MetalOnlyAPIWrapper : MetalOnlyClient {
         return api!!.stats
     }
 
-    /**
-     * @return the plan or null
-     * *
-     * @throws NoInternetException if no internet connection is present
-     * *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     */
     @Throws(RestClientException::class, NoInternetException::class)
     override fun getPlan(): Plan {
         checkConnectivity()
