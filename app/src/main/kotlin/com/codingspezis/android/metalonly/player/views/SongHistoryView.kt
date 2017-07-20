@@ -11,6 +11,9 @@ import com.codingspezis.android.metalonly.player.plan.views.CustomDataView
 import com.codingspezis.android.metalonly.player.utils.ImageLoader
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.ViewById
+import java.text.DateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * Custom view to display [HistoricTrack]s in the song history
@@ -44,10 +47,24 @@ open class SongHistoryView(context: Context, attrs: AttributeSet?) : RelativeLay
         txtArtist?.text = t.artist
         txtTitle?.text = t.title
 
-        // FIXME convert t.playedAtAsLong to readable things and set txtDate, txtTime
+        setDateAndTime(t)
 
         if (modImage != null) {
             imageLoader.loadImage(t.moderator, modImage!!)
+        }
+    }
+
+    private fun setDateAndTime(t: HistoricTrack) {
+        try {
+            val dateAsDate = Date(t.playedAtAsLong)
+            val day = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN).format(dateAsDate)
+            val time = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(dateAsDate)
+
+            txtDate?.text = day
+            txtTime?.text = time
+        } catch (e: Exception) {
+            txtDate?.text = ""
+            txtTime?.text = ""
         }
     }
 }
