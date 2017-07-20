@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/buttonPlay"
-        android:layout_width="@dimen/streamPlayButtonWidth"
+        android:layout_width="0dp"
         android:layout_height="@dimen/streamPlayButtonHeigth"
         android:layout_weight="1"
         android:background="@drawable/bg_btn_transparent"

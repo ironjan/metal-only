@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -86,7 +85,7 @@ public class StreamControlActivity extends AppCompatActivity {
     @ViewById(android.R.id.list)
     ListView listView;
     @ViewById(R.id.buttonPlay)
-    ImageView buttonStream;
+    ImageButton buttonStream;
     @ViewById(R.id.viewShowInformation)
     ShowInformation viewShowInformation;
     @ViewById(android.R.id.empty)
