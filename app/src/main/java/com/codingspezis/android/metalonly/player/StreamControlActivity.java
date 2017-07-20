@@ -103,6 +103,7 @@ public class StreamControlActivity extends AppCompatActivity {
     // other variables
     private boolean shouldPlay = false;
     private BroadcastReceiver showInfoBroadcastReceiver;
+    private SongAdapter adapter;
 
     /**
      * @param context
@@ -353,8 +354,14 @@ public class StreamControlActivity extends AppCompatActivity {
             data.add(historySaver.get(i));
         }
 
-        SongAdapter adapter = new SongAdapter(this, data);
-        listView.setAdapter(adapter);
+
+        if(adapter == null){
+            adapter = new SongAdapter(this, data);
+            listView.setAdapter(adapter);
+        }else{
+            adapter.setSongs(data);
+            adapter.notifyDataSetChanged();
+        }
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs() done");
     }
 
