@@ -24,7 +24,7 @@ import java.util.Locale;
 public class SongAdapter extends BaseAdapter {
 
     private final Activity activity;
-    private final ArrayList<HistoricTrack> data;
+    private ArrayList<HistoricTrack> data;
     private final LayoutInflater inflater;
     private final ImageLoader imageLoader;
 
@@ -44,6 +44,7 @@ public class SongAdapter extends BaseAdapter {
         } else {
             view = convertView;
         }
+
 
         final HistoricTrack track = data.get(position);
 
@@ -93,5 +94,9 @@ public class SongAdapter extends BaseAdapter {
     @Override
     public long getItemId(int arg0) {
         return arg0;
+    }
+
+    public void setSongs(ArrayList<HistoricTrack> songs) {
+        this.data = songs;
     }
 }
