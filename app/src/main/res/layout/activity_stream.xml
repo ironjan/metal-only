@@ -11,31 +11,37 @@
         android:minHeight="48dp"
         android:gravity="center_horizontal" />
 
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/buttonBar"
-        android:layout_below="@id/viewShowInformation"
-        tools:listitem="@layout/view_list_item_song_hist" />
-
-    <FrameLayout
-        android:id="@android:id/empty"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/buttonBar"
         android:layout_below="@id/viewShowInformation">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/view_list_item_song_hist" />
 
-        <include layout="@layout/include_empty_stream_history" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/include_empty_stream_history" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/buttonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_stripes"
-        android:gravity="center_vertical">
+        android:background="@drawable/bg_stripes">
 
         <ImageButton
             android:id="@+id/btnWish"
@@ -45,7 +51,7 @@
             android:cropToPadding="true"
             android:padding="16dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/mo_pen" />
+            android:src="@drawable/mo_pen"/>
 
         <ImageView
             android:id="@+id/buttonPlay"
@@ -55,7 +61,7 @@
             android:background="@drawable/bg_btn_transparent"
             android:contentDescription="@string/play_paus"
             android:scaleType="fitCenter"
-            android:src="@drawable/mo_play5" />
+            android:src="@drawable/mo_play5"/>
 
         <ImageButton
             android:id="@+id/btnCalendar"
@@ -65,7 +71,7 @@
             android:cropToPadding="true"
             android:padding="16dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/mo_calendar" />
+            android:src="@drawable/mo_calendar"/>
     </LinearLayout>
 
 </RelativeLayout>
