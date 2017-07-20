@@ -33,7 +33,13 @@ public class SongAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final SongHistoryView view = SongHistoryView_.build(context, null);
+        final SongHistoryView view;
+        if (convertView == null) {
+            view = SongHistoryView_.build(context, null);
+        } else {
+            view = (SongHistoryView) convertView;
+        }
+
         view.bind((HistoricTrack) getItem(position));
         return view;
     }

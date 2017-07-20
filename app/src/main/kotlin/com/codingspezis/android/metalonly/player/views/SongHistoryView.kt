@@ -41,6 +41,8 @@ open class SongHistoryView(context: Context, attrs: AttributeSet?) : RelativeLay
     @ViewById
     protected var txtTitle: TextView? = null
 
+    var moderator: String = ""
+
     private val imageLoader: ImageLoader = ImageLoader(context.applicationContext)
 
     override fun bind(t: HistoricTrack) {
@@ -49,8 +51,11 @@ open class SongHistoryView(context: Context, attrs: AttributeSet?) : RelativeLay
 
         setDateAndTime(t)
 
-        if (modImage != null) {
-            imageLoader.loadImage(t.moderator, modImage!!)
+        if(moderator != t.moderator){
+            moderator = t.moderator
+            if(modImage != null){
+                imageLoader.loadImage(moderator, modImage!!)
+            }
         }
     }
 

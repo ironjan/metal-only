@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.widget.ImageView
-import org.androidannotations.api.UiThreadExecutor
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Collections
@@ -33,6 +32,10 @@ class ImageLoader(context: Context) {
     private val handler = Handler()
 
     fun loadImage(moderator: String, imageView: ImageView) {
+        val queueItem = ModImageLoadingQueueItem(moderator, imageView)
+        if(imageViewReused(queueItem))
+            return
+
         imageViews.put(imageView, moderator)
 
         val memCachedBm = memoryCache[moderator]
@@ -48,16 +51,18 @@ class ImageLoader(context: Context) {
             return
         }
 
-        executorService.submit(ImageDownloader(ModImageLoadingQueueItem(moderator, imageView)))
+        executorService.submit(ImageDownloader(queueItem))
     }
 
     internal fun replaceImage(imageView: ImageView, bitmap: Bitmap) {
-        UiThreadExecutor.runTask("", { imageView.setImageBitmap(bitmap) }, 0L)
+        imageView.post({
+            imageView.setImageBitmap(bitmap)
+        })
     }
 
     internal fun imageViewReused(modImageLoadingQueueItem: ModImageLoadingQueueItem): Boolean {
         val tag = imageViews[modImageLoadingQueueItem.imageView]
-        return tag == null || tag != modImageLoadingQueueItem.moderator
+        return tag == modImageLoadingQueueItem.moderator
     }
 
     internal inner class ImageDownloader(var queueItem: ModImageLoadingQueueItem) : Runnable {
