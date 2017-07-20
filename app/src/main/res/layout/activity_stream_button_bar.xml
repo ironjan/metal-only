@@ -14,7 +14,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/mo_pen"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/buttonPlay"
         android:layout_width="0dp"
         android:layout_height="@dimen/streamPlayButtonHeigth"
