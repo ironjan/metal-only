@@ -13,6 +13,8 @@ import org.springframework.web.client.RestClientException
  * A [Runnable] that will fetch the current show information (moderator and track) in regular
  * intervals. It runs in ":PlayerProcess" and can therefore use [LocalBroadcastManager] to
  * share the infos with [PlayerService].
+ *
+ * FIXME Move to client library
  */
 class ShowInfoFetcher
 (private val context: Context) : Runnable {
