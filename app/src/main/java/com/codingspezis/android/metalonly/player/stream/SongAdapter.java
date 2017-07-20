@@ -11,7 +11,7 @@ import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 import com.codingspezis.android.metalonly.player.views.SongHistoryView;
 import com.codingspezis.android.metalonly.player.views.SongHistoryView_;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * adapter for displaying a 3 row list view
@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class SongAdapter extends BaseAdapter {
 
     private final Context context;
-    private ArrayList<HistoricTrack> data;
+    private List<HistoricTrack> data;
     private final LayoutInflater inflater;
     private final ImageLoader imageLoader;
 
-    public SongAdapter(Context context, ArrayList<HistoricTrack> d) {
+    public SongAdapter(Context context, List<HistoricTrack> d) {
         this.context = context;
         data = d;
         inflater = (LayoutInflater) this.context
@@ -53,7 +53,7 @@ public class SongAdapter extends BaseAdapter {
         return arg0;
     }
 
-    public void setSongs(ArrayList<HistoricTrack> songs) {
+    public void setSongs(List<HistoricTrack> songs) {
         this.data = songs;
     }
 }

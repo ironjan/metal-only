@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class persists songs in the internal storage via JSON files.
@@ -215,6 +216,12 @@ public class SongSaver {
         return trackList.get(i);
     }
 
+    /**
+     * Returns a copy of the historic song list.
+     */
+    public List<HistoricTrack> getAll() {
+        return new LinkedList<>(trackList);
+    }
 
     /**
      * @return true if there were changes on list of songs since they have been read - false otherwise

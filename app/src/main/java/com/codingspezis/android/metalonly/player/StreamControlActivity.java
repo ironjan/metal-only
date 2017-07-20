@@ -56,7 +56,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * main GUI activity
@@ -347,21 +347,15 @@ public class StreamControlActivity extends AppCompatActivity {
 
         historySaver = new SongSaver(this, PlayerService.JSON_FILE_HIST,
                 PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
-        listView.removeAllViewsInLayout();
-        ArrayList<HistoricTrack> data = new ArrayList<>();
-
-        for (int i = historySaver.size() - 1; i >= 0; i--) {
-            data.add(historySaver.get(i));
-        }
-
+        List<HistoricTrack> data = historySaver.getAll();
 
         if(adapter == null){
             adapter = new SongAdapter(this, data);
             listView.setAdapter(adapter);
         }else{
             adapter.setSongs(data);
-            adapter.notifyDataSetChanged();
         }
+        adapter.notifyDataSetChanged();
         if (BuildConfig.DEBUG) LOGGER.debug("displaySongs() done");
     }
 
