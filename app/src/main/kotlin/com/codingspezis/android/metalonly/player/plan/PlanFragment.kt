@@ -8,8 +8,7 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPI
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPIWrapper
+import com.github.ironjan.metalonly.client_library.MetalOnlyClient
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
@@ -21,7 +20,6 @@ import org.androidannotations.annotations.UiThread
 import org.androidannotations.annotations.ViewById
 import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes
-import org.androidannotations.rest.spring.annotations.RestService
 import org.springframework.web.client.RestClientException
 
 @EFragment(R.layout.fragment_plan)
@@ -50,15 +48,8 @@ open class PlanFragment : Fragment() {
     var empty: View? = null
 
     @JvmField
-    @RestService
-    var api: MetalOnlyAPI? = null
-
-    @JvmField
     @Bean
     var planEntryToItemConverter: PlanEntryToItemConverter? = null
-    @JvmField
-    @Bean
-    var apiWrapper: MetalOnlyAPIWrapper? = null // TODO investigate usage
 
     @JvmField
     @StringRes
@@ -79,7 +70,7 @@ open class PlanFragment : Fragment() {
     @Background
     internal open fun loadPlan() {
         try {
-            apiResponseReceived(api!!.plan)
+            apiResponseReceived(MetalOnlyClient.getClient(activity).getPlan())
         } catch (e: NoInternetException) {
             updateEmptyViewOnFailure(no_internet)
         } catch (e: RestClientException) {

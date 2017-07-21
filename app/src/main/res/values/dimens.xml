@@ -5,7 +5,6 @@
     <dimen name="normalButton">48dp</dimen>
     <dimen name="streamPlayButtonHeigth">@dimen/bigButton</dimen>
     <!-- uses weigth to fill button bar -->
-    <dimen name="streamPlayButtonWidth">0dp</dimen>
     <dimen name="streamOtherButtonSize">56dp</dimen>
     <dimen name="streamButtonDividerMarginTop">8dp</dimen>
     <dimen name="streamButtonDividerMarginBottom">8dp</dimen>

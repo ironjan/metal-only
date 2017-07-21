@@ -9,6 +9,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+# [0.6.7]
+Fixed crash when opening the time table, time table and song history are displayed correct again.
+Improved the performance of the latter greatly.
+
 ## [0.6.6-4]
 
 Restructured app-internals and fixed some defects.

@@ -12,7 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class persists songs in the internal storage via JSON files.
@@ -215,6 +218,20 @@ public class SongSaver {
         return trackList.get(i);
     }
 
+    /**
+     * Returns a copy of the historic song list.
+     */
+    public List<HistoricTrack> getAll() {
+        LinkedList<HistoricTrack> historicTracks = new LinkedList<>(trackList);
+        Collections.sort(historicTracks, new Comparator<HistoricTrack>() {
+            @Override
+            public int compare(HistoricTrack lhs, HistoricTrack rhs) {
+                //noinspection SubtractionInCompareTo
+                return (int) -(lhs.getPlayedAtAsLong() - rhs.getPlayedAtAsLong());
+            }
+        });
+        return historicTracks;
+    }
 
     /**
      * @return true if there were changes on list of songs since they have been read - false otherwise

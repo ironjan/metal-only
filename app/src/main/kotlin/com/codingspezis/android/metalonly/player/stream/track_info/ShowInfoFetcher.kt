@@ -7,12 +7,15 @@ import com.codingspezis.android.metalonly.player.BuildConfig
 import com.github.ironjan.metalonly.client_library.MetalOnlyAPI_
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.slf4j.LoggerFactory
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestClientException
 
 /**
  * A [Runnable] that will fetch the current show information (moderator and track) in regular
  * intervals. It runs in ":PlayerProcess" and can therefore use [LocalBroadcastManager] to
  * share the infos with [PlayerService].
+ *
+ * FIXME Move to client library
  */
 class ShowInfoFetcher
 (private val context: Context) : Runnable {
@@ -46,6 +49,10 @@ class ShowInfoFetcher
                 LOGGER.error(e.message, e)
                 active = false
             } catch (e: NoInternetException) {
+                /* We will sleep for some time. If internet fails, [stop] will be called by the
+                 * stream  managing class*/
+                sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL)
+            } catch (e: ResourceAccessException) {
                 /* We will sleep for some time. If internet fails, [stop] will be called by the
                  * stream  managing class*/
                 sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL)

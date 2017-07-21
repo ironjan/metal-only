@@ -6,6 +6,15 @@ android {
     compileSdkVersion project.properties.compileSdkVersion
     buildToolsVersion project.properties.buildToolsVersion
 
+    packagingOptions {
+        // prevents Error: duplicate files during packaging of APK
+        // no wildcard support yet
+        exclude "META-INF/LICENSE"
+        exclude "META-INF/NOTICE"
+        exclude "META-INF/notice.txt"
+        exclude "META-INF/license.txt"
+    }
+    
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion
         targetSdkVersion project.properties.targetSdkVersion
