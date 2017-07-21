@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.github.ironjan.metalonly.client_library.MetalOnlyAPI_
+import com.github.ironjan.metalonly.client_library.MetalOnlyClient
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.ResourceAccessException
@@ -15,12 +15,11 @@ import org.springframework.web.client.RestClientException
  * intervals. It runs in ":PlayerProcess" and can therefore use [LocalBroadcastManager] to
  * share the infos with [PlayerService].
  *
- * FIXME Move to client library
  */
 class ShowInfoFetcher
 (private val context: Context) : Runnable {
     private val LOGGER = LoggerFactory.getLogger(ShowInfoFetcher::class.java)
-    private val api: MetalOnlyAPI_ = MetalOnlyAPI_(context)
+    private val api: MetalOnlyClient = MetalOnlyClient.getClient(context)
     private var active: Boolean = false
 
     /**
@@ -37,7 +36,7 @@ class ShowInfoFetcher
         active = true
         while (active) {
             try {
-                val stats = api.stats
+                val stats = api.getStats()
 
                 if (stats != null) {
                     broadcastCurrentShowInfo(stats)

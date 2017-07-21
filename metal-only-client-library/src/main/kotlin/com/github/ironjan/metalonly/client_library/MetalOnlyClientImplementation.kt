@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClientException
  * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
-open class MetalOnlyAPIWrapper : MetalOnlyClient {
+open class MetalOnlyClientImplementation : MetalOnlyClient {
 
     @JvmField
     @RestService
