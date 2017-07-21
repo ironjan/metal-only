@@ -53,6 +53,7 @@ open class SongHistoryView(context: Context, attrs: AttributeSet?) : RelativeLay
 
         if(moderator != t.moderator){
             moderator = t.moderator
+            modImage?.post { modImage?.setImageResource(R.drawable.mo_wait) }
             if(modImage != null){
                 imageLoader.loadImage(moderator, modImage!!)
             }
