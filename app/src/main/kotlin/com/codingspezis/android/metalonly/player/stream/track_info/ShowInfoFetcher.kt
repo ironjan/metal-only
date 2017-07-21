@@ -52,7 +52,7 @@ class ShowInfoFetcher
                 /* We will sleep for some time. If internet fails, [stop] will be called by the
                  * stream  managing class*/
                 sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL)
-            } catch (e: ResourceAccessException){
+            } catch (e: ResourceAccessException) {
                 /* We will sleep for some time. If internet fails, [stop] will be called by the
                  * stream  managing class*/
                 sleepFetcherFor(NO_INTERNET_SLEEP_INTERVAL)

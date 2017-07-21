@@ -34,7 +34,7 @@ class ImageLoader(context: Context) {
 
     fun loadImage(moderator: String, imageView: ImageView) {
         val queueItem = ModImageLoadingQueueItem(moderator, imageView)
-        if(imageViewReused(queueItem))
+        if (imageViewReused(queueItem))
             return
 
         imageViews.put(imageView, moderator)
@@ -76,9 +76,9 @@ class ImageLoader(context: Context) {
 
                 val imageView = queueItem.imageView
                 imageView.post {
-                    if(bitmap != null){
+                    if (bitmap != null) {
                         imageView.setImageBitmap(bitmap)
-                    }else{
+                    } else {
                         imageView.setImageResource(R.drawable.image_bg)
                     }
                 }

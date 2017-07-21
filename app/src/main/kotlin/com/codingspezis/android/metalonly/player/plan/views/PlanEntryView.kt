@@ -50,10 +50,9 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
         txtGenre?.text = t.genre
         progress?.progress = 100 - computeShowProgress(t)
 
-
-        if(moderator != t.moderator){
+        if (moderator != t.moderator) {
             moderator = t.moderator
-            if(modImage != null){
+            if (modImage != null) {
                 imageLoader.loadImage(moderator, modImage!!)
             }
         }
