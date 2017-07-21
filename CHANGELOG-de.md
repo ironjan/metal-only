@@ -7,7 +7,11 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Absturz beim Öffnen des Sendeplans behoben.
+Some text.
+
+## [0.6.7]
+Absturz beim Öffnen des Sendeplans behoben, Plan und Song History werden wieder korrekt angezeigt.
+Beides wurde im selben Zuge deutlich flotter gemacht.
 
 ## [0.6.6-4]
 

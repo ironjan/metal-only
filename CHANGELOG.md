@@ -7,7 +7,11 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Fixed crash when opening the time table.
+Some text.
+
+# [0.6.7]
+Fixed crash when opening the time table, time table and song history are displayed correct again.
+Improved the performance of the latter greatly.
 
 ## [0.6.6-4]
 
