@@ -34,7 +34,7 @@
             android:launchMode="singleTop" >
         </activity>
         <activity
-            android:name=".WishActivity"
+            android:name=".WishActivity_"
             android:label="@string/wish_regards"
             android:exported="true"
             android:launchMode="singleTop" >
