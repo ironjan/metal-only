@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.codingspezis.android.metalonly.player.plan.views.PlanEntryView
 import com.codingspezis.android.metalonly.player.plan.views.PlanEntryView_
 import com.codingspezis.android.metalonly.player.plan.views.SectionView_
 
@@ -24,23 +25,20 @@ class PlanAdapter(private val context: Context, private val data: ArrayList<Plan
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val item = data[position]
         if (item.isSection) {
-            return inflateSectionView(item as PlanSectionItem)
+            val view = SectionView_.build(context, null)
+            view.bind(item as PlanSectionItem)
+            return view
         } else {
-            return inflateEntryItemView(position)
+            val view: PlanEntryView
+            if (convertView != null && convertView is PlanEntryView) {
+                view = convertView
+            } else {
+                view = PlanEntryView_.build(context, null)
+            }
+            val tmpData = (data[position] as PlanRealEntryItem).showInformation
+            view.bind(tmpData!!)
+            return view
         }
-    }
-
-    private fun inflateEntryItemView(position: Int): View {
-        val view = PlanEntryView_.build(context, null)
-        val tmpData = (data[position] as PlanRealEntryItem).showInformation
-        view.bind(tmpData!!)
-        return view
-    }
-
-    private fun inflateSectionView(item: PlanSectionItem): View {
-        val view = SectionView_.build(context, null)
-        view.bind(item)
-        return view
     }
 
 }

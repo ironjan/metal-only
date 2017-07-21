@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.widget.ImageView
+import com.codingspezis.android.metalonly.player.R
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Collections
@@ -69,17 +70,19 @@ class ImageLoader(context: Context) {
 
         override fun run() {
             try {
-                if (imageViewReused(queueItem)) {
-                    return
-                }
-
                 val bitmap = downloadImage(queueItem.moderator)
 
                 memoryCache[queueItem.moderator] = bitmap
 
-                if (imageViewReused(queueItem)) {
-                    return
+                val imageView = queueItem.imageView
+                imageView.post {
+                    if(bitmap != null){
+                        imageView.setImageBitmap(bitmap)
+                    }else{
+                        imageView.setImageResource(R.drawable.image_bg)
+                    }
                 }
+
                 val bd = BitmapDisplayer(this@ImageLoader, bitmap, queueItem)
                 handler.post(bd)
             } catch (th: Throwable) {

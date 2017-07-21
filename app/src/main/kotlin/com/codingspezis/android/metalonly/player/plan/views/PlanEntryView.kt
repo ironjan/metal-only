@@ -41,13 +41,22 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
 
     private val imageLoader: ImageLoader = ImageLoader(context.applicationContext)
 
+    var moderator: String = ""
+
     override fun bind(t: ShowInformation) {
         txtTitle?.text = t.showTitle
         txtMod?.text = t.moderator
         txtTime?.text = ShowInformationDateHelper.fullTimeString(t)
         txtGenre?.text = t.genre
-        imageLoader.loadImage(t.moderator, modImage!!)
         progress?.progress = 100 - computeShowProgress(t)
+
+
+        if(moderator != t.moderator){
+            moderator = t.moderator
+            if(modImage != null){
+                imageLoader.loadImage(moderator, modImage!!)
+            }
+        }
     }
 
     private fun computeShowProgress(planData: ShowInformation): Int {
