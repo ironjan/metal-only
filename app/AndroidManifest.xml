@@ -40,7 +40,7 @@
             android:launchMode="singleTop" >
         </activity>
         <activity
-            android:name=".PayPalDonationActivity"
+            android:name=".PayPalDonationActivity_"
             android:label="@string/paypal"
             android:launchMode="singleTop"
             android:exported="true"
