@@ -79,6 +79,12 @@ android {
     lintOptions {
         disable "InvalidPackage"
     }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
 }
 
 dependencies {
@@ -113,6 +119,7 @@ kapt {
     generateStubs = true
     arguments {
         arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+        arg("resourcePackageName", android.defaultConfig.applicationId)
     }
 }
 
