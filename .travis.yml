@@ -20,4 +20,5 @@ android:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-script: ./ci.sh
+
+script: ./scripts/ci.sh
