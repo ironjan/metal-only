@@ -4,7 +4,7 @@ jdk:
   - oraclejdk8
 env:
   matrix:
-    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
+    - API=android-16 ABI=armeabi-v7a
 sudo: false
 
 android:
