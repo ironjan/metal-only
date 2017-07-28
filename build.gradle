@@ -20,6 +20,11 @@ buildscript {
         slf4jAndroid_version = "1.7.25"
         springAndroidRestTemplate = "2.0.0.M3"
         support_v4_version = "25.3.0"
+
+        // Travis Speedup
+        // allows for -Dpre-dex=false to be set
+        travisBuild = System.getenv("TRAVIS") == "true"
+        preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
     }
 
     repositories {
