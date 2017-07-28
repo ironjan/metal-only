@@ -5,7 +5,9 @@ jdk:
 env:
   matrix:
     - API=android-16 ABI=armeabi-v7a
-sudo: false
+# Actually we don't need sudo. However it is recommended on https://guides.codepath.com/android/Setting-up-Travis-CI to speed up the build
+# https://medium.com/zendesk-engineering/speeding-up-android-builds-on-travis-ci-1bb4cdbd9c62 also recommends this
+sudo: required 
 
 android:
   components:
