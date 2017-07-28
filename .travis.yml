@@ -4,8 +4,10 @@ jdk:
   - oraclejdk8
 env:
   matrix:
-    - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a
-sudo: false
+    - API=android-16 ABI=armeabi-v7a
+# Actually we don't need sudo. However it is recommended on https://guides.codepath.com/android/Setting-up-Travis-CI to speed up the build
+# https://medium.com/zendesk-engineering/speeding-up-android-builds-on-travis-ci-1bb4cdbd9c62 also recommends this
+sudo: required 
 
 android:
   components:
@@ -20,4 +22,18 @@ android:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-script: ./ci.sh
+jobs:
+  include:
+    - stage: lint
+      script: ./scripts/lint.sh
+    - stage: test
+      script: ./scripts/test.sh
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache

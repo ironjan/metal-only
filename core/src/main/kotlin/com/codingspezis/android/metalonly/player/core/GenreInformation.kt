@@ -1,5 +1,5 @@
 package com.codingspezis.android.metalonly.player.core
 
-interface GenreInformation{
+interface GenreInformation {
     val genre: String
 }
