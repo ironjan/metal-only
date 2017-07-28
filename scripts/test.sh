@@ -1,3 +1,3 @@
 #!/bin/bash
-./gradlew test
+./gradlew --parallel test
 
