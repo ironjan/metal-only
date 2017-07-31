@@ -54,6 +54,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -159,7 +160,7 @@ public class StreamControlActivity extends AppCompatActivity {
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             buttonPlayClicked();
         }
     }
@@ -200,6 +201,8 @@ public class StreamControlActivity extends AppCompatActivity {
                     } else {
                         showToast(R.string.stats_failed_to_load);
                     }
+                } catch (ResourceAccessException e) {
+                    showToast(R.string.stats_failed_to_load);
                 } catch (NoInternetException e) {
                     showToast(R.string.no_internet);
                 }
@@ -213,7 +216,8 @@ public class StreamControlActivity extends AppCompatActivity {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void run() {
-                        if(viewShowInformation != null) viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
+                        if (viewShowInformation != null)
+                            viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
 
                         setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
@@ -349,10 +353,10 @@ public class StreamControlActivity extends AppCompatActivity {
                 PlayerService.MAXIMUM_NUMBER_OF_HISTORY_SONGS);
         List<HistoricTrack> data = historySaver.getAll();
 
-        if(adapter == null){
+        if (adapter == null) {
             adapter = new SongAdapter(this, data);
             listView.setAdapter(adapter);
-        }else{
+        } else {
             adapter.setSongs(data);
         }
         adapter.notifyDataSetChanged();
@@ -435,7 +439,16 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        Stats apiStats = getClient().getStats();
+        Stats apiStats = null;
+        try {
+            apiStats = getClient().getStats();
+        } catch (ResourceAccessException e) {
+            showToast(R.string.stats_failed_to_load);
+        } catch (NoInternetException e) {
+            showToast(R.string.no_internet);
+        } catch (Exception e) {
+            LOGGER.error("Unknown error", e);
+        }
         ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
 
         if (stats.isNotModerated()) {
@@ -448,6 +461,7 @@ public class StreamControlActivity extends AppCompatActivity {
             Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
             streamControlActivity.startActivity(wishIntent);
         }
+
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
     }
 
@@ -595,6 +609,8 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData() {
         try {
             displayShowData(getClient().getStats());
+        } catch (ResourceAccessException e) {
+            showToast(R.string.stats_failed_to_load);
         } catch (NoInternetException e) {
             showToast(R.string.no_internet);
         } catch (Exception e) {
