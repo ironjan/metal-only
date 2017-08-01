@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+# [0.6.8]
+Einige Abstürze behoben.
+
 ## [0.6.7]
 Absturz beim Öffnen des Sendeplans behoben, Plan und Song History werden wieder korrekt angezeigt.
 Beides wurde im selben Zuge deutlich flotter gemacht.
