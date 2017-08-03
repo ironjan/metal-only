@@ -50,20 +50,20 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
         System.setProperty("http.keepAlive", "false")
     }
 
-    override fun getStats(): Stats {
+    override fun getStats(): Stats? {
         checkConnectivity()
-        return api!!.stats
+        return api?.stats
     }
 
     @Throws(RestClientException::class, NoInternetException::class)
-    override fun getPlan(): Plan {
+    override fun getPlan(): Plan? {
         checkConnectivity()
-        return api!!.plan
+        return api?.plan
     }
 
-    override fun getTrack(): TrackWrapper {
+    override fun getTrack(): TrackWrapper? {
         checkConnectivity()
-        return api!!.track
+        return api?.track
     }
 
     private fun checkConnectivity() {
