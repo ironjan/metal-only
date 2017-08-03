@@ -39,7 +39,7 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
     @ViewById
     protected var progress: ProgressBar? = null
 
-    private val imageLoader: ImageLoader = ImageLoader(context.applicationContext)
+    private val imageLoader: ImageLoader = ImageLoader.instance(context)
 
     var moderator: String = ""
 

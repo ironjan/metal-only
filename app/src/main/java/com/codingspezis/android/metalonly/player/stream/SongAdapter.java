@@ -28,7 +28,7 @@ public class SongAdapter extends BaseAdapter {
         data = d;
         inflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader = new ImageLoader(context.getApplicationContext());
+        imageLoader = ImageLoader.Companion.instance(context);
     }
 
     @Override
