@@ -103,20 +103,20 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         // FIXME Disable in layout, enable after load
         // FIXME distinguish: wish list full, no wishes possbile!
         if (!stats.getCanWish()) {
-            editArtist.setText(no_wishes_short);
-            editArtist.setEnabled(false);
-            editTitle.setText(no_wishes_short);
-            editTitle.setEnabled(false);
+            if(editArtist != null) editArtist.setText(no_wishes_short);
+            if(editArtist != null) editArtist.setEnabled(false);
+            if(editTitle != null) editTitle.setText(no_wishes_short);
+            if(editTitle != null) editTitle.setEnabled(false);
         }
 
         if (!stats.getCanGreet()) {
-            editRegard.setText(no_regards);
-            editRegard.setEnabled(false);
+            if(editRegard != null) editRegard.setText(no_regards);
+            if(editRegard != null) editRegard.setEnabled(false);
 
             sb.append("\n").append(no_regards);
         }
 
-        wishCount.setText(sb.toString());
+        if(wishCount != null) wishCount.setText(sb.toString());
         showLoading(false);
         didNotCompleteLoadingStats = false;
     }
