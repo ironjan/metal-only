@@ -21,7 +21,7 @@ import java.util.concurrent.Executors
  * it works not longer with URLs but with getModerator names of metal only some
  * synchronized statements are also added
  */
-class ImageLoader(context: Context) {
+class ImageLoader private constructor(context: Context) {
 
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
@@ -116,4 +116,22 @@ class ImageLoader(context: Context) {
         }
     }
 
+    companion object {
+
+        private val lock: Object = Object()
+
+        private var INSTANCE: ImageLoader? = null
+
+        /**
+         * Gets a singleton instance of the ImageLoader for usage.
+         */
+        fun instance(context: Context) : ImageLoader {
+            synchronized(lock) {
+                if (INSTANCE == null) {
+                    INSTANCE = ImageLoader(context.applicationContext)
+                }
+            }
+            return INSTANCE!!
+        }
+    }
 }

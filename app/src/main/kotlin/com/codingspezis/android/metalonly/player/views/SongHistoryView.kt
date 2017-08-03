@@ -43,7 +43,7 @@ open class SongHistoryView(context: Context, attrs: AttributeSet?) : RelativeLay
 
     var moderator: String = ""
 
-    private val imageLoader: ImageLoader = ImageLoader(context.applicationContext)
+    private val imageLoader: ImageLoader = ImageLoader.instance(context.applicationContext)
 
     override fun bind(t: HistoricTrack) {
         txtArtist?.text = t.artist
