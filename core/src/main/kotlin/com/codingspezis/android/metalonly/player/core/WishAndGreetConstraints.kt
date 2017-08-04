@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.core
 
-interface WishAndGreetConstraints{
+interface WishAndGreetConstraints {
     val canWish: Boolean
     val canGreet: Boolean
     val wishLimit: Int

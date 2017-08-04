@@ -55,7 +55,7 @@ interface MetalOnlyClient {
          * Gets a singleton instance of the client for usage.
          */
         fun getClient(context: Context): MetalOnlyClient {
-            return MetalOnlyAPIWrapper_.getInstance_(context);
+            return MetalOnlyClientImplementation_.getInstance_(context)
         }
     }
 }

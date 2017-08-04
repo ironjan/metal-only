@@ -82,7 +82,14 @@ public class StreamPlayerInternal implements AudioStream {
      * @return true if decoding and playing is still running
      */
     public static boolean IsPlaying() {
-        return mediaPlayer.isPlaying();
+        try {
+            return mediaPlayer.isPlaying();
+        }
+        catch (IllegalStateException e){
+            // Thrown, if mediaPlayer was not initialized yet or is released.
+            // Both states can be translated to "not playing"
+        }
+        return false;
     }
 
     /**

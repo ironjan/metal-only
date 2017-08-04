@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClientException
  * used directly.
  */
 @EBean(scope = EBean.Scope.Singleton)
-open class MetalOnlyAPIWrapper : MetalOnlyClient {
+open class MetalOnlyClientImplementation : MetalOnlyClient {
 
     @JvmField
     @RestService
@@ -50,20 +50,20 @@ open class MetalOnlyAPIWrapper : MetalOnlyClient {
         System.setProperty("http.keepAlive", "false")
     }
 
-    override fun getStats(): Stats {
+    override fun getStats(): Stats? {
         checkConnectivity()
-        return api!!.stats
+        return api?.stats
     }
 
     @Throws(RestClientException::class, NoInternetException::class)
-    override fun getPlan(): Plan {
+    override fun getPlan(): Plan? {
         checkConnectivity()
-        return api!!.plan
+        return api?.plan
     }
 
-    override fun getTrack(): TrackWrapper {
+    override fun getTrack(): TrackWrapper? {
         checkConnectivity()
-        return api!!.track
+        return api?.track
     }
 
     private fun checkConnectivity() {

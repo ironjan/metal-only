@@ -2,7 +2,7 @@
 // only change _after_ merge requests
 def versionMajor = 0  // incompatible API changes
 def versionMinor = 6  // added functionality in a backwards-compatible manner
-def versionPatch = 7  // backwards-compatible bug fixes
+def versionPatch = 9  // backwards-compatible bug fixes
 def versionBuild = 0  // bump for dogfood builds, public betas, etc.
 
 apply plugin: "com.android.application"
@@ -79,6 +79,17 @@ android {
     lintOptions {
         disable "InvalidPackage"
     }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
 }
 
 dependencies {
@@ -91,8 +102,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
     compile "com.android.support:support-v4:$support_v4_version"
     compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
-    compile "org.springframework.android:spring-android-rest-template:1.0.1.RELEASE"
-    compile "org.slf4j:slf4j-android:1.7.22"
+    compile "org.springframework.android:spring-android-rest-template:$springAndroidRestTemplate"
+    compile "org.slf4j:slf4j-android:$slf4jAndroid_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -100,7 +111,7 @@ dependencies {
     kapt "org.androidannotations:androidannotations:$androidannotations_version"
     kapt "org.androidannotations:rest-spring:$androidannotations_version"
     
-    ktlint "com.github.shyiko:ktlint:0.6.1"
+    ktlint "com.github.shyiko:ktlint:$ktlint_version"
     
     testCompile "junit:junit:$junit_version"
     
@@ -113,6 +124,7 @@ kapt {
     generateStubs = true
     arguments {
         arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
+        arg("resourcePackageName", android.defaultConfig.applicationId)
     }
 }
 

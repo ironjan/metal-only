@@ -10,8 +10,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Collections
 import java.util.WeakHashMap
+import java.util.concurrent.BlockingQueue
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 /**
  * this class comes in the original form from:
@@ -21,15 +24,25 @@ import java.util.concurrent.Executors
  * it works not longer with URLs but with getModerator names of metal only some
  * synchronized statements are also added
  */
-class ImageLoader(context: Context) {
+class ImageLoader private constructor(context: Context) {
+
+    /**
+     * number of available cores (not always the same as the maximum number of cores)
+     */
+    private val NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors()
+
+    private val downloadQueue : BlockingQueue<Runnable> = LinkedBlockingQueue<Runnable>()
 
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
     private val memoryCache: Cache = MemoryCache()
     private val fileCache: Cache = FileCache(context)
 
-    /** @todo use actual number of cpu cores here */
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(8)
+    private val executorService: ExecutorService = ThreadPoolExecutor(NUMBER_OF_CORES,
+            2*NUMBER_OF_CORES,
+            1L, TimeUnit.SECONDS,
+            downloadQueue)
+
     private val handler = Handler()
 
     fun loadImage(moderator: String, imageView: ImageView) {
@@ -116,4 +129,22 @@ class ImageLoader(context: Context) {
         }
     }
 
+    companion object {
+
+        private val lock: Object = Object()
+
+        private var INSTANCE: ImageLoader? = null
+
+        /**
+         * Gets a singleton instance of the ImageLoader for usage.
+         */
+        fun instance(context: Context) : ImageLoader {
+            synchronized(lock) {
+                if (INSTANCE == null) {
+                    INSTANCE = ImageLoader(context.applicationContext)
+                }
+            }
+            return INSTANCE!!
+        }
+    }
 }
