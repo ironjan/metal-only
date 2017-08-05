@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codingspezis.android.metalonly.player" >
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.codingspezis.android.metalonly.player">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -62,6 +63,12 @@
             android:name="com.codingspezis.android.metalonly.player.stream.PlayerService"
             android:enabled="true"
             android:process=":PlayerProcess" />
+
+        <meta-data
+          android:name="io.fabric.ApiKey"
+          android:value="${fabric_io_id}"
+          tools:replace="android:value"
+          />
     </application>
 
 </manifest>
