@@ -49,6 +49,14 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
     }
 
+    if(project.hasProperty("metalonly.fabric.io")
+            && new File(project.property("metalonly.fabric.io") + ".gradle").exists()) {
+        apply from: project.property("metalonly.fabric.io") + ".gradle";
+        println("Applied fabric.io / crashlytics settings.")
+    }else{
+        println("Project does not have fabric.io / crashlytics settings.")
+    }
+
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
         preDexLibraries = preDexEnabled && !travisBuild
