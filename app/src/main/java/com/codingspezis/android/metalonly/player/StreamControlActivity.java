@@ -382,7 +382,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.mnu_donation)
     void startDonation() {
-        Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
+        Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity_.class);
         startActivity(paypalIntent);
     }
 
