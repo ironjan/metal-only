@@ -66,6 +66,50 @@ started in May 2017. New code should be written in kotlin if possible.
  
 See also https://gun.io/blog/how-to-github-fork-branch-and-pull-request/
 
+#### Additional gradle files
+
+You can create a `gradle.properties`-file in the project root with the following content:
+
+```
+metalonly.signing=/some/path/to/a-file-collection
+metalonly.variants=/some/path/to/another-file-collection
+metalonly.fabric.io=/some/path/to/a-third-file-collection
+```
+
+`file-collection` refers to similarly named files residing in the same folder, e.g. `metalonly.signing.gradle`
+and `metalonly.signing.keystore`. The property `metalonly.signing` can be re-used to point to the 
+key-store etc. Please refer to the build.gradle files which additionals exist. Here are some 
+templates for the ones currently used:
+ 
+```
+// metalonly.fabric.io
+android {
+  defaultConfig {
+    manifestPlaceholders = [fabric_io_id: "replace-me"]
+  }
+}
+```
+
+```
+// metalonly.signing
+android {
+  signingConfigs {
+    release {
+      storeFile file(project.property("metalonly.signing")+".keystore")
+      storePassword "replace-me"
+      keyAlias "replace-me"
+      keyPassword "replace-me"
+    }
+  }
+
+  buildTypes {
+    release {
+      signingConfig signingConfigs.release
+    }
+  }
+}
+```
+
 #### Useful Knowledge
 
 It may be useful to check for dependency updates once in a while. We're using a 
