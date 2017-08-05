@@ -36,6 +36,7 @@ import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoInten
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
+import com.crashlytics.android.Crashlytics;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
@@ -57,6 +58,8 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URLEncoder;
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * main GUI activity
@@ -124,6 +127,9 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
         setSupportProgressBarIndeterminateVisibility(false);
