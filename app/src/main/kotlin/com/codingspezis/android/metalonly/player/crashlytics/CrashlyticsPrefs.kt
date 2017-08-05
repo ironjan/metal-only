@@ -6,7 +6,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref
 /**
  * User settings for sending crash reports. Use with the `@Pref CrashlyticsPrefs_`.
  */
-@SharedPref
+@SharedPref(value=SharedPref.Scope.UNIQUE)
 interface CrashlyticsPrefs {
     /**
      * @return `true`, if the user disabled sending crash reports. `false` on default.
