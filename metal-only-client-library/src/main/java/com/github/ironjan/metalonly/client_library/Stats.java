@@ -34,6 +34,8 @@ public class Stats implements ExtendedShowInformation{
     private int wishLimit = 0;
     private int greetingLimit = 0;
     private String genre = "Metal";
+    private boolean unlimitedGreetings;
+    private boolean unlimitedWishes;
 
     public boolean isCanWish() {
         return canWish;
@@ -53,6 +55,9 @@ public class Stats implements ExtendedShowInformation{
      *       wishLimit = 0,
      *       greetingLimit = 0,
      *       )
+     *
+     *  Notes: wishLimit and greetingLimit with a value of zero means "unlimited"; canWish or
+     *  canGreet means either "list is full" or "not possible", depending on the show and limits.
      * @return Stats with values as desribed above.
      */
     public static Stats getDefault() {
@@ -86,6 +91,7 @@ public class Stats implements ExtendedShowInformation{
         } catch (NumberFormatException e) {
             this.wishLimit = 0;
         }
+        if(this.wishLimit == 0) unlimitedWishes = true;
     }
 
     @JsonProperty("grusslimit")
@@ -95,6 +101,7 @@ public class Stats implements ExtendedShowInformation{
         } catch (NumberFormatException e) {
             this.greetingLimit = 0;
         }
+        if(this.greetingLimit == 0) unlimitedGreetings = true;
     }
 
     @JsonProperty("moderated")
@@ -155,5 +162,15 @@ public class Stats implements ExtendedShowInformation{
     @Override
     public int getGreetLimit() {
         return greetingLimit;
+    }
+
+    @Override
+    public boolean getUnlimitedWishes() {
+        return unlimitedWishes;
+    }
+
+    @Override
+    public boolean getUnlimitedGreetings() {
+        return unlimitedGreetings;
     }
 }

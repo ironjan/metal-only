@@ -5,4 +5,6 @@ interface WishAndGreetConstraints {
     val canGreet: Boolean
     val wishLimit: Int
     val greetLimit: Int
+    val unlimitedWishes: Boolean
+    val unlimitedGreetings: Boolean
 }
