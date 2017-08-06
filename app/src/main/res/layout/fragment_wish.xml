@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/elementMargin">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/elementMargin">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,21 +12,21 @@
             android:id="@android:id/progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:visibility="invisible"
-            android:indeterminate="true"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:indeterminate="true"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/textNick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/editNick"
-            android:layout_below="@android:id/progress"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@android:id/progress"
             android:text="@string/wish_nick"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/editNick"
@@ -35,14 +35,14 @@
             android:layout_alignLeft="@id/editRegard"
             android:layout_alignStart="@id/editRegard"
             android:layout_marginTop="8dp"
-            android:enabled="false"
             android:layout_toEndOf="@id/textNick"
             android:layout_toRightOf="@id/textNick"
             android:ems="10"
+            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"/>
 
         <TextView
             android:id="@+id/textArtist"
@@ -51,10 +51,10 @@
             android:layout_alignBaseline="@id/editArtist"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/artist"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/editArtist"
@@ -62,14 +62,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/editNick"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/textArtist"
             android:layout_toEndOf="@id/textArtist"
-            android:enabled="false"
+            android:layout_toRightOf="@id/textArtist"
             android:ems="10"
+            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"/>
 
         <TextView
             android:id="@+id/textTitle"
@@ -78,10 +78,10 @@
             android:layout_alignBaseline="@id/editTitle"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/title"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/editTitle"
@@ -90,15 +90,15 @@
             android:layout_alignLeft="@id/editNick"
             android:layout_alignStart="@id/editNick"
             android:layout_below="@id/editArtist"
-            android:enabled="false"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/textTitle"
             android:layout_toEndOf="@id/textTitle"
+            android:layout_toRightOf="@id/textTitle"
             android:ems="10"
+            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"/>
 
         <TextView
             android:id="@+id/textRegard"
@@ -107,10 +107,10 @@
             android:layout_alignBaseline="@id/editRegard"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:text="@string/wish_regard"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <EditText
             android:id="@+id/editRegard"
@@ -120,38 +120,38 @@
             android:layout_alignStart="@id/editArtist"
             android:layout_below="@id/editTitle"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:layout_toRightOf="@id/textRegard"
             android:layout_toEndOf="@id/textRegard"
+            android:layout_toRightOf="@id/textRegard"
             android:ems="10"
+            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"/>
 
         <TextView
             android:id="@id/txtWishcount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
             android:layout_below="@id/editRegard"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:minHeight="48dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <Button
             android:id="@id/btnSend"
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:enabled="false"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtWishcount"
-            android:text="@string/wish_send" />
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:text="@string/wish_send"/>
 
         <Button
             android:id="@+id/btnClear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/btnSend"
             android:layout_marginTop="8dp"
-            android:text="@string/clear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:text="@string/clear"/>
     </RelativeLayout>
 
 
