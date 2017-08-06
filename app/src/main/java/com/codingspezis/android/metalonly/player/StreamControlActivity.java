@@ -198,13 +198,10 @@ public class StreamControlActivity extends AppCompatActivity {
                         String moderator = stats.getModerator();
                         String genre = stats.getGenre();
                         updateShowInfo(moderator, genre);
-                    } else {
-                        showToast(R.string.stats_failed_to_load);
                     }
-                } catch (ResourceAccessException e) {
-                    showToast(R.string.stats_failed_to_load);
-                } catch (NoInternetException e) {
-                    showToast(R.string.no_internet);
+                    // We fail silently - otherwise the user could get confused
+                } catch (ResourceAccessException | NoInternetException e) {
+                    // We fail silently - otherwise the user could get confused
                 }
             }
 
