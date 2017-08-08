@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+# [0.6.10]
+Fixed crash when opening wishes and cleaned up the code behind it.
+
 # [0.6.9]
 Fixed some more crashes and "Application not responding"-errors.
 

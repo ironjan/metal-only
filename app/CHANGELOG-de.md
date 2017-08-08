@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Some text.
 
+# [0.6.10]
+Absturz beim Öffnen des Wunsch-Screens – und Code im Hintergrund aufgeräumt.
+
 # [0.6.9]
 Weitere Abstürze und Performance-Probleme (Application not repsonding) behoben.
 
