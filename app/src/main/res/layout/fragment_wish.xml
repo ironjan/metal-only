@@ -47,7 +47,6 @@
             android:layout_toEndOf="@id/textNick"
             android:layout_toRightOf="@id/textNick"
             android:ems="10"
-            android:enabled="false"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
