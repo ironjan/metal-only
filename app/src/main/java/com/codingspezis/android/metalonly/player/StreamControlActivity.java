@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
-import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
@@ -107,26 +106,6 @@ public class StreamControlActivity extends AppCompatActivity {
     private SongAdapter adapter;
 
     /**
-     * @param context
-     * @param msg
-     */
-    public static void alertMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setMessage(msg);
-                alert.setPositiveButton(context.getString(R.string.ok), null);
-                alert.show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
-    }
-
-    /**
      * initializes GUI objects of main activity
      */
     private void setUpGUIObjects() {
@@ -144,8 +123,6 @@ public class StreamControlActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
-        // TODO is setTheme necessary?
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -198,13 +175,10 @@ public class StreamControlActivity extends AppCompatActivity {
                         String moderator = stats.getModerator();
                         String genre = stats.getGenre();
                         updateShowInfo(moderator, genre);
-                    } else {
-                        showToast(R.string.stats_failed_to_load);
                     }
-                } catch (ResourceAccessException e) {
-                    showToast(R.string.stats_failed_to_load);
-                } catch (NoInternetException e) {
-                    showToast(R.string.no_internet);
+                    // We fail silently - otherwise the user could get confused
+                } catch (ResourceAccessException | NoInternetException e) {
+                    // We fail silently - otherwise the user could get confused
                 }
             }
 
@@ -250,8 +224,7 @@ public class StreamControlActivity extends AppCompatActivity {
      */
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
-        favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-                -1);
+        favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
         setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
     }
 
@@ -439,28 +412,7 @@ public class StreamControlActivity extends AppCompatActivity {
     void tryStartWishActivity() {
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
 
-        Stats apiStats = null;
-        try {
-            apiStats = getClient().getStats();
-        } catch (ResourceAccessException e) {
-            showToast(R.string.stats_failed_to_load);
-        } catch (NoInternetException e) {
-            showToast(R.string.no_internet);
-        } catch (Exception e) {
-            LOGGER.error("Unknown error", e);
-        }
-        ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
-
-        if (stats.isNotModerated()) {
-            alertMessage(streamControlActivity,
-                    streamControlActivity.getString(R.string.no_moderator));
-        } else if (stats.getCanNeitherWishNorGreet()) {
-            alertMessage(streamControlActivity, streamControlActivity
-                    .getString(R.string.no_wishes_and_regards));
-        } else {
-            Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
-            streamControlActivity.startActivity(wishIntent);
-        }
+        WishActivity_.intent(this).start();
 
         if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
     }

@@ -159,5 +159,6 @@
     <string name="aboutFurtherInfos">More info - including the used libraries etc. - can be found in the GitHub project: https://github.com/ironjan/metal-only</string>
     <string name="clear">Clear wish &amp; song</string>
     <string name="stats_failed_to_load">Could not load wish and greet information.</string>
+    <string name="show_info_failed_to_load">Could not load show information.</string>
 
 </resources>
