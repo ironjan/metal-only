@@ -110,6 +110,10 @@ android {
 }
 ```
 
+Please note: the fabric key added to the git is not the one the app is 
+delivered with. It was only added so the app can be built without sharing 
+the official key.
+
 #### Useful Knowledge
 
 It may be useful to check for dependency updates once in a while. We're using a 
