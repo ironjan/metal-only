@@ -7,7 +7,8 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Some text.
+Die App nutzt nun Crashlytics/fabric.io zur besseren Fehlererkennung. Die Infos zum Datenschutz auf 
+http://ironjan.de/metal-only-datenschutz wurden entsprechend angepasst.
 
 # [0.6.10]
 Absturz beim Öffnen des Wunsch-Screens – und Code im Hintergrund aufgeräumt.
