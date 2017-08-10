@@ -8,7 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 Die App nutzt nun Crashlytics/fabric.io zur besseren Fehlererkennung. Die Infos zum Datenschutz auf 
-http://ironjan.de/metal-only-datenschutz wurden entsprechend angepasst.
+http://ironjan.de/metal-only-datenschutz wurden entsprechend angepasst. Das Wünschen von Favoriten 
+wurde repariert.
 
 # [0.6.10]
 Absturz beim Öffnen des Wunsch-Screens – und Code im Hintergrund aufgeräumt.
