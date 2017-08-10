@@ -156,9 +156,13 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="moderator">Moderator</string>
-    <string name="aboutFurtherInfos">More info - including the used libraries etc. - can be found in the GitHub project: https://github.com/ironjan/metal-only</string>
+    <string name="aboutFurtherInfos">More info - including the used libraries etc. - can be found on
+        https://github.com/ironjan/metal-only/blob/master/README.md#used-libraries-and-software\n\n
+    Information about privacy found on http://ironjan.de/metal-only-datenschutz (German only).</string>
     <string name="clear">Clear wish &amp; song</string>
     <string name="stats_failed_to_load">Could not load wish and greet information.</string>
     <string name="show_info_failed_to_load">Could not load show information.</string>
+    <string name="aboutDontSendCrashReports">The automatic sending of crash and error reports helps to improve the app. Since I can only fix errors I know about, I would ask you not to check the box above. This setting will only get active after you restart the app completely.</string>
+    <string name="dontSendCrashReports">Don\'t send crash reports  (Opt-Out)</string>
 
 </resources>

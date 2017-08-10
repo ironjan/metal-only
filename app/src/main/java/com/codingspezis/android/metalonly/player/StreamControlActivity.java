@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
+import com.codingspezis.android.metalonly.player.crashlytics.CrashlyticsInitializer_;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
@@ -124,11 +125,18 @@ public class StreamControlActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
         super.onCreate(savedInstanceState);
+
+        setupCrashlytics();
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
         setSupportProgressBarIndeterminateVisibility(false);
 
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
+    }
+
+    private void setupCrashlytics() {
+        CrashlyticsInitializer_.getInstance_(this).init();
     }
 
     @AfterViews
