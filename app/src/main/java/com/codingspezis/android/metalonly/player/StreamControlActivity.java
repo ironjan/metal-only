@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -200,8 +197,6 @@ public class StreamControlActivity extends AppCompatActivity {
                     public void run() {
                         if (viewShowInformation != null)
                             viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
-
-                        setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
                 };
                 Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -268,60 +263,6 @@ public class StreamControlActivity extends AppCompatActivity {
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
-    }
-
-    /**
-     * sets the wish / regard button to en- or disabled
-     */
-    private void setWishButtonEnabled(boolean enabled) {
-        if (BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({})", enabled);
-
-        ImageButton btnWish = (ImageButton) findViewById(R.id.btnWish);
-        setImageButtonEnabled(this, enabled, btnWish, R.drawable.mo_pen);
-        if (BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({}) done", enabled);
-    }
-
-    /**
-     * THIS METHOD WAS FOUND AT:
-     * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
-     * <p/>
-     * Sets the image button to the given state and grays-out the icon.
-     *
-     * @param enabled   The state of the button
-     * @param item      The button item to modify
-     * @param iconResId The button's icon ID
-     */
-    private void setImageButtonEnabled(Context ctxt, boolean enabled, ImageButton item, int iconResId) {
-        if (BuildConfig.DEBUG)
-            LOGGER.debug("setImageButtonEnabled({},{},{},{})", new Object[]{ctxt, enabled, item, iconResId});
-
-        item.setEnabled(enabled);
-        Drawable originalIcon = ctxt.getResources().getDrawable(iconResId);
-        Drawable icon = enabled ? originalIcon : convertDrawableToGrayScale(originalIcon);
-        item.setImageDrawable(icon);
-        if (BuildConfig.DEBUG)
-            LOGGER.debug("setImageButtonEnabled({},{},{},{}) done", new Object[]{ctxt, enabled, item, iconResId});
-    }
-
-    /**
-     * THIS METHOD WAS FOUND AT:
-     * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
-     * <p/>
-     * Mutates and applies a filter that converts the given drawable to a Gray
-     * image. This method may be used to simulate the color of disable icons in
-     * Honeycomb's ActionBar.
-     *
-     * @return a mutated version of the given drawable with a color filter applied.
-     */
-    private Drawable convertDrawableToGrayScale(Drawable drawable) {
-        if (BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({})", drawable);
-
-        if (drawable == null)
-            return null;
-        Drawable res = drawable.mutate();
-        res.setColorFilter(Color.GRAY, Mode.SRC_IN);
-        if (BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({}) done", drawable);
-        return res;
     }
 
     /**
@@ -407,23 +348,13 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @Click
     void btnWishClicked() {
-        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-            tryStartWishActivity();
-        }
+        WishActivity_.intent(this).start();
     }
 
     private void startPlanActivity() {
         PlanActivity_.intent(this).start();
     }
 
-    @Background
-    void tryStartWishActivity() {
-        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
-
-        WishActivity_.intent(this).start();
-
-        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
-    }
 
     /**
      * sets listening to true sends getStartDate intent to PlayerService shows

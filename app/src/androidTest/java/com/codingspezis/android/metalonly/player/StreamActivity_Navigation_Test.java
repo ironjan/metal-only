@@ -55,7 +55,10 @@ public class StreamActivity_Navigation_Test {
 
     @Test
     public void wishActivity_Navigation_Test(){
-        // FIXME complete test
+        onView(allOf(withId(R.id.btnWish), isDisplayed()))
+                .perform(click());
+
+        intended(hasComponent(new ComponentName(getTargetContext(), WishActivity_.class)));
     }
 
     @Test
