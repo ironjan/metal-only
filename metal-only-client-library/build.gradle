@@ -37,6 +37,10 @@ android {
         manifestPlaceholders = [fabric_io_id: "b4ef28412703339e2e2ad6f8459433e67a9a64ce"] /* replace this with your own key if necessary */
     }
 
+    lintOptions {
+        disable "InvalidPackage"
+    }
+
     buildTypes {
         release {
             minifyEnabled false

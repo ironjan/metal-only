@@ -6,21 +6,15 @@ import android.content.Context
 import android.content.DialogInterface.OnClickListener
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.EditText
 import android.widget.ListView
-
 import com.codingspezis.android.metalonly.player.BuildConfig
 import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.WishActivity
+import com.codingspezis.android.metalonly.player.WishActivity_
 import com.codingspezis.android.metalonly.player.core.HistoricTrack
 import com.codingspezis.android.metalonly.player.core.Track
-import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient
-import com.github.ironjan.metalonly.client_library.Stats
-
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
 import org.androidannotations.annotations.EFragment
@@ -30,7 +24,6 @@ import org.androidannotations.annotations.OptionsMenu
 import org.androidannotations.annotations.UiThread
 import org.androidannotations.annotations.ViewById
 import org.slf4j.LoggerFactory
-
 import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Calendar
@@ -131,26 +124,10 @@ open class FavoritesFragment : Fragment() {
 
     @Background
     internal open fun wishSong(index: Int) {
-        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(activity)) {
-            val apiStats = MetalOnlyClient.getClient(activity).getStats()
-            val stats = apiStats ?: Stats()
-
-            if (stats.isNotModerated) {
-                alertMessage(activity, getString(R.string.no_moderator))
-            } else if (stats.canNeitherWishNorGreet) {
-                alertMessage(activity, getString(R.string.no_wishes_and_regards))
-            } else {
-                // FIXME replace this with android annotation intent call (Wishactivity is not AA yet!)
-                val bundle = Bundle()
-                bundle.putString(WishActivity.KEY_DEFAULT_INTERPRET, favoritesSaver!!.get(index).artist)
-                bundle.putString(WishActivity.KEY_DEFAULT_TITLE, favoritesSaver!!.get(index).title)
-                val wishIntent = Intent(activity, WishActivity::class.java)
-                wishIntent.putExtras(bundle)
-
-                activity.startActivity(wishIntent)
-            }
-        }
-
+        WishActivity_.intent(activity)
+                .interpret(favoritesSaver!!.get(index).artist)
+                .title(favoritesSaver!!.get(index).title)
+                .start()
     }
 
     @UiThread
