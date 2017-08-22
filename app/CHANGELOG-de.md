@@ -7,9 +7,11 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+# [0.6.11]
 Die App nutzt nun Crashlytics/fabric.io zur besseren Fehlererkennung. Die Infos zum Datenschutz auf 
 http://ironjan.de/metal-only-datenschutz wurden entsprechend angepasst. Das Wünschen von Favoriten 
-wurde repariert.
+wurde repariert. Zudem habe ich Tests eingebaut, damit sich weniger Fehler einschleichen.
 
 # [0.6.10]
 Absturz beim Öffnen des Wunsch-Screens – und Code im Hintergrund aufgeräumt.

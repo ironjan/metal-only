@@ -7,8 +7,11 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+# [0.6.11]
 Added Crashlytics/fabric.io to catch more errors. The privacy information on 
-http://ironjan.de/metal-only-datenschutz was adapted accordingly. Fixed wishing of favorites.
+http://ironjan.de/metal-only-datenschutz was adapted accordingly. Fixed wishing of favorites. 
+Added some tests to prevent reintroduction of bugs.
 
 # [0.6.10]
 Fixed crash when opening wishes and cleaned up the code behind it.
