@@ -64,7 +64,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     String number_of_wishes_format,
             no_regards,
             app_name,
-            no_wishes_short;
+            no_wishes_short,
+            wish_list_full;
 
     private WishAndGreetConstraints stats;
 
@@ -105,8 +106,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         this.stats = stats;
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
+        sb.append(" ");// Append space to keep distance with next text
 
-        // FIXME Disable in layout, enable after load
         // FIXME distinguish: wish list full, no wishes possbile!
         if (!stats.getCanWish()) {
             if(editArtist != null) editArtist.setText(no_wishes_short);
@@ -122,7 +123,11 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             sb.append("\n").append(no_regards);
         }
 
+        if(stats.getWishLimitReached()) sb.append(wish_list_full);
+
+
         if(wishCount != null) wishCount.setText(sb.toString());
+
         showLoading(false);
         didNotCompleteLoadingStats = false;
     }
