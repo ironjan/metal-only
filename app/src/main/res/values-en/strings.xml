@@ -165,5 +165,6 @@
     <string name="aboutDontSendCrashReports">The automatic sending of crash and error reports helps to improve the app. Since I can only fix errors I know about, I would ask you not to check the box above. This setting will only get active after you restart the app completely.</string>
     <string name="dontSendCrashReports">Don\'t send crash reports  (Opt-Out)</string>
     <string name="wish_list_full">Sorry, no wishes possible in this show anymore.</string>
+    <string name="wish_list_full_short">Sorry, playlist is filled. No wishes possible at the moment.</string>
 
 </resources>

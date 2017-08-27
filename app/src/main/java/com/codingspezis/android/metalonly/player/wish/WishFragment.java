@@ -65,7 +65,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             no_regards,
             app_name,
             no_wishes_short,
-            wish_list_full;
+            wish_list_full,
+            wish_list_full_short;
 
     private WishAndGreetConstraints stats;
 
@@ -108,22 +109,37 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
         sb.append(" ");// Append space to keep distance with next text
 
-        // FIXME distinguish: wish list full, no wishes possbile!
-        if (!stats.getCanWish()) {
+        if (stats.getCanWish()) {
+            if(editArtist != null) editArtist.setText("");
+            if(editArtist != null) editArtist.setEnabled(true);
+            if(editTitle != null) editTitle.setText("");
+            if(editTitle != null) editTitle.setEnabled(true);
+        }else {
             if(editArtist != null) editArtist.setText(no_wishes_short);
             if(editArtist != null) editArtist.setEnabled(false);
             if(editTitle != null) editTitle.setText(no_wishes_short);
             if(editTitle != null) editTitle.setEnabled(false);
         }
 
-        if (!stats.getCanGreet()) {
+        if (stats.getCanGreet()) {
+            if(editRegard != null) editRegard.setText("");
+            if(editRegard != null) editRegard.setEnabled(true);
+        } else {
             if(editRegard != null) editRegard.setText(no_regards);
             if(editRegard != null) editRegard.setEnabled(false);
 
             sb.append("\n").append(no_regards);
         }
 
-        if(stats.getWishLimitReached()) sb.append(wish_list_full);
+        if(stats.getWishLimitReached()) {
+            sb.append(wish_list_full);
+            if(editArtist != null) editArtist.setText(wish_list_full_short);
+            if(editArtist != null) editArtist.setEnabled(false);
+            if(editArtist != null) editArtist.setEnabled(false);
+            if(editTitle != null) editTitle.setText(wish_list_full_short);
+            if(editTitle != null) editTitle.setEnabled(false);
+            if(editTitle != null) editTitle.setEnabled(false);
+        }
 
 
         if(wishCount != null) wishCount.setText(sb.toString());
