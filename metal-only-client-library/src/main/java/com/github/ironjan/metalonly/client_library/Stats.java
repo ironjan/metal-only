@@ -173,4 +173,9 @@ public class Stats implements ExtendedShowInformation{
     public boolean getUnlimitedGreetings() {
         return unlimitedGreetings;
     }
+
+    @Override
+    public boolean getWishLimitReached() {
+        return !canWish;
+    }
 }

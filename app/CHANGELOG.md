@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.12]
+Fixed wishing.
+
 # [0.6.11]
 Added Crashlytics/fabric.io to catch more errors. The privacy information on 
 http://ironjan.de/metal-only-datenschutz was adapted accordingly. Fixed wishing of favorites. 
