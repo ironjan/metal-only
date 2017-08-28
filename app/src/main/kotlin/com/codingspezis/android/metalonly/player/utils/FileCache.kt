@@ -17,10 +17,10 @@ import java.util.Calendar
 /**
  * A file cache based on [https://github.com/thest1/LazyList](https://github.com/thest1/LazyList). It
  * was modified to work with internal storage and a cache duration of 1 week. We don't use URLs
- * anymore but moderator names (as this is what the cache is for). We also added some synchronized
- * statements.
+ * anymore but moderator names (as this is what the cache is for).
  *
- * @todo Why were the synchronized statements necessary?
+ * @todo previously, some methods were synchronized. This lead to many ANRs reported via play. In an
+ * attempt to fix this, the synchronized statements were removed from [getOutputStream], [get], [clear].
  */
 class FileCache(private val context: Context) : Cache {
     init {
@@ -42,7 +42,7 @@ class FileCache(private val context: Context) : Cache {
         editor.apply()
     }
 
-    @Synchronized @Throws(FileNotFoundException::class)
+    @Throws(FileNotFoundException::class)
     fun getOutputStream(moderator: String): FileOutputStream {
         return context.openFileOutput(moderator, Context.MODE_PRIVATE)
     }
@@ -59,7 +59,7 @@ class FileCache(private val context: Context) : Cache {
      * *
      * @return
      */
-    @Synchronized override operator fun get(moderator: String?): Bitmap? {
+    override operator fun get(moderator: String?): Bitmap? {
         if (moderator == null) {
             /* Java interop. We do not know for sure that moderator is != null */
             return null
@@ -131,7 +131,7 @@ class FileCache(private val context: Context) : Cache {
     private fun getActualFile(fileName: String): File =
             File("${context.filesDir.absolutePath}/$fileName")
 
-    @Synchronized fun clear(context: Context) {
+    fun clear(context: Context) {
         context.fileList()
                 .forEach { file -> context.deleteFile(file) }
     }
