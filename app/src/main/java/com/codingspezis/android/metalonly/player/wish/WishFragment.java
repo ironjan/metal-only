@@ -89,17 +89,12 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
-        TimingLogger timingLogger = new TimingLogger(WishFragment.class.getSimpleName(), "Timing loadAllowedActions()");
         if (HTTPGrabber.isOnline(getActivity())) {
-            timingLogger.addSplit("We are online");
             showLoading(true);
             updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
-            timingLogger.addSplit("update stats");
         } else {
             notifyUser(R.string.no_internet);
-            timingLogger.addSplit("notified");
         }
-        timingLogger.dumpToLog();
     }
 
     @UiThread
