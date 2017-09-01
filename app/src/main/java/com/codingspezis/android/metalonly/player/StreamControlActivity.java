@@ -209,7 +209,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @NonNull
     private MetalOnlyClient getClient() {
-        return MetalOnlyClient.Companion.getClient(StreamControlActivity.this);
+        return MetalOnlyClient.Companion.getClient(this);
     }
 
     @Override
