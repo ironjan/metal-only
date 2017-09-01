@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.14]
+Fixed multiple crash sources.
+
 # [0.6.13]
 Experimental change to fix "application not responding"-errors.
 
