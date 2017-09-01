@@ -34,6 +34,7 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Locale;
 
@@ -66,7 +67,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             app_name,
             no_wishes_short,
             wish_list_full,
-            wish_list_full_short;
+            wish_list_full_short,
+            stats_failed_to_load;
 
     private WishAndGreetConstraints stats;
 
@@ -89,17 +91,21 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
-        TimingLogger timingLogger = new TimingLogger(WishFragment.class.getSimpleName(), "Timing loadAllowedActions()");
         if (HTTPGrabber.isOnline(getActivity())) {
-            timingLogger.addSplit("We are online");
             showLoading(true);
-            updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
-            timingLogger.addSplit("update stats");
+            try{
+                updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
+            } catch (NoInternetException | RestClientException e) {
+                loadingAllowedActionsFailed();
+            }
         } else {
             notifyUser(R.string.no_internet);
-            timingLogger.addSplit("notified");
         }
-        timingLogger.dumpToLog();
+    }
+
+    @UiThread
+    void loadingAllowedActionsFailed() {
+        Toast.makeText(getActivity(), stats_failed_to_load, Toast.LENGTH_LONG).show();
     }
 
     @UiThread
