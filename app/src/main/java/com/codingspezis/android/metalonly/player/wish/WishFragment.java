@@ -1,10 +1,10 @@
 package com.codingspezis.android.metalonly.player.wish;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.TimingLogger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,8 +93,15 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void loadAllowedActions() {
         if (HTTPGrabber.isOnline(getActivity())) {
             showLoading(true);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             try{
-                updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
+                Context context = getContext();
+                if(context == null) return;
+                updateStats(MetalOnlyClient.Companion.getClient(context).getStats());
             } catch (NoInternetException | RestClientException e) {
                 loadingAllowedActionsFailed();
             }
