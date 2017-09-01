@@ -1,10 +1,12 @@
 package com.codingspezis.android.metalonly.player.core
 
+import java.util.Comparator
+
 data class HistoricTrack(override val artist: String,
                          override val title: String,
                          val thumbRaw: String,
                          override val playedAtAsLong: Long)
-    : Track, HistoricTrackExtension {
+    : Track, HistoricTrackExtension, Comparable<HistoricTrack> {
 
     override val moderator: String = thumbRaw.replace(" OnAir", "")
 
@@ -25,4 +27,16 @@ data class HistoricTrack(override val artist: String,
                     && moderator == other.moderator
                     && title == other.title
     }
+
+    override fun compareTo(other: HistoricTrack): Int {
+        return this.playedAtAsLong.compareTo(other.playedAtAsLong)
+    }
+
+    class HistoricTrack_SortedByPlayedAs_Desc_Comparator : Comparator<HistoricTrack> {
+        override fun compare(o1: HistoricTrack, o2: HistoricTrack): Int {
+            return -o1.compareTo(o2)
+        }
+
+    }
+
 }
