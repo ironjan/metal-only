@@ -94,11 +94,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void loadAllowedActions() {
         if (HTTPGrabber.isOnline(getActivity())) {
             showLoading(true);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             try{
                 Context context = getContext();
                 if(context == null) return;
