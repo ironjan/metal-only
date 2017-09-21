@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -112,7 +113,10 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @UiThread
     void loadingAllowedActionsFailed() {
-        Toast.makeText(getActivity(), stats_failed_to_load, Toast.LENGTH_LONG).show();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Toast.makeText(activity, stats_failed_to_load, Toast.LENGTH_LONG).show();
+        }
     }
 
     @UiThread
