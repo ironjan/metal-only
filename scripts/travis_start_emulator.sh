@@ -1,6 +1,6 @@
 #!/bin/bash
 android list targets
-echo no | android create avd --force -n test -t android-25
+echo no | android create avd --force -n test -t android-25 --abi armeabi-v7a
 emulator -avd test -no-audio -no-window &
 android-wait-for-emulator
 sleep 180
