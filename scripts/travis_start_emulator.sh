@@ -1,7 +1,7 @@
 #!/bin/bash
 android list targets
 echo no | android create avd --force -n test -t android-25 --abi "google_apis/armeabi-v7a"
-emulator -avd test -noaudio --no-window &
+emulator -avd test -noaudio -no-window &
 android-wait-for-emulator
 sleep 180
 adb devices
