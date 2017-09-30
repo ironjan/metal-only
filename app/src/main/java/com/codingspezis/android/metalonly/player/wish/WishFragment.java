@@ -65,11 +65,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @StringRes
     String number_of_wishes_format,
             no_regards,
-            app_name,
-            no_wishes_short,
-            wish_list_full,
-            wish_list_full_short,
-            stats_failed_to_load;
+            wish_list_full;
 
     private WishAndGreetConstraints stats;
 
@@ -110,7 +106,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     void loadingAllowedActionsFailed() {
         FragmentActivity activity = getActivity();
         if (activity != null) {
-            Toast.makeText(activity, stats_failed_to_load, Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.stats_failed_to_load, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -127,9 +123,9 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             if(editTitle != null) editTitle.setText("");
             if(editTitle != null) editTitle.setEnabled(true);
         }else {
-            if(editArtist != null) editArtist.setText(no_wishes_short);
+            if(editArtist != null) editArtist.setText(R.string.no_wishes_short);
             if(editArtist != null) editArtist.setEnabled(false);
-            if(editTitle != null) editTitle.setText(no_wishes_short);
+            if(editTitle != null) editTitle.setText(R.string.no_wishes_short);
             if(editTitle != null) editTitle.setEnabled(false);
         }
 
@@ -137,7 +133,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             if(editRegard != null) editRegard.setText("");
             if(editRegard != null) editRegard.setEnabled(true);
         } else {
-            if(editRegard != null) editRegard.setText(no_regards);
+            if(editRegard != null) editRegard.setText(R.string.no_regards);
             if(editRegard != null) editRegard.setEnabled(false);
 
             sb.append("\n").append(no_regards);
@@ -145,10 +141,10 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
         if(stats.getWishLimitReached()) {
             sb.append(wish_list_full);
-            if(editArtist != null) editArtist.setText(wish_list_full_short);
+            if(editArtist != null) editArtist.setText(R.string.wish_list_full_short);
             if(editArtist != null) editArtist.setEnabled(false);
             if(editArtist != null) editArtist.setEnabled(false);
-            if(editTitle != null) editTitle.setText(wish_list_full_short);
+            if(editTitle != null) editTitle.setText(R.string.wish_list_full_short);
             if(editTitle != null) editTitle.setEnabled(false);
             if(editTitle != null) editTitle.setEnabled(false);
         }
