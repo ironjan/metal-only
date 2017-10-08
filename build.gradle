@@ -14,11 +14,13 @@ buildscript {
         appcompat_v7_version = "25.3.0"
         androidannotations_version = "4.3.1"
         espresso_version = "2.2.2"
+        jackson_version = "2.9.1"
         junit_version = "4.12"   
         kotlin_version = "1.1.3-2"
         ktlint_version = "0.9.0"
+        okhttp_version = "3.7.0"
         slf4jAndroid_version = "1.7.25"
-        springAndroidRestTemplate = "2.0.0.M3"
+        spring_android_rest_template_version = "2.0.0.M3"
         support_v4_version = "25.3.0"
 
         // Travis Speedup

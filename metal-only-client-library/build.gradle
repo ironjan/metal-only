@@ -74,9 +74,9 @@ dependencies {
         exclude group: "com.android.support", module: "support-annotations"
     })
 
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
-    compile "com.squareup.okhttp3:okhttp:3.6.0"
-    compile "org.springframework.android:spring-android-rest-template:1.0.1.RELEASE"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
+    compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

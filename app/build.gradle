@@ -111,8 +111,8 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
-    compile "org.springframework.android:spring-android-rest-template:$springAndroidRestTemplate"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.slf4j:slf4j-android:$slf4jAndroid_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"
