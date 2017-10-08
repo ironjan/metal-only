@@ -162,6 +162,10 @@ public class StreamPlayerInternal implements AudioStream {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(onPreparedListener);
         mediaPlayer.setOnErrorListener(onErrorListener);
+        reset();
+    }
+
+    private void reset() {
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
@@ -180,6 +184,7 @@ public class StreamPlayerInternal implements AudioStream {
         if (BuildConfig.DEBUG) LOGGER.debug("startPlaying()");
         metadataListener.stop();
         timeoutListener.stop();
+        reset();
         mediaPlayer.prepareAsync();
     }
 
@@ -191,7 +196,7 @@ public class StreamPlayerInternal implements AudioStream {
         metadataListener.stop();
         timeoutListener.stop();
         mediaPlayer.stop();
-        mediaPlayer.reset();
+        reset();
         releaseLocks();
     }
 
