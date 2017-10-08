@@ -15,18 +15,10 @@ import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.WishActivity_
 import com.codingspezis.android.metalonly.player.core.HistoricTrack
 import com.codingspezis.android.metalonly.player.core.Track
-import org.androidannotations.annotations.AfterViews
-import org.androidannotations.annotations.Background
-import org.androidannotations.annotations.EFragment
-import org.androidannotations.annotations.ItemClick
-import org.androidannotations.annotations.OptionsItem
-import org.androidannotations.annotations.OptionsMenu
-import org.androidannotations.annotations.UiThread
-import org.androidannotations.annotations.ViewById
+import org.androidannotations.annotations.*
 import org.slf4j.LoggerFactory
 import java.net.URLEncoder
-import java.util.ArrayList
-import java.util.Calendar
+import java.util.*
 
 /**
  * Displays favorites and allows to handle them
@@ -80,8 +72,8 @@ open class FavoritesFragment : Fragment() {
         alert.setView(v)
         alert.setNegativeButton(R.string.abort, null)
         alert.setPositiveButton(R.string.ok) { dialog, action ->
-            val artist = v.findViewById(R.id.edit_artist) as EditText
-            val txtTitle = v.findViewById(R.id.edit_title) as EditText
+            val artist = v.findViewById<EditText>(R.id.edit_artist)
+            val txtTitle = v.findViewById<EditText>(R.id.edit_title)
 
             val interpret = artist.text.toString()
             val title = txtTitle.text.toString()

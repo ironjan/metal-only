@@ -103,10 +103,7 @@ android {
 }
 
 dependencies {
-    apk project(path: ":core")
     compile project(path: ":core")
-
-    apk project(path: ":metal-only-client-library")
     compile project(path: ":metal-only-client-library")
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
@@ -140,7 +137,6 @@ kapt {
     correctErrorTypes = true
     generateStubs = true
     arguments {
-        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
         arg("resourcePackageName", android.defaultConfig.applicationId)
     }
 }

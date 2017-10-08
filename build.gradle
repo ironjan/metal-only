@@ -2,13 +2,13 @@
 buildscript {
     ext {
         // Android common settings
-        compileSdkVersion = 25
-        buildToolsVersion = "25.0.2"
+        compileSdkVersion = 26
+        buildToolsVersion = "26.0.2"
 
         minSdkVersion = 11
-        targetSdkVersion = 25
+        targetSdkVersion = 26
 
-        jdk_compatibility = "1.7"
+        jdk_compatibility = "1.8"
 
         // Dependency versions
         appcompat_v7_version = "25.3.0"
@@ -29,16 +29,16 @@ buildscript {
 
     repositories {
         jcenter()
-        mavenCentral()
-        maven { url "http://repo1.maven.org/maven2" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        maven { url "https://maven.fabric.io/public" }
+        maven { url 'https://maven.google.com' }
+        maven { url 'http://repo1.maven.org/maven2' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:2.3.3"
+        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.14.0"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
 
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
@@ -52,11 +52,11 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
-        maven { url "http://repo1.maven.org/maven2" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url 'https://maven.google.com' }
+        maven { url 'http://repo1.maven.org/maven2' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url "https://maven.fabric.io/public" }
-    }
+  }
 }
 
 task clean(type: Delete) {
@@ -64,5 +64,5 @@ task clean(type: Delete) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "1.10"
+    gradleVersion = '2.14.1'
 }
