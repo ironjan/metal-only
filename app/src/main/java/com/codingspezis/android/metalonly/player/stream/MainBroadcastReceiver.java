@@ -36,8 +36,6 @@ public class MainBroadcastReceiver extends BroadcastReceiver {
 
         // is playing?
         if (intent.getAction().equals(PlayerService.INTENT_STATUS)) {
-            this.streamControlActivity
-                    .setSupportProgressBarIndeterminateVisibility(false);
             if (intent.getBooleanExtra(PlayerService.BROADCAST_EXTRA_CONNECTED, false)) {
                 this.streamControlActivity.setShouldPlay(true);
                 this.streamControlActivity.toggleStreamButton(true);
