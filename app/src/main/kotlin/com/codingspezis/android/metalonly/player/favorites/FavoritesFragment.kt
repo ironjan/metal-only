@@ -10,6 +10,9 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.EditText
 import android.widget.ListView
+import com.codingspezis.android.metalonly.player.BuildConfig
+import com.codingspezis.android.metalonly.player.R
+import com.codingspezis.android.metalonly.player.WishActivity_
 import com.codingspezis.android.metalonly.player.core.HistoricTrack
 import com.codingspezis.android.metalonly.player.core.Track
 import org.androidannotations.annotations.AfterViews
