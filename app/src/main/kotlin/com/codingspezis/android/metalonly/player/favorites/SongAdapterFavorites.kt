@@ -9,7 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.core.Track
-import java.util.ArrayList
+import java.util.*
 
 /**
  * adapter for displaying a 2 row list view
@@ -31,8 +31,8 @@ class SongAdapterFavorites(private val activity: Activity, private val data: Arr
         }
         val track = data[position]
 
-        val txtTitle = view.findViewById(R.id.txtTitle) as TextView
-        val txtArtist = view.findViewById(R.id.txtArtist) as TextView
+        val txtTitle = view.findViewById<TextView>(R.id.txtTitle)
+        val txtArtist = view.findViewById<TextView>(R.id.txtArtist)
 
         txtTitle.text = track.title
         txtArtist.text = track.artist
