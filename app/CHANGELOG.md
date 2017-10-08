@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.15]
+Internal improvements.
+
 # [0.6.14]
 Fixed multiple crash sources.
 
