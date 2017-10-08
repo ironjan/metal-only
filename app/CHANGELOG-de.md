@@ -8,7 +8,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-# [0.6.15]
+# [0.6.16]
+Interne Verbesserungen.
+
+# [0.6.15] - Unreleased
 Interne Verbesserungen.
 
 # [0.6.14]
