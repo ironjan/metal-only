@@ -10,15 +10,19 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.EditText
 import android.widget.ListView
-import com.codingspezis.android.metalonly.player.BuildConfig
-import com.codingspezis.android.metalonly.player.R
-import com.codingspezis.android.metalonly.player.WishActivity_
 import com.codingspezis.android.metalonly.player.core.HistoricTrack
 import com.codingspezis.android.metalonly.player.core.Track
-import org.androidannotations.annotations.*
+import org.androidannotations.annotations.AfterViews
+import org.androidannotations.annotations.Background
+import org.androidannotations.annotations.EFragment
+import org.androidannotations.annotations.ItemClick
+import org.androidannotations.annotations.OptionsItem
+import org.androidannotations.annotations.OptionsMenu
+import org.androidannotations.annotations.UiThread
+import org.androidannotations.annotations.ViewById
 import org.slf4j.LoggerFactory
 import java.net.URLEncoder
-import java.util.*
+import java.util.Calendar
 
 /**
  * Displays favorites and allows to handle them
