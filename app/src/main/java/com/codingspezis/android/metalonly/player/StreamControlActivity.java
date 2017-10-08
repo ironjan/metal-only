@@ -127,7 +127,6 @@ public class StreamControlActivity extends AppCompatActivity {
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
-        setSupportProgressBarIndeterminateVisibility(false);
 
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
     }
@@ -363,7 +362,6 @@ public class StreamControlActivity extends AppCompatActivity {
     private void startListening() {
         if (BuildConfig.DEBUG) LOGGER.debug("startListening()");
 
-        setSupportProgressBarIndeterminateVisibility(true);
         setShouldPlay(true);
         toggleStreamButton(true);
         Intent tmpIntent = new Intent(PlayerService.INTENT_PLAY);
@@ -377,7 +375,6 @@ public class StreamControlActivity extends AppCompatActivity {
     public void stopListening() {
         if (BuildConfig.DEBUG) LOGGER.debug("stopListening()");
 
-        setSupportProgressBarIndeterminateVisibility(false);
         setShouldPlay(false);
         toggleStreamButton(false);
         Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);
