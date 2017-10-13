@@ -19,9 +19,9 @@ import java.util.Date;
  *  "day": "29.07.13",
  *  "time": "00:00",
  *  "durationInHours": 15,
- *  "getModerator": "MetalHead",
+ *  "moderator": "MetalHead",
  *  "show": "Keine Gruesse und Wuensche moeglich.",
- *  "getGenre": "Mixed Metal"
+ *  "genre": "Mixed Metal"
  * }
  * </pre>
  */
@@ -39,8 +39,9 @@ public class PlanEntry implements ShowInformation {
         dateStringFormat = new SimpleDateFormat("dd'.'MM'.'yy'T'HH':'mm");
     }
 
-    public String getTime() {
-        return time;
+    @JsonProperty("day")
+    public void setDay(String day) {
+        this.day = day;
     }
 
     @JsonProperty("time")
@@ -48,17 +49,14 @@ public class PlanEntry implements ShowInformation {
         this.time = time;
     }
 
-    public String getModerato() {
-        return moderato;
+    @JsonProperty("duration")
+    public void setDuration(int durationInHours) {
+        this.durationInHours = durationInHours;
     }
 
     @JsonProperty("moderator")
-    public void setModerato(String moderato) {
+    public void setModerator(String moderato) {
         this.moderato = moderato;
-    }
-
-    public String getShow() {
-        return show;
     }
 
     @JsonProperty("show")
@@ -71,18 +69,20 @@ public class PlanEntry implements ShowInformation {
         this.genre = genre;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public String getModerato() {
+        return moderato;
+    }
+
+    public String getShow() {
+        return show;
+    }
+
     public int getDurationInHours() {
         return durationInHours;
-    }
-
-    @JsonProperty("duration")
-    public void setDurationInHours(int durationInHours) {
-        this.durationInHours = durationInHours;
-    }
-
-    @JsonProperty("day")
-    public void setDay(String day) {
-        this.day = day;
     }
 
     @Override
