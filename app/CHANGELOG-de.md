@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.17]
+Plan repariert (ist in Beta-Version kapputt gewesen).
+
 # [0.6.16]
 Interne Verbesserungen.
 
