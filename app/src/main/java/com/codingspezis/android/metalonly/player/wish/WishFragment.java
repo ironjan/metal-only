@@ -113,6 +113,9 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @UiThread
     void updateStats(WishAndGreetConstraints stats) {
         this.stats = stats;
+        if(stats == null) {
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
         sb.append(" ");// Append space to keep distance with next text
