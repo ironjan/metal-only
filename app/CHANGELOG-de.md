@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.18]
+Plan repariert (ist in Beta-Version kapputt gewesen). Absturz in Wunsch/Gruß-Funktion behoben.
+
 # [0.6.17]
 Plan repariert (ist in Beta-Version kapputt gewesen).
 

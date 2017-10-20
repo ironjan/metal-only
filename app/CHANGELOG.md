@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+# [0.6.18]
+Fixed plan (was broken in beta). Fixed a crash when opening Wish/Greet.
+
 # [0.6.17]
 Fixed plan (was broken in beta).
 
