@@ -5,4 +5,4 @@ set -o pipefail
 ./scripts/lint.sh
 ./scripts/_connected_test.sh*
 ./gradlew --daemon --parallel clean assembleRelease
-caja app/build/outputs/apk/
+caja app/build/outputs/apk/release
