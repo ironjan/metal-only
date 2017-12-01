@@ -88,7 +88,11 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
-        if (HTTPGrabber.isOnline(getActivity())) {
+        FragmentActivity activity = getActivity();
+
+        if(activity == null) return;
+
+        if (HTTPGrabber.isOnline(activity)) {
             showLoading(true);
             try{
                 Context context = getContext();

@@ -7,6 +7,7 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+Mehrere Absturzquellen beseitigt. 
 
 # [0.6.18]
 Plan repariert (ist in Beta-Version kapputt gewesen). Absturz in Wunsch/Gruß-Funktion behoben.
