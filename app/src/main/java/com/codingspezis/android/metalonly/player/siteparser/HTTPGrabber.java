@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.codingspezis.android.metalonly.player.R;
 
@@ -83,14 +85,19 @@ public class HTTPGrabber extends Thread {
      *
      * @return true if there is a network connection false otherwise
      */
-    public static boolean isOnline(Context context) {
+    public static boolean isOnline(@NonNull Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() == null) {
-            return false;
-        } else {
-            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+
+        if (cm == null) return false;
+
+        NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+
+        if (activeNetworkInfo != null) {
+            return activeNetworkInfo.isConnectedOrConnecting();
         }
+
+        return false;
     }
 
     @Override
