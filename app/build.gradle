@@ -1,15 +1,16 @@
 // use semantic versioning: http://semver.org/
 // only change _after_ merge requests
-def versionMajor = 0  // incompatible API changes
-def versionMinor = 6  // added functionality in a backwards-compatible manner
-def versionPatch = 9  // backwards-compatible bug fixes
-def versionBuild = 0  // bump for dogfood builds, public betas, etc.
+def versionMajor = 0   // incompatible API changes
+def versionMinor = 6   // added functionality in a backwards-compatible manner
+def versionPatch = 19  // backwards-compatible bug fixes
+def versionBuild = 0   // bump for dogfood builds, public betas, etc.
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-kapt"
 apply plugin: "project-report"
 apply plugin: "com.github.ben-manes.versions"
+apply plugin: 'io.fabric'
 
 configurations {
     apt
@@ -49,6 +50,8 @@ android {
         buildConfigField "String", "WISH_SUCCESS", "\"Wunsch/Gruss wurde erfolgreich übermittelt\""
         buildConfigField "String", "WISH_FORM_INVALID", "\"Fehler: Bitte Wunsch/Gruss und einen Nick angeben\""
         buildConfigField "String", "WISH_NO_WISHES_POSSIBLE", "\"Wünsche und Grüsse sind nur in der moderierten Sendezeit möglich!\""
+
+        manifestPlaceholders = [fabric_io_id: "b4ef28412703339e2e2ad6f8459433e67a9a64ce"] /* replace this with your own key if necessary */
     }
 
     sourceSets {
@@ -75,6 +78,13 @@ android {
     else{
         println("Project does not have metalonly.variants config")
     }
+    if(project.hasProperty("metalonly.fabric.io")
+            && new File(project.property("metalonly.fabric.io") + ".gradle").exists()) {
+        apply from: project.property("metalonly.fabric.io") + ".gradle";
+        println("Applied fabric.io / crashlytics settings.")
+    }else{
+        println("Project does not have fabric.io / crashlytics settings.")
+    }
 
     lintOptions {
         disable "InvalidPackage"
@@ -93,21 +103,21 @@ android {
 }
 
 dependencies {
-    apk project(path: ":core")
     compile project(path: ":core")
-
-    apk project(path: ":metal-only-client-library")
     compile project(path: ":metal-only-client-library")
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
     compile "com.android.support:support-v4:$support_v4_version"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.8.6"
-    compile "org.springframework.android:spring-android-rest-template:$springAndroidRestTemplate"
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
+    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.slf4j:slf4j-android:$slf4jAndroid_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-        
+
     kapt "org.androidannotations:androidannotations:$androidannotations_version"
     kapt "org.androidannotations:rest-spring:$androidannotations_version"
     
@@ -118,12 +128,15 @@ dependencies {
     androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: "com.android.support", module: "support-annotations"
     })
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:$espresso_version", {
+        exclude group: "com.android.support", module: "support-annotations"
+    })
 }
 
 kapt {
+    correctErrorTypes = true
     generateStubs = true
     arguments {
-        arg("androidManifestFile", variant.outputs[0].processResourcesTask.manifestFile)
         arg("resourcePackageName", android.defaultConfig.applicationId)
     }
 }

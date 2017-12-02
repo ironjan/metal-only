@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,8 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
-import com.codingspezis.android.metalonly.player.core.ExtendedShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
+import com.codingspezis.android.metalonly.player.crashlytics.CrashlyticsInitializer_;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.stream.MainBroadcastReceiver;
@@ -107,26 +104,6 @@ public class StreamControlActivity extends AppCompatActivity {
     private SongAdapter adapter;
 
     /**
-     * @param context
-     * @param msg
-     */
-    public static void alertMessage(final Context context, final String msg) {
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{})", context, msg);
-
-        (new Handler(context.getMainLooper())).post(new Runnable() {
-
-            @Override
-            public void run() {
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setMessage(msg);
-                alert.setPositiveButton(context.getString(R.string.ok), null);
-                alert.show();
-            }
-        });
-        if (BuildConfig.DEBUG) LOGGER.debug("alertMessage({},{}) done", context, msg);
-    }
-
-    /**
      * initializes GUI objects of main activity
      */
     private void setUpGUIObjects() {
@@ -144,14 +121,18 @@ public class StreamControlActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({})", savedInstanceState);
 
-        // TODO is setTheme necessary?
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
+        setupCrashlytics();
+
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
-        setSupportProgressBarIndeterminateVisibility(false);
 
         if (BuildConfig.DEBUG) LOGGER.debug("onCreate({}) done", savedInstanceState);
+    }
+
+    private void setupCrashlytics() {
+        CrashlyticsInitializer_.getInstance_(this).init();
     }
 
     @AfterViews
@@ -198,13 +179,10 @@ public class StreamControlActivity extends AppCompatActivity {
                         String moderator = stats.getModerator();
                         String genre = stats.getGenre();
                         updateShowInfo(moderator, genre);
-                    } else {
-                        showToast(R.string.stats_failed_to_load);
                     }
-                } catch (ResourceAccessException e) {
-                    showToast(R.string.stats_failed_to_load);
-                } catch (NoInternetException e) {
-                    showToast(R.string.no_internet);
+                    // We fail silently - otherwise the user could get confused
+                } catch (ResourceAccessException | NoInternetException e) {
+                    // We fail silently - otherwise the user could get confused
                 }
             }
 
@@ -218,8 +196,6 @@ public class StreamControlActivity extends AppCompatActivity {
                     public void run() {
                         if (viewShowInformation != null)
                             viewShowInformation.setMetadata(MetadataFactory.INSTANCE.createMetadata(moderator, genre, "", ""));
-
-                        setWishButtonEnabled(!moderator.toLowerCase().startsWith("metalhead"));
                     }
                 };
                 Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -232,7 +208,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @NonNull
     private MetalOnlyClient getClient() {
-        return MetalOnlyClient.Companion.getClient(StreamControlActivity.this);
+        return MetalOnlyClient.Companion.getClient(this);
     }
 
     @Override
@@ -250,8 +226,7 @@ public class StreamControlActivity extends AppCompatActivity {
      */
     private void setUpDataObjects() {
         if (BuildConfig.DEBUG) LOGGER.debug("setUpDataObjects()");
-        favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV,
-                -1);
+        favoritesSaver = new SongSaver(this, FavoritesActivity.JSON_FILE_FAV, -1);
         setMetadata(MetadataFactory.INSTANCE.getDEFAULT_METADATA());
     }
 
@@ -287,60 +262,6 @@ public class StreamControlActivity extends AppCompatActivity {
         startService(playerStartIntent);
         Intent statusIntent = new Intent(PlayerService.INTENT_STATUS_REQUEST);
         sendBroadcast(statusIntent);
-    }
-
-    /**
-     * sets the wish / regard button to en- or disabled
-     */
-    private void setWishButtonEnabled(boolean enabled) {
-        if (BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({})", enabled);
-
-        ImageButton btnWish = (ImageButton) findViewById(R.id.btnWish);
-        setImageButtonEnabled(this, enabled, btnWish, R.drawable.mo_pen);
-        if (BuildConfig.DEBUG) LOGGER.debug("setWishButtonEnabled({}) done", enabled);
-    }
-
-    /**
-     * THIS METHOD WAS FOUND AT:
-     * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
-     * <p/>
-     * Sets the image button to the given state and grays-out the icon.
-     *
-     * @param enabled   The state of the button
-     * @param item      The button item to modify
-     * @param iconResId The button's icon ID
-     */
-    private void setImageButtonEnabled(Context ctxt, boolean enabled, ImageButton item, int iconResId) {
-        if (BuildConfig.DEBUG)
-            LOGGER.debug("setImageButtonEnabled({},{},{},{})", new Object[]{ctxt, enabled, item, iconResId});
-
-        item.setEnabled(enabled);
-        Drawable originalIcon = ctxt.getResources().getDrawable(iconResId);
-        Drawable icon = enabled ? originalIcon : convertDrawableToGrayScale(originalIcon);
-        item.setImageDrawable(icon);
-        if (BuildConfig.DEBUG)
-            LOGGER.debug("setImageButtonEnabled({},{},{},{}) done", new Object[]{ctxt, enabled, item, iconResId});
-    }
-
-    /**
-     * THIS METHOD WAS FOUND AT:
-     * http://stackoverflow.com/questions/8196206/disable-an-imagebutton
-     * <p/>
-     * Mutates and applies a filter that converts the given drawable to a Gray
-     * image. This method may be used to simulate the color of disable icons in
-     * Honeycomb's ActionBar.
-     *
-     * @return a mutated version of the given drawable with a color filter applied.
-     */
-    private Drawable convertDrawableToGrayScale(Drawable drawable) {
-        if (BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({})", drawable);
-
-        if (drawable == null)
-            return null;
-        Drawable res = drawable.mutate();
-        res.setColorFilter(Color.GRAY, Mode.SRC_IN);
-        if (BuildConfig.DEBUG) LOGGER.debug("convertDrawableToGrayScale({}) done", drawable);
-        return res;
     }
 
     /**
@@ -382,7 +303,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.mnu_donation)
     void startDonation() {
-        Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity.class);
+        Intent paypalIntent = new Intent(getApplicationContext(), PayPalDonationActivity_.class);
         startActivity(paypalIntent);
     }
 
@@ -426,44 +347,13 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @Click
     void btnWishClicked() {
-        if (!HTTPGrabber.displayNetworkSettingsIfNeeded(this)) {
-            tryStartWishActivity();
-        }
+        WishActivity_.intent(this).start();
     }
 
     private void startPlanActivity() {
         PlanActivity_.intent(this).start();
     }
 
-    @Background
-    void tryStartWishActivity() {
-        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity()");
-
-        Stats apiStats = null;
-        try {
-            apiStats = getClient().getStats();
-        } catch (ResourceAccessException e) {
-            showToast(R.string.stats_failed_to_load);
-        } catch (NoInternetException e) {
-            showToast(R.string.no_internet);
-        } catch (Exception e) {
-            LOGGER.error("Unknown error", e);
-        }
-        ExtendedShowInformation stats = (apiStats != null) ? apiStats : new Stats();
-
-        if (stats.isNotModerated()) {
-            alertMessage(streamControlActivity,
-                    streamControlActivity.getString(R.string.no_moderator));
-        } else if (stats.getCanNeitherWishNorGreet()) {
-            alertMessage(streamControlActivity, streamControlActivity
-                    .getString(R.string.no_wishes_and_regards));
-        } else {
-            Intent wishIntent = new Intent(streamControlActivity, WishActivity.class);
-            streamControlActivity.startActivity(wishIntent);
-        }
-
-        if (BuildConfig.DEBUG) LOGGER.debug("tryStartWishActivity() done");
-    }
 
     /**
      * sets listening to true sends getStartDate intent to PlayerService shows
@@ -472,7 +362,6 @@ public class StreamControlActivity extends AppCompatActivity {
     private void startListening() {
         if (BuildConfig.DEBUG) LOGGER.debug("startListening()");
 
-        setSupportProgressBarIndeterminateVisibility(true);
         setShouldPlay(true);
         toggleStreamButton(true);
         Intent tmpIntent = new Intent(PlayerService.INTENT_PLAY);
@@ -486,7 +375,6 @@ public class StreamControlActivity extends AppCompatActivity {
     public void stopListening() {
         if (BuildConfig.DEBUG) LOGGER.debug("stopListening()");
 
-        setSupportProgressBarIndeterminateVisibility(false);
         setShouldPlay(false);
         toggleStreamButton(false);
         Intent tmpIntent = new Intent(PlayerService.INTENT_STOP);

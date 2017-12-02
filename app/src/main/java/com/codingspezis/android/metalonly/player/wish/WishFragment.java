@@ -1,8 +1,12 @@
 package com.codingspezis.android.metalonly.player.wish;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +20,7 @@ import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.wish.WishPrefs_.WishPrefsEditor_;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.WishSender;
@@ -33,6 +38,7 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Locale;
 
@@ -44,10 +50,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @ViewById(R.id.btnSend)
     Button buttonSend;
     @ViewById
-    EditText editNick,
-            editArtist,
-            editTitle,
-            editRegard;
+    EditText editNick;
+    @ViewById
+    EditText editArtist;
+    @ViewById
+    EditText editTitle;
+    @ViewById
+    EditText editRegard;
     @ViewById
     Button btnSend;
 
@@ -60,21 +69,25 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     ProgressBar progress;
 
     @StringRes
-    String number_of_wishes_format,
-            no_regards,
-            app_name,
-            no_wishes_short;
+    String number_of_wishes_format;
+    @StringRes
+    String no_regards;
+    @StringRes
+    String wish_list_full;
 
     private WishAndGreetConstraints stats;
 
     @ViewById
-    TextView textArtist,
-            textTitle,
-            textRegard;
+    TextView textArtist;
+    @ViewById
+    TextView textTitle;
+    @ViewById
+    TextView textRegard;
 
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
 
+    @SuppressWarnings("InstanceVariableOfConcreteClass")
     @Pref
     WishPrefs_ wishPrefs;
     private boolean didNotCompleteLoadingStats = true;
@@ -86,44 +99,132 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
-        if (HTTPGrabber.isOnline(getActivity())) {
+        FragmentActivity activity = getActivity();
+
+        if(activity == null) return;
+
+        if (HTTPGrabber.isOnline(activity)) {
             showLoading(true);
-            updateStats(MetalOnlyClient.Companion.getClient(getActivity()).getStats());
+            try {
+                Context context = getContext();
+                if (context == null) {
+                    return;
+                }
+                updateStats(MetalOnlyClient.Companion.getClient(context).getStats());
+            } catch (NoInternetException | RestClientException e) {
+                loadingAllowedActionsFailed();
+            }
         } else {
             notifyUser(R.string.no_internet);
         }
     }
 
     @UiThread
+    void loadingAllowedActionsFailed() {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Toast toast = Toast.makeText(activity, R.string.stats_failed_to_load, Toast.LENGTH_LONG);
+            if (toast != null) {
+                toast.show();
+            }
+        }
+    }
+
+    @UiThread
     void updateStats(WishAndGreetConstraints stats) {
         this.stats = stats;
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
+        if (stats == null) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder(0);
 
-        // FIXME Disable in layout, enable after load
-        // FIXME distinguish: wish list full, no wishes possbile!
-        if (!stats.getCanWish()) {
-            if(editArtist != null) editArtist.setText(no_wishes_short);
-            if(editArtist != null) editArtist.setEnabled(false);
-            if(editTitle != null) editTitle.setText(no_wishes_short);
-            if(editTitle != null) editTitle.setEnabled(false);
+        if (number_of_wishes_format != null) {
+            sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
         }
 
-        if (!stats.getCanGreet()) {
-            if(editRegard != null) editRegard.setText(no_regards);
-            if(editRegard != null) editRegard.setEnabled(false);
+        sb.append(' ');// Append space to keep distance with next text
 
-            sb.append("\n").append(no_regards);
+        if (stats.getCanWish()) {
+            if (editArtist != null) {
+                editArtist.setText("");
+            }
+            if (editArtist != null) {
+                editArtist.setEnabled(true);
+            }
+            if (editTitle != null) {
+                editTitle.setText("");
+            }
+            if (editTitle != null) {
+                editTitle.setEnabled(true);
+            }
+        } else {
+            if (editArtist != null) {
+                editArtist.setText(R.string.no_wishes_short);
+            }
+            if (editArtist != null) {
+                editArtist.setEnabled(false);
+            }
+            if (editTitle != null) {
+                editTitle.setText(R.string.no_wishes_short);
+            }
+            if (editTitle != null) {
+                editTitle.setEnabled(false);
+            }
         }
 
-        if(wishCount != null) wishCount.setText(sb.toString());
+        if (stats.getCanGreet()) {
+            if (editRegard != null) {
+                editRegard.setText("");
+            }
+            if (editRegard != null) {
+                editRegard.setEnabled(true);
+            }
+        } else {
+            if (editRegard != null) {
+                editRegard.setText(R.string.no_regards);
+            }
+            if (editRegard != null) {
+                editRegard.setEnabled(false);
+            }
+
+            sb.append('\n');
+            sb.append(no_regards);
+        }
+
+        if (stats.getWishLimitReached()) {
+            sb.append(wish_list_full);
+            if (editArtist != null) {
+                editArtist.setText(R.string.wish_list_full_short);
+            }
+            if (editArtist != null) {
+                editArtist.setEnabled(false);
+            }
+            if (editArtist != null) {
+                editArtist.setEnabled(false);
+            }
+            if (editTitle != null) {
+                editTitle.setText(R.string.wish_list_full_short);
+            }
+            if (editTitle != null) {
+                editTitle.setEnabled(false);
+            }
+            if (editTitle != null) {
+                editTitle.setEnabled(false);
+            }
+        }
+
+
+        if (wishCount != null) {
+            wishCount.setText(sb.toString());
+        }
+
         showLoading(false);
         didNotCompleteLoadingStats = false;
     }
 
     @UiThread
     void showLoading(boolean isLoading) {
-        if((btnSend == null) || (progress == null)){
+        if ((btnSend == null) || (progress == null)) {
             return;
         }
 
@@ -138,28 +239,54 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
     public static WishFragment newInstance(Bundle bundle) {
-        if (BuildConfig.DEBUG) LOGGER.debug("newInstance({})", bundle);
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("newInstance({})", bundle);
+        }
 
         WishFragment wishFragment = new WishFragment_();
         wishFragment.setArguments(bundle);
 
-        if (BuildConfig.DEBUG) LOGGER.debug("newInstance({}) done", bundle);
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("newInstance({}) done", bundle);
+        }
         return wishFragment;
     }
 
     @AfterViews
     void loadUiValues() {
         boolean wasGivenFragmentArgs = (interpret != null) && (title != null);
-        if(wasGivenFragmentArgs) {
-            editArtist.setText(interpret);
-            editTitle.setText(title);
+        if (wasGivenFragmentArgs) {
+            if (editArtist != null) {
+                editArtist.setText(interpret);
+            }
+            if (editTitle != null) {
+                editTitle.setText(title);
+            }
         } else {
-            editTitle.setText(wishPrefs.title().get());
-            editRegard.setText(wishPrefs.greeting().get());
-            editArtist.setText(wishPrefs.artist().get());
+            if (wishPrefs == null) {
+                return;
+            }
+
+            if (editTitle != null) {
+                //noinspection ConstantConditions
+                editTitle.setText(wishPrefs.title().get());
+            }
+
+            if (editRegard != null) {
+                //noinspection ConstantConditions
+                editRegard.setText(wishPrefs.greeting().get());
+            }
+
+            if (editArtist != null) {
+                //noinspection ConstantConditions
+                editArtist.setText(wishPrefs.artist().get());
+            }
         }
 
-        editNick.setText(wishPrefs.nick().get());
+        if (editNick != null) {
+            //noinspection ConstantConditions
+            editNick.setText(wishPrefs.nick().get());
+        }
     }
 
     @Override
@@ -169,12 +296,33 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     private void saveInputInPrefs() {
-        wishPrefs.edit()
-                .nick().put(editNick.getText().toString())
-                .artist().put(editArtist.getText().toString())
-                .title().put(editTitle.getText().toString())
-                .greeting().put(editRegard.getText().toString()).
-                apply();
+        if (wishPrefs == null) {
+            return;
+        }
+
+        WishPrefsEditor_ editor = wishPrefs.edit();
+
+        if (editNick != null && editNick.getText() != null) {
+            //noinspection ConstantConditions
+            editor.nick().put(editNick.getText().toString());
+        }
+
+        if (editArtist != null && editArtist.getText() != null) {
+            //noinspection ConstantConditions
+            editor.artist().put(editArtist.getText().toString());
+        }
+
+        if (editTitle != null && editTitle.getText() != null) {
+            //noinspection ConstantConditions
+            editor.title().put(editTitle.getText().toString());
+        }
+
+        if (editRegard != null && editRegard.getText() != null) {
+            //noinspection ConstantConditions
+            editor.greeting().put(editRegard.getText().toString());
+        }
+
+        editor.apply();
     }
 
     /**
@@ -183,29 +331,42 @@ public class WishFragment extends Fragment implements WishSender.Callback {
      * @return true if input is valid - false otherwise
      */
     private boolean haveValidData() {
-        if (BuildConfig.DEBUG) LOGGER.debug("haveValidData()");
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("haveValidData()");
+        }
 
-        boolean haveNick = !TextUtils.isEmpty(editNick.getText());
-        final boolean artistEnabledAndHasText = !TextUtils.isEmpty(editArtist.getText()) && editArtist.isEnabled();
-        final boolean titleEnabledAndHasText = !TextUtils.isEmpty(editTitle.getText())
-                && editTitle.isEnabled();
+        boolean haveNick = editNick != null && !TextUtils.isEmpty(editNick.getText());
+
+        boolean artistEnabledAndHasText =
+                editArtist != null &&
+                        !TextUtils.isEmpty(editArtist.getText()) &&
+                        editArtist.isEnabled();
+        boolean titleEnabledAndHasText =
+                editTitle != null
+                        && !TextUtils.isEmpty(editTitle.getText())
+                        && editTitle.isEnabled();
         boolean haveWish = artistEnabledAndHasText
                 && titleEnabledAndHasText;
-        boolean haveRegard = !TextUtils.isEmpty(editRegard.getText())
+        boolean haveRegard = editRegard != null
+                && !TextUtils.isEmpty(editRegard.getText())
                 && editRegard.isEnabled();
 
         boolean isValidData = haveNick && (haveWish || haveRegard);
 
-        if (BuildConfig.DEBUG) LOGGER.debug("haveValidData() -> {}", isValidData);
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("haveValidData() -> {}", isValidData);
+        }
         return isValidData;
     }
 
     @Click(R.id.btnSend)
     @OptionsItem(R.id.ic_menu_send)
     void sendButtonClicked() {
-        if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked()");
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("sendButtonClicked()");
+        }
 
-        if(didNotCompleteLoadingStats){
+        if (didNotCompleteLoadingStats) {
             return;
         }
         if (haveValidData()) {
@@ -216,16 +377,28 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         }
 
 
-        if (BuildConfig.DEBUG) LOGGER.debug("sendButtonClicked() done");
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("sendButtonClicked() done");
+        }
     }
 
     @Background
     void sendWishGreet() {
         try {
-            final String nick = editNick.getText().toString();
-            final String artist = editArtist.getText().toString();
-            final String title = editTitle.getText().toString();
-            final String greet = editRegard.getText().toString();
+            if (editNick == null || editArtist == null || editTitle == null || editRegard == null) {
+                return;
+            }
+
+            Editable editNickText = editNick.getText();
+            Editable editArtistText = editArtist.getText();
+            Editable editTitleText = editTitle.getText();
+            Editable editRegardText = editRegard.getText();
+
+
+            String nick = (editNickText != null) ? editNickText.toString() : "";
+            String artist = (editArtistText != null) ? editArtistText.toString() : "";
+            String title = (editTitleText != null) ? editTitleText.toString() : "";
+            String greet = (editRegardText != null) ? editRegardText.toString() : "";
 
             boolean canWish = (stats != null) && stats.getCanWish();
             boolean hasWish = !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title);
@@ -241,16 +414,22 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @UiThread
     void notifyUser(String s) {
-        Toast.makeText(getActivity(),
-                s, Toast.LENGTH_SHORT)
-                .show();
+        Toast toast = Toast.makeText(getActivity(),
+                s, Toast.LENGTH_SHORT);
+        if (toast != null) {
+            toast.show();
+        }
     }
 
     @UiThread
     void notifyUser(int id) {
-        Toast.makeText(getActivity(),
-                id, Toast.LENGTH_SHORT)
-                .show();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Toast toast = Toast.makeText(activity, id, Toast.LENGTH_SHORT);
+            if (toast != null) {
+                toast.show();
+            }
+        }
     }
 
     /**
@@ -258,19 +437,30 @@ public class WishFragment extends Fragment implements WishSender.Callback {
      */
     @OptionsItem(R.id.mnu_help)
     void showInfo() {
-        if (BuildConfig.DEBUG) LOGGER.debug("showInfo()");
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("showInfo()");
+        }
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle(R.string.notification);
-        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_text, null);
-        TextView tv = (TextView) v.findViewById(R.id.text);
-        tv.setText(R.string.wish_explanation);
-        alert.setView(v);
-        alert.setPositiveButton(R.string.ok, null);
-        alert.show();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+            alert.setTitle(R.string.notification);
+            View v = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
 
+            if (v != null) {
+                TextView tv = (TextView) v.findViewById(R.id.text);
+                if (tv != null) {
+                    tv.setText(R.string.wish_explanation);
+                }
+                alert.setView(v);
+                alert.setPositiveButton(R.string.ok, null);
+                alert.show();
+            }
 
-        if (BuildConfig.DEBUG) LOGGER.debug("showInfo() done");
+        }
+        if (BuildConfig.DEBUG) {
+            LOGGER.debug("showInfo() done");
+        }
     }
 
     @Override
@@ -278,7 +468,10 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         showLoading(false);
         notifyUser(R.string.sent);
         clearSongAndWish();
-        getActivity().finish();
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            activity.finish();
+        }
     }
 
     @Override
@@ -289,7 +482,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @Override
-    public void onException(Exception e) {
+    public void onException(@NonNull Exception e) {
         showLoading(false);
         notifyUser(e.getMessage());
         enableSendButton();
@@ -297,20 +490,28 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @UiThread
     void enableSendButton() {
-        buttonSend.setEnabled(true);
-        buttonSend.setText(R.string.wish_send);
+        if (buttonSend != null) {
+            buttonSend.setEnabled(true);
+            buttonSend.setText(R.string.wish_send);
+        }
     }
 
     @Click(R.id.btnClear)
-    void btnClearClicked(){
+    void btnClearClicked() {
         clearSongAndWish();
     }
 
     @UiThread
     void clearSongAndWish() {
-        editArtist.setText("");
-        editTitle.setText("");
-        editRegard.setText("");
+        if (editArtist != null) {
+            editArtist.setText("");
+        }
+        if (editTitle != null) {
+            editTitle.setText("");
+        }
+        if (editRegard != null) {
+            editRegard.setText("");
+        }
         saveInputInPrefs();
     }
 }

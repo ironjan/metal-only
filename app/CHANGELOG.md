@@ -7,7 +7,38 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Some text.
+
+## [0.6.19]
+Fixed multiple crashes.
+
+# [0.6.18]
+Fixed plan (was broken in beta). Fixed a crash when opening Wish/Greet.
+
+# [0.6.17]
+Fixed plan (was broken in beta).
+
+# [0.6.16]
+Internal improvements.
+
+# [0.6.15] - Unreleased
+Internal improvements.
+
+# [0.6.14]
+Fixed multiple crash sources.
+
+# [0.6.13]
+Experimental change to fix "application not responding"-errors.
+
+# [0.6.12]
+Fixed wishing.
+
+# [0.6.11]
+Added Crashlytics/fabric.io to catch more errors. The privacy information on 
+http://ironjan.de/metal-only-datenschutz was adapted accordingly. Fixed wishing of favorites. 
+Added some tests to prevent reintroduction of bugs.
+
+# [0.6.10]
+Fixed crash when opening wishes and cleaned up the code behind it.
 
 # [0.6.9]
 Fixed some more crashes and "Application not responding"-errors.

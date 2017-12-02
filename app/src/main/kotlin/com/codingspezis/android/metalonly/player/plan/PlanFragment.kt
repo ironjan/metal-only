@@ -70,7 +70,8 @@ open class PlanFragment : Fragment() {
     @Background
     internal open fun loadPlan() {
         try {
-            apiResponseReceived(MetalOnlyClient.getClient(activity).getPlan())
+            if (context == null) return
+            apiResponseReceived(MetalOnlyClient.getClient(context).getPlan())
         } catch (e: NoInternetException) {
             updateEmptyViewOnFailure(no_internet)
         } catch (e: RestClientException) {

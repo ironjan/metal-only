@@ -68,6 +68,20 @@
             android:autoLink="web"
             android:text="@string/aboutFurtherInfos" />
 
+        <CheckBox
+            android:id="@+id/checkboxNoCrashReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textAboutFurtherInfos"
+            android:layout_marginTop="@dimen/elementMarginDouble"
+            android:text="@string/dontSendCrashReports"/>
+
+        <TextView
+            android:id="@+id/textAboutCrashReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/checkboxNoCrashReports"
+            android:text="@string/aboutDontSendCrashReports"/>
     </RelativeLayout>
 
 </ScrollView>

@@ -11,6 +11,7 @@ import com.codingspezis.android.metalonly.player.utils.ImageLoader;
 import com.codingspezis.android.metalonly.player.views.SongHistoryView;
 import com.codingspezis.android.metalonly.player.views.SongHistoryView_;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,6 +27,9 @@ public class SongAdapter extends BaseAdapter {
     public SongAdapter(Context context, List<HistoricTrack> d) {
         this.context = context;
         data = d;
+
+        Collections.sort(data, new HistoricTrack.HistoricTrack_SortedByPlayedAs_Desc_Comparator());
+
         inflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         imageLoader = ImageLoader.Companion.instance(context);

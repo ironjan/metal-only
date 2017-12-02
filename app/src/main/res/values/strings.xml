@@ -185,7 +185,14 @@
     </string-array>
     <string name="error_player32" translatable="false">AAC+ Decoder-Error</string>
     <string name="plan_failed_to_load">Plan konnte nicht geladen werden.</string>
-    <string name="aboutFurtherInfos">Mehr Infos - inklusive der verwendeten Bibliotheken etc. - gibt es in der README.md unter auf GitHub unter https://github.com/ironjan/metal-only</string>
+    <string name="aboutFurtherInfos">Mehr Infos - inklusive der verwendeten Bibliotheken etc. - gibt
+        es in der README.md auf https://github.com/ironjan/metal-only/blob/master/README.md#used-libraries-and-software\n\n
+    Informationen zum Datenschutz findest du unter http://ironjan.de/metal-only-datenschutz.</string>
     <string name="clear">Wunsch &amp; Gruß leeren</string>
     <string name="stats_failed_to_load">Wunsch- und Gruß-Infos konnten nicht geladen werden.</string>
+    <string name="show_info_failed_to_load">Show Infos konnten nicht geladen werden.</string>
+    <string name="dontSendCrashReports">Keine Absturzdaten senden (Opt-Out)</string>
+    <string name="aboutDontSendCrashReports">Das automatische Senden von Absturz- und Fehlerberichten hilft dabei, die App zu verbessern. Da ich nur Fehler beheben kann, die mir bekannt sind, würde ich dich bitten, hier keinen Haken zu setzen. Die Einstellung wird erst zum nächsten Neustart der App aktiv.</string>
+    <string name="wish_list_full">Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich.</string>
+    <string name="wish_list_full_short">Sorry, Playlist ist voll.</string>
 </resources>

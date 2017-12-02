@@ -36,11 +36,7 @@ class ShowInfoFetcher
         active = true
         while (active) {
             try {
-                val stats = api.getStats()
-
-                if (stats != null) {
-                    broadcastCurrentShowInfo(stats)
-                }
+                broadcastCurrentShowInfo(api.getStats())
             } catch (e: RestClientException) {
                 /* Currently, all exceptions are evil. We need to find a better method to handle
                  * these - currently, there is nothing to do and we just stop execution to not waste
@@ -61,13 +57,16 @@ class ShowInfoFetcher
         }
     }
 
-    private fun broadcastCurrentShowInfo(stats: com.github.ironjan.metalonly.client_library.Stats) {
-        val track = stats.track
+    private fun broadcastCurrentShowInfo(stats: com.github.ironjan.metalonly.client_library.Stats?) {
+        val track = stats?.track
+        val artist = track?.artist ?: "Unbekannter Interpret"
+        val title = track?.title ?: "Unbekannter Titel"
+        val moderator = stats?.moderator ?: "Unbekannter Moderator"
 
         val intent = Intent(ShowInfoIntentConstants.INTENT_NEW_TRACK)
-        intent.putExtra(ShowInfoIntentConstants.KEY_ARTIST, track.artist)
-        intent.putExtra(ShowInfoIntentConstants.KEY_TITLE, track.title)
-        intent.putExtra(ShowInfoIntentConstants.KEY_MODERATOR, stats.moderator)
+        intent.putExtra(ShowInfoIntentConstants.KEY_ARTIST, artist)
+        intent.putExtra(ShowInfoIntentConstants.KEY_TITLE, title)
+        intent.putExtra(ShowInfoIntentConstants.KEY_MODERATOR, moderator)
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 

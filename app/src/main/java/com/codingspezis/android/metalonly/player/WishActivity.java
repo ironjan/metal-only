@@ -11,6 +11,7 @@ import com.codingspezis.android.metalonly.player.wish.WishFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OptionsItem;
 
 /**
@@ -23,6 +24,11 @@ public class WishActivity extends AppCompatActivity {
 
     public static final String KEY_DEFAULT_INTERPRET = "MO_DEFAULT_INTERPRET";
     public static final String KEY_DEFAULT_TITLE = "MO_DEFAULT_TITLE";
+
+    @Extra(KEY_DEFAULT_INTERPRET)
+    String interpret;
+    @Extra(KEY_DEFAULT_TITLE)
+    String title;
 
     @AfterViews
     void bindIntentToFragment() {

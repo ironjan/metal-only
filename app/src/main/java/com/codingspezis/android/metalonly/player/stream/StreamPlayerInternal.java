@@ -162,19 +162,19 @@ public class StreamPlayerInternal implements AudioStream {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(onPreparedListener);
         mediaPlayer.setOnErrorListener(onErrorListener);
+        reset();
     }
 
-    /**
-     * resets the media player instance
-     *
-     * @throws IOException throws an exception if the data source couldn't be set
-     */
-    private void resetPlayer() throws IOException {
+    private void reset() {
         mediaPlayer.reset();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setDataSource(UrlConstants.INSTANCE.getSTREAM_URL_128());
-        metadataListener.stop();
-        timeoutListener.stop();
+        try {
+        	mediaPlayer.setDataSource(UrlConstants.INSTANCE.getSTREAM_URL_128());
+        } catch (IOException e) {
+            if (onStreamListener != null) {
+                onStreamListener.errorOccurred(context.getString(R.string.error_initialize_player), false); // should never happen
+            }
+        }
     }
 
     /**
@@ -182,14 +182,10 @@ public class StreamPlayerInternal implements AudioStream {
      */
     public void startPlaying() {
         if (BuildConfig.DEBUG) LOGGER.debug("startPlaying()");
-        try {
-            resetPlayer();
-            mediaPlayer.prepareAsync();
-        } catch (IOException e) {
-            if (onStreamListener != null) {
-                onStreamListener.errorOccurred(context.getString(R.string.error_initialize_player), false); // should never happen
-            }
-        }
+        metadataListener.stop();
+        timeoutListener.stop();
+        reset();
+        mediaPlayer.prepareAsync();
     }
 
     /**
@@ -200,7 +196,7 @@ public class StreamPlayerInternal implements AudioStream {
         metadataListener.stop();
         timeoutListener.stop();
         mediaPlayer.stop();
-        mediaPlayer.reset();
+        reset();
         releaseLocks();
     }
 

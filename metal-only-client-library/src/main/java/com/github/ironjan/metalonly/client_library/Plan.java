@@ -1,7 +1,6 @@
 package com.github.ironjan.metalonly.client_library;
 
 import com.codingspezis.android.metalonly.player.core.ShowInformation;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,10 +24,9 @@ import java.util.List;
  * }
  * </pre>
  */
-@JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Plan {
-    List<ShowInformation> entries = new ArrayList<>();
+    List<ShowInformation> entries = new ArrayList<>(0);
 
     public List<ShowInformation> getEntries(){
         List<ShowInformation> copy = new ArrayList<>(entries);

@@ -7,7 +7,38 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-Some text.
+
+## [0.6.19]
+Mehrere Absturzquellen beseitigt. 
+
+# [0.6.18]
+Plan repariert (ist in Beta-Version kapputt gewesen). Absturz in Wunsch/Gruß-Funktion behoben.
+
+# [0.6.17]
+Plan repariert (ist in Beta-Version kapputt gewesen).
+
+# [0.6.16]
+Interne Verbesserungen.
+
+# [0.6.15] - Unreleased
+Interne Verbesserungen.
+
+# [0.6.14]
+Mehrere Absturzquellen beseitigt.
+
+# [0.6.13]
+Experimentelle Änderung, um "application not responding"-Fehler zu beheben.
+
+# [0.6.12]
+Wunschfunktion repariert.
+
+# [0.6.11]
+Die App nutzt nun Crashlytics/fabric.io zur besseren Fehlererkennung. Die Infos zum Datenschutz auf 
+http://ironjan.de/metal-only-datenschutz wurden entsprechend angepasst. Das Wünschen von Favoriten 
+wurde repariert. Zudem habe ich Tests eingebaut, damit sich weniger Fehler einschleichen.
+
+# [0.6.10]
+Absturz beim Öffnen des Wunsch-Screens – und Code im Hintergrund aufgeräumt.
 
 # [0.6.9]
 Weitere Abstürze und Performance-Probleme (Application not repsonding) behoben.
