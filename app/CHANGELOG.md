@@ -7,6 +7,8 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [0.6.19]
 Fixed multiple crashes.
 
 # [0.6.18]
