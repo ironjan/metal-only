@@ -5,7 +5,7 @@ buildscript {
         compileSdkVersion = 26
         buildToolsVersion = "26.0.2"
 
-        minSdkVersion = 11
+        minSdkVersion = 14
         targetSdkVersion = 26
 
         jdk_compatibility = "1.8"

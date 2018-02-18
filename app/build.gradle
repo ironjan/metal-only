@@ -112,6 +112,7 @@ dependencies {
         transitive = true;
     }
     compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    compile 'com.hypertrack:hyperlog:0.0.9'
     compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.slf4j:slf4j-android:$slf4jAndroid_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
