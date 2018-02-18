@@ -24,6 +24,7 @@ import com.codingspezis.android.metalonly.player.wish.WishPrefs_.WishPrefsEditor
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.WishSender;
+import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -36,8 +37,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestClientException;
 
 import java.util.Locale;
@@ -45,7 +44,7 @@ import java.util.Locale;
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.wishmenu)
 public class WishFragment extends Fragment implements WishSender.Callback {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WishFragment.class.getSimpleName());
+    private static final String TAG = WishFragment.class.getSimpleName();
 
     @ViewById(R.id.btnSend)
     Button buttonSend;
@@ -99,9 +98,10 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
+
         FragmentActivity activity = getActivity();
 
-        if(activity == null) return;
+        if (activity == null) return;
 
         if (HTTPGrabber.isOnline(activity)) {
             showLoading(true);
@@ -239,16 +239,9 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
     @SuppressWarnings({"LocalVariableOfConcreteClass", "MethodReturnOfConcreteClass"})
     public static WishFragment newInstance(Bundle bundle) {
-        if (BuildConfig.DEBUG) {
-            LOGGER.debug("newInstance({})", bundle);
-        }
-
         WishFragment wishFragment = new WishFragment_();
         wishFragment.setArguments(bundle);
 
-        if (BuildConfig.DEBUG) {
-            LOGGER.debug("newInstance({}) done", bundle);
-        }
         return wishFragment;
     }
 
@@ -332,7 +325,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
      */
     private boolean haveValidData() {
         if (BuildConfig.DEBUG) {
-            LOGGER.debug("haveValidData()");
+            HyperLog.d(TAG, "haveValidData()");
         }
 
         boolean haveNick = editNick != null && !TextUtils.isEmpty(editNick.getText());
@@ -354,7 +347,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         boolean isValidData = haveNick && (haveWish || haveRegard);
 
         if (BuildConfig.DEBUG) {
-            LOGGER.debug("haveValidData() -> {}", isValidData);
+            HyperLog.d(TAG, String.format("haveValidData() -> %s", isValidData));
         }
         return isValidData;
     }
@@ -363,7 +356,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @OptionsItem(R.id.ic_menu_send)
     void sendButtonClicked() {
         if (BuildConfig.DEBUG) {
-            LOGGER.debug("sendButtonClicked()");
+            HyperLog.d(TAG, "sendButtonClicked()");
         }
 
         if (didNotCompleteLoadingStats) {
@@ -378,12 +371,13 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
 
         if (BuildConfig.DEBUG) {
-            LOGGER.debug("sendButtonClicked() done");
+            HyperLog.d(TAG, "sendButtonClicked() done");
         }
     }
 
     @Background
     void sendWishGreet() {
+        HyperLog.d(TAG, "sendWishGreet()");
         try {
             if (editNick == null || editArtist == null || editTitle == null || editRegard == null) {
                 return;
@@ -402,13 +396,21 @@ public class WishFragment extends Fragment implements WishSender.Callback {
 
             boolean canWish = (stats != null) && stats.getCanWish();
             boolean hasWish = !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title);
+
+            HyperLog.d(TAG, "sendWishGreet() - Prepared sending");
             if (canWish && hasWish) {
                 new WishSender(this, nick, greet, artist, title).send();
+                HyperLog.d(TAG, "sendWishGreet() - Sent wish with greeting");
             } else {
                 new WishSender(this, nick, greet, null, null).send();
+                HyperLog.d(TAG, "sendWishGreet() - Sent greeting, dropped wish");
             }
         } catch (NoInternetException e) {
+            HyperLog.d(TAG, "sendWishGreet() - No internet notification");
             notifyUser(R.string.no_internet);
+        } catch (Exception e) {
+            HyperLog.d(TAG, "sendWishGreet() - Unknown exception: ", e);
+            notifyUser(R.string.unexpectedError);
         }
     }
 
@@ -437,9 +439,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
      */
     @OptionsItem(R.id.mnu_help)
     void showInfo() {
-        if (BuildConfig.DEBUG) {
-            LOGGER.debug("showInfo()");
-        }
 
         FragmentActivity activity = getActivity();
         if (activity != null) {
@@ -457,9 +456,6 @@ public class WishFragment extends Fragment implements WishSender.Callback {
                 alert.show();
             }
 
-        }
-        if (BuildConfig.DEBUG) {
-            LOGGER.debug("showInfo() done");
         }
     }
 
