@@ -503,27 +503,38 @@ public class StreamControlActivity extends AppCompatActivity {
     @AfterInject
     @Background
     void loadShowData() {
+        HyperLog.d(TAG, "loadShowData()");
         try {
             displayShowData(getClient().getStats());
+            HyperLog.d(TAG, "loadShowData() - success");
         } catch (ResourceAccessException e) {
+            HyperLog.d(TAG, "loadShowData() - ResourceAccessException", e);
             showToast(R.string.stats_failed_to_load);
         } catch (NoInternetException e) {
+            HyperLog.d(TAG, "loadShowData() - NoInternetException", e);
             showToast(R.string.no_internet);
         } catch (Exception e) {
-            e.printStackTrace();
-            showToast(e.getMessage());
+            HyperLog.d(TAG, "loadShowData() - Unhandled exception", e);
+            showToast(R.string.unexpectedError);
         }
     }
 
     @UiThread
     void displayShowData(Stats stats) {
-        if (viewShowInformation != null) {
-            if (stats != null) {
-                viewShowInformation.setStats(stats);
-            } else {
-                // TODO Show something like "could not load" instead?
-                viewShowInformation.setStats(new Stats());
-            }
+        HyperLog.d(TAG, "displayShowData(..)");
+        if (viewShowInformation == null) {
+            HyperLog.d(TAG, "displayShowData(..) - view was null");
+            return;
         }
+
+        if (stats != null) {
+            viewShowInformation.setStats(stats);
+            HyperLog.d(TAG, "displayShowData(..) - success");
+        } else {
+            HyperLog.d(TAG, "displayShowData(..) - stats was null");
+            showToast(R.string.stats_failed_to_load);
+            viewShowInformation.setStats(new Stats());
+        }
+
     }
 }
