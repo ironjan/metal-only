@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
-import android.util.Log;
 
 import com.codingspezis.android.metalonly.player.BuildConfig;
+import com.hypertrack.hyperlog.HyperLog;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class PlayerBCReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
 
-        Log.d("PayerBCReceiver", "received intent: " + action);
+        HyperLog.d("PayerBCReceiver", "received intent: " + action);
 
         switch (action) {
             case PlayerService.INTENT_PLAY:

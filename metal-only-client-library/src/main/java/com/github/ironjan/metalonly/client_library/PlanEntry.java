@@ -6,6 +6,7 @@ import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hypertrack.hyperlog.HyperLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,7 +1,7 @@
 package com.codingspezis.android.metalonly.player.utils
 
 import android.graphics.Bitmap
-import android.util.Log
+import com.hypertrack.hyperlog.HyperLog
 import java.util.Collections
 
 /**
@@ -38,7 +38,7 @@ internal class MemoryCache : Cache {
     }
 
     override fun cleanUp() {
-        Log.i(TAG, "MEMORY_CACHE allocatedBytes=$allocatedBytes length=${MEMORY_CACHE.size}")
+        HyperLog.i(TAG, "MEMORY_CACHE allocatedBytes=$allocatedBytes length=${MEMORY_CACHE.size}")
 
         if (allocatedBytes > maxMemoryInBytes) {
             // least recently accessed item will be the first one iterated
@@ -49,7 +49,7 @@ internal class MemoryCache : Cache {
                 deallocate(entry.value)
                 iterator.remove()
             }
-            Log.i(TAG, "Clean MEMORY_CACHE. New allocatedBytes ${MEMORY_CACHE.size}")
+            HyperLog.i(TAG, "Clean MEMORY_CACHE. New allocatedBytes ${MEMORY_CACHE.size}")
         }
     }
 

@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.utils
 
-import android.util.Log
+import com.hypertrack.hyperlog.HyperLog
 
 import java.io.InputStream
 import java.io.OutputStream
@@ -20,7 +20,7 @@ object CopyStreamImplementation {
                 os.write(bytes, 0, count)
             }
         } catch (ex: Exception) {
-            Log.e(CopyStreamImplementation::class.java.simpleName, ex.message, ex)
+            HyperLog.e(CopyStreamImplementation::class.java.simpleName, ex.message, ex)
         }
 
     }

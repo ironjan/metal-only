@@ -3,10 +3,10 @@ package com.codingspezis.android.metalonly.player.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.StreamControlActivity
+import com.hypertrack.hyperlog.HyperLog
 import java.io.File
 
 import java.io.FileNotFoundException
@@ -79,7 +79,7 @@ class FileCache(private val context: Context) : Cache {
 
                 return bitmap
             } catch (e: IOException) {
-                Log.e(TAG, e.message, e)
+                HyperLog.e(TAG, e.message, e)
             }
 
         }
