@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -37,6 +38,7 @@ import com.codingspezis.android.metalonly.player.views.ShowInformation;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
+import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -124,6 +126,7 @@ public class StreamControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setupCrashlytics();
+        setupHyperlog();
 
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -133,6 +136,11 @@ public class StreamControlActivity extends AppCompatActivity {
 
     private void setupCrashlytics() {
         CrashlyticsInitializer_.getInstance_(this).init();
+    }
+
+    private void setupHyperlog() {
+        HyperLog.initialize(this);
+        HyperLog.setLogLevel(Log.VERBOSE);
     }
 
     @AfterViews
