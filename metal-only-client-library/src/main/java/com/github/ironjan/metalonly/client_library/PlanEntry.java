@@ -1,7 +1,6 @@
 package com.github.ironjan.metalonly.client_library;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -107,7 +106,7 @@ public class PlanEntry implements ShowInformation {
         try {
             startDate = dateStringFormat.parse(dateString);
         } catch (ParseException e) {
-            Log.e(PlanEntry.class.getSimpleName(), "Error when parsing \""
+            HyperLog.e(PlanEntry.class.getSimpleName(), "Error when parsing \""
                     + dateString + "\" into date.");
         }
         return startDate;
