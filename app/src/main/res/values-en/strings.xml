@@ -167,4 +167,5 @@
     <string name="wish_list_full">Sorry, no wishes possible in this show anymore.</string>
     <string name="wish_list_full_short">Sorry, playlist is filled.</string>
 
+    <string name="unexpectedError">An unexpected error occurred. Please report this via “Send Feedback”.</string>
 </resources>
