@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient
 import com.github.ironjan.metalonly.client_library.NoInternetException
+import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
 import org.androidannotations.annotations.Bean
@@ -66,15 +67,20 @@ open class PlanFragment : Fragment() {
         list!!.emptyView = empty
     }
 
+    private val TAG: String = "PlanFragment"
+
     @AfterViews
     @Background
     internal open fun loadPlan() {
         try {
             if (context == null) return
+            HyperLog.d(TAG, "loadPlan()")
             apiResponseReceived(MetalOnlyClient.getClient(context).getPlan())
         } catch (e: NoInternetException) {
+            HyperLog.d(TAG, "loadPlan() - no internet")
             updateEmptyViewOnFailure(no_internet)
         } catch (e: RestClientException) {
+            HyperLog.d(TAG, "loadPlan() - RestClientException", e)
             // TODO Can we catch ResourceAccessException to HttpStatusCodeException show better info?
             val text = plan_failed_to_load + ":\n" + e.message
             updateEmptyViewOnFailure(text)
@@ -84,13 +90,19 @@ open class PlanFragment : Fragment() {
 
     @UiThread
     internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
+        HyperLog.d(TAG, "apiResponseReceived(...)")
+
         if (plan == null) {
+            HyperLog.d(TAG, "apiResponseReceived() - plan was null")
             updateEmptyViewOnFailure(plan_failed_to_load)
             return
         }
         if (activity == null) {
+            HyperLog.d(TAG, "apiResponseReceived() - activity is null")
             return
         }
+
+        HyperLog.d(TAG, "apiResponseReceived() - Neither plan nor activitiy was not null, updating ui")
 
         val shows = plan.entries
 
@@ -99,6 +111,8 @@ open class PlanFragment : Fragment() {
 
         list!!.adapter = adapter
         list!!.setSelection(planEntryToItemConverter!!.todayStartIndex())
+
+        HyperLog.d(TAG, "apiResponseReceived() - done")
     }
 
     @UiThread
