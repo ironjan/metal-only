@@ -7,6 +7,7 @@ Since 0.6.1, try to write "prose" changelogs that can be copied to Google Play.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+Added Google Play Services (See [#165](https://github.com/ironjan/metal-only/issues/165))
 
 ## [0.6.19-1]
 Added Hyperlog (Debug build).

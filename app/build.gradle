@@ -108,6 +108,7 @@ dependencies {
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
     compile "com.android.support:support-v4:$support_v4_version"
+    compile "com.google.android.gms:play-services-auth:11.8.0"
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
