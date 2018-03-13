@@ -38,6 +38,9 @@ import com.codingspezis.android.metalonly.player.views.ShowInformation;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;
@@ -149,8 +152,28 @@ public class StreamControlActivity extends AppCompatActivity {
         setUpPlayerService();
         setUpDataObjects();
         setUpGUIObjects();
+        installPlayServiceProviderInstaller();
         if (BuildConfig.DEBUG) {
             buttonPlayClicked();
+        }
+    }
+
+    private void installPlayServiceProviderInstaller() {
+        Context applicationContext = getApplicationContext();
+        if(applicationContext == null) {
+            return;
+        }
+
+        try {
+            ProviderInstaller.installIfNeeded(applicationContext);
+        } catch (GooglePlayServicesRepairableException e) {
+            // FIXME handle error
+            HyperLog.e(TAG, e.getMessage(), e);
+            showToast(e.getMessage());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            HyperLog.e(TAG, e.getMessage(), e);
+            showToast(e.getMessage());
+            // FIXME handle error
         }
     }
 
