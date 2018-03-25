@@ -153,9 +153,6 @@ public class StreamControlActivity extends AppCompatActivity {
         setUpDataObjects();
         setUpGUIObjects();
         installPlayServiceProviderInstaller();
-        if (BuildConfig.DEBUG) {
-            buttonPlayClicked();
-        }
     }
 
     private void installPlayServiceProviderInstaller() {
