@@ -9,6 +9,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 Added Google Play Services (See [#165](https://github.com/ironjan/metal-only/issues/165))
 
+## [0.6.19-3]
+Switch to retrofit (Test).
+
 ## [0.6.19-1]
 Added Hyperlog (Debug build).
 
