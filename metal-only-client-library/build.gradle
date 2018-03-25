@@ -77,6 +77,9 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     compile 'com.hypertrack:hyperlog:0.0.9'
     compile "com.squareup.okhttp3:okhttp:$okhttp_version"
+    compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.4.0'
+
     compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"
     compile "org.androidannotations:rest-spring-api:$androidannotations_version"
