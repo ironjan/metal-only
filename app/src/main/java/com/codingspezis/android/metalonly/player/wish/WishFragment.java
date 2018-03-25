@@ -20,9 +20,11 @@ import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
 import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
+import com.codingspezis.android.metalonly.player.utils.FeedbackMailer_;
 import com.codingspezis.android.metalonly.player.wish.WishPrefs_.WishPrefsEditor_;
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
+import com.github.ironjan.metalonly.client_library.RetrofitApiBuilder;
+import com.github.ironjan.metalonly.client_library.Stats;
 import com.github.ironjan.metalonly.client_library.WishSender;
 import com.hypertrack.hyperlog.HyperLog;
 
@@ -39,7 +41,13 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.web.client.RestClientException;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.wishmenu)
@@ -82,6 +90,8 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     TextView textTitle;
     @ViewById
     TextView textRegard;
+    @ViewById
+    EditText editDebugInfos;
 
     @ViewById(R.id.txtWishcount)
     TextView wishCount;
@@ -110,12 +120,36 @@ public class WishFragment extends Fragment implements WishSender.Callback {
                 if (context == null) {
                     return;
                 }
-                updateStats(MetalOnlyClient.Companion.getClient(context).getStats());
+                RetrofitApiBuilder.INSTANCE.getApi().getStats().enqueue(new Callback<Stats>() {
+                    @Override
+                    public void onResponse(Call<Stats> call, Response<Stats> response) {
+                        updateStats(response.body());
+                        updateDebugInfo("success");
+                    }
+
+                    @Override
+                    public void onFailure(Call<Stats> call, Throwable t) {
+                        loadingAllowedActionsFailed();
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new PrintWriter(sw);
+                        t.printStackTrace(pw);
+                        String sStackTrace = sw.toString();
+                        updateDebugInfo(sStackTrace);
+                    }
+                });
+
             } catch (NoInternetException | RestClientException e) {
                 loadingAllowedActionsFailed();
             }
         } else {
             notifyUser(R.string.no_internet);
+        }
+    }
+
+    @UiThread
+    void updateDebugInfo(String text) {
+        if (editDebugInfos != null) {
+            editDebugInfos.setText(text);
         }
     }
 
@@ -509,5 +543,16 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             editRegard.setText("");
         }
         saveInputInPrefs();
+    }
+
+    @Click(R.id.btnShareDebugInfo)
+    void btnShareDebugInfo(){
+        FragmentActivity activity = getActivity();
+        if(activity!=null){
+            if (editDebugInfos != null) {
+                String debug = String.valueOf(editDebugInfos.getText());
+                FeedbackMailer_.getInstance_(activity).sendEmail(debug);
+            }
+        }
     }
 }
