@@ -6,6 +6,7 @@ import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.SystemService
 import org.androidannotations.rest.spring.annotations.RestService
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
+import org.springframework.http.client.OkHttpClientHttpRequestFactory
 import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.springframework.web.client.RestClientException
 
@@ -26,24 +27,13 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
 
     @AfterInject
     internal fun adaptApiSettings() {
-        changeTimeout()
+        val requestFactory = OkHttpClientHttpRequestFactory()
+        requestFactory.setConnectTimeout(TIME_OUT)
+        requestFactory.setReadTimeout(TIME_OUT)
+
+        api!!.restTemplate.requestFactory = requestFactory
+
         disableKeepAlive()
-    }
-
-    private fun changeTimeout() {
-        val requestFactory = api!!.restTemplate.requestFactory
-
-        if (requestFactory is SimpleClientHttpRequestFactory) {
-            val factory = requestFactory
-
-            factory.setConnectTimeout(TIME_OUT)
-            factory.setReadTimeout(TIME_OUT)
-        } else if (requestFactory is HttpComponentsClientHttpRequestFactory) {
-            val factory = requestFactory
-
-            factory.setReadTimeout(TIME_OUT)
-            factory.setConnectTimeout(TIME_OUT)
-        }
     }
 
     private fun disableKeepAlive() {
