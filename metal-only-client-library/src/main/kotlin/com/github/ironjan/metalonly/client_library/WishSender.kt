@@ -62,8 +62,8 @@ class WishSender {
         try {
             val response = client.newCall(request).execute()
 
-            val responseBody = response.body().string()
-            if (response.code() == 200 && responseBody.contains(BuildConfig.WISH_SUCCESS)) {
+            val isSuccessResponseBody = response.body()?.string()?.contains(BuildConfig.WISH_SUCCESS)?: false
+            if (response.code() == 200 && isSuccessResponseBody) {
                     callback.onSuccess()
                 } else {
                     callback.onFail()
