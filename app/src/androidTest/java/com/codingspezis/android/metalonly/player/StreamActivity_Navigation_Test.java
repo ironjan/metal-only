@@ -64,7 +64,7 @@ public class StreamActivity_Navigation_Test {
     @Test
     public void favoritesActivity_Navigation_Test(){
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.mnu_favorites), withText(R.string.menu_favorites), withContentDescription(R.string.menu_favorites), isDisplayed()));
+                allOf(withText(R.string.menu_favorites), isDisplayed()));
         actionMenuItemView.perform(click());
 
         intended(hasComponent(new ComponentName(getTargetContext(), FavoritesActivity_.class)));
