@@ -1,7 +1,6 @@
 ## from https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
 language: android
-jdk:
-  - oraclejdk8
+jdk: oraclejdk8
 env:
   matrix:
     - API=android-25 ABI=armeabi-v7a
@@ -13,10 +12,12 @@ android:
   components:
     - tools
     - platform-tools
+    # A second time to install SDK 25: https://github.com/travis-ci/docs-travis-ci-com/issues/779
     - tools
     - build-tools-25.0.2
     - android-25
-    - extra
+    - extra-google-m2repository
+    - extra-android-m2repository
     - sys-img-armeabi-v7a-google_apis-25
   licenses:
     - 'android-sdk-preview-license-.+'
@@ -25,10 +26,10 @@ android:
 
 jobs:
   include:
-    - stage: lint_and_unit
-      script: ./scripts/lint.sh
-    - stage: lint_and_unit
-      script: ./scripts/test.sh
+#    - stage: lint_and_unit
+#      script: ./scripts/lint.sh
+#    - stage: lint_and_unit
+#      script: ./scripts/test.sh
     - stage: integration
       before_install: ./scripts/travis_update_buildtools.sh
       before_script: ./scripts/travis_start_emulator.sh
