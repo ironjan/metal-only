@@ -13,7 +13,6 @@ import org.androidannotations.annotations.RootContext
 import org.androidannotations.annotations.res.StringRes
 import java.io.File
 
-
 @EBean
 open class FeedbackMailer {
     @RootContext
@@ -39,15 +38,12 @@ open class FeedbackMailer {
                     "Android: ${Build.VERSION.RELEASE}\n" +
                     "Model: ${Build.MODEL}"
 
-
-
-
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
         emailIntent.putExtra(Intent.EXTRA_TEXT, body)
         HyperLog.e("FeedbackMailer", "Sending mail")
-        if(logfile != null) {
+        if (logfile != null) {
             HyperLog.e("FeedbackMailer", "Sending mail with attachement")
             emailIntent.putExtra(Intent.EXTRA_STREAM, logFileUri)
         }
