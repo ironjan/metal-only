@@ -73,9 +73,12 @@ open class PlanFragment : Fragment() {
     @Background
     internal open fun loadPlan() {
         try {
-            if (context == null) return
+            if (context == null) {
+                return
+            }
+
             HyperLog.d(TAG, "loadPlan()")
-            apiResponseReceived(MetalOnlyClient.getClient(context).getPlan())
+            apiResponseReceived(MetalOnlyClient.getClient(context!!).getPlan())
         } catch (e: NoInternetException) {
             HyperLog.d(TAG, "loadPlan() - no internet")
             updateEmptyViewOnFailure(no_internet)
@@ -107,7 +110,13 @@ open class PlanFragment : Fragment() {
         val shows = plan.entries
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
-        val adapter = PlanAdapter(activity, listItems)
+
+        if (activity == null) {
+            HyperLog.e("PlanFragment", "Activity was null")
+            return
+        }
+
+        val adapter = PlanAdapter(activity!!, listItems)
 
         list!!.adapter = adapter
         list!!.setSelection(planEntryToItemConverter!!.todayStartIndex())
@@ -127,8 +136,14 @@ open class PlanFragment : Fragment() {
     internal fun entryClicked(item: Any) {
         if (item is PlanRealEntryItem) {
             val entryItem = item
+
+            if (activity == null) {
+                HyperLog.e("PlanFragment", "Activity was null in entryClicked")
+                return
+            }
+
             val builder = AlertDialog.Builder(activity)
-            builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.showInformation!!, activity))
+            builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.showInformation!!, activity!!))
             builder.show()
         }
 
