@@ -229,5 +229,4 @@ open class FavoritesFragment : Fragment() {
             alert.show()
         }
     }
-
 }

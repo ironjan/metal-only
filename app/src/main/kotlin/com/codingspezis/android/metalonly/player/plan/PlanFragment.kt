@@ -88,7 +88,6 @@ open class PlanFragment : Fragment() {
             val text = plan_failed_to_load + ":\n" + e.message
             updateEmptyViewOnFailure(text)
         }
-
     }
 
     @UiThread
@@ -146,6 +145,5 @@ open class PlanFragment : Fragment() {
             builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.showInformation!!, activity!!))
             builder.show()
         }
-
     }
 }

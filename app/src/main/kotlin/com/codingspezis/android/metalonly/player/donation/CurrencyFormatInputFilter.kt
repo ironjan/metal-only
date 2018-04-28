@@ -13,8 +13,14 @@ class CurrencyFormatInputFilter : InputFilter {
 
     internal var mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?")
 
-    override fun filter(source: CharSequence, start: Int, end: Int,
-                        dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+    override fun filter(
+        source: CharSequence,
+        start: Int,
+        end: Int,
+        dest: Spanned,
+        dstart: Int,
+        dend: Int
+    ): CharSequence? {
 
         val result = dest.subSequence(0, dstart).toString() + source.toString()
         dest.subSequence(dend, dest.length)

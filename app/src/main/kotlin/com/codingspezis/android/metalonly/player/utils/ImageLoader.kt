@@ -31,7 +31,7 @@ class ImageLoader private constructor(context: Context) {
      */
     private val NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors()
 
-    private val downloadQueue : BlockingQueue<Runnable> = LinkedBlockingQueue<Runnable>()
+    private val downloadQueue: BlockingQueue<Runnable> = LinkedBlockingQueue<Runnable>()
 
     private val imageViews = Collections.synchronizedMap(WeakHashMap<ImageView, String>())
 
@@ -138,7 +138,7 @@ class ImageLoader private constructor(context: Context) {
         /**
          * Gets a singleton instance of the ImageLoader for usage.
          */
-        fun instance(context: Context) : ImageLoader {
+        fun instance(context: Context): ImageLoader {
             synchronized(lock) {
                 if (INSTANCE == null) {
                     INSTANCE = ImageLoader(context.applicationContext)

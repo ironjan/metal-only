@@ -121,5 +121,4 @@ open class PayPalDonationFragment : Fragment() {
 
         super.onPause()
     }
-
 }

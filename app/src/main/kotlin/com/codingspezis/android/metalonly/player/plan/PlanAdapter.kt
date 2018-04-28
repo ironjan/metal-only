@@ -40,5 +40,4 @@ class PlanAdapter(private val context: Context, private val data: ArrayList<Plan
             return view
         }
     }
-
 }

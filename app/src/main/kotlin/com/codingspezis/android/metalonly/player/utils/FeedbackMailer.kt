@@ -56,6 +56,5 @@ open class FeedbackMailer {
             toast.setText(R.string.no_mail_app)
             toast.show()
         }
-
     }
 }
