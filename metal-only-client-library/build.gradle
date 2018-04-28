@@ -55,7 +55,7 @@ android {
 
     if(project.hasProperty("metalonly.fabric.io")
             && new File(project.property("metalonly.fabric.io") + ".gradle").exists()) {
-        apply from: project.property("metalonly.fabric.io") + ".gradle";
+        apply from: project.property("metalonly.fabric.io") + ".gradle"
         println("Applied fabric.io / crashlytics settings.")
     }else{
         println("Project does not have fabric.io / crashlytics settings.")
