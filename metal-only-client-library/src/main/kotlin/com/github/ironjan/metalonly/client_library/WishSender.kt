@@ -1,10 +1,10 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.text.TextUtils
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
+import com.squareup.okhttp.MultipartBuilder
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.RequestBody
 import java.io.IOException
 
 /**
@@ -35,8 +35,7 @@ class WishSender {
      *  TODO Fix this
      */
     fun send() {
-        var requestBodyBuilder = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
+        var requestBodyBuilder = MultipartBuilder().type(MultipartBuilder.FORM)
 
         if (!TextUtils.isEmpty(nick)) {
             requestBodyBuilder = requestBodyBuilder.addFormDataPart(KEY_NICK, nick)
