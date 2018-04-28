@@ -108,8 +108,8 @@ dependencies {
     
     compile "com.android.support:appcompat-v7:$appcompat_v7_version"
     compile "com.android.support:support-v4:$support_v4_version"
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+        transitive = true
     }
     compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     compile 'com.hypertrack:hyperlog:0.0.9'
