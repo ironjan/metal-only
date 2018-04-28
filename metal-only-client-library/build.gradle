@@ -76,7 +76,7 @@ dependencies {
 
     compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     compile 'com.hypertrack:hyperlog:0.0.9'
-    compile "com.squareup.okhttp3:okhttp:3.10.0"
+    compile "com.squareup.okhttp:okhttp:2.7.5" // Version 3.x is incompatible with spring-android-rest-template
 
     compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
     compile "org.androidannotations:androidannotations-api:$androidannotations_version"

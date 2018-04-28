@@ -11,16 +11,17 @@ buildscript {
         jdk_compatibility = "1.8"
 
         // Dependency versions
-        appcompat_v7_version = "25.3.0"
+        appcompat_v7_version = "27.1.1"
+        support_v4_version = "27.1.1"
+
         androidannotations_version = "4.4.0"
-        espresso_version = "2.2.2"
+        espresso_version = "3.0.2"
         jackson_version = "2.9.5"
-        junit_version = "4.12"   
+        junit_version = "4.12"
         kotlin_version = "1.2.41"
         ktlint_version = "0.22.0"
         slf4jAndroid_version = "1.7.25"
         spring_android_rest_template_version = "2.0.0.M3"
-        support_v4_version = "25.3.0"
 
         // Travis Speedup
         // allows for -Dpre-dex=false to be set
