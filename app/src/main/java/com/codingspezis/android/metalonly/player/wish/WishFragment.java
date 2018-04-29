@@ -23,6 +23,7 @@ import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.wish.WishPrefs_.WishPrefsEditor_;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
+import com.github.ironjan.metalonly.client_library.Stats;
 import com.github.ironjan.metalonly.client_library.WishSender;
 import com.hypertrack.hyperlog.HyperLog;
 
@@ -98,20 +99,24 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @AfterViews
     @Background
     void loadAllowedActions() {
+        HyperLog.d(TAG, "loadAllowedActions() - started");
 
         FragmentActivity activity = getActivity();
 
-        if (activity == null) return;
+        if (activity == null) {
+            HyperLog.d(TAG, "loadAllowedActions() - activity was null, early return");
+            return;
+        }
 
         if (HTTPGrabber.isOnline(activity)) {
             showLoading(true);
             try {
-                Context context = getContext();
-                if (context == null) {
-                    return;
-                }
-                updateStats(MetalOnlyClient.Companion.getClient(context).getStats());
+                HyperLog.d(TAG, "loadAllowedActions() - doing actual request");
+                Stats stats = MetalOnlyClient.Companion.getClient(activity).getStats();
+                HyperLog.d(TAG, "loadAllowedActions() - got a response, updating stats");
+                updateStats(stats);
             } catch (NoInternetException | RestClientException e) {
+                HyperLog.e(TAG, "loadAllowedActions() - loading failed:", e);
                 loadingAllowedActionsFailed();
             }
         } else {
