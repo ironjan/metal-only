@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.19-6]
+Added more logging in wish functionality.
+
 ## [0.6.19-5]
 Using OkHttp to do the API requests. Potential fix for [#165](https://github.com/ironjan/metal-only/issues/165).
 
