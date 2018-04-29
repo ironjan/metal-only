@@ -1,6 +1,7 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.text.TextUtils
+import com.hypertrack.hyperlog.HyperLog
 import com.squareup.okhttp.MultipartBuilder
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
@@ -18,6 +19,8 @@ class WishSender {
 
     private val callback: Callback
 
+    private val TAG: String = "WishSender"
+
     constructor(callback: Callback, nick: String, greet: String, artist: String? = null, title: String? = null) {
         this.nick = nick
         this.artist = artist
@@ -28,6 +31,7 @@ class WishSender {
 
     val client = OkHttpClient()
 
+
     /**
      * Sends the wish request. Note that this method does not yet handle all error cases:
      *  - Bitte Wunsch/Gruss und einen Nick angeben
@@ -35,6 +39,7 @@ class WishSender {
      *  TODO Fix this
      */
     fun send() {
+        HyperLog.d(TAG, "send() - Starting to build request.")
         var requestBodyBuilder = MultipartBuilder().type(MultipartBuilder.FORM)
 
         if (!TextUtils.isEmpty(nick)) {
@@ -58,16 +63,23 @@ class WishSender {
                 .method("POST", RequestBody.create(null, ByteArray(0)))
                 .post(requestBody)
                 .build()
+
+
+        HyperLog.d(TAG, "send() - Built request. Sending...")
         try {
             val response = client.newCall(request).execute()
 
-            val isSuccessResponseBody = response.body()?.string()?.contains(BuildConfig.WISH_SUCCESS)?: false
+            HyperLog.d(TAG, "send() - Received response.")
+            val isSuccessResponseBody = response.body()?.string()?.contains(BuildConfig.WISH_SUCCESS) ?: false
             if (response.code() == 200 && isSuccessResponseBody) {
-                    callback.onSuccess()
-                } else {
-                    callback.onFail()
-                }
+                HyperLog.d(TAG, "send() - Response was 'success'. Doing onSuccess-callback.")
+                callback.onSuccess()
+            } else {
+                HyperLog.d(TAG, "send() - Response was 'failure'. Doing onFail-callback.")
+                callback.onFail()
+            }
         } catch (e: IOException) {
+            HyperLog.d(TAG, "send() - Got an IOException. Doing onException-callback.")
             callback.onException(e)
         }
     }

@@ -1,6 +1,7 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.net.ConnectivityManager
+import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterInject
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.SystemService
@@ -25,8 +26,11 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
     @SystemService
     internal var cm: ConnectivityManager? = null
 
+    private val TAG: String = "MetalOnlyClientImplementation"
+
     @AfterInject
     internal fun adaptApiSettings() {
+        HyperLog.d(TAG, "adaptApiSettings() - started")
         val requestFactory = OkHttpClientHttpRequestFactory()
         requestFactory.setConnectTimeout(TIME_OUT)
         requestFactory.setReadTimeout(TIME_OUT)
@@ -34,6 +38,8 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
         api!!.restTemplate.requestFactory = requestFactory
 
         disableKeepAlive()
+
+        HyperLog.d(TAG, "adaptApiSettings() - completed")
     }
 
     private fun disableKeepAlive() {
@@ -57,7 +63,9 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
     }
 
     private fun checkConnectivity() {
+        HyperLog.d(TAG, "checkConnectivity() - started")
         if (hasNoInternetConnection()) {
+            HyperLog.d(TAG, "checkConnectivity() - no connection, throwing NoInternetException")
             throw NoInternetException()
         }
     }
