@@ -48,8 +48,12 @@ open class FavoritesFragment : Fragment() {
 
     @AfterViews
     internal fun bindContent() {
-        favoritesSaver = SongSaver(activity, JSON_FILE_FAV, -1)
-        adapter = SongAdapterFavorites(activity, ArrayList<Track>(0))
+        if(context == null || activity == null) {
+            return
+        }
+
+        favoritesSaver = SongSaver(context!!, JSON_FILE_FAV, -1)
+        adapter = SongAdapterFavorites(activity!!, ArrayList<Track>(0))
         list!!.adapter = adapter
         list!!.emptyView = empty
         displayFavorites()
@@ -179,7 +183,10 @@ open class FavoritesFragment : Fragment() {
 
     @OptionsItem(R.id.mnu_deleteall)
     internal fun deleteAllClicked() {
-        askSureDelete(activity, OnClickListener { dialog, action ->
+        if (activity == null) {
+            return
+        }
+        askSureDelete(activity!!, OnClickListener { dialog, action ->
             favoritesSaver!!.clear()
             displayFavorites()
         }, null)
