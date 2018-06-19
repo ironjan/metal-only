@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.19-5]
+Debug build with OkHttp, Gson, Reactive.
+
 ## [0.6.19-1]
 Added Hyperlog (Debug build).
 
