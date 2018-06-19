@@ -330,6 +330,8 @@ public class StreamControlActivity extends AppCompatActivity {
         feedbackMailer.sendEmail();
     }
 
+    @OptionsItem(R.id.mnu_testing)
+    void startTesting() {TemporaryTestActivity_.intent(this).start(); }
     @Click
     void buttonPlayClicked() {
         long currentTime = System.currentTimeMillis();
