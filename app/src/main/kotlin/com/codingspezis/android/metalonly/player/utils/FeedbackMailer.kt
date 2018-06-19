@@ -1,12 +1,13 @@
 package com.codingspezis.android.metalonly.player.utils
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.codingspezis.android.metalonly.player.R
+import com.codingspezis.android.metalonly.player.R.string
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.RootContext
@@ -29,37 +30,37 @@ open class FeedbackMailer {
      * sends system intent ACTION_SEND (send mail)
      */
     fun sendEmail() {
+        sendMail("")
+    }
+
+    fun sendMail(body: String) {
         val subject = "[$app_name ${BuildConfig.VERSION_NAME}] Feedback, Fehler"
 
         val logfile: File? = HyperLog.getDeviceLogsInFile(context)
         val logFileUri = Uri.fromFile(logfile)
 
-        val body = "\n\n\n---\n" +
-                    "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
-                    "Android: ${Build.VERSION.RELEASE}\n" +
-                    "Model: ${Build.MODEL}"
-
-
-
+        val extendedBody = body + "\n\n\n---\n" +
+                "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
+                "Android: ${Build.VERSION.RELEASE}\n" +
+                "Model: ${Build.MODEL}";
 
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        emailIntent.putExtra(Intent.EXTRA_TEXT, body)
+        emailIntent.putExtra(Intent.EXTRA_TEXT, extendedBody)
         HyperLog.e("FeedbackMailer", "Sending mail")
-        if(logfile != null) {
+        if (logfile != null) {
             HyperLog.e("FeedbackMailer", "Sending mail with attachement")
             emailIntent.putExtra(Intent.EXTRA_STREAM, logFileUri)
         }
 
         try {
             context.startActivity(Intent.createChooser(emailIntent, mailaddress_codingspezis))
-        } catch (ex: android.content.ActivityNotFoundException) {
+        } catch (ex: ActivityNotFoundException) {
             val toast = Toast(context)
             toast.duration = Toast.LENGTH_LONG
-            toast.setText(R.string.no_mail_app)
+            toast.setText(string.no_mail_app)
             toast.show()
         }
-
     }
 }
