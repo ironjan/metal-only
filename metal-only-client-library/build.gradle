@@ -90,8 +90,8 @@ dependencies {
 
 kapt {
     correctErrorTypes = true
+
     arguments {
-        // FIXME hard-coded path!
-        arg("androidManifestFile", "/home/ljan/projects/metal-only/metal-only-client-library/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml")
+        arg("androidManifestFile", variant.outputs[0]?.processResources?.manifestFile ?: "")
     }
 }

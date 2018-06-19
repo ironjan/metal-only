@@ -147,10 +147,7 @@ kapt {
     correctErrorTypes = true
     arguments {
         arg("resourcePackageName", android.defaultConfig.applicationId)
-//        arg("androidManifestFile", variant.outputs[0]?.processResources?.manifestFile)
-
-        // FIXME hard-coded path!
-        arg("androidManifestFile", "/home/ljan/projects/metal-only/app/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml")
+        arg("androidManifestFile", variant.outputs[0]?.processResources?.manifestFile ?: "")
     }
 }
 
