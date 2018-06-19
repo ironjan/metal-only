@@ -61,6 +61,13 @@
             android:launchMode="singleTop" >
         </activity>
 
+        <activity
+            android:name=".TemporaryTestActivity_"
+            android:label="Testing..."
+            android:exported="true"
+            android:launchMode="singleTop" >
+        </activity>
+
         <service
             android:name="com.codingspezis.android.metalonly.player.stream.PlayerService"
             android:enabled="true"
