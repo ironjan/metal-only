@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -44,6 +46,9 @@ public class TemporaryTestActivity extends AppCompatActivity {
     @ViewById
     Button btnDoStuff;
 
+    private Queue<String> fails = new LinkedList<>();
+    private Queue<String> successes = new LinkedList<>();
+
     @Click
     void btnDoStuff() {
         String body = editResult.getText().toString();
@@ -55,35 +60,37 @@ public class TemporaryTestActivity extends AppCompatActivity {
         MetalOnlyRetrofitApi api = new MetalOnlyRetrofitApiFactory(this).build();
 
 
-        DisposableObserver<RetrofitStats> obs = new DisposableObserver<RetrofitStats>() {
-            @Override
-            protected void onStart() {
-                super.onStart();
-                statusUpdate("Started to load stats.");
-
-            }
-
-            @Override
-            public void onNext(RetrofitStats plan) {
-                handlePlan(plan);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                statusUpdate(e.getMessage());
-                doBTest();
-            }
-
-            @Override
-            public void onComplete() {
-                statusUpdate("Loaded stats successfully.");
-                doBTest();
-            }
-        };
         api.getStats()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(obs);
+                .subscribeWith(new DisposableObserver<RetrofitStats>() {
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        statusUpdate("Test A: Started.");
+
+                    }
+
+                    @Override
+                    public void onNext(RetrofitStats plan) {
+                        statusUpdate("Test A: onNext.");
+                        handlePlan(plan);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        statusUpdate("Test A: Error - " + e.getMessage());
+                        fails.add("A");
+                        doBTest();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        statusUpdate("Test A: Success.");
+                        successes.add("A");
+                        doBTest();
+                    }
+                });
 
 
     }
@@ -91,12 +98,14 @@ public class TemporaryTestActivity extends AppCompatActivity {
     @Background
     void doBTest() {
         try {
-            statusUpdate("Started test b");
+            statusUpdate("Test B: Started.");
             OkHttpClient client = new OkHttpClient();
-            tryOkHttpTest(client);
-            statusUpdate("Success: test b");
+            tryOkHttpTest(client, "B");
+            statusUpdate("Test B: Success.");
+            successes.add("B");
         } catch (Exception e) {
-            statusUpdate("Test B Failed: ", e);
+            statusUpdate("Test B: Error - ", e);
+            fails.add("B");
         }
         doCTest();
     }
@@ -104,7 +113,7 @@ public class TemporaryTestActivity extends AppCompatActivity {
     @Background
     void doCTest() {
         try {
-            statusUpdate("Started test c");
+            statusUpdate("Test C: Started");
             ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                     .tlsVersions(TlsVersion.TLS_1_2)
                     .cipherSuites(
@@ -116,30 +125,65 @@ public class TemporaryTestActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectionSpecs(Collections.singletonList(spec))
                     .build();
-            tryOkHttpTest(client);
-            statusUpdate("Test C Success!");
+            tryOkHttpTest(client, "C");
+            statusUpdate("Test C: Success");
+            successes.add("C");
 
         } catch (Exception e) {
-            statusUpdate("Test C Failed: ", e);
+            statusUpdate("Test C: Error - ", e);
+            fails.add("C");
         }
-        finalizeTests();
+        doDTest();
+    }
 
+    @Background
+    void doDTest() {
+        try {
+            statusUpdate("Test D: Started");
+            ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_2)
+                    .cipherSuites(
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+                    .build();
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectionSpecs(Collections.singletonList(spec))
+                    .build();
+            tryOkHttpTest(client, "D");
+            statusUpdate("Test D: Success");
+            successes.add("D");
+        }catch (Exception e) {
+            statusUpdate("Test D: Error - ", e);
+            fails.add("D");
+        }
+
+        finalizeTests();
     }
 
     private void finalizeTests() {
-        statusUpdate("Tests complete. Please send mail.");
+        String failsAsString = "";
+        for (String fail : fails) {
+            failsAsString = (failsAsString.isEmpty()) ? fail : failsAsString + ", " + fail;
+        }
+        String successesAsString = "";
+        for (String success: successes) {
+            successesAsString = (successesAsString.isEmpty()) ? success : successesAsString + ", " + success;
+        }
+
+        statusUpdate("Tests complete (Fails:" + failsAsString + ", Success: " + successesAsString+"). Please send mail.");
     }
 
-    private void tryOkHttpTest(OkHttpClient client) {
+    private void tryOkHttpTest(OkHttpClient client, String testName) throws IOException {
         Request request = new Request.Builder()
                 .url("https://www.metal-only.de/botcon/mob.php?action=stats")
                 .build();
 
-        try (Response response = client.newCall(request).execute()) {
-            statusUpdate("Pure OkHTTP: " + response.code() + "; " + response.body().string());
-        } catch (IOException e) {
-            statusUpdate("OkHttp Error: " + e.getMessage());
-        }
+        Response response = client.newCall(request).execute();
+        statusUpdate("Test " + testName + ": " + response.code() + "; " + response.body().string());
+
     }
 
     private void handlePlan(RetrofitStats plan) {
@@ -147,6 +191,7 @@ public class TemporaryTestActivity extends AppCompatActivity {
     }
 
     Logger logger = LoggerFactory.getLogger(TemporaryTestActivity.class.getName());
+
     @UiThread
     void statusUpdate(String s) {
         editResult.setText(editResult.getText() + "\n\n" + s);
