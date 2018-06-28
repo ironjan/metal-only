@@ -1,6 +1,9 @@
 package com.codingspezis.android.metalonly.player;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +13,11 @@ import com.codingspezis.android.metalonly.player.utils.FeedbackMailer_;
 import com.github.ironjan.metalonly.client_library.MetalOnlyRetrofitApi;
 import com.github.ironjan.metalonly.client_library.MetalOnlyRetrofitApiFactory;
 import com.github.ironjan.metalonly.client_library.RetrofitStats;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -41,6 +49,10 @@ import okhttp3.TlsVersion;
 @EActivity(R.layout.activity_temporary_test)
 @SuppressLint("Registered")
 public class TemporaryTestActivity extends AppCompatActivity {
+    public static final int SOME_REQUEST = 0;
+    public static final int ENABLE_REQUEST = 1;
+    public static final int INSTALL_REQUEST = 3;
+    public static final String KEY_STATUS_DATA = "KEY_STATUS_DATA";
     @ViewById
     TextView txtStatus;
     @ViewById
@@ -166,7 +178,8 @@ public class TemporaryTestActivity extends AppCompatActivity {
         analyseAvailableCipherSuites();
     }
 
-    private void analyseAvailableCipherSuites() {
+    @Background
+    void analyseAvailableCipherSuites() {
         statusUpdate("Test: CipherSuites started");
         try {
             SSLEngine engine = SSLContext.getDefault().createSSLEngine();
@@ -184,10 +197,102 @@ public class TemporaryTestActivity extends AppCompatActivity {
         testPlayServices();
     }
 
-    private void testPlayServices() {
-// TODO implement
-// ProviderInstaller.installIfNeeded(getApplicationContext());
+    @Background
+    void testPlayServices() {
+        statusUpdate("Test PlayServices: started");
+
+
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int code = googleApi.isGooglePlayServicesAvailable(this);
+        if (code == ConnectionResult.SUCCESS) {
+            statusUpdate("Test PlayServices: available, up to date");
+            statusUpdate("Test PlayServices: installing GSM Provider");
+
+            installProvider(googleApi);
+        } else {
+            statusUpdate("Test PlayServices: some error");
+            if (googleApi.isUserResolvableError(code)) {
+                statusUpdate("Test PlayServices: error is user resolvable, fixing request sent");
+                sendPlayServiceInstallRequest(googleApi, code);
+
+            } else {
+                statusUpdate("Test PlayServices: non-recoverable error: " + code);
+            }
+
+            finalizeTests();
+        }
+
+    }
+
+    @Background
+    void installProvider(GoogleApiAvailability googleApi) {
+        try {
+            ProviderInstaller.installIfNeeded(this);
+
+            try {
+                statusUpdate("Test E: Started");
+                ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                        .tlsVersions(TlsVersion.TLS_1_2)
+                        .cipherSuites(
+                                CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                                CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                                CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                                CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+                        .build();
+
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectionSpecs(Collections.singletonList(spec))
+                        .build();
+                tryOkHttpTest(client, "E");
+                statusUpdate("Test E: Success");
+                successes.add("E");
+            } catch (Exception e) {
+                statusUpdate("Test E: Error - ", e);
+                fails.add("D");
+            }
+            finalizeTests();
+        } catch (GooglePlayServicesRepairableException e) {
+            sendPlayServiceInstallRequest(googleApi, e.getConnectionStatusCode());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            sendPlayServiceInstallRequest(googleApi, e.errorCode);
+        }
         finalizeTests();
+    }
+
+    @UiThread
+    void sendPlayServiceInstallRequest(GoogleApiAvailability googleApi, int code) {
+        googleApi.showErrorDialogFragment(this, code, SOME_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ENABLE_REQUEST:
+                statusUpdate("onActivityResult(ENABLE, " + resultCode + "..)");
+                break;
+            case INSTALL_REQUEST:
+                statusUpdate("onActivityResult(INSTALL, " + resultCode + "..)");
+                break;
+            case SOME_REQUEST:
+                statusUpdate("onActivityResult(UPDATE, " + resultCode + "..)");
+                break;
+        }
+        statusUpdate("Trying play services test again..");
+        testPlayServices();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString(KEY_STATUS_DATA, editResult.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        statusUpdate("Restored instance state...");
+        statusUpdate(savedInstanceState.getString(KEY_STATUS_DATA));
     }
 
     private String arrayToString(String[] strings) {
