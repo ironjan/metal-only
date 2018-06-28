@@ -19,7 +19,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="5"
-            android:focusable="true"
-            android:enabled="false"
             android:id="@+id/editResult"/>
     </LinearLayout>
