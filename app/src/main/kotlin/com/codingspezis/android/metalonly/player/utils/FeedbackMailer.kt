@@ -29,15 +29,16 @@ open class FeedbackMailer {
     /**
      * sends system intent ACTION_SEND (send mail)
      */
-    fun sendEmail() {
-        sendMail("")
+    fun sendLogs() {
+        sendLogs("")
     }
 
-    fun sendMail(body: String) {
+    fun sendLogs(body: String) {
         val subject = "[$app_name ${BuildConfig.VERSION_NAME}] Feedback, Fehler"
 
         val logfile: File? = HyperLog.getDeviceLogsInFile(context)
-        val logFileUri = Uri.fromFile(logfile)
+        // FIXME can cause Exception when no logs are found
+        val logFileUri = if (logfile != null) Uri.fromFile(logfile) else null
 
         val extendedBody = body + "\n\n\n---\n" +
                 "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
@@ -53,6 +54,29 @@ open class FeedbackMailer {
             HyperLog.e("FeedbackMailer", "Sending mail with attachement")
             emailIntent.putExtra(Intent.EXTRA_STREAM, logFileUri)
         }
+
+        try {
+            context.startActivity(Intent.createChooser(emailIntent, mailaddress_codingspezis))
+        } catch (ex: ActivityNotFoundException) {
+            val toast = Toast(context)
+            toast.duration = Toast.LENGTH_LONG
+            toast.setText(string.no_mail_app)
+            toast.show()
+        }
+    }
+    fun sendMail(body: String) {
+        val subject = "[$app_name ${BuildConfig.VERSION_NAME}] Feedback, Fehler"
+
+        val extendedBody = body + "\n\n\n---\n" +
+                "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
+                "Android: ${Build.VERSION.RELEASE}\n" +
+                "Model: ${Build.MODEL}";
+
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+        emailIntent.putExtra(Intent.EXTRA_TEXT, extendedBody)
+        HyperLog.e("FeedbackMailer", "Sending mail")
 
         try {
             context.startActivity(Intent.createChooser(emailIntent, mailaddress_codingspezis))
