@@ -25,6 +25,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -155,12 +158,44 @@ public class TemporaryTestActivity extends AppCompatActivity {
             tryOkHttpTest(client, "D");
             statusUpdate("Test D: Success");
             successes.add("D");
-        }catch (Exception e) {
+        } catch (Exception e) {
             statusUpdate("Test D: Error - ", e);
             fails.add("D");
         }
 
+        analyseAvailableCipherSuites();
+    }
+
+    private void analyseAvailableCipherSuites() {
+        statusUpdate("Test: CipherSuites started");
+        try {
+            SSLEngine engine = SSLContext.getDefault().createSSLEngine();
+
+            String enabledCipherSuites = arrayToString(engine.getEnabledCipherSuites());
+            String supportedCipherSuites = arrayToString(engine.getSupportedCipherSuites());
+
+            statusUpdate("Supported Cipher Suites: " + supportedCipherSuites);
+            statusUpdate("Enabled Cipher Suites: " + enabledCipherSuites);
+        } catch (Exception e) {
+            statusUpdate("Could not create SSLEngine: ", e);
+        }
+
+        statusUpdate("Test: CipherSuites complete");
+        testPlayServices();
+    }
+
+    private void testPlayServices() {
+// TODO implement
+// ProviderInstaller.installIfNeeded(getApplicationContext());
         finalizeTests();
+    }
+
+    private String arrayToString(String[] strings) {
+        String s = "";
+        for (String fail : strings) {
+            s = (s.isEmpty()) ? fail : s + ", " + fail;
+        }
+        return s;
     }
 
     private void finalizeTests() {
@@ -169,11 +204,11 @@ public class TemporaryTestActivity extends AppCompatActivity {
             failsAsString = (failsAsString.isEmpty()) ? fail : failsAsString + ", " + fail;
         }
         String successesAsString = "";
-        for (String success: successes) {
+        for (String success : successes) {
             successesAsString = (successesAsString.isEmpty()) ? success : successesAsString + ", " + success;
         }
 
-        statusUpdate("Tests complete (Fails:" + failsAsString + ", Success: " + successesAsString+"). Please send mail.");
+        statusUpdate("Tests complete (Fails:" + failsAsString + ", Success: " + successesAsString + "). Please send mail.");
     }
 
     private void tryOkHttpTest(OkHttpClient client, String testName) throws IOException {
