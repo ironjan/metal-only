@@ -123,6 +123,8 @@ dependencies {
     implementation "org.androidannotations:rest-spring-api:$androidannotations_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+
 
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
