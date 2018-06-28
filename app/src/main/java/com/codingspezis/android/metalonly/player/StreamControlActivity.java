@@ -327,7 +327,7 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.mnu_feedback)
     void sendFeedback() {
-        feedbackMailer.sendEmail();
+        feedbackMailer.sendLogs();
     }
 
     @OptionsItem(R.id.mnu_testing)

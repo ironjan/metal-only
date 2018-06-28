@@ -48,7 +48,7 @@ open class AboutFragment : Fragment() {
 
     @Click(R.id.buttonFeedback)
     internal fun buttonFeedbackClicked() {
-        feedbackMailer!!.sendEmail()
+        feedbackMailer!!.sendLogs()
     }
 
     /**
