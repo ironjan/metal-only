@@ -92,7 +92,8 @@ public class TemporaryTestActivity extends AppCompatActivity {
 
     @Background
     void analyseAvailableCipherSuites() {
-        statusUpdate("Test: CipherSuites started");
+        final String testName = "CipherSuites";
+        statusUpdate("Test: " + testName + " started");
         try {
             SSLEngine engine = SSLContext.getDefault().createSSLEngine();
 
@@ -105,7 +106,7 @@ public class TemporaryTestActivity extends AppCompatActivity {
             statusUpdate("Could not create SSLEngine: ", e);
         }
 
-        statusUpdate("Test: CipherSuites complete");
+        statusUpdate("Test: " + testName + " complete");
     }
 
     @Background
@@ -117,30 +118,32 @@ public class TemporaryTestActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<RetrofitStats>() {
+                    private final String testName = "A";
+
                     @Override
                     protected void onStart() {
                         super.onStart();
-                        statusUpdate("Test A: Started.");
+                        statusUpdate("Test " + testName + ": Started.");
 
                     }
 
                     @Override
                     public void onNext(RetrofitStats plan) {
-                        statusUpdate("Test A: onNext.");
+                        statusUpdate("Test " + testName + ": onNext.");
                         handlePlan(plan);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        statusUpdate("Test A: Error - " + e.getMessage());
-                        fails.add("A");
+                        statusUpdate("Test " + testName + ": Error - " + e.getMessage());
+                        fails.add(testName);
                         doBTest();
                     }
 
                     @Override
                     public void onComplete() {
-                        statusUpdate("Test A: Success.");
-                        successes.add("A");
+                        statusUpdate("Test " + testName + ": Success.");
+                        successes.add(testName);
                         doBTest();
                     }
                 });
@@ -148,23 +151,25 @@ public class TemporaryTestActivity extends AppCompatActivity {
 
     @Background
     void doBTest() {
+        final String testName = "B";
         try {
-            statusUpdate("Test B: Started.");
+            statusUpdate("Test " + testName + ": Started.");
             OkHttpClient client = new OkHttpClient();
-            tryOkHttpTest(client, "B");
-            statusUpdate("Test B: Success.");
-            successes.add("B");
+            tryOkHttpTest(client, testName);
+            statusUpdate("Test " + testName + ": Success.");
+            successes.add(testName);
         } catch (Exception e) {
-            statusUpdate("Test B: Error - ", e);
-            fails.add("B");
+            statusUpdate("Test " + testName + ": Error - ", e);
+            fails.add(testName);
         }
         doCTest();
     }
 
     @Background
     void doCTest() {
+        final String testName = "C";
         try {
-            statusUpdate("Test C: Started");
+            statusUpdate("Test " + testName + ": Started");
             ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                     .tlsVersions(TlsVersion.TLS_1_2)
                     .cipherSuites(
@@ -176,21 +181,22 @@ public class TemporaryTestActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectionSpecs(Collections.singletonList(spec))
                     .build();
-            tryOkHttpTest(client, "C");
-            statusUpdate("Test C: Success");
-            successes.add("C");
+            tryOkHttpTest(client, testName);
+            statusUpdate("Test " + testName + ": Success");
+            successes.add(testName);
 
         } catch (Exception e) {
-            statusUpdate("Test C: Error - ", e);
-            fails.add("C");
+            statusUpdate("Test " + testName + ": Error - ", e);
+            fails.add(testName);
         }
         doDTest();
     }
 
     @Background
     void doDTest() {
+        final String testName = "D";
         try {
-            statusUpdate("Test D: Started");
+            statusUpdate("Test " + testName + ": Started");
             ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                     .tlsVersions(TlsVersion.TLS_1_2)
                     .cipherSuites(
@@ -203,12 +209,39 @@ public class TemporaryTestActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectionSpecs(Collections.singletonList(spec))
                     .build();
-            tryOkHttpTest(client, "D");
-            statusUpdate("Test D: Success");
-            successes.add("D");
+            tryOkHttpTest(client, testName);
+            statusUpdate("Test " + testName + ": Success");
+            successes.add(testName);
         } catch (Exception e) {
-            statusUpdate("Test D: Error - ", e);
-            fails.add("D");
+            statusUpdate("Test " + testName + ": Error - ", e);
+            fails.add(testName);
+        }
+
+        doETest();
+    }
+
+    private void doETest() {
+        final String testName = "E";
+        try {
+            statusUpdate("Test " + testName + ": Started");
+            ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                    .tlsVersions(TlsVersion.TLS_1_2)
+                    .cipherSuites(
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+                    .build();
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectionSpecs(Collections.singletonList(spec))
+                    .build();
+            tryOkHttpTest(client, testName);
+            statusUpdate("Test " + testName + ": Success");
+            successes.add(testName);
+        } catch (Exception e) {
+            statusUpdate("Test " + testName + ": Error - ", e);
+            fails.add(testName);
         }
 
         testPlayServices();
@@ -216,24 +249,25 @@ public class TemporaryTestActivity extends AppCompatActivity {
 
     @Background
     void testPlayServices() {
-        statusUpdate("Test PlayServices: started");
+        final String testName = "PlayServices";
+        statusUpdate("Test " + testName + ": started");
 
 
         GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
         int code = googleApi.isGooglePlayServicesAvailable(this);
         if (code == ConnectionResult.SUCCESS) {
-            statusUpdate("Test PlayServices: available, up to date");
-            statusUpdate("Test PlayServices: installing GSM Provider");
+            statusUpdate("Test " + testName + ": available, up to date");
+            statusUpdate("Test " + testName + ": installing GSM Provider");
 
             testWithProviderInstaller(googleApi);
         } else {
-            statusUpdate("Test PlayServices: some error");
+            statusUpdate("Test " + testName + ": some error");
             if (googleApi.isUserResolvableError(code)) {
-                statusUpdate("Test PlayServices: error is user resolvable, fixing request sent");
+                statusUpdate("Test " + testName + ": error is user resolvable, fixing request sent");
                 sendPlayServiceInstallRequest(googleApi, code);
 
             } else {
-                statusUpdate("Test PlayServices: non-recoverable error: " + code);
+                statusUpdate("Test " + testName + ": non-recoverable error: " + code);
             }
 
             finalizeTests();
@@ -246,8 +280,10 @@ public class TemporaryTestActivity extends AppCompatActivity {
         try {
             ProviderInstaller.installIfNeeded(this);
 
+            String testName = "F";
+
             try {
-                statusUpdate("Test E: Started");
+                statusUpdate("Test F: Started");
                 ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                         .tlsVersions(TlsVersion.TLS_1_2)
                         .cipherSuites(
@@ -260,12 +296,12 @@ public class TemporaryTestActivity extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient.Builder()
                         .connectionSpecs(Collections.singletonList(spec))
                         .build();
-                tryOkHttpTest(client, "E");
-                statusUpdate("Test E: Success");
-                successes.add("E");
+                tryOkHttpTest(client, testName);
+                statusUpdate("Test "+testName+": Success");
+                successes.add(testName);
             } catch (Exception e) {
-                statusUpdate("Test E: Error - ", e);
-                fails.add("D");
+                statusUpdate("Test "+testName+": Error - ", e);
+                fails.add(testName);
             }
             finalizeTests();
         } catch (GooglePlayServicesRepairableException e) {
