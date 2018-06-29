@@ -8,9 +8,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.19-12]
+Added PlayServices and more tests...
+
 ## [0.6.19-11]
 Debug build with OkHttp, Gson, Reactive and an additional TLS protocol.
-
 
 ## [0.6.19-10]
 Debug build with OkHttp, Gson, Reactive.

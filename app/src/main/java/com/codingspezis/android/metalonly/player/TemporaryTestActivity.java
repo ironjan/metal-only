@@ -2,8 +2,10 @@ package com.codingspezis.android.metalonly.player;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,6 +60,9 @@ public class TemporaryTestActivity extends AppCompatActivity {
     @ViewById
     EditText editResult;
 
+    @StringRes
+    protected  String app_name;
+
     @ViewById
     Button btnDoStuff;
 
@@ -71,6 +76,39 @@ public class TemporaryTestActivity extends AppCompatActivity {
     }
 
     @AfterViews
+    void executeTests() {
+        analyzeSystem();
+        doATest();
+    }
+
+    @Background
+    void analyzeSystem() {
+        statusUpdate(app_name + " " + BuildConfig.VERSION_NAME);
+        statusUpdate("Android: " + Build.VERSION.RELEASE);
+        statusUpdate("Model: " + Build.MODEL);
+
+        analyseAvailableCipherSuites();
+    }
+
+    @Background
+    void analyseAvailableCipherSuites() {
+        statusUpdate("Test: CipherSuites started");
+        try {
+            SSLEngine engine = SSLContext.getDefault().createSSLEngine();
+
+            String enabledCipherSuites = arrayToString(engine.getEnabledCipherSuites());
+            String supportedCipherSuites = arrayToString(engine.getSupportedCipherSuites());
+
+            statusUpdate("Supported Cipher Suites: " + supportedCipherSuites);
+            statusUpdate("Enabled Cipher Suites: " + enabledCipherSuites);
+        } catch (Exception e) {
+            statusUpdate("Could not create SSLEngine: ", e);
+        }
+
+        statusUpdate("Test: CipherSuites complete");
+    }
+
+    @Background
     void doATest() {
         MetalOnlyRetrofitApi api = new MetalOnlyRetrofitApiFactory(this).build();
 
@@ -106,8 +144,6 @@ public class TemporaryTestActivity extends AppCompatActivity {
                         doBTest();
                     }
                 });
-
-
     }
 
     @Background
@@ -175,25 +211,6 @@ public class TemporaryTestActivity extends AppCompatActivity {
             fails.add("D");
         }
 
-        analyseAvailableCipherSuites();
-    }
-
-    @Background
-    void analyseAvailableCipherSuites() {
-        statusUpdate("Test: CipherSuites started");
-        try {
-            SSLEngine engine = SSLContext.getDefault().createSSLEngine();
-
-            String enabledCipherSuites = arrayToString(engine.getEnabledCipherSuites());
-            String supportedCipherSuites = arrayToString(engine.getSupportedCipherSuites());
-
-            statusUpdate("Supported Cipher Suites: " + supportedCipherSuites);
-            statusUpdate("Enabled Cipher Suites: " + enabledCipherSuites);
-        } catch (Exception e) {
-            statusUpdate("Could not create SSLEngine: ", e);
-        }
-
-        statusUpdate("Test: CipherSuites complete");
         testPlayServices();
     }
 
@@ -208,7 +225,7 @@ public class TemporaryTestActivity extends AppCompatActivity {
             statusUpdate("Test PlayServices: available, up to date");
             statusUpdate("Test PlayServices: installing GSM Provider");
 
-            installProvider(googleApi);
+            testWithProviderInstaller(googleApi);
         } else {
             statusUpdate("Test PlayServices: some error");
             if (googleApi.isUserResolvableError(code)) {
@@ -225,7 +242,7 @@ public class TemporaryTestActivity extends AppCompatActivity {
     }
 
     @Background
-    void installProvider(GoogleApiAvailability googleApi) {
+    void testWithProviderInstaller(GoogleApiAvailability googleApi) {
         try {
             ProviderInstaller.installIfNeeded(this);
 
