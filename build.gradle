@@ -16,8 +16,8 @@ buildscript {
         espresso_version = "3.0.2"
         jackson_version = "2.9.6"
         junit_version = "4.12"   
-        kotlin_version = "1.2.41"
-        ktlint_version = "0.23.1"
+        kotlin_version = "1.2.70"
+        ktlint_version = "0.28.0"
         okhttp_version = "3.7.0"
         slf4jAndroid_version = "1.7.25"
         spring_android_rest_template_version = "2.0.0.M3"
@@ -39,13 +39,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha18'
+        classpath 'com.android.tools.build:gradle:3.2.0-rc03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
 
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        classpath 'io.fabric.tools:gradle:1.25.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
