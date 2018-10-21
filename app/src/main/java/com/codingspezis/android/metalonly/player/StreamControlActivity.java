@@ -38,6 +38,7 @@ import com.codingspezis.android.metalonly.player.views.ShowInformation;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
+import com.github.ironjan.metalonly.client_library.model.Track;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;
@@ -57,6 +58,8 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URLEncoder;
 import java.util.List;
+
+import arrow.core.*;
 
 /**
  * main GUI activity
@@ -518,6 +521,19 @@ public class StreamControlActivity extends AppCompatActivity {
             HyperLog.d(TAG, "loadShowData() - Unhandled exception", e);
             showToast(R.string.unexpectedError);
         }
+    }
+
+    private void debugLoad() {
+        Either<String, Track> either = getClient().getTrackV2();
+        String msg;
+        if(either.isRight()) {
+            final Track track = either.toOption().get();
+            msg = track.getArtist() + " - " + track.getTitle();
+        } else {
+            msg = either.swap().toOption().get();
+        }
+        HyperLog.e(TAG, msg);
+        debugLoad();
     }
 
     @UiThread

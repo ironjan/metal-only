@@ -52,7 +52,7 @@ interface MetalOnlyClient {
     @Throws(RestClientException::class, NoInternetException::class)
     fun getTrack(): TrackWrapper?
 
-    fun getTrackV2(): Either<Track, String>
+    fun getTrackV2(): Either<String,Track>
 
     companion object {
 
