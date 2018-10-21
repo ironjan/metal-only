@@ -13,6 +13,7 @@ buildscript {
         // Dependency versions
         appcompat_v7_version = "27.1.1"
         androidannotations_version = "4.4.0"
+        arrow_version = "0.7.3"
         espresso_version = "3.0.2"
         fuel_version = "1.15.1"
         jackson_version = "2.9.6"
