@@ -1,6 +1,12 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.net.ConnectivityManager
+import android.util.Log
+import arrow.core.Either
+import arrow.core.Either.Companion
+import com.github.ironjan.metalonly.client_library.model.Track
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.fuel.httpGet
 import org.androidannotations.annotations.AfterInject
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.SystemService
@@ -93,6 +99,26 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
         }
 
         return !hasConnection
+    }
+
+    override fun getTrackV2(): Either<Track, String> {
+        "https://api.github.com/repos/kittinunf/Fuel/issues/1".httpGet()
+                .responseObject(Track.Deserializer()) { request, _, result ->
+                    Log.d("MO CI", request.toString())
+                    // return update(result)
+                }
+
+        FuelManager.instance.basePath = "http://mensaupb.herokuapp.com/metalonly"
+
+        val (_, _, result) = "/stats".httpGet().responseObject(Track.Deserializer())
+
+        val (data, error) = result
+
+        return if (error == null) {
+            Either.left(data!!)
+        } else {
+            Either.right(error.localizedMessage)
+        }
     }
 
     companion object {
