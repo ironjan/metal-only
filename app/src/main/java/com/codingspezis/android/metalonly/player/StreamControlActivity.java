@@ -515,8 +515,15 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData() {
         HyperLog.d(TAG, "loadShowData()");
         try {
-            displayShowData(getClient().getStats());
-            HyperLog.d(TAG, "loadShowData() - success");
+            final Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
+            if(showInfomation.isRight()){
+                displayShowData(showInfomation.get());
+                HyperLog.d(TAG, "loadShowData() - success");
+            } else {
+                String msg = showInfomation.swap().get();
+                HyperLog.d(TAG, "loadShowData() - Error: " + msg);
+                showToast(msg);
+            }
         } catch (ResourceAccessException e) {
             HyperLog.d(TAG, "loadShowData() - ResourceAccessException", e);
             showToast(R.string.stats_failed_to_load);
@@ -543,20 +550,20 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     @UiThread
-    void displayShowData(Stats stats) {
+    void displayShowData(com.github.ironjan.metalonly.client_library.model.ShowInformation showInformation) {
         HyperLog.d(TAG, "displayShowData(..)");
         if (viewShowInformation == null) {
             HyperLog.d(TAG, "displayShowData(..) - view was null");
             return;
         }
 
-        if (stats != null) {
-            viewShowInformation.setStats(stats);
+        if (showInformation != null) {
+            viewShowInformation.setShowInformation(showInformation.getModerator(), showInformation.getGenre());
             HyperLog.d(TAG, "displayShowData(..) - success");
         } else {
             HyperLog.d(TAG, "displayShowData(..) - stats was null");
             showToast(R.string.stats_failed_to_load);
-            viewShowInformation.setStats(new Stats());
+            viewShowInformation.setShowInformation("Unbekannt", "");
         }
 
     }

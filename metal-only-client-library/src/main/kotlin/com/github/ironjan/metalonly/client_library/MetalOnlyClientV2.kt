@@ -2,6 +2,7 @@ package com.github.ironjan.metalonly.client_library
 
 import android.content.Context
 import arrow.core.Either
+import com.github.ironjan.metalonly.client_library.model.StatsV2
 import com.github.ironjan.metalonly.client_library.model.ShowInformation
 import com.github.ironjan.metalonly.client_library.model.Track
 
@@ -9,6 +10,8 @@ interface MetalOnlyClientV2 {
     fun getTrack(): Either<String, Track>
 
     fun getShowInfomation(): Either<String, ShowInformation>
+
+    fun getStats(): Either<String, StatsV2>
 
     companion object {
 
