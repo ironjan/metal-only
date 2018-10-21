@@ -36,6 +36,7 @@ import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
+import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.Stats;
 import com.github.ironjan.metalonly.client_library.model.Track;
@@ -220,6 +221,11 @@ public class StreamControlActivity extends AppCompatActivity {
     @NonNull
     private MetalOnlyClient getClient() {
         return MetalOnlyClient.Companion.getClient(this);
+    }
+
+    @NonNull
+    private MetalOnlyClientV2 getClientV2() {
+        return MetalOnlyClientV2.Companion.getClient(this);
     }
 
     @Override
@@ -524,7 +530,7 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     private void debugLoad() {
-        Either<String, Track> either = getClient().getTrackV2();
+        Either<String, Track> either = getClientV2().getTrack();
         String msg;
         if(either.isRight()) {
             final Track track = either.toOption().get();
