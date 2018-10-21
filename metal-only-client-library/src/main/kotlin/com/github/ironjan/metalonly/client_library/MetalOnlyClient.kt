@@ -1,9 +1,7 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.content.Context
-import arrow.core.Either
-import com.github.ironjan.metalonly.client_library.model.NewStats
-import com.github.ironjan.metalonly.client_library.model.Track
+import com.github.ironjan.metalonly.client_library.model.Stats
 import org.springframework.web.client.RestClientException
 
 /**
