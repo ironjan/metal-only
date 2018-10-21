@@ -134,7 +134,9 @@ dependencies {
 
     kapt "org.androidannotations:androidannotations:$androidannotations_version"
     kapt "org.androidannotations:rest-spring:$androidannotations_version"
-    
+
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+
     ktlint "com.github.shyiko:ktlint:$ktlint_version"
     
     testImplementation "junit:junit:$junit_version"
