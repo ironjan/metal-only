@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient
 import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2
 import com.github.ironjan.metalonly.client_library.NoInternetException
 import com.github.ironjan.metalonly.client_library.model.StatsV2

@@ -35,10 +35,8 @@ import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoInten
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.Stats;
 import com.github.ironjan.metalonly.client_library.model.Track;
 import com.hypertrack.hyperlog.HyperLog;
 
@@ -215,11 +213,6 @@ public class StreamControlActivity extends AppCompatActivity {
         };
         new Thread(runnable).start();
 
-    }
-
-    @NonNull
-    private MetalOnlyClient getClient() {
-        return MetalOnlyClient.Companion.getClient(this);
     }
 
     @NonNull
