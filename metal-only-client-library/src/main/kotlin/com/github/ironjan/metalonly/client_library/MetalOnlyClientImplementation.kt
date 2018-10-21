@@ -103,22 +103,6 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
         return !hasConnection
     }
 
-    override fun getTrackV2(): Either<String,Track> {
-        FuelManager.instance.basePath = "http://mensaupb.herokuapp.com/metalonly"
-
-        val (_, response, result) = "/track".httpGet().responseObject(Track.Deserializer())
-        val (request, response1, result1) = "/track".httpGet().responseString()
-
-        HyperLog.e("MO CI" , result1.component1());
-        val (data, error) = result
-
-        return if (error == null) {
-            Either.right(data!!)
-        } else {
-            Either.left(error.localizedMessage)
-        }
-    }
-
     companion object {
 
         private val TIME_OUT = 30 * 1000
