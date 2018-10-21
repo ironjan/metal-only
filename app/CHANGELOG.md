@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.19-15]
+Rewrite with new API.
+
 ## [0.6.19-14]
 PlayServices, more tests (incl. no CipherSuites).
 
