@@ -1,14 +1,6 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.net.ConnectivityManager
-import android.util.Log
-import arrow.core.Either
-import arrow.core.Either.Companion
-import arrow.core.left
-import com.github.ironjan.metalonly.client_library.model.Track
-import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.fuel.httpGet
-import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterInject
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.SystemService
@@ -58,20 +50,10 @@ open class MetalOnlyClientImplementation : MetalOnlyClient {
         System.setProperty("http.keepAlive", "false")
     }
 
-    override fun getStats(): Stats? {
-        checkConnectivity()
-        return api?.stats
-    }
-
     @Throws(RestClientException::class, NoInternetException::class)
     override fun getPlan(): Plan? {
         checkConnectivity()
         return api?.plan
-    }
-
-    override fun getTrack(): TrackWrapper? {
-        checkConnectivity()
-        return api?.track
     }
 
     private fun checkConnectivity() {

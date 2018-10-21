@@ -18,12 +18,12 @@ import android.widget.Toast;
 import com.codingspezis.android.metalonly.player.BuildConfig;
 import com.codingspezis.android.metalonly.player.R;
 import com.codingspezis.android.metalonly.player.WishActivity;
-import com.codingspezis.android.metalonly.player.core.WishAndGreetConstraints;
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber;
 import com.codingspezis.android.metalonly.player.wish.WishPrefs_.WishPrefsEditor_;
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
+import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
 import com.github.ironjan.metalonly.client_library.WishSender;
+import com.github.ironjan.metalonly.client_library.model.StatsV2;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -40,6 +40,8 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.springframework.web.client.RestClientException;
 
 import java.util.Locale;
+
+import arrow.core.Either;
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.wishmenu)
@@ -74,7 +76,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     @StringRes
     String wish_list_full;
 
-    private WishAndGreetConstraints stats;
+    private StatsV2 stats;
 
     @ViewById
     TextView textArtist;
@@ -110,7 +112,12 @@ public class WishFragment extends Fragment implements WishSender.Callback {
                 if (context == null) {
                     return;
                 }
-                updateStats(MetalOnlyClient.Companion.getClient(context).getStats());
+
+                Either<String, StatsV2> newStats = MetalOnlyClientV2.Companion.getClient(context).getStats();
+                if(newStats.isRight()){
+                    updateStats(newStats.get());
+                }
+
             } catch (NoInternetException | RestClientException e) {
                 loadingAllowedActionsFailed();
             }
@@ -131,7 +138,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
     }
 
     @UiThread
-    void updateStats(WishAndGreetConstraints stats) {
+    void updateStats(StatsV2 stats) {
         this.stats = stats;
         if (stats == null) {
             return;
@@ -139,7 +146,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
         StringBuilder sb = new StringBuilder(0);
 
         if (number_of_wishes_format != null) {
-            sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getWishLimit()));
+            sb.append(String.format(Locale.GERMAN, number_of_wishes_format, stats.getMaxNoOfWishes()));
         }
 
         sb.append(' ');// Append space to keep distance with next text
@@ -191,7 +198,7 @@ public class WishFragment extends Fragment implements WishSender.Callback {
             sb.append(no_regards);
         }
 
-        if (stats.getWishLimitReached()) {
+        if (stats.getMaxNoOfWishesReached()) {
             sb.append(wish_list_full);
             if (editArtist != null) {
                 editArtist.setText(R.string.wish_list_full_short);
