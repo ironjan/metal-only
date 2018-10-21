@@ -10,6 +10,10 @@ data class StatsV2(val showInformation: ShowInformation,
                  val maxNoOfWishes: Int,
                  val maxNoOfGreetings: Int,
                  val track: Track) {
+    val canWish: Boolean = !maxNoOfWishesReached
+
+    val canGreet: Boolean = !maxNoOfGreetingsReached
+
     class Deserializer : ResponseDeserializable<StatsV2> {
         override fun deserialize(reader: Reader) = Gson().fromJson(reader, StatsV2::class.java)!!
     }
