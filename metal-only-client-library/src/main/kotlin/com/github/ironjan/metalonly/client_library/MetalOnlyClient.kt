@@ -7,19 +7,6 @@ import org.springframework.web.client.RestClientException
  * Interface to be used for calling the Metal Only Client.
  */
 interface MetalOnlyClient {
-    /**
-     * Requests the show's stats
-     *
-     * @return the show's stats. May be null when errors occur.
-     *
-     * @throws NoInternetException if no internet connection is present
-     *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     *
-     * @throws ResourceAccessException if there are network problems
-     */
-    @Throws(RestClientException::class, NoInternetException::class)
-    fun getStats(): Stats?
 
     /**
      * Requests this week's sending plan
@@ -34,20 +21,6 @@ interface MetalOnlyClient {
      */
     @Throws(RestClientException::class, NoInternetException::class)
     fun getPlan(): Plan?
-
-    /**
-     * Gets the current track via API
-     *
-     * @return the currently played track. May be null when errors occur.
-     *
-     * @throws NoInternetException if no internet connection is present
-     *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     *
-     * @throws ResourceAccessException if there are network problems
-     */
-    @Throws(RestClientException::class, NoInternetException::class)
-    fun getTrack(): TrackWrapper?
 
     companion object {
 
