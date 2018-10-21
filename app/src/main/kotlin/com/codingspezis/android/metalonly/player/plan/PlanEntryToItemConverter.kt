@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.plan
 
-import com.codingspezis.android.metalonly.player.core.ShowInformation
+import com.github.ironjan.metalonly.client_library.model.PlanEntry
 import org.androidannotations.annotations.EBean
 import org.androidannotations.annotations.res.StringArrayRes
 import org.androidannotations.annotations.res.StringRes
@@ -21,7 +21,7 @@ open class PlanEntryToItemConverter {
 
     internal var todayStartIndex: Int = 0
 
-    fun convertToPlan(listEvents: List<ShowInformation>): ArrayList<PlanItem> {
+    fun convertToPlan(listEvents: Array<PlanEntry>): ArrayList<PlanItem> {
         val listItems = ArrayList<PlanItem>()
 
         var currentDayIndex = -1
@@ -46,9 +46,9 @@ open class PlanEntryToItemConverter {
         return getGermanDayOfWeek(cal) == dayIndex
     }
 
-    private fun getDayIndex(d: ShowInformation): Int {
+    private fun getDayIndex(d: PlanEntry): Int {
         val cal = Calendar.getInstance()
-        cal.time = d.startDate
+        cal.time = d.start
         return getGermanDayOfWeek(cal)
     }
 

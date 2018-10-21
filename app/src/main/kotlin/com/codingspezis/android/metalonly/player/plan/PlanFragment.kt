@@ -8,8 +8,9 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient
+import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2
 import com.github.ironjan.metalonly.client_library.NoInternetException
+import com.github.ironjan.metalonly.client_library.model.PlanEntry
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
@@ -75,7 +76,12 @@ open class PlanFragment : Fragment() {
         try {
             if (context == null) return
             HyperLog.d(TAG, "loadPlan()")
-            apiResponseReceived(MetalOnlyClient.getClient(context!!).getPlan())
+            val either = MetalOnlyClientV2.getClient(context!!).getPlan()
+            if(either.isRight()) {
+                either.map(this::apiResponseReceived)
+            } else {
+                either.mapLeft(this::updateEmptyViewOnFailure)
+            }
         } catch (e: NoInternetException) {
             HyperLog.d(TAG, "loadPlan() - no internet")
             updateEmptyViewOnFailure(no_internet)
@@ -89,7 +95,7 @@ open class PlanFragment : Fragment() {
     }
 
     @UiThread
-    internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
+    internal open fun apiResponseReceived(plan: Array<PlanEntry>) {
         HyperLog.d(TAG, "apiResponseReceived(...)")
 
         if (plan == null) {
@@ -104,7 +110,7 @@ open class PlanFragment : Fragment() {
 
         HyperLog.d(TAG, "apiResponseReceived() - Neither plan nor activitiy was not null, updating ui")
 
-        val shows = plan.entries
+        val shows = plan
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
         if(activity != null){
@@ -132,7 +138,7 @@ open class PlanFragment : Fragment() {
             val activity = activity
             if(activity != null) {
                 val builder = AlertDialog.Builder(activity)
-                builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.showInformation!!, activity!!))
+                builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.planEntry!!, activity!!))
                 builder.show()
             }
         }

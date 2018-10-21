@@ -35,7 +35,7 @@ class PlanAdapter(private val context: Context, private val data: ArrayList<Plan
             } else {
                 view = PlanEntryView_.build(context, null)
             }
-            val tmpData = (data[position] as PlanRealEntryItem).showInformation
+            val tmpData = (data[position] as PlanRealEntryItem).planEntry
             view.bind(tmpData!!)
             return view
         }
