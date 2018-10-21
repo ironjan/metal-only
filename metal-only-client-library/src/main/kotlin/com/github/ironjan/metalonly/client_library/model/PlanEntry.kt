@@ -4,10 +4,10 @@ import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.Reader
+import java.util.Date
 
-data class PlanEntry(val day: String,
-                     val time: String,
-                     val duration: Int,
+data class PlanEntry(val start: Date,
+                     val end: Date,
                      val showInformation: ShowInformation) {
     class Deserializer : ResponseDeserializable<PlanEntry> {
         override fun deserialize(reader: Reader) = Gson().fromJson(reader, PlanEntry::class.java)!!
