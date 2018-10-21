@@ -15,20 +15,6 @@ import org.springframework.web.client.RestClientException;
 interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
 
     /**
-     * Requests the show's stats
-     *
-     * @return the show's stats. May be null when errors occur.
-     *
-     * @throws NoInternetException if no internet connection is present
-     *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     *
-     * @throws ResourceAccessException if there are network problems
-     */
-    @Get(BuildConfig.API_STATS_PATH)
-    Stats getStats();
-
-    /**
      * Requests this week's sending plan
      *
      * @return this week's sending plan. May be null when errors occur.
@@ -42,32 +28,5 @@ interface MetalOnlyAPI extends RestClientErrorHandling, RestClientSupport {
     @Get(BuildConfig.API_PLAN_PATH)
     Plan getPlan();
 
-    /**
-     * Requests this week's sending plan including stats
-     *
-     * @return this week's sending plan including stats. May be null when errors occur.
-     *
-     * @throws NoInternetException if no internet connection is present
-     *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     *
-     * @throws ResourceAccessException if there are network problems
-     */
-    @Get(BuildConfig.API_PLAN_WITH_STATS_PATH)
-    PlanWithStats getPlanWithStats();
 
-
-    /**
-     * Gets the current track via API
-     *
-     * @return the currently played track. May be null when errors occur.
-     *
-     * @throws NoInternetException if no internet connection is present
-     *
-     * @throws RestClientException rethrow of underlying API implementation exception
-     *
-     * @throws ResourceAccessException if there are network problems
-     */
-    @Get("track")
-    TrackWrapper getTrack();
 }
