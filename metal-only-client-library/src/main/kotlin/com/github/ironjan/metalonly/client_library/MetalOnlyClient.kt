@@ -1,6 +1,9 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.content.Context
+import arrow.core.Either
+import com.github.ironjan.metalonly.client_library.model.NewStats
+import com.github.ironjan.metalonly.client_library.model.Track
 import org.springframework.web.client.RestClientException
 
 /**
@@ -48,6 +51,8 @@ interface MetalOnlyClient {
      */
     @Throws(RestClientException::class, NoInternetException::class)
     fun getTrack(): TrackWrapper?
+
+    fun getTrackV2(): Either<Track, String>
 
     companion object {
 
