@@ -14,5 +14,4 @@ data class Metadata internal constructor(val moderator: String, val genre: Strin
 
         return HistoricTrack(interpret, title, moderator, date)
     }
-
 }

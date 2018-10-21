@@ -1,4 +1,4 @@
-package com.github.ironjan.metalonly.client_library
+package com.github.ironjan.metalonly.client
 
 internal object GenreExtractor {
     fun extract(showTitle: String): String {

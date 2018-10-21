@@ -1,4 +1,4 @@
-package com.codingspezis.android.metalonly.player.stream.track_info
+package com.codingspezis.android.metalonly.player.stream.trackinfo
 
 object ShowInfoIntentConstants {
     val INTENT_NEW_TRACK = "MO_INTENT_NEW_TRACK"

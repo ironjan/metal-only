@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import com.codingspezis.android.metalonly.player.R
-import com.github.ironjan.metalonly.client_library.model.PlanEntry
+import com.github.ironjan.metalonly.client.model.PlanEntry
 
 /**
  * ClickListener for entries in the plan shown by [PlanActivity]

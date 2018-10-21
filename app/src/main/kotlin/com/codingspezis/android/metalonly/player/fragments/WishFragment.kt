@@ -15,10 +15,10 @@ import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.WishActivity
 import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber
 import com.codingspezis.android.metalonly.player.wish.WishPrefs_
-import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2
-import com.github.ironjan.metalonly.client_library.NoInternetException
-import com.github.ironjan.metalonly.client_library.WishSender
-import com.github.ironjan.metalonly.client_library.model.StatsV2
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2
+import com.github.ironjan.metalonly.client.NoInternetException
+import com.github.ironjan.metalonly.client.WishSender
+import com.github.ironjan.metalonly.client.model.StatsV2
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background

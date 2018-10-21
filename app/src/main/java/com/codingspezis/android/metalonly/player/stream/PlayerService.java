@@ -20,7 +20,7 @@ import com.codingspezis.android.metalonly.player.StreamControlActivity_;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
-import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
+import com.codingspezis.android.metalonly.player.stream.trackinfo.ShowInfoIntentConstants;
 
 /**
  * service that is managing stream player

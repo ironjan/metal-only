@@ -1,4 +1,4 @@
-package com.github.ironjan.metalonly.client_library;
+package com.github.ironjan.metalonly.client;
 
 import org.androidannotations.rest.spring.annotations.Get;
 import org.androidannotations.rest.spring.annotations.Rest;

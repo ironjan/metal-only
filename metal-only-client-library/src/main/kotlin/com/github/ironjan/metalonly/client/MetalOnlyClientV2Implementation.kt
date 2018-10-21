@@ -1,12 +1,10 @@
-package com.github.ironjan.metalonly.client_library
+package com.github.ironjan.metalonly.client
 
-import android.media.Image.Plane
 import arrow.core.Either
-import arrow.core.Either.Companion
-import com.github.ironjan.metalonly.client_library.model.PlanEntry
-import com.github.ironjan.metalonly.client_library.model.ShowInformation
-import com.github.ironjan.metalonly.client_library.model.StatsV2
-import com.github.ironjan.metalonly.client_library.model.Track
+import com.github.ironjan.metalonly.client.model.PlanEntry
+import com.github.ironjan.metalonly.client.model.ShowInformation
+import com.github.ironjan.metalonly.client.model.StatsV2
+import com.github.ironjan.metalonly.client.model.Track
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import org.androidannotations.annotations.EBean

@@ -1,6 +1,6 @@
 package com.codingspezis.android.metalonly.player.plan
 
-import com.github.ironjan.metalonly.client_library.model.PlanEntry
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import java.text.SimpleDateFormat
 
 /**

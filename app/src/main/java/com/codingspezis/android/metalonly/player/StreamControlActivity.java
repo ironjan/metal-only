@@ -30,12 +30,12 @@ import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
-import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
+import com.codingspezis.android.metalonly.player.stream.trackinfo.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
-import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2;
-import com.github.ironjan.metalonly.client_library.NoInternetException;
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2;
+import com.github.ironjan.metalonly.client.NoInternetException;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;
@@ -182,9 +182,9 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> either = getClientV2().getShowInfomation();
+                    Either<String, com.github.ironjan.metalonly.client.model.ShowInformation> either = getClientV2().getShowInfomation();
                     if(either.isRight()){
-                        com.github.ironjan.metalonly.client_library.model.ShowInformation showInformation = either.get();
+                        com.github.ironjan.metalonly.client.model.ShowInformation showInformation = either.get();
                         updateShowInfo(showInformation.getModerator(), showInformation.getGenre());
                     }
                     // We fail silently - otherwise the user could get confused
@@ -505,7 +505,7 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData() {
         HyperLog.d(TAG, "loadShowData()");
         try {
-            Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
+            Either<String, com.github.ironjan.metalonly.client.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
             if(showInfomation.isRight()){
                 displayShowData(showInfomation.get());
                 HyperLog.d(TAG, "loadShowData() - success");
@@ -527,7 +527,7 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     @UiThread
-    void displayShowData(com.github.ironjan.metalonly.client_library.model.ShowInformation showInformation) {
+    void displayShowData(com.github.ironjan.metalonly.client.model.ShowInformation showInformation) {
         HyperLog.d(TAG, "displayShowData(..)");
         if (viewShowInformation == null) {
             HyperLog.d(TAG, "displayShowData(..) - view was null");

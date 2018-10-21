@@ -1,12 +1,12 @@
-package com.codingspezis.android.metalonly.player.stream.track_info
+package com.codingspezis.android.metalonly.player.stream.trackinfo
 
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2
-import com.github.ironjan.metalonly.client_library.NoInternetException
-import com.github.ironjan.metalonly.client_library.model.StatsV2
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2
+import com.github.ironjan.metalonly.client.NoInternetException
+import com.github.ironjan.metalonly.client.model.StatsV2
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestClientException

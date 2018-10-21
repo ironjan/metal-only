@@ -1,4 +1,4 @@
-package com.github.ironjan.metalonly.client_library.model
+package com.github.ironjan.metalonly.client.model
 
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.GsonBuilder

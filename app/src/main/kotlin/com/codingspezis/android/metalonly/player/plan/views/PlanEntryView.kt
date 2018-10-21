@@ -10,7 +10,7 @@ import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.core.ShowInformation
 import com.codingspezis.android.metalonly.player.plan.ShowInformationDateHelper
 import com.codingspezis.android.metalonly.player.utils.ImageLoader
-import com.github.ironjan.metalonly.client_library.model.PlanEntry
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.ViewById
 import java.util.GregorianCalendar

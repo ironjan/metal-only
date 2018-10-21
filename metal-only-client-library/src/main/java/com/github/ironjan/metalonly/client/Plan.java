@@ -1,4 +1,4 @@
-package com.github.ironjan.metalonly.client_library;
+package com.github.ironjan.metalonly.client;
 
 import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

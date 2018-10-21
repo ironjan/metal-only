@@ -8,9 +8,9 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2
-import com.github.ironjan.metalonly.client_library.NoInternetException
-import com.github.ironjan.metalonly.client_library.model.PlanEntry
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2
+import com.github.ironjan.metalonly.client.NoInternetException
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background

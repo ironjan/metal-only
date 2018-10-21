@@ -1,4 +1,4 @@
-package com.github.ironjan.metalonly.client_library;
+package com.github.ironjan.metalonly.client;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
