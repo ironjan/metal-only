@@ -2,7 +2,7 @@ package com.github.ironjan.metalonly.client_library
 
 import arrow.core.Either
 import com.github.ironjan.metalonly.client_library.model.ShowInformation
-import com.github.ironjan.metalonly.client_library.model.Stats
+import com.github.ironjan.metalonly.client_library.model.StatsV2
 import com.github.ironjan.metalonly.client_library.model.Track
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
@@ -36,10 +36,10 @@ open class MetalOnlyClientV2Implementation : MetalOnlyClientV2 {
         }
     }
 
-    override fun getStats(): Either<String, Stats> {
+    override fun getStats(): Either<String, StatsV2> {
         FuelManager.instance.basePath = "http://mensaupb.herokuapp.com/metalonly"
 
-        val (_, _, result) = "/stats".httpGet().responseObject(Stats.Deserializer())
+        val (_, _, result) = "/stats".httpGet().responseObject(StatsV2.Deserializer())
         val (data, error) = result
 
         return if (error == null) {

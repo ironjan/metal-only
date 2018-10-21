@@ -1,7 +1,6 @@
 package com.github.ironjan.metalonly.client_library
 
 import android.content.Context
-import com.github.ironjan.metalonly.client_library.model.Stats
 import org.springframework.web.client.RestClientException
 
 /**
