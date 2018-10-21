@@ -528,19 +528,6 @@ public class StreamControlActivity extends AppCompatActivity {
         }
     }
 
-    private void debugLoad() {
-        Either<String, Track> either = getClientV2().getTrack();
-        String msg;
-        if(either.isRight()) {
-            final Track track = either.toOption().get();
-            msg = track.getArtist() + " - " + track.getTitle();
-        } else {
-            msg = either.swap().toOption().get();
-        }
-        HyperLog.e(TAG, msg);
-        debugLoad();
-    }
-
     @UiThread
     void displayShowData(com.github.ironjan.metalonly.client_library.model.ShowInformation showInformation) {
         HyperLog.d(TAG, "displayShowData(..)");
