@@ -1,20 +1,18 @@
 package com.github.ironjan.metalonly.client_library
 
 import arrow.core.Either
+import com.github.ironjan.metalonly.client_library.model.ShowInformation
 import com.github.ironjan.metalonly.client_library.model.Track
-import com.github.ironjan.metalonly.client_library.model.Track.Deserializer
-import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.fuel.core.Request
-import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.result.Result
 import org.androidannotations.annotations.EBean
 
 @EBean(scope = EBean.Scope.Singleton)
 open class MetalOnlyClientV2Implementation : MetalOnlyClientV2 {
+
     override fun getTrack(): Either<String, Track> {
-        val (_, _, result) = getAndDeserialize("/track", Deserializer())
+        FuelManager.instance.basePath = "http://mensaupb.herokuapp.com/metalonly"
+        val (_, _, result) = "/track".httpGet().responseObject(Track.Deserializer())
         val (data, error) = result
 
         return if (error == null) {
@@ -24,8 +22,17 @@ open class MetalOnlyClientV2Implementation : MetalOnlyClientV2 {
         }
     }
 
-    fun getAndDeserialize(path: String, deserializer: Deserializer): Triple<Request, Response, Result<Track, FuelError>> {
+    override fun getShowInfomation(): Either<String, ShowInformation> {
         FuelManager.instance.basePath = "http://mensaupb.herokuapp.com/metalonly"
-        return path.httpGet().responseObject(deserializer)
+
+        val (_, _, result) = "/showinformation".httpGet().responseObject(ShowInformation.Deserializer())
+        val (data, error) = result
+
+        return if (error == null) {
+            Either.right(data!!)
+        } else {
+            Either.left(error.localizedMessage)
+        }
     }
+
 }
