@@ -182,7 +182,7 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    BasicShowInformation stats = getClient().getStats();
+                    Stats stats = getClient().getStats();
                     if (stats != null) {
                         String moderator = stats.getModerator();
                         String genre = stats.getGenre();
@@ -330,8 +330,7 @@ public class StreamControlActivity extends AppCompatActivity {
         feedbackMailer.sendLogs();
     }
 
-    @OptionsItem(R.id.mnu_testing)
-    void startTesting() {TemporaryTestActivity_.intent(this).start(); }
+
     @Click
     void buttonPlayClicked() {
         long currentTime = System.currentTimeMillis();
