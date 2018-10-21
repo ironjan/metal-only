@@ -77,7 +77,7 @@ open class PlanFragment : Fragment() {
             if (context == null) return
             HyperLog.d(TAG, "loadPlan()")
             val either = MetalOnlyClientV2.getClient(context!!).getPlan()
-            if(either.isRight()) {
+            if (either.isRight()) {
                 either.map(this::apiResponseReceived)
             } else {
                 either.mapLeft(this::updateEmptyViewOnFailure)
@@ -91,7 +91,6 @@ open class PlanFragment : Fragment() {
             val text = plan_failed_to_load + ":\n" + e.message
             updateEmptyViewOnFailure(text)
         }
-
     }
 
     @UiThread
@@ -113,7 +112,7 @@ open class PlanFragment : Fragment() {
         val shows = plan
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
-        if(activity != null){
+        if (activity != null) {
             val adapter = PlanAdapter(activity!!, listItems)
 
             list!!.adapter = adapter
@@ -136,12 +135,11 @@ open class PlanFragment : Fragment() {
         if (item is PlanRealEntryItem) {
             val entryItem = item
             val activity = activity
-            if(activity != null) {
+            if (activity != null) {
                 val builder = AlertDialog.Builder(activity)
                 builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.planEntry!!, activity!!))
                 builder.show()
             }
         }
-
     }
 }

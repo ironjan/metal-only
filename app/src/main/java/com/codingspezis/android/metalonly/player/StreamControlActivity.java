@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.crashlytics.CrashlyticsInitializer_;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
@@ -37,7 +36,6 @@ import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
 import com.github.ironjan.metalonly.client_library.MetalOnlyClientV2;
 import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.model.Track;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;

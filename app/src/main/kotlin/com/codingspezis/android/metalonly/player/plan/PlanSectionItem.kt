@@ -7,5 +7,4 @@ class PlanSectionItem(val title: String) : PlanItem {
 
     override val isSection: Boolean
         get() = true
-
 }

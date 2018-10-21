@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
-import com.codingspezis.android.metalonly.player.wish.WishFragment;
-import com.codingspezis.android.metalonly.player.wish.WishFragment_;
+import com.codingspezis.android.metalonly.player.fragments.WishFragment;
+import com.codingspezis.android.metalonly.player.fragments.WishFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -36,7 +36,7 @@ public class WishActivity extends AppCompatActivity {
         Bundle extras = (intent != null) ? intent.getExtras() : null;
         Bundle fragmentArgs = (extras != null) ? extras : new Bundle();
 
-        WishFragment wishFragment = WishFragment_.newInstance(fragmentArgs);
+        WishFragment wishFragment = WishFragment_.Companion.newInstance(fragmentArgs);
 
         getSupportFragmentManager()
                 .beginTransaction()

@@ -48,7 +48,7 @@ open class FavoritesFragment : Fragment() {
 
     @AfterViews
     internal fun bindContent() {
-        if(context == null || activity == null) {
+        if (context == null || activity == null) {
             return
         }
 
@@ -228,5 +228,4 @@ open class FavoritesFragment : Fragment() {
             alert.show()
         }
     }
-
 }

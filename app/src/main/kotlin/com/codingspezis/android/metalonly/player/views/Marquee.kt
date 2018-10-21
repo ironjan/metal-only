@@ -22,8 +22,11 @@ class Marquee(context: Context, attrs: AttributeSet) : AppCompatTextView(context
         gravity = Gravity.CENTER_HORIZONTAL
     }
 
-    override fun onFocusChanged(focused: Boolean, direction: Int,
-                                previouslyFocusedRect: Rect?) {
+    override fun onFocusChanged(
+        focused: Boolean,
+        direction: Int,
+        previouslyFocusedRect: Rect?
+    ) {
         if (focused) {
             super.onFocusChanged(focused, direction, previouslyFocusedRect)
         }

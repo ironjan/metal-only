@@ -9,5 +9,4 @@ class PlanRealEntryItem(val planEntry: PlanEntry) : PlanItem {
 
     override val isSection: Boolean
         get() = false
-
 }

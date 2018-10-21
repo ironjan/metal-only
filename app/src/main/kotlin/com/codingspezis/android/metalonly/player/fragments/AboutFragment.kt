@@ -70,5 +70,4 @@ open class AboutFragment : Fragment() {
         prefs!!.edit().isCrashlyticsDisabled.put(isCrashlyticsDisabled).apply()
         super.onPause()
     }
-
 }

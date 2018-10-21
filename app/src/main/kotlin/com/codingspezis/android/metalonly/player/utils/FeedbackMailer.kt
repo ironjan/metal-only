@@ -14,7 +14,6 @@ import org.androidannotations.annotations.RootContext
 import org.androidannotations.annotations.res.StringRes
 import java.io.File
 
-
 @EBean
 open class FeedbackMailer {
     @RootContext
@@ -43,7 +42,7 @@ open class FeedbackMailer {
         val extendedBody = body + "\n\n\n---\n" +
                 "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
                 "Android: ${Build.VERSION.RELEASE}\n" +
-                "Model: ${Build.MODEL}";
+                "Model: ${Build.MODEL}"
 
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))
@@ -70,7 +69,7 @@ open class FeedbackMailer {
         val extendedBody = body + "\n\n\n---\n" +
                 "$app_name\nVersion: ${BuildConfig.VERSION_NAME}\n" +
                 "Android: ${Build.VERSION.RELEASE}\n" +
-                "Model: ${Build.MODEL}";
+                "Model: ${Build.MODEL}"
 
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"))
         emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailaddress_codingspezis))

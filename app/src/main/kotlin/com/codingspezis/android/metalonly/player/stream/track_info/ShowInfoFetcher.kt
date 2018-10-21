@@ -77,7 +77,6 @@ class ShowInfoFetcher
         } catch (e: InterruptedException) {
             // everything is fine
         }
-
     }
 
     companion object {

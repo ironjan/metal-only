@@ -22,6 +22,5 @@ object CopyStreamImplementation {
         } catch (ex: Exception) {
             HyperLog.e(CopyStreamImplementation::class.java.simpleName, ex.message, ex)
         }
-
     }
 }
