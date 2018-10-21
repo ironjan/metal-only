@@ -186,11 +186,10 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    Stats stats = getClient().getStats();
-                    if (stats != null) {
-                        String moderator = stats.getModerator();
-                        String genre = stats.getGenre();
-                        updateShowInfo(moderator, genre);
+                    Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> either = getClientV2().getShowInfomation();
+                    if(either.isRight()){
+                        com.github.ironjan.metalonly.client_library.model.ShowInformation showInformation = either.get();
+                        updateShowInfo(showInformation.getModerator(), showInformation.getGenre());
                     }
                     // We fail silently - otherwise the user could get confused
                 } catch (ResourceAccessException | NoInternetException e) {
@@ -515,7 +514,7 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData() {
         HyperLog.d(TAG, "loadShowData()");
         try {
-            final Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
+            Either<String, com.github.ironjan.metalonly.client_library.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
             if(showInfomation.isRight()){
                 displayShowData(showInfomation.get());
                 HyperLog.d(TAG, "loadShowData() - success");
