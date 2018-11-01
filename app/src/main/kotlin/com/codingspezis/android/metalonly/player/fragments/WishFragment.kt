@@ -17,8 +17,8 @@ import com.codingspezis.android.metalonly.player.siteparser.HTTPGrabber
 import com.codingspezis.android.metalonly.player.wish.WishPrefs_
 import com.github.ironjan.metalonly.client.MetalOnlyClientV2
 import com.github.ironjan.metalonly.client.NoInternetException
-import com.github.ironjan.metalonly.client.WishSender
 import com.github.ironjan.metalonly.client.model.StatsV2
+import com.github.ironjan.metalonly.client.model.Wish
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
@@ -36,7 +36,7 @@ import java.util.Locale
 
 @EFragment(R.layout.fragment_wish)
 @OptionsMenu(R.menu.wishmenu)
-open class WishFragment : Fragment(), WishSender.Callback {
+open class WishFragment : Fragment() {
 
     @JvmField
     @ViewById(R.id.btnSend)
@@ -151,7 +151,7 @@ open class WishFragment : Fragment(), WishSender.Callback {
 
         sb.append(' ') // Append space to keep distance with next text
 
-        if (stats.canWish) {
+        if (true) {
             editArtist?.setText("")
             editArtist?.isEnabled = true
             editTitle?.setText("")
@@ -163,7 +163,7 @@ open class WishFragment : Fragment(), WishSender.Callback {
             editTitle?.isEnabled = false
         }
 
-        if (stats.canGreet) {
+        if (true) {
             editRegard?.setText("")
             editRegard?.isEnabled = true
         } else {
@@ -243,9 +243,9 @@ open class WishFragment : Fragment(), WishSender.Callback {
         val editor = wishPrefs?.edit()
 
         editor?.nick()?.put(editNick?.text.toString())
-            editor?.artist()?.put(editArtist?.text.toString())
-            editor?.title()?.put(editTitle?.text.toString())
-            editor?.greeting()?.put(editRegard?.text.toString())
+        editor?.artist()?.put(editArtist?.text.toString())
+        editor?.title()?.put(editTitle?.text.toString())
+        editor?.greeting()?.put(editRegard?.text.toString())
         editor?.apply()
     }
 
@@ -305,21 +305,21 @@ open class WishFragment : Fragment(), WishSender.Callback {
             }
 
             val nick = editNick?.text.toString()
-            val artist = editArtist?.text.toString() ?: ""
+            val artist = editArtist?.text.toString()
             val title = editTitle?.text.toString()
             val greet = editRegard?.text.toString()
 
-            val canWish = stats?.canWish ?: false
-            val hasWish = !TextUtils.isEmpty(artist) && !TextUtils.isEmpty(title)
-
             HyperLog.d(TAG, "sendWishGreet() - Prepared sending")
-            if (canWish && hasWish) {
-                WishSender(this, nick, greet, artist, title).send()
-                HyperLog.d(TAG, "sendWishGreet() - Sent wish with greeting")
+            val wish = Wish(nick, artist, title, greet)
+            val either = MetalOnlyClientV2.getClient(context!!).sendWish(wish)
+
+            if (either.isRight()) {
+                either.map(this::onSuccess)
             } else {
-                WishSender(this, nick, greet, null, null).send()
-                HyperLog.d(TAG, "sendWishGreet() - Sent greeting, dropped wish")
+                either.mapLeft(this::onFail)
             }
+
+            HyperLog.d(TAG, "sendWishGreet() - Sent wish with greeting")
         } catch (e: NoInternetException) {
             HyperLog.d(TAG, "sendWishGreet() - No internet notification")
             notifyUser(R.string.no_internet)
@@ -367,7 +367,7 @@ open class WishFragment : Fragment(), WishSender.Callback {
         }
     }
 
-    override fun onSuccess() {
+    fun onSuccess(b: Boolean) {
         showLoading(false)
         notifyUser(R.string.sent)
         clearSongAndWish()
@@ -375,15 +375,10 @@ open class WishFragment : Fragment(), WishSender.Callback {
         activity?.finish()
     }
 
-    override fun onFail() {
+    fun onFail(msg: String) {
         showLoading(false)
-        notifyUser(R.string.sending_error)
-        enableSendButton()
-    }
-
-    override fun onException(e: Exception) {
-        showLoading(false)
-        notifyUser(e.message ?: "Unknown error.")
+        val userMsg = resources.getString(R.string.sending_error).format(msg)
+        notifyUser(userMsg)
         enableSendButton()
     }
 

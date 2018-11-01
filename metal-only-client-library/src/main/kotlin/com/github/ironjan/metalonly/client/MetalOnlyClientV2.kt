@@ -6,6 +6,7 @@ import com.github.ironjan.metalonly.client.model.PlanEntry
 import com.github.ironjan.metalonly.client.model.StatsV2
 import com.github.ironjan.metalonly.client.model.ShowInformation
 import com.github.ironjan.metalonly.client.model.Track
+import com.github.ironjan.metalonly.client.model.Wish
 
 interface MetalOnlyClientV2 {
     fun getTrack(): Either<String, Track>
@@ -15,6 +16,8 @@ interface MetalOnlyClientV2 {
     fun getStats(): Either<String, StatsV2>
 
     fun getPlan(): Either<String, Array<PlanEntry>>
+
+    fun sendWish(wish: Wish): Either<String, Boolean>
 
     companion object {
 
