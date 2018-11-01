@@ -8,5 +8,4 @@ package com.codingspezis.android.metalonly.player.plan
 interface PlanItem {
 
     val isSection: Boolean
-
 }

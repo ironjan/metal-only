@@ -1,6 +1,6 @@
-package com.codingspezis.android.metalonly.player.helper
+package com.codingspezis.android.metalonly.player.plan
 
-import com.codingspezis.android.metalonly.player.core.ShowInformation
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import java.text.SimpleDateFormat
 
 /**
@@ -11,16 +11,16 @@ class ShowInformationDateHelper {
         private val DATE_FORMAT_TIME = SimpleDateFormat("HH:mm")
         private val DATE_FORMAT_DATE = SimpleDateFormat("dd.MM.yy")
 
-        fun formattedDateString(data: ShowInformation): String {
-            return DATE_FORMAT_DATE.format(data.startDate.time)
+        fun formattedDateString(data: PlanEntry): String {
+            return DATE_FORMAT_DATE.format(data.start.time)
         }
 
-        fun startTimeString(data: ShowInformation): CharSequence {
-            return DATE_FORMAT_TIME.format(data.startDate.time)
+        fun startTimeString(data: PlanEntry): CharSequence {
+            return DATE_FORMAT_TIME.format(data.start.time)
         }
 
-        fun endTimeString(data: ShowInformation): String {
-            return DATE_FORMAT_TIME.format(data.endDate.time)
+        fun endTimeString(data: PlanEntry): String {
+            return DATE_FORMAT_TIME.format(data.end.time)
         }
 
         /**
@@ -29,7 +29,7 @@ class ShowInformationDateHelper {
           * @return time information, e.g. "14:00 - 16:00"
           */
         @JvmStatic
-        fun fullTimeString(data: ShowInformation): String {
+        fun fullTimeString(data: PlanEntry): String {
             return "${startTimeString(data)} - ${endTimeString(data)}"
         }
     }

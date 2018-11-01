@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codingspezis.android.metalonly.player.core.BasicShowInformation;
 import com.codingspezis.android.metalonly.player.core.HistoricTrack;
 import com.codingspezis.android.metalonly.player.crashlytics.CrashlyticsInitializer_;
 import com.codingspezis.android.metalonly.player.favorites.SongSaver;
@@ -31,13 +30,12 @@ import com.codingspezis.android.metalonly.player.stream.PlayerService;
 import com.codingspezis.android.metalonly.player.stream.SongAdapter;
 import com.codingspezis.android.metalonly.player.stream.metadata.Metadata;
 import com.codingspezis.android.metalonly.player.stream.metadata.MetadataFactory;
-import com.codingspezis.android.metalonly.player.stream.track_info.ShowInfoIntentConstants;
+import com.codingspezis.android.metalonly.player.stream.trackinfo.ShowInfoIntentConstants;
 import com.codingspezis.android.metalonly.player.utils.FeedbackMailer;
 import com.codingspezis.android.metalonly.player.utils.UrlConstants;
 import com.codingspezis.android.metalonly.player.views.ShowInformation;
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient;
-import com.github.ironjan.metalonly.client_library.NoInternetException;
-import com.github.ironjan.metalonly.client_library.Stats;
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2;
+import com.github.ironjan.metalonly.client.NoInternetException;
 import com.hypertrack.hyperlog.HyperLog;
 
 import org.androidannotations.annotations.AfterInject;
@@ -57,6 +55,8 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URLEncoder;
 import java.util.List;
+
+import arrow.core.*;
 
 /**
  * main GUI activity
@@ -182,11 +182,10 @@ public class StreamControlActivity extends AppCompatActivity {
             public void run() {
                 if (BuildConfig.DEBUG) LOGGER.debug("run()");
                 try {
-                    BasicShowInformation stats = getClient().getStats();
-                    if (stats != null) {
-                        String moderator = stats.getModerator();
-                        String genre = stats.getGenre();
-                        updateShowInfo(moderator, genre);
+                    Either<String, com.github.ironjan.metalonly.client.model.ShowInformation> either = getClientV2().getShowInfomation();
+                    if(either.isRight()){
+                        com.github.ironjan.metalonly.client.model.ShowInformation showInformation = either.get();
+                        updateShowInfo(showInformation.getModerator(), showInformation.getGenre());
                     }
                     // We fail silently - otherwise the user could get confused
                 } catch (ResourceAccessException | NoInternetException e) {
@@ -215,8 +214,8 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private MetalOnlyClient getClient() {
-        return MetalOnlyClient.Companion.getClient(this);
+    private MetalOnlyClientV2 getClientV2() {
+        return MetalOnlyClientV2.Companion.getClient(this);
     }
 
     @Override
@@ -327,8 +326,9 @@ public class StreamControlActivity extends AppCompatActivity {
 
     @OptionsItem(R.id.mnu_feedback)
     void sendFeedback() {
-        feedbackMailer.sendEmail();
+        feedbackMailer.sendLogs();
     }
+
 
     @Click
     void buttonPlayClicked() {
@@ -505,8 +505,15 @@ public class StreamControlActivity extends AppCompatActivity {
     void loadShowData() {
         HyperLog.d(TAG, "loadShowData()");
         try {
-            displayShowData(getClient().getStats());
-            HyperLog.d(TAG, "loadShowData() - success");
+            Either<String, com.github.ironjan.metalonly.client.model.ShowInformation> showInfomation = getClientV2().getShowInfomation();
+            if(showInfomation.isRight()){
+                displayShowData(showInfomation.get());
+                HyperLog.d(TAG, "loadShowData() - success");
+            } else {
+                String msg = showInfomation.swap().get();
+                HyperLog.d(TAG, "loadShowData() - Error: " + msg);
+                showToast(msg);
+            }
         } catch (ResourceAccessException e) {
             HyperLog.d(TAG, "loadShowData() - ResourceAccessException", e);
             showToast(R.string.stats_failed_to_load);
@@ -520,20 +527,20 @@ public class StreamControlActivity extends AppCompatActivity {
     }
 
     @UiThread
-    void displayShowData(Stats stats) {
+    void displayShowData(com.github.ironjan.metalonly.client.model.ShowInformation showInformation) {
         HyperLog.d(TAG, "displayShowData(..)");
         if (viewShowInformation == null) {
             HyperLog.d(TAG, "displayShowData(..) - view was null");
             return;
         }
 
-        if (stats != null) {
-            viewShowInformation.setStats(stats);
+        if (showInformation != null) {
+            viewShowInformation.setShowInformation(showInformation.getModerator(), showInformation.getGenre());
             HyperLog.d(TAG, "displayShowData(..) - success");
         } else {
             HyperLog.d(TAG, "displayShowData(..) - stats was null");
             showToast(R.string.stats_failed_to_load);
-            viewShowInformation.setStats(new Stats());
+            viewShowInformation.setShowInformation("Unbekannt", "");
         }
 
     }

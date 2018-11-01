@@ -47,7 +47,7 @@ open class ShowInformation(context: Context, attrs: AttributeSet) : LinearLayout
         progress?.visibility = View.GONE
     }
 
-    fun setStats(stats: com.github.ironjan.metalonly.client_library.Stats) {
-        updateViews(stats.genre, stats.moderator)
+    fun setShowInformation(moderator: String, genre: String) {
+        updateViews(genre, moderator)
     }
 }

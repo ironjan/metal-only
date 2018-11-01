@@ -1,11 +1,12 @@
-package com.codingspezis.android.metalonly.player.stream.track_info
+package com.codingspezis.android.metalonly.player.stream.trackinfo
 
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import com.codingspezis.android.metalonly.player.BuildConfig
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient
-import com.github.ironjan.metalonly.client_library.NoInternetException
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2
+import com.github.ironjan.metalonly.client.NoInternetException
+import com.github.ironjan.metalonly.client.model.StatsV2
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestClientException
@@ -19,7 +20,7 @@ import org.springframework.web.client.RestClientException
 class ShowInfoFetcher
 (private val context: Context) : Runnable {
     private val LOGGER = LoggerFactory.getLogger(ShowInfoFetcher::class.java)
-    private val api: MetalOnlyClient = MetalOnlyClient.getClient(context)
+    private val client: MetalOnlyClientV2 = MetalOnlyClientV2.getClient(context)
     private var active: Boolean = false
 
     /**
@@ -36,7 +37,7 @@ class ShowInfoFetcher
         active = true
         while (active) {
             try {
-                broadcastCurrentShowInfo(api.getStats())
+                client.getStats().map { it -> broadcastCurrentShowInfo(it) }
             } catch (e: RestClientException) {
                 /* Currently, all exceptions are evil. We need to find a better method to handle
                  * these - currently, there is nothing to do and we just stop execution to not waste
@@ -57,11 +58,11 @@ class ShowInfoFetcher
         }
     }
 
-    private fun broadcastCurrentShowInfo(stats: com.github.ironjan.metalonly.client_library.Stats?) {
-        val track = stats?.track
-        val artist = track?.artist ?: "Unbekannter Interpret"
-        val title = track?.title ?: "Unbekannter Titel"
-        val moderator = stats?.moderator ?: "Unbekannter Moderator"
+    private fun broadcastCurrentShowInfo(stats: StatsV2) {
+        val track = stats.track
+        val artist = track.artist
+        val title = track.title
+        val moderator = stats.showInformation.moderator
 
         val intent = Intent(ShowInfoIntentConstants.INTENT_NEW_TRACK)
         intent.putExtra(ShowInfoIntentConstants.KEY_ARTIST, artist)
@@ -76,7 +77,6 @@ class ShowInfoFetcher
         } catch (e: InterruptedException) {
             // everything is fine
         }
-
     }
 
     companion object {

@@ -48,7 +48,7 @@
     <string name="artist">Artist:</string>
     <string name="title">Titel:</string>
     <string name="sent">Erfolgreich gesendet</string>
-    <string name="sending_error">Fehler beim Senden</string>
+    <string name="sending_error">Fehler beim Senden: %s</string>
     <string name="impossible">Nicht möglich</string>
     <string name="no_wishes">Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich.</string>
     <string name="no_wishes_short">Zur Zeit sind keine Wünsche möglich</string>

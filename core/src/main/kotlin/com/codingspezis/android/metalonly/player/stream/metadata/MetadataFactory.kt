@@ -36,11 +36,9 @@ object MetadataFactory {
             val interpret: String = data.substring(0, data.indexOf(" - ")).trim { it <= ' ' }
             val title: String = data.substring(data.indexOf(" - ") + 2).trim { it <= ' ' }
             return createMetadata(moderator, genre, interpret, title)
-
         } catch (e: Exception) {
             return DEFAULT_METADATA
         }
-
     }
 
     /**

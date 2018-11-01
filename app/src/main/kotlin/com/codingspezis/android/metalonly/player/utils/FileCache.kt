@@ -81,7 +81,6 @@ class FileCache(private val context: Context) : Cache {
             } catch (e: IOException) {
                 HyperLog.e(TAG, e.message, e)
             }
-
         }
         return null
     }
@@ -151,6 +150,5 @@ class FileCache(private val context: Context) : Cache {
         val MIN_SIZE = 64
 
         private val TAG = FileCache::class.java.simpleName
-
     }
 }

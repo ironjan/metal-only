@@ -48,7 +48,7 @@ open class AboutFragment : Fragment() {
 
     @Click(R.id.buttonFeedback)
     internal fun buttonFeedbackClicked() {
-        feedbackMailer!!.sendEmail()
+        feedbackMailer!!.sendLogs()
     }
 
     /**
@@ -70,5 +70,4 @@ open class AboutFragment : Fragment() {
         prefs!!.edit().isCrashlyticsDisabled.put(isCrashlyticsDisabled).apply()
         super.onPause()
     }
-
 }

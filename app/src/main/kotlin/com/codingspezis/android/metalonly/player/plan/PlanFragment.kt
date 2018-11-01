@@ -8,8 +8,9 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
-import com.github.ironjan.metalonly.client_library.MetalOnlyClient
-import com.github.ironjan.metalonly.client_library.NoInternetException
+import com.github.ironjan.metalonly.client.MetalOnlyClientV2
+import com.github.ironjan.metalonly.client.NoInternetException
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import com.hypertrack.hyperlog.HyperLog
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Background
@@ -75,7 +76,12 @@ open class PlanFragment : Fragment() {
         try {
             if (context == null) return
             HyperLog.d(TAG, "loadPlan()")
-            apiResponseReceived(MetalOnlyClient.getClient(context).getPlan())
+            val either = MetalOnlyClientV2.getClient(context!!).getPlan()
+            if (either.isRight()) {
+                either.map(this::apiResponseReceived)
+            } else {
+                either.mapLeft(this::updateEmptyViewOnFailure)
+            }
         } catch (e: NoInternetException) {
             HyperLog.d(TAG, "loadPlan() - no internet")
             updateEmptyViewOnFailure(no_internet)
@@ -85,11 +91,10 @@ open class PlanFragment : Fragment() {
             val text = plan_failed_to_load + ":\n" + e.message
             updateEmptyViewOnFailure(text)
         }
-
     }
 
     @UiThread
-    internal open fun apiResponseReceived(plan: com.github.ironjan.metalonly.client_library.Plan?) {
+    internal open fun apiResponseReceived(plan: Array<PlanEntry>) {
         HyperLog.d(TAG, "apiResponseReceived(...)")
 
         if (plan == null) {
@@ -104,13 +109,15 @@ open class PlanFragment : Fragment() {
 
         HyperLog.d(TAG, "apiResponseReceived() - Neither plan nor activitiy was not null, updating ui")
 
-        val shows = plan.entries
+        val shows = plan
 
         val listItems = planEntryToItemConverter!!.convertToPlan(shows)
-        val adapter = PlanAdapter(activity, listItems)
+        if (activity != null) {
+            val adapter = PlanAdapter(activity!!, listItems)
 
-        list!!.adapter = adapter
-        list!!.setSelection(planEntryToItemConverter!!.todayStartIndex())
+            list!!.adapter = adapter
+            list!!.setSelection(planEntryToItemConverter!!.todayStartIndex())
+        }
 
         HyperLog.d(TAG, "apiResponseReceived() - done")
     }
@@ -127,10 +134,12 @@ open class PlanFragment : Fragment() {
     internal fun entryClicked(item: Any) {
         if (item is PlanRealEntryItem) {
             val entryItem = item
-            val builder = AlertDialog.Builder(activity)
-            builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.showInformation!!, activity))
-            builder.show()
+            val activity = activity
+            if (activity != null) {
+                val builder = AlertDialog.Builder(activity)
+                builder.setItems(R.array.plan_options_array, PlanEntryClickListener(entryItem.planEntry!!, activity!!))
+                builder.show()
+            }
         }
-
     }
 }

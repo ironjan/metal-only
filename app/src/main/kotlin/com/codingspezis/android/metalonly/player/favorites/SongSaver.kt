@@ -22,8 +22,11 @@ import java.util.LinkedList
  * @param limit maximum of songs (FIFO) - if value <= 0 songs are unlimited
 
  */
-class SongSaver(private val context: Context,
-                private val fileName: String, limit: Int) {
+class SongSaver(
+    private val context: Context,
+    private val fileName: String,
+    limit: Int
+) {
     private var limit: Int = 0
     private val trackList: LinkedList<HistoricTrack> // main data
     private var changes: Boolean = false // is there share to save?
@@ -76,7 +79,6 @@ class SongSaver(private val context: Context,
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-
     }
 
     /**
@@ -108,7 +110,6 @@ class SongSaver(private val context: Context,
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
     }
 
@@ -239,5 +240,4 @@ class SongSaver(private val context: Context,
         val JSON_STRING_THUMB = "thumb"
         val JSON_LONG_DATE = "date"
     }
-
 }

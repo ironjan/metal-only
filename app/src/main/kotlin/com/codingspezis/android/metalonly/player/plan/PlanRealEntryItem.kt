@@ -1,13 +1,12 @@
 package com.codingspezis.android.metalonly.player.plan
 
-import com.codingspezis.android.metalonly.player.core.ShowInformation
+import com.github.ironjan.metalonly.client.model.PlanEntry
 
 /**
  * Represents a "real" entry in the plan, i.e. a moderated show
  */
-class PlanRealEntryItem(val showInformation: ShowInformation?) : PlanItem {
+class PlanRealEntryItem(val planEntry: PlanEntry) : PlanItem {
 
     override val isSection: Boolean
         get() = false
-
 }

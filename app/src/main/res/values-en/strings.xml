@@ -51,7 +51,7 @@
     <string name="artist">Artist:</string>
     <string name="title">Title:</string>
     <string name="sent">Sent</string>
-    <string name="sending_error">Sending error</string>
+    <string name="sending_error">Sending error: %s</string>
     <string name="impossible">not possible</string>
     <string name="no_wishes">Sorry, the playlist is filled completely. You cannot submit any wishes.</string>
     <string name="no_wishes_short">No wishes right now</string>

@@ -4,7 +4,6 @@ apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion project.properties.compileSdkVersion
-    buildToolsVersion project.properties.buildToolsVersion
 
     packagingOptions {
         // prevents Error: duplicate files during packaging of APK
@@ -17,7 +16,7 @@ android {
     
     defaultConfig {
         minSdkVersion project.properties.minSdkVersion
-        targetSdkVersion project.properties.targetSdkVersion
+targetSdkVersion project.properties.targetSdkVersion
         versionCode 1
         versionName "0.1"
 
@@ -68,28 +67,43 @@ android {
 }
 
 dependencies {
-    compile project(path: ":core")
+    implementation project(path: ":core")
 
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: "com.android.support", module: "support-annotations"
     })
 
-    compile "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
-    compile 'com.hypertrack:hyperlog:0.0.9'
-    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
-    compile "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
-    compile "org.androidannotations:androidannotations-api:$androidannotations_version"
-    compile "org.androidannotations:rest-spring-api:$androidannotations_version"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    implementation 'com.hypertrack:hyperlog:0.0.10'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "org.springframework.android:spring-android-rest-template:$spring_android_rest_template_version"
+    implementation "org.androidannotations:androidannotations-api:$androidannotations_version"
+    implementation "org.androidannotations:rest-spring-api:$androidannotations_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
 
     kapt "org.androidannotations:androidannotations:$androidannotations_version"
     kapt "org.androidannotations:rest-spring:$androidannotations_version"
 
-    testCompile "junit:junit:$junit_version"
+    implementation "com.github.kittinunf.fuel:fuel:$fuel_version" //for JVM
+    implementation "com.github.kittinunf.fuel:fuel-android:$fuel_version" //for Android
+    implementation "com.github.kittinunf.fuel:fuel-rxjava:$fuel_version" //for RxJava support
+    implementation "com.github.kittinunf.fuel:fuel-gson:$fuel_version" //for Gson support
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+
+
+    testImplementation "junit:junit:$junit_version"
 }
 
 
 kapt {
     correctErrorTypes = true
-    generateStubs = true
+
+    arguments {
+        arg("androidManifestFile", variant.outputs[0]?.processResources?.manifestFile ?: "")
+    }
 }

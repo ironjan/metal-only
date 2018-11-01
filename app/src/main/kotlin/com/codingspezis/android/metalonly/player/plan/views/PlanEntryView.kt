@@ -8,8 +8,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.codingspezis.android.metalonly.player.R
 import com.codingspezis.android.metalonly.player.core.ShowInformation
-import com.codingspezis.android.metalonly.player.helper.ShowInformationDateHelper
+import com.codingspezis.android.metalonly.player.plan.ShowInformationDateHelper
 import com.codingspezis.android.metalonly.player.utils.ImageLoader
+import com.github.ironjan.metalonly.client.model.PlanEntry
 import org.androidannotations.annotations.EViewGroup
 import org.androidannotations.annotations.ViewById
 import java.util.GregorianCalendar
@@ -18,7 +19,7 @@ import java.util.GregorianCalendar
  * Custom view to display [ShowInformation]
  */
 @EViewGroup(R.layout.view_list_row_plan)
-open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs), CustomDataView<ShowInformation> {
+open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayout(context, attrs), CustomDataView<PlanEntry> {
 
     @JvmField
     @ViewById
@@ -43,25 +44,25 @@ open class PlanEntryView(context: Context, attrs: AttributeSet?) : RelativeLayou
 
     var moderator: String = ""
 
-    override fun bind(t: ShowInformation) {
-        txtTitle?.text = t.showTitle
-        txtMod?.text = t.moderator
+    override fun bind(t: PlanEntry) {
+        txtTitle?.text = t.showInformation.show
+        txtMod?.text = t.showInformation.moderator
         txtTime?.text = ShowInformationDateHelper.fullTimeString(t)
-        txtGenre?.text = t.genre
+        txtGenre?.text = t.showInformation.genre
         progress?.progress = 100 - computeShowProgress(t)
 
-        if (moderator != t.moderator) {
-            moderator = t.moderator
+        if (moderator != t.showInformation.moderator) {
+            moderator = t.showInformation.moderator
             if (modImage != null) {
                 imageLoader.loadImage(moderator, modImage!!)
             }
         }
     }
 
-    private fun computeShowProgress(planData: ShowInformation): Int {
+    private fun computeShowProgress(planData: PlanEntry): Int {
         val cal = GregorianCalendar()
-        val timeLeftInMillis = (planData.endDate.time - cal.timeInMillis).toFloat()
-        val totalDurationInMillis = (planData.endDate.time - planData.startDate.time).toFloat()
+        val timeLeftInMillis = (planData.end.time - cal.timeInMillis).toFloat()
+        val totalDurationInMillis = (planData.end.time - planData.start.time).toFloat()
 
         return (timeLeftInMillis / totalDurationInMillis * 100).toInt()
     }

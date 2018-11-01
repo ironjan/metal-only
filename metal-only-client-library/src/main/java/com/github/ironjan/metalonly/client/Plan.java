@@ -1,8 +1,9 @@
-package com.github.ironjan.metalonly.client_library;
+package com.github.ironjan.metalonly.client;
 
 import com.codingspezis.android.metalonly.player.core.ShowInformation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +36,7 @@ public class Plan {
     }
 
     @JsonProperty("plan")
+    @SerializedName("plan")
     public void setPlanEntries(PlanEntry[] plan) {
         entries.clear();
         Collections.addAll(entries, plan);
