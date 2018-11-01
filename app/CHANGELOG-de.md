@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.19-17]
+Complete rewrite with new API and merged forgotten changes.
+
 ## [0.6.19-16]
 Complete rewrite with new API.
 
