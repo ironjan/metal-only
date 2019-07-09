@@ -20,7 +20,7 @@ configurations {
 
 android {
     compileSdkVersion project.properties.compileSdkVersion
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
 
     packagingOptions {
         // prevents Error: duplicate files during packaging of APK
