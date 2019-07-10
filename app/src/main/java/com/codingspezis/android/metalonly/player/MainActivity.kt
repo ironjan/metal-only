@@ -10,15 +10,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
+            R.id.navigation_wish -> {
                 textMessage.setText(R.string.title_wishes)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
+            R.id.action_play_stop -> {
                 textMessage.setText(R.string.title_play)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
+            R.id.navigation_plan -> {
                 textMessage.setText(R.string.title_plan)
                 return@OnNavigationItemSelectedListener true
             }
