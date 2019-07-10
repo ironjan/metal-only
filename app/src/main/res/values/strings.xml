@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Metal Only</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_wishes">Wümsche/Grüße</string>
+    <string name="title_play">Play</string>
+    <string name="title_stop">Stop</string>
+    <string name="title_plan">Sendeplan</string>
 </resources>
