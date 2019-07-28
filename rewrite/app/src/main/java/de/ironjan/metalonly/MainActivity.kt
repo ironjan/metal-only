@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.IOException
 
+// FIXME add actual state handling for mediaplayer
 class MainActivity : AppCompatActivity() {
 
 
