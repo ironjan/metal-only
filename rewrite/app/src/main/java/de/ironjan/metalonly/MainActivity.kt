@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.IOException
+import de.ironjan.metalonly.api.Client
+
 
 // FIXME add actual state handling for mediaplayer
 class MainActivity : AppCompatActivity() {
@@ -48,6 +50,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             startPlaying()
         }
+
+        doAWebRequest()
+    }
+
+    private fun doAWebRequest() {
+        Thread(Runnable {
+            val result = Client(this).getStats()
+
+            val toString = result.toString()
+            showResult(toString)
+
+            snack("dd")
+        }).start()
     }
 
     private fun startPlaying() {
@@ -109,8 +124,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showResult(toString: String) {
+        runOnUiThread { bufferingState.text = toString }
+    }
+
     private fun bufferingUpdate(percent: Int) {
-        bufferingState.text = "$percent% buffered."
+        showResult("$percent% buffered.")
     }
 
     private fun snack(e: Exception) {
@@ -127,7 +146,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun snack(s: String) {
-        Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
+        runOnUiThread{
+            Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
+        }
     }
 
     override fun onDestroy() {
