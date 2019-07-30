@@ -31,6 +31,7 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.koushikdutta.ion:ion:2.2.1'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "io.arrow-kt:arrow-core:0.8.2"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
