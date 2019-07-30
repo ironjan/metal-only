@@ -13,15 +13,15 @@ import java.util.concurrent.TimeUnit
 
 class Client(private val context: Context) {
 
-    fun getStats(noCache: Boolean) = safeRequest(statsUrl, noCache)
+    fun getStats() = safeRequest(statsUrl, true)
 
-    fun getShowInfo(noCache: Boolean) = safeRequest(showInfoUrl, noCache)
+    fun getShowInfo() = safeRequest(showInfoUrl, true)
 
     fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
 
     fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
 
-    fun getTrack(noCache: Boolean) = safeRequest(trackUrl, noCache)
+    fun getTrack() = safeRequest(trackUrl, true)
 
     private fun safeRequest(url: String, noCache: Boolean): Either<String, Stats> =
         try {
