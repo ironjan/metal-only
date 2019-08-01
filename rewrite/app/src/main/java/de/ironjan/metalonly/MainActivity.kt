@@ -15,6 +15,10 @@ import de.ironjan.metalonly.api.model.Stats
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 // FIXME add actual state handling for mediaplayer
@@ -48,11 +52,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun togglePlaying() {
-        if (isPlaying) {
-            stopPlaying()
-        } else {
-            startPlaying()
+        try {
+            if (isPlaying) {
+                stopPlaying()
+            } else {
+                startPlaying()
+            }
+        } catch (e: Exception) {
+            snack("Toggle play failed.", e)
         }
+    }
+
+    private fun snack(s: String, e: Exception) {
+        val em = e.message?:"no exception message"
+        snack("$s - $em")
     }
 
     override fun onResume() {
@@ -62,17 +75,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadStats() {
         Thread(Runnable {
-            val stats = Client(this).getStats()
+            try {
+                val stats = Client(this).getStats()
 
-            throw java.lang.Exception("See TODO https://github.com/koush/ion/issues/232")
-            if (stats.isLeft()) {
-                stats.mapLeft {
-                    snack(it)
+                throw java.lang.Exception("See TODO https://github.com/koush/ion/issues/232")
+                if (stats.isLeft()) {
+                    stats.mapLeft {
+                        snack(it)
+                    }
+                } else {
+                    stats.map {
+                        showStats(it)
+                    }
                 }
-            } else {
-                stats.map {
-                    showStats(it)
-                }
+            } catch (e: Exception) {
+                snack("load stats failed", e)
             }
 
         }).start()
@@ -91,11 +108,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun startPlaying() {
         if (!::mediaPlayer.isInitialized) {
-            snack("Wait...")
+            snack("Wait... media player not initialized. Trying again?")
             return
         }
         if (!mediaPlayerIsPrepared) {
-            snack("Preparing")
+            snack("Preparing..")
             mediaPlayer.prepare()
         }
 
@@ -110,14 +127,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createMediaPlayer() {
+        snack("Creating media player")
         try {
             val myUri: Uri = Uri.parse("http://server1.blitz-stream.de:4400")
 
-            MediaPlayer().apply {
+            mediaPlayer = MediaPlayer().apply {
                 setAudioStreamType(AudioManager.STREAM_MUSIC)
                 setDataSource(applicationContext, myUri)
                 setOnErrorListener { mp, what, extra ->
-
                     snack("error: $what - $extra")
                     true
                 }
@@ -126,26 +143,23 @@ class MainActivity : AppCompatActivity() {
 
 
                 setOnPreparedListener {
-                    mediaPlayer = it
                     mediaPlayerIsPrepared = true
-                    snack("Prepared!")
                 }
 
                 snack("Starting prep.")
                 prepareAsync()
+                snack("... async")
             }
-        }
+//        }
         // todo actual error handling
-        catch (e: IOException) {
-            snack(e)
-            throw e
-        } catch (e: IllegalArgumentException) {
-            snack(e)
-            throw e
+//        catch (e: IOException) {
+//            snack(e)
+//        } catch (e: IllegalArgumentException) {
+//            snack(e)
         } catch (e: Exception) {
-            snack(e)
-            throw e
+            snack("createmedaiplayer" , e)
         }
+        snack("Completed mp create")
     }
 
     private fun showResult(toString: String) {
@@ -154,10 +168,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun bufferingUpdate(percent: Int) {
         showResult("$percent% buffered.")
-    }
-
-    private fun snack(e: Exception) {
-        snack(e.message ?: "exception without message")
     }
 
     private fun stopPlaying() {
@@ -172,6 +182,13 @@ class MainActivity : AppCompatActivity() {
     private fun snack(s: String) {
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
+            val rightNow = Calendar.getInstance() //initialized with the current date and time
+
+            val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
+
+            val logString = "$formattedDate: $s\n"
+
+            txtError.text.append(logString)
             Log.d("MainActivity", s)
         }
     }
