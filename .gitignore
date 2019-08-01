@@ -38,3 +38,4 @@ abrt_checker_*
 .gradle/
 nohup.out
 gradle.properties
+rewrite/app/release/
