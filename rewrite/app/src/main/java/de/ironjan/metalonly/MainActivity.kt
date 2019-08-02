@@ -100,10 +100,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadModeratorImage(stats: Stats) {
         val mod = stats.showInformation.moderator
+        val id = resources.getIdentifier(mod.toLowerCase(), "drawable", packageName)
         val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
         runOnUiThread {
-            Ion.with(imageView)
-                    .load(modUrl)
+            if (id != 0) {
+                imageView.setImageResource(id)
+            }else {
+                Ion.with(imageView)
+                        .placeholder(R.drawable.metalhead)
+                        // TODO do we need these?
+//                        .error(R.drawable.error_image)
+//                        .animateLoad(spinAnimation)
+//                        .animateIn(fadeInAnimation)
+                        .load(modUrl)
+
+            }
         }
     }
 
