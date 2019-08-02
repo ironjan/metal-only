@@ -56,7 +56,7 @@ class Client(private val context: Context) {
 
     companion object {
         const val REQUEST_TIMEOUT_30_SECONDS = 30000L
-        private const val baseUrl = "https://mensaupb.herokuapp.com/api"
+        private const val baseUrl = "https://mensaupb.herokuapp.com/metalonly"
 
         private const val statsPath = "/stats"
 
