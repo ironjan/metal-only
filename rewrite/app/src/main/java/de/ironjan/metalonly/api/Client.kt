@@ -3,10 +3,10 @@ package de.ironjan.metalonly.api
 import android.content.Context
 import android.util.Log
 import arrow.core.Either
-import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
 import de.ironjan.metalonly.api.model.Stats
+import de.ironjan.metalonly.api.model.TrackInfo
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
@@ -17,20 +17,25 @@ import javax.net.ssl.X509TrustManager
 
 class Client(private val context: Context) {
 
-    fun getStats() = try {
-        val right = prepareRequest(statsUrl, true)
-                .`as`(Stats::class.java)
-                .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
+    fun getStats(): Either<String, Stats> = safeRequest(statsUrl, Stats::class.java)
 
-        Either.right(right)
-    } catch (e: Exception) {
-        wrapException(e)
-    }
+    fun getTrack(): Either<String, TrackInfo> = safeRequest(trackUrl, TrackInfo::class.java)
 
-//    fun getShowInfo() = safeRequest(showInfoUrl, true)
+    //    fun getShowInfo() = safeRequest(showInfoUrl, true)
 //    fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
 //    fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
-//    fun getTrack() = safeRequest(trackUrl, true)
+
+    private fun <T> safeRequest(url: String, clazz: Class<T>): Either<String, T> {
+        return try {
+            val right = prepareRequest(url, true)
+                    .`as`(clazz)
+                    .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
+
+            Either.right(right)
+        } catch (e: Exception) {
+            wrapException(e)
+        }
+    }
 
     private fun wrapException(e: Exception): Either<String, Nothing> {
         val sw: Writer = StringWriter()
