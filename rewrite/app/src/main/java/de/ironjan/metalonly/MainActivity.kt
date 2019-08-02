@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import android.util.Log
+import com.koushikdutta.ion.Ion
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import kotlinx.android.synthetic.main.activity_main.*
@@ -66,8 +67,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun snack(s: String, e: Exception) {
-        val em = e.message?:"no exception message"
-        snacke("$s - $em",e)
+        val em = e.message ?: "no exception message"
+        snacke("$s - $em", e)
     }
 
     override fun onResume() {
@@ -87,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     stats.map {
                         showStats(it)
+                        loadModeratorImage(it)
                     }
                 }
             } catch (e: Exception) {
@@ -94,6 +96,15 @@ class MainActivity : AppCompatActivity() {
             }
 
         }).start()
+    }
+
+    private fun loadModeratorImage(stats: Stats) {
+        val mod = stats.showInformation.moderator
+        val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
+        runOnUiThread {
+            Ion.with(imageView)
+                    .load(modUrl)
+        }
     }
 
     private fun showStats(stats: Stats) {
@@ -152,13 +163,13 @@ class MainActivity : AppCompatActivity() {
                 snack("... async")
             }
 //        }
-        // todo actual error handling
+            // todo actual error handling
 //        catch (e: IOException) {
 //            snack(e)
 //        } catch (e: IllegalArgumentException) {
 //            snack(e)
         } catch (e: Exception) {
-            snacke("createmedaiplayer" , e)
+            snacke("createmedaiplayer", e)
         }
         snack("Completed mp create")
     }
@@ -194,7 +205,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun snacke(s: String, e: Exception){
+    private fun snacke(s: String, e: Exception) {
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
             val rightNow = Calendar.getInstance() //initialized with the current date and time
