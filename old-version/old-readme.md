@@ -4,8 +4,6 @@
 
  * LICENSE: [Apache-Lizenz, Version 2.0.](https://github.com/ironjan/metal-only/blob/master/LICENSE.txt)
  * AUTHORS: https://github.com/ironjan/metal-only/graphs/contributors
- * IMAGE RIGHTS: Sll images rights for images under images_sources belong to Metal Only e.V. and are used with permission.
-                 See https://www.metal-only.de/impressum.html for more information. 
 
 Diese App bringt den Internet Radio Stream von http://metal-only.de/ auf
 Android, wo man 24 Stunden am Tag Rock und Metal hören kann. Außerdem enthält 
@@ -52,6 +50,9 @@ You can add the issues directly to the issue tracker:
 We're using the [gradle](http://tools.android.com/tech-docs/new-build-system/user-guide)
 build system. I strongly recommend [Android Studio](https://developer.android.com/sdk/index.html)
 to develop. 
+
+Currently, the app is mainly written in Java but a migration to kotlin has been 
+started in May 2017. New code should be written in kotlin if possible.
 
 ### Getting started
 
@@ -108,3 +109,50 @@ android {
   }
 }
 ```
+
+Please note: the fabric key added to the git is not the one the app is 
+delivered with. It was only added so the app can be built without sharing 
+the official key.
+
+#### Useful Knowledge
+
+It may be useful to check for dependency updates once in a while. We're using a 
+gradle plugin for that: Execute ```./gradlew dependencyUpdates``` to list 
+updates. Note: for some reason, the report may include false positives, i.e. 
+non-existing updates. 
+
+### Used Libraries and Software
+
+ * [Jackson Databind](http://wiki.fasterxml.com/JacksonHome) (Apache 2.0)
+ * [Spring for Android](http://projects.spring.io/spring-android/) (Apache 2.0)
+ * [okhttp](https://github.com/square/okhttp) (Apache 2.0)
+ * [slf4j-android](https://github.com/twwwt/slf4j) (MIT LICENSE)
+ * [Androidannotations (Core & REST Spring)](http://androidannotations.org/) (Apache 2.0)
+ * [LazyList](https://www.github.com/thest1/LazyList/) (MIT LICENSE)
+ 
+Build Time dependencise (i.e. not-packaged):
+
+ * [ktlint](https://github.com/shyiko/ktlint) (MIT LICENSE)
+ 
+## Project Organization
+
+The project has been split into multiple modules to enforce encapsulation. See 
+[Understanding Onion Architecture](http://blog.thedigitalgroup.com/chetanv/2015/07/06/understanding-onion-architecture/)
+for more information. In addition to the onion architecture, we will also 
+split out some functionality for easier re-use later, e.g. the json API 
+implementation. The current goal is to split the project into the following 
+sub-modules:
+
+ * `core` will contain only data models and code related to these models. 
+   There should be no dependency on Android. It corresponds to the *domain 
+   layer*.
+ * `:metal-only-client-library` will contain the json model and the API 
+   implementation. It may enable the re-use of the API implementation in 
+   other projects. The service implementations rely on this library.
+ * `services` will hold implementations of our business logic. This layer 
+   responds to requests from the UI or system handles. It's a intermediate 
+   between the app and the infrastructure layer.
+ * `infrastructure` provides specific implementations for the service layer 
+   to handle logging and data storage.
+ * `app` will contain Android-specific implementations like `Activities` and 
+   `Services` that calls on the service layer
