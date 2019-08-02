@@ -5,10 +5,10 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import android.util.Log
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
