@@ -3,38 +3,34 @@ package de.ironjan.metalonly.api
 import android.content.Context
 import android.util.Log
 import arrow.core.Either
-import com.google.gson.reflect.TypeToken
+import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
 import de.ironjan.metalonly.api.model.Stats
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class Client(private val context: Context) {
 
-    fun getStats() = safeRequest(statsUrl, true)
+    fun getStats() = try {
+        val right = prepareRequest(statsUrl, true)
+                .`as`(Stats::class.java)
+                .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
 
-    fun getShowInfo() = safeRequest(showInfoUrl, true)
+        Either.right(right)
+    } catch (e: Exception) {
+        wrapException(e)
+    }
 
-    fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
-
-    fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
-
-    fun getTrack() = safeRequest(trackUrl, true)
-
-    private fun safeRequest(url: String, noCache: Boolean): Either<String, Stats> =
-        try {
-            Either.right(tryExecute(prepareRequest(url, noCache)))
-        } catch (e: Exception) {
-            wrapException(e)
-        }
-
-    private fun <T> tryExecute(preparedRequest: Builders.Any.B): T =
-        preparedRequest
-            .`as`(object : TypeToken<T>() {})
-            .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
+//    fun getShowInfo() = safeRequest(showInfoUrl, true)
+//    fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
+//    fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
+//    fun getTrack() = safeRequest(trackUrl, true)
 
     private fun wrapException(e: Exception): Either<String, Nothing> {
         val sw: Writer = StringWriter()
@@ -73,7 +69,26 @@ class Client(private val context: Context) {
 
 
         fun initIon(context: Context) {
-            Ion.getDefault(context).conscryptMiddleware.enable(true)
+            val default = Ion.getDefault(context)
+
+            default.conscryptMiddleware.enable(true)
+
+            val sslSocketMiddleware = default.httpClient.sslSocketMiddleware
+
+            val tms = Array<TrustManager>(1) {
+                object : X509TrustManager {
+                    override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+                    }
+
+                    override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+                    }
+
+                    override fun getAcceptedIssuers(): Array<X509Certificate> {
+                        return null as Array<X509Certificate>
+                    }
+                }
+            }
+            sslSocketMiddleware.setTrustManagers(tms)
 
 
         }
