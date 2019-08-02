@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
             togglePlaying()
         }
 
+        Client.initIon(this)
+
         createMediaPlayer()
     }
 
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun snack(s: String, e: Exception) {
         val em = e.message?:"no exception message"
-        snack("$s - $em")
+        snacke("$s - $em",e)
     }
 
     override fun onResume() {
@@ -78,7 +80,6 @@ class MainActivity : AppCompatActivity() {
             try {
                 val stats = Client(this).getStats()
 
-                throw java.lang.Exception("See TODO https://github.com/koush/ion/issues/232")
                 if (stats.isLeft()) {
                     stats.mapLeft {
                         snack(it)
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                snack("load stats failed", e)
+                snacke("load stats failed", e)
             }
 
         }).start()
@@ -157,7 +158,7 @@ class MainActivity : AppCompatActivity() {
 //        } catch (e: IllegalArgumentException) {
 //            snack(e)
         } catch (e: Exception) {
-            snack("createmedaiplayer" , e)
+            snacke("createmedaiplayer" , e)
         }
         snack("Completed mp create")
     }
@@ -190,6 +191,20 @@ class MainActivity : AppCompatActivity() {
 
             txtError.text.append(logString)
             Log.d("MainActivity", s)
+        }
+    }
+
+    private fun snacke(s: String, e: Exception){
+        runOnUiThread {
+            Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
+            val rightNow = Calendar.getInstance() //initialized with the current date and time
+
+            val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
+
+            val logString = "$formattedDate: $s\n"
+
+            txtError.text.append(logString)
+            Log.e("MainActivity", s, e)
         }
     }
 

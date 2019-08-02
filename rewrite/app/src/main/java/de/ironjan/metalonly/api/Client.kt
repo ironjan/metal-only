@@ -1,6 +1,7 @@
 package de.ironjan.metalonly.api
 
 import android.content.Context
+import android.util.Log
 import arrow.core.Either
 import com.google.gson.reflect.TypeToken
 import com.koushikdutta.ion.Ion
@@ -38,6 +39,7 @@ class Client(private val context: Context) {
     private fun wrapException(e: Exception): Either<String, Nothing> {
         val sw: Writer = StringWriter()
         e.printStackTrace(PrintWriter(sw))
+        Log.e("Client", "Request failed: ", e)
         return Either.left(sw.toString())
     }
 
@@ -51,7 +53,6 @@ class Client(private val context: Context) {
             requestBuilder
         }
     }
-
 
     companion object {
         const val REQUEST_TIMEOUT_30_SECONDS = 30000L
@@ -69,5 +70,12 @@ class Client(private val context: Context) {
         const val trackUrl = "$baseUrl$trackPath"
         const val planUrl = "$baseUrl$planPath"
         const val modsUrl = "$baseUrl$modsPath"
+
+
+        fun initIon(context: Context) {
+            Ion.getDefault(context).conscryptMiddleware.enable(true)
+
+
+        }
     }
 }
