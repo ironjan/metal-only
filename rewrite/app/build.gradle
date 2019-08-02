@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.koushikdutta.ion:ion:2.2.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation "io.arrow-kt:arrow-core:0.8.2"
+    implementation 'com.google.android.gms:play-services-base:17.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
