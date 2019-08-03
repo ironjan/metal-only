@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun stopPlaying() {
         mediaPlayerWrapper.stop()
+        fab.setImageDrawable(action_play)
         Log.d(TAG, "Stopped playing")
 
     }
