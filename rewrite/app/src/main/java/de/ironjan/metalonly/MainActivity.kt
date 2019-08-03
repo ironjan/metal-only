@@ -1,9 +1,7 @@
 package de.ironjan.metalonly
 
 import android.graphics.drawable.Drawable
-import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.res.ResourcesCompat
@@ -13,26 +11,23 @@ import android.util.Log
 import com.koushikdutta.ion.Ion
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
+import de.ironjan.metalonly.streaming.MediaPlayerWrapper
+import de.ironjan.metalonly.streaming.MediaPlayerWrapperStartCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.io.IOException
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 // FIXME add actual state handling for mediaplayer
 class MainActivity : AppCompatActivity() {
-
-
-    private var isPlaying: Boolean = false
+    private val TAG = "MainActivity"
 
     private lateinit var action_play: Drawable
     private lateinit var action_stop: Drawable
-    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var stream_loading: Drawable
 
-    private var mediaPlayerIsPrepared: Boolean = false
+    private lateinit var mediaPlayerWrapper: MediaPlayerWrapper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
         action_stop = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
+        stream_loading = ResourcesCompat.getDrawable(resources, android.R.drawable.stat_sys_download, theme)!!
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -50,25 +46,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         Client.initIon(this)
-
-        createMediaPlayer()
+        mediaPlayerWrapper = MediaPlayerWrapper(this)
     }
 
     private fun togglePlaying() {
         try {
-            if (isPlaying) {
+            if (mediaPlayerWrapper.isPlaying) {
                 stopPlaying()
             } else {
                 startPlaying()
             }
         } catch (e: Exception) {
-            snack("Toggle play failed.", e)
+            Log.e(TAG, "Toggle play failed.", e)
         }
-    }
-
-    private fun snack(s: String, e: Exception) {
-        val em = e.message ?: "no exception message"
-        snacke("$s - $em", e)
     }
 
     override fun onResume() {
@@ -92,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                snacke("load stats failed", e)
+                Log.e(TAG, "Loading stats failed", e)
             }
 
         }).start()
@@ -105,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             if (id != 0) {
                 imageView.setImageResource(id)
-            }else {
+            } else {
                 Ion.with(imageView)
                         .placeholder(R.drawable.metalhead)
                         // TODO do we need these?
@@ -130,110 +120,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startPlaying() {
-        if (!::mediaPlayer.isInitialized) {
-            snack("Wait... media player not initialized. Trying again?")
-            return
-        }
-        if (!mediaPlayerIsPrepared) {
-            snack("Preparing..")
-            mediaPlayer.prepare()
-        }
-
-
-        mediaPlayer.start()
-
-        fab.setImageDrawable(action_stop)
-
-        snack("Started playing")
-
-        isPlaying = true
-    }
-
-    private fun createMediaPlayer() {
-        snack("Creating media player")
-        try {
-            val myUri: Uri = Uri.parse("http://server1.blitz-stream.de:4400")
-
-            mediaPlayer = MediaPlayer().apply {
-                setAudioStreamType(AudioManager.STREAM_MUSIC)
-                setDataSource(applicationContext, myUri)
-                setOnErrorListener { mp, what, extra ->
-                    snack("error: $what - $extra")
-                    true
-                }
-                setOnCompletionListener { mediaPlayerIsPrepared = false }
-                setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
-
-
-                setOnPreparedListener {
-                    mediaPlayerIsPrepared = true
-                }
-
-                snack("Starting prep.")
-                prepareAsync()
-                snack("... async")
+        val callBack = object : MediaPlayerWrapperStartCallback {
+            override fun onPrepare() {
+                runOnUiThread { fab.setImageDrawable(stream_loading) }
             }
-//        }
-            // todo actual error handling
-//        catch (e: IOException) {
-//            snack(e)
-//        } catch (e: IllegalArgumentException) {
-//            snack(e)
-        } catch (e: Exception) {
-            snacke("createmedaiplayer", e)
+
+            override fun onStarted() {
+                runOnUiThread { fab.setImageDrawable(action_stop) }
+            }
+
         }
-        snack("Completed mp create")
+        Thread {
+            if (mediaPlayerWrapper.play(callBack)) {
+
+            } else {
+                // FIXME handle and show error, better return type for play or add on error...
+                Log.e(TAG, "Playing failed")
+                runOnUiThread {
+                    fab.setImageDrawable(action_play)
+                }
+            }
+        }.start()
+
     }
 
     private fun showResult(toString: String) {
         runOnUiThread { bufferingState.text = toString }
     }
 
-    private fun bufferingUpdate(percent: Int) {
-        showResult("$percent% buffered.")
-    }
-
     private fun stopPlaying() {
-        fab.setImageDrawable(action_play)
+        mediaPlayerWrapper.stop()
+        Log.d(TAG, "Stopped playing")
 
-        mediaPlayer.pause()
-        snack("Stopped playing")
-
-        isPlaying = false
     }
 
     private fun snack(s: String) {
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
-            val rightNow = Calendar.getInstance() //initialized with the current date and time
-
-            val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
-
-            val logString = "$formattedDate: $s\n"
-
-            txtError.text.append(logString)
-            Log.d("MainActivity", s)
-        }
-    }
-
-    private fun snacke(s: String, e: Exception) {
-        runOnUiThread {
-            Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
-            val rightNow = Calendar.getInstance() //initialized with the current date and time
-
-            val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
-
-            val logString = "$formattedDate: $s\n"
-
-            txtError.text.append(logString)
-            Log.e("MainActivity", s, e)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::mediaPlayer.isInitialized && !mediaPlayer.isPlaying) {
-            mediaPlayer.release()
-        }
+        mediaPlayerWrapper.release()
     }
 }
