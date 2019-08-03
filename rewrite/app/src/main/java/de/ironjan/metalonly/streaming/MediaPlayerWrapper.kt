@@ -10,8 +10,17 @@ import android.util.Log
 import java.net.HttpCookie
 
 
-class MediaPlayerWrapper() {
+class MediaPlayerWrapper {
+    enum class State {
+        Gone, Idle, Initialized, Preparing, Prepared, Started, Paused, Completed,
+
+        Error, End
+    }
+
     private var isPrepared: Boolean = false
+
+    private var state: State = State.Gone
+
     val isPlaying: Boolean
         get() = ::mediaPlayer.isInitialized && mediaPlayer.isPlaying
 
@@ -40,6 +49,8 @@ class MediaPlayerWrapper() {
 
     private fun createMediaPlayer(): MediaPlayer {
         val mp = MediaPlayer()
+        state = State.Idle
+
         mp.apply {
             if (Build.VERSION.SDK_INT < 26) {
                 @Suppress("DEPRECATION")
@@ -50,6 +61,7 @@ class MediaPlayerWrapper() {
                 setAudioAttributes(b.build())
             }
             setDataSource(streamUri)
+            state = State.Initialized
 
             setOnErrorListener { mp, what, extra ->
 
@@ -67,15 +79,14 @@ class MediaPlayerWrapper() {
                 }
 
                 Log.e(TAG, "error: $whatAsSTring - $extraAsString")
+                state = State.Error
                 true
             }
             setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
             setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
 
 
-            setOnPreparedListener { mediaPlayer ->
-                onPrepared(mediaPlayer)
-            }
+            setOnPreparedListener { mediaPlayer -> onPrepared(mediaPlayer) }
         }
         return mp
     }
@@ -83,6 +94,7 @@ class MediaPlayerWrapper() {
     private fun onPrepared(mediaPlayer: MediaPlayer) {
         Log.d(TAG, "Prepared: $mediaPlayer")
         isPrepared = true
+        state = State.Prepared
     }
 
     private fun bufferingUpdate(percent: Int) {
@@ -92,6 +104,7 @@ class MediaPlayerWrapper() {
     private fun onComplete(mediaPlayer: MediaPlayer) {
         Log.d(TAG, "mediaPlayer $mediaPlayer is complete")
         isPrepared = false
+        state = State.Completed
     }
 
 
@@ -109,11 +122,13 @@ class MediaPlayerWrapper() {
             Log.d(TAG, "Preparing..")
             callBack.onPrepare()
             mediaPlayer.prepare()
+            state = State.Prepared
         }
 
 
         mediaPlayer.start()
-callBack.onStarted()
+        callBack.onStarted()
+        state = State.Started
 
         Log.d(TAG, "Started playing")
         return true
