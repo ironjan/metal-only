@@ -33,6 +33,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    if (project.hasProperty("metalonly.signing")
+            && new File(project.property("metalonly.signing") + ".gradle").exists()) {
+        apply from: project.property("metalonly.signing") + ".gradle";
+        println("Applied production signing config")
+    }
+    else{
+        println("Project does not have production signing config")
+    }
 }
 
 dependencies {
