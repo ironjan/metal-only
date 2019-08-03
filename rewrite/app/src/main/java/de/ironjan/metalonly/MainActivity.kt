@@ -167,8 +167,10 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val event = intent?.extras?.getString(STRING_EXTRA_STREAM_EVENT)
-        Log.w(TAG, event)
-        snack(event)
+        if(event != null) {
+            Log.w(TAG, event)
+            snack(event)
+        }
     }
     override fun onDestroy() {
         super.onDestroy()
