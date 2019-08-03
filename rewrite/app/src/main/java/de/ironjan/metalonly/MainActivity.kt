@@ -1,5 +1,6 @@
 package de.ironjan.metalonly
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Client.initIon(this)
-        mediaPlayerWrapper = MediaPlayerWrapper(this)
+        mediaPlayerWrapper = MediaPlayerWrapper()
     }
 
     private fun togglePlaying() {
@@ -161,6 +162,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val STRING_EXTRA_STREAM_EVENT = "STREAM_EVENT"
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val event = intent?.extras?.getString(STRING_EXTRA_STREAM_EVENT)
+        Log.w(TAG, event)
+        snack(event)
+    }
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayerWrapper.release()

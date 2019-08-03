@@ -10,7 +10,7 @@ import android.util.Log
 import java.net.HttpCookie
 
 
-class MediaPlayerWrapper(private val context: Context) {
+class MediaPlayerWrapper() {
     private var isPrepared: Boolean = false
     val isPlaying: Boolean
         get() = ::mediaPlayer.isInitialized && mediaPlayer.isPlaying
