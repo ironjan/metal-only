@@ -103,7 +103,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="32dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/txtError"
         android:layout_width="0dp"
         android:layout_height="0dp"

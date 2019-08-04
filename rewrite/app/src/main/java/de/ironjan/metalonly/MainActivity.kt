@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 // FIXME add actual state handling for mediaplayer
 class MainActivity : AppCompatActivity() {
+    private var isResumed: Boolean = false
     private val TAG = "MainActivity"
 
     private lateinit var action_play: Drawable
@@ -61,7 +62,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        isResumed = true
         loadStats()
+        addLogFetchingThread()
+    }
+
+    private fun addLogFetchingThread() {
+        LW.d(TAG, "Initializing log view thread.")
+        Thread {
+            try {
+                while (isResumed) {
+                    Thread.sleep(5000)
+                    val collectedLog = LW.q.joinToString("")
+                    runOnUiThread { txtError.text = collectedLog }
+                }
+            } catch (e: Exception) {
+                LW.e(TAG, "Log fetching thread failed.")
+            }
+        }.start()
+        LW.d(TAG, "Initialized log view thread.")
     }
 
     private fun loadStats() {
@@ -163,13 +182,19 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         val event = intent?.extras?.getString(STRING_EXTRA_STREAM_EVENT)
-        if(event != null) {
+        if (event != null) {
             LW.w(TAG, event)
             snack(event)
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayerWrapper.release()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isResumed = false
     }
 }
