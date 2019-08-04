@@ -1,8 +1,12 @@
 package de.ironjan.metalonly
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.IBinder
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
@@ -13,12 +17,23 @@ import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.streaming.MediaPlayerWrapper
 import de.ironjan.metalonly.streaming.MediaPlayerWrapperStartCallback
+import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
 // FIXME add actual state handling for mediaplayer
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
+    override fun onChange(newState: MoStreamingService.State) {
+        when (newState) {
+            MoStreamingService.State.Preparing -> fab.setImageDrawable(stream_loading)
+            MoStreamingService.State.Started -> fab.setImageDrawable(action_stop)
+            MoStreamingService.State.Gone -> fab.setImageDrawable(action_play)
+            MoStreamingService.State.Completed -> snack("on complete")
+            MoStreamingService.State.Error -> snack("on error")
+        }
+    }
+
     private var isResumed: Boolean = false
     private val TAG = "MainActivity"
 
@@ -27,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stream_loading: Drawable
 
     private lateinit var mediaPlayerWrapper: MediaPlayerWrapper
+
+    private lateinit var moStreamingService: MoStreamingService
+    private var mBound: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +80,42 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         isResumed = true
         loadStats()
         addLogFetchingThread()
+    }
+
+
+
+    /** Defines callbacks for service binding, passed to bindService()  */
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            val binder = service as MoStreamingService.LocalBinder
+            moStreamingService = binder.getService()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, MoStreamingService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
+        mBound = false
+
     }
 
     private fun addLogFetchingThread() {
@@ -137,36 +188,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startPlaying() {
-        val callBack = object : MediaPlayerWrapperStartCallback {
-            override fun onPrepare() {
-                runOnUiThread { fab.setImageDrawable(stream_loading) }
-            }
+        moStreamingService.addStateChangeCallback(this)
+       moStreamingService.play()
 
-            override fun onStarted() {
-                runOnUiThread { fab.setImageDrawable(action_stop) }
-            }
-
-        }
-        Thread {
-            if (mediaPlayerWrapper.play(callBack)) {
-
-            } else {
-                // FIXME handle and show error, better return type for play or add on error...
-                LW.e(TAG, "Playing failed")
-                runOnUiThread {
-                    fab.setImageDrawable(action_play)
-                }
-            }
-        }.start()
-
+        fab.setImageDrawable(action_play)
+        LW.d(TAG, "Stopped playing")
     }
 
-    private fun showResult(toString: String) {
-        runOnUiThread { bufferingState.text = toString }
-    }
 
     private fun stopPlaying() {
-        mediaPlayerWrapper.stop()
+        moStreamingService.stop()
         fab.setImageDrawable(action_play)
         LW.d(TAG, "Stopped playing")
     }

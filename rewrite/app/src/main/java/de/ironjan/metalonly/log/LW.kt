@@ -74,4 +74,9 @@ object LW {
         Log.w(tag, msg)
         internalLog(Level.WARNING, tag, msg)
     }
+
+    fun i(tag: String, msg: String) {
+        Log.i(tag, msg)
+        internalLog(LW.Level.INFO, tag, msg)
+    }
 }

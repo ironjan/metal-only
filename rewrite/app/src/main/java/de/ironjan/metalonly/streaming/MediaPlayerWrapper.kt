@@ -23,66 +23,59 @@ class MediaPlayerWrapper {
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    init {
-        LW.d(TAG, "Creating media player")
-        try {
-
-            mediaPlayer = createMediaPlayer()
-
-//        }
-            // todo actual error handling
-//        catch (e: IOException) {
-//            snack(e)
-//        } catch (e: IllegalArgumentException) {
-//            snack(e)
-        } catch (e: Exception) {
-            LW.e(TAG, "createmedaiplayer", e)
-        }
-        LW.d(TAG, "Completed mp create")
-    }
-
-    private fun createMediaPlayer(): MediaPlayer {
+    private fun createInitializedMediaPlayer(): MediaPlayer {
         val mp = MediaPlayer()
         state = State.Idle
 
         mp.apply {
-            if (Build.VERSION.SDK_INT < 26) {
-                @Suppress("DEPRECATION")
-                setAudioStreamType(AudioManager.STREAM_MUSIC)
-            } else {
-                val b = AudioAttributes.Builder()
-                b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                setAudioAttributes(b.build())
-            }
-            setDataSource(streamUri)
-            state = State.Initialized
-
-            setOnErrorListener { mp, what, extra ->
-
-                val whatAsSTring = when (what) {
-                    MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
-                    MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
-                    else -> "Undocumented: $what..."
-                }
-                val extraAsString = when (extra) {
-                    MediaPlayer.MEDIA_ERROR_IO -> "io"
-                    MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
-                    MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
-                    MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
-                    else -> "undocumented extra: $extra..."
-                }
-
-                LW.e(TAG, "error: $whatAsSTring - $extraAsString")
-                state = State.Error
-                true
-            }
-            setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
-            setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
-
-
-            setOnPreparedListener { mediaPlayer -> onPrepared(mediaPlayer) }
+            initializeMediaPlayer()
         }
         return mp
+    }
+
+    fun resetAndInit(){
+        mediaPlayer.apply {
+            reset()
+            initializeMediaPlayer()
+        }
+    }
+
+    private fun MediaPlayer.initializeMediaPlayer() {
+        if (Build.VERSION.SDK_INT < 26) {
+            @Suppress("DEPRECATION")
+            setAudioStreamType(AudioManager.STREAM_MUSIC)
+        } else {
+            val b = AudioAttributes.Builder()
+            b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
+            setAudioAttributes(b.build())
+        }
+        setDataSource(streamUri)
+        state = State.Initialized
+
+        setOnErrorListener { mp, what, extra ->
+
+            val whatAsSTring = when (what) {
+                MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
+                MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
+                else -> "Undocumented: $what..."
+            }
+            val extraAsString = when (extra) {
+                MediaPlayer.MEDIA_ERROR_IO -> "io"
+                MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
+                MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
+                MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
+                else -> "undocumented extra: $extra..."
+            }
+
+            LW.e(TAG, "error: $whatAsSTring - $extraAsString")
+            state = State.Error
+            true
+        }
+        setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
+        setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
+
+
+        setOnPreparedListener { mediaPlayer -> onPrepared(mediaPlayer) }
     }
 
     private fun onPrepared(mediaPlayer: MediaPlayer) {
