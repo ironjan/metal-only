@@ -2,22 +2,19 @@ package de.ironjan.metalonly
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import android.util.Log
 import com.koushikdutta.ion.Ion
+import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.streaming.MediaPlayerWrapper
 import de.ironjan.metalonly.streaming.MediaPlayerWrapperStartCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 // FIXME add actual state handling for mediaplayer
@@ -58,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 startPlaying()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Toggle play failed.", e)
+            LW.e(TAG, "Toggle play failed.", e)
         }
     }
 
@@ -83,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Loading stats failed", e)
+                LW.e(TAG, "Loading stats failed", e)
             }
 
         }).start()
@@ -136,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 // FIXME handle and show error, better return type for play or add on error...
-                Log.e(TAG, "Playing failed")
+                LW.e(TAG, "Playing failed")
                 runOnUiThread {
                     fab.setImageDrawable(action_play)
                 }
@@ -152,8 +149,7 @@ class MainActivity : AppCompatActivity() {
     private fun stopPlaying() {
         mediaPlayerWrapper.stop()
         fab.setImageDrawable(action_play)
-        Log.d(TAG, "Stopped playing")
-
+        LW.d(TAG, "Stopped playing")
     }
 
     private fun snack(s: String) {
@@ -168,7 +164,7 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         val event = intent?.extras?.getString(STRING_EXTRA_STREAM_EVENT)
         if(event != null) {
-            Log.w(TAG, event)
+            LW.w(TAG, event)
             snack(event)
         }
     }

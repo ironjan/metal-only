@@ -1,13 +1,10 @@
 package de.ironjan.metalonly.streaming
 
-import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
-import android.util.Log
-import java.net.HttpCookie
+import de.ironjan.metalonly.log.LW
 
 
 class MediaPlayerWrapper {
@@ -30,7 +27,7 @@ class MediaPlayerWrapper {
     private lateinit var mediaPlayer: MediaPlayer
 
     init {
-        Log.e(TAG, "Creating media player")
+        LW.d(TAG, "Creating media player")
         try {
 
             mediaPlayer = createMediaPlayer()
@@ -42,9 +39,9 @@ class MediaPlayerWrapper {
 //        } catch (e: IllegalArgumentException) {
 //            snack(e)
         } catch (e: Exception) {
-            Log.e(TAG, "createmedaiplayer", e)
+            LW.e(TAG, "createmedaiplayer", e)
         }
-        Log.d(TAG, "Completed mp create")
+        LW.d(TAG, "Completed mp create")
     }
 
     private fun createMediaPlayer(): MediaPlayer {
@@ -78,7 +75,7 @@ class MediaPlayerWrapper {
                     else -> "undocumented extra: $extra..."
                 }
 
-                Log.e(TAG, "error: $whatAsSTring - $extraAsString")
+                LW.e(TAG, "error: $whatAsSTring - $extraAsString")
                 state = State.Error
                 true
             }
@@ -92,17 +89,17 @@ class MediaPlayerWrapper {
     }
 
     private fun onPrepared(mediaPlayer: MediaPlayer) {
-        Log.d(TAG, "Prepared: $mediaPlayer")
+        LW.d(TAG, "Prepared: $mediaPlayer")
         isPrepared = true
         state = State.Prepared
     }
 
     private fun bufferingUpdate(percent: Int) {
-        Log.d(TAG, "Buffered $percent%")
+        LW.d(TAG, "Buffered $percent%")
     }
 
     private fun onComplete(mediaPlayer: MediaPlayer) {
-        Log.d(TAG, "mediaPlayer $mediaPlayer is complete")
+        LW.d(TAG, "mediaPlayer $mediaPlayer is complete")
         isPrepared = false
         state = State.Completed
     }
@@ -114,12 +111,12 @@ class MediaPlayerWrapper {
         }
 
         if (!::mediaPlayer.isInitialized) {
-            Log.w(TAG, "Wait... media player not initialized. Trying again?")
+            LW.w(TAG, "Wait... media player not initialized. Trying again?")
             return false
         }
 
         if (!isPrepared) {
-            Log.d(TAG, "Preparing..")
+            LW.d(TAG, "Preparing..")
             callBack.onPrepare()
             mediaPlayer.prepare()
             state = State.Prepared
@@ -130,13 +127,13 @@ class MediaPlayerWrapper {
         callBack.onStarted()
         state = State.Started
 
-        Log.d(TAG, "Started playing")
+        LW.d(TAG, "Started playing")
         return true
     }
 
     fun stop() {
         mediaPlayer.pause()
-        Log.d(TAG, "Stopped playing")
+        LW.d(TAG, "Stopped playing")
     }
 
     fun release() {

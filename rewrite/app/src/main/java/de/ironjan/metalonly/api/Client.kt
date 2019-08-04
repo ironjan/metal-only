@@ -1,12 +1,12 @@
 package de.ironjan.metalonly.api
 
 import android.content.Context
-import android.util.Log
 import arrow.core.Either
 import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
+import de.ironjan.metalonly.log.LW
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
@@ -40,7 +40,7 @@ class Client(private val context: Context) {
     private fun wrapException(e: Exception): Either<String, Nothing> {
         val sw: Writer = StringWriter()
         e.printStackTrace(PrintWriter(sw))
-        Log.e("Client", "Request failed: ", e)
+        LW.e("Client", "Request failed: ", e)
         return Either.left(sw.toString())
     }
 
