@@ -53,14 +53,16 @@ object LW {
 
         if (applicationContext != null) {
             val file = File(applicationContext!!.filesDir, LogFileName)
-
+            if(!file.exists()) {
+                file.createNewFile()
+            }
 
             val fileSizeInMb = file.length() / (1024.0 * 1024)
             if (fileSizeInMb > LogFileMaxSizeInMb) {
                 // implicitely clear file
-                file.writeText(append)
+                file.writeText(append, Charsets.UTF_8)
             } else {
-                file.appendText(append)
+                file.appendText(append, Charsets.UTF_8)
             }
         }
     }
@@ -78,5 +80,13 @@ object LW {
     fun i(tag: String, msg: String) {
         Log.i(tag, msg)
         internalLog(LW.Level.INFO, tag, msg)
+    }
+
+    fun getLogs(): String {
+        val file = File(applicationContext!!.filesDir, LogFileName)
+        if(!file.exists()) {
+            file.createNewFile()
+        }
+        return file.readText(Charsets.UTF_8)
     }
 }

@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        LW.init(this)
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
@@ -58,9 +60,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            togglePlaying()
-        }
+        fab.setOnClickListener { togglePlaying() }
+        fabMail.setOnClickListener { Mailer.sendFeedback(this) }
 
         Client.initIon(this)
         mediaPlayerWrapper = MediaPlayerWrapper()
