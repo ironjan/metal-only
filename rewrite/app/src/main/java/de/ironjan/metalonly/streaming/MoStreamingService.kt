@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import de.ironjan.metalonly.log.LW
 
 class MoStreamingService : Service() {
@@ -19,13 +20,17 @@ class MoStreamingService : Service() {
 
     private var stateChangeCallback: StateChangeCallback? = null
 
+    private var state: State = State.Gone
 
-    private  var state: State = State.Gone
+
+    val isPlayingOrPreparing: Boolean
+        get() {return  state == State.Preparing || state == State.Started }
 
     private fun changeState(newState: State) {
         state = newState
         stateChangeCallback?.onChange(newState)
-}
+        LW.d(TAG, "Changed state to $state.")
+    }
 
     val binder = LocalBinder()
 
@@ -46,54 +51,60 @@ class MoStreamingService : Service() {
     }
 
     fun play() {
+        changeState(State.Preparing)
         mp?.release()
 
-        changeState(State.Preparing)
-        mp = MediaPlayer()
-                .apply {
-                    if (Build.VERSION.SDK_INT < 26) {
-                        @Suppress("DEPRECATION")
-                        setAudioStreamType(AudioManager.STREAM_MUSIC)
-                    } else {
-                        val b = AudioAttributes.Builder()
-                        b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                        setAudioAttributes(b.build())
-                    }
-                    setDataSource(streamUri)
-
-
-                    setOnErrorListener { mp, what, extra ->
-
-                        val whatAsSTring = when (what) {
-                            MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
-                            MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
-                            else -> "Undocumented: $what..."
+        Thread {
+            mp = MediaPlayer()
+                    .apply {
+                        if (Build.VERSION.SDK_INT < 26) {
+                            @Suppress("DEPRECATION")
+                            setAudioStreamType(AudioManager.STREAM_MUSIC)
+                        } else {
+                            val b = AudioAttributes.Builder()
+                            b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                            setAudioAttributes(b.build())
                         }
-                        val extraAsString = when (extra) {
-                            MediaPlayer.MEDIA_ERROR_IO -> "io"
-                            MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
-                            MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
-                            MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
-                            else -> "undocumented extra: $extra..."
+                        setDataSource(streamUri)
+                        Log.d(TAG, "Initialized internal media player")
+
+
+                        setOnErrorListener { mp, what, extra ->
+
+                            val whatAsSTring = when (what) {
+                                MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
+                                MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
+                                else -> "Undocumented: $what..."
+                            }
+                            val extraAsString = when (extra) {
+                                MediaPlayer.MEDIA_ERROR_IO -> "io"
+                                MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
+                                MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
+                                MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
+                                else -> "undocumented extra: $extra..."
+                            }
+
+                            LW.e(TAG, "error: $whatAsSTring - $extraAsString")
+                            changeState(State.Error)
+                            true
                         }
+                        setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
+                        setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
 
-                        LW.e(TAG, "error: $whatAsSTring - $extraAsString")
-                        changeState(State.Error)
-                        true
+                        setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
+                        Log.d(TAG, "Hooked up call backs to internal media player")
+
+                        prepareAsync()
+                        Log.d(TAG, "Preparing internal media player async")
                     }
-                    setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
-                    setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
-
-
-                    setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
-
-                    prepareAsync()
-                }
+        }.start()
     }
 
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
+        Log.d(TAG, "Preparation complete. Start audio playback")
         mediaPlayer.start()
         changeState(State.Started)
+        Log.d(TAG, "Now playing.")
     }
 
     private fun bufferingUpdate(percent: Int) {
@@ -107,10 +118,9 @@ class MoStreamingService : Service() {
 
     fun stop() {
         mp?.apply {
-            if(state == State.Preparing) {
+            if (state == State.Preparing) {
                 this.setOnPreparedListener { mediaPlayer -> stopAndRelease(mediaPlayer) }
-            }
-            else {
+            } else {
                 stopAndRelease(this)
             }
         }
@@ -125,7 +135,7 @@ class MoStreamingService : Service() {
     }
 
     fun addStateChangeCallback(cb: StateChangeCallback) {
-        stateChangeCallback  = cb
+        stateChangeCallback = cb
     }
 
     /**
@@ -137,12 +147,12 @@ class MoStreamingService : Service() {
         // Return this instance of LocalService so clients can call public methods
         fun getService(): MoStreamingService = this@MoStreamingService
 
-        fun setCallbacks(): Unit = TODO("Implement")
     }
 
     interface StateChangeCallback {
-        fun onChange(newState: State): Unit
+        fun onChange(newState: State)
     }
+
     companion object {
         const val ACTION_PLAY = "de.ironjan.metalonly.play"
         const val ACTION_STOP = "de.ironjan.metalonly.stop"

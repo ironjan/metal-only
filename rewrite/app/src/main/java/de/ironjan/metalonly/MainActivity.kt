@@ -26,9 +26,9 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onChange(newState: MoStreamingService.State) {
         when (newState) {
-            MoStreamingService.State.Preparing -> fab.setImageDrawable(stream_loading)
-            MoStreamingService.State.Started -> fab.setImageDrawable(action_stop)
-            MoStreamingService.State.Gone -> fab.setImageDrawable(action_play)
+            MoStreamingService.State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
+            MoStreamingService.State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
+            MoStreamingService.State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
             MoStreamingService.State.Completed -> snack("on complete")
             MoStreamingService.State.Error -> snack("on error")
         }
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     private fun togglePlaying() {
         try {
-            if (mediaPlayerWrapper.isPlaying) {
+            if (moStreamingService.isPlayingOrPreparing) {
                 stopPlaying()
             } else {
                 startPlaying()
@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     }
 
 
-
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
 
@@ -95,6 +94,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             val binder = service as MoStreamingService.LocalBinder
             moStreamingService = binder.getService()
+            moStreamingService.addStateChangeCallback(this@MainActivity)
             mBound = true
         }
 
@@ -188,8 +188,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     }
 
     private fun startPlaying() {
-        moStreamingService.addStateChangeCallback(this)
-       moStreamingService.play()
+        // FIXME mBound could be false for what ever reason
+        moStreamingService.play()
 
         fab.setImageDrawable(action_play)
         LW.d(TAG, "Stopped playing")
@@ -222,6 +222,9 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayerWrapper.release()
+        Intent(this, MoStreamingService::class.java).also {
+            stopService(it)
+        }
     }
 
     override fun onPause() {
