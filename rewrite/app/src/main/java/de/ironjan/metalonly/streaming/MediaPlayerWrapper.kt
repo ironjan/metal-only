@@ -21,9 +21,6 @@ class MediaPlayerWrapper {
     val isPlaying: Boolean
         get() = ::mediaPlayer.isInitialized && mediaPlayer.isPlaying
 
-    val streamUri = "http://server1.blitz-stream.de:4400"
-
-    private val TAG = MediaPlayerWrapper::class.java.canonicalName
     private lateinit var mediaPlayer: MediaPlayer
 
     init {
@@ -140,5 +137,12 @@ class MediaPlayerWrapper {
         if (::mediaPlayer.isInitialized && !mediaPlayer.isPlaying) {
             mediaPlayer.release()
         }
+    }
+
+    companion object {
+        private const val streamUri = "http://server1.blitz-stream.de:4400"
+
+        private const val TAG = "MediaPlayerWrapper"
+
     }
 }
