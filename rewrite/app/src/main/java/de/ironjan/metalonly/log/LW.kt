@@ -1,14 +1,27 @@
 package de.ironjan.metalonly.log
 
+import android.content.Context
 import android.util.Log
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
-// TODO add writing to file etc.
 object LW {
-    enum class Level {VERBOSE, DEBUG, INFO, WARNING, ERROR }
+    enum class Level { VERBOSE, DEBUG, INFO, WARNING, ERROR }
+
+    private const val LogQueueFlushLimit = 25
+    private const val LogFileName = "metalonly.log"
+    private const val LogFileMaxSizeInMb = 2
+
     val q: Queue<String> = ConcurrentLinkedQueue<String>()
+    var applicationContext: Context? = null
+
+    fun `init`(context: Context) {
+        if (applicationContext == null) {
+            applicationContext = context.applicationContext
+        }
+    }
 
     fun e(tag: String, msg: String, e: Throwable? = null) {
         if (e != null) {
@@ -19,19 +32,36 @@ object LW {
         internalLog(Level.ERROR, tag, msg, e)
     }
 
+
     private fun internalLog(level: Level, tag: String, msg: String, e: Throwable? = null) {
         val rightNow = Calendar.getInstance() //initialized with the current date and time
 
         val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
 
-        val em = e?.toString() ?: ""
-        val logString = "$formattedDate - $level: $msg {{{$em}}}\n"
+        val em = if (e != null) "{{{$e}}}" else ""
+        val logString = "$formattedDate - $level - $tag: $msg $em\n"
         q.add(logString)
-        if (q.size > 100) {
-           val newQ = q.drop(50)
-            q.clear()
-            q.addAll(newQ)
-            // TODO write to file
+        if (q.size > LogQueueFlushLimit) {
+            flushQ()
+        }
+    }
+
+
+    private fun flushQ() {
+        val append = q.joinToString("")
+        q.clear()
+
+        if (applicationContext != null) {
+            val file = File(applicationContext!!.filesDir, LogFileName)
+
+
+            val fileSizeInMb = file.length() / (1024.0 * 1024)
+            if (fileSizeInMb > LogFileMaxSizeInMb) {
+                // implicitely clear file
+                file.writeText(append)
+            } else {
+                file.appendText(append)
+            }
         }
     }
 
