@@ -1,2 +1,3 @@
 #!/bin/bash
-./gradlew assembleRelease
+rm ./app/build/outputs/apk/release/*
+./gradlew assembleRelease && caja ./app/build/outputs/apk/release/
