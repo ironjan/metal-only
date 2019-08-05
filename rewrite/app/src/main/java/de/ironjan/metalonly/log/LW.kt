@@ -83,6 +83,7 @@ object LW {
     }
 
     fun getLogs(): String {
+        flushQ()
         val file = File(applicationContext!!.filesDir, LogFileName)
         if(!file.exists()) {
             file.createNewFile()
