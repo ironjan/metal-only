@@ -10,16 +10,20 @@ plugins {
 // only change _after_ merge requests
 def versionMajor = 0   // incompatible API changes
 def versionMinor = 9   // added functionality in a backwards-compatible manner
-def versionPatch = 0  // backwards-compatible bug fixes
-def versionBuild = 8       // bump for dogfood builds, public betas, etc.
+def versionPatch = 0   // backwards-compatible bug fixes
+def versionBuild = 9   // bump for dogfood builds, public betas, etc.
 
 
-if (project.hasProperty("metalonly.publishkey")) {
-	play {
+
+play {
+    if (project.hasProperty("metalonly.publishkey")) {
         serviceAccountCredentials = file(project.property("metalonly.publishkey"))
+         println("Added publish key for gradle-play-publish")
+    } else {
+        println("Disabling publish plugin")
+        enabled = false
     }
-    println("Added publish key for gradle-play-publish")
-} else { println("No publishkey setting found.") }
+}
 
 
 
