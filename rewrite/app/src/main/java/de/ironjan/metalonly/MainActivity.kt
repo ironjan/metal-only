@@ -25,13 +25,16 @@ import kotlinx.android.synthetic.main.content_main.*
 // FIXME add actual state handling for mediaplayer
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onChange(newState: MoStreamingService.State) {
+        LW.d(TAG, "onChange($newState) called.")
         when (newState) {
             MoStreamingService.State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
             MoStreamingService.State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
+            MoStreamingService.State.Stopping-> runOnUiThread { fab.setImageDrawable(action_stop) }
             MoStreamingService.State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
             MoStreamingService.State.Completed -> snack("on complete")
             MoStreamingService.State.Error -> snack("on error")
         }
+        LW.d(TAG, "onChange($newState) completed.")
     }
 
     private var isResumed: Boolean = false
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     private lateinit var action_play: Drawable
     private lateinit var action_stop: Drawable
     private lateinit var stream_loading: Drawable
+    private lateinit var stopping_drawable: Drawable
 
     private lateinit var mediaPlayerWrapper: MediaPlayerWrapper
 
@@ -56,6 +60,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
         action_stop = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
         stream_loading = ResourcesCompat.getDrawable(resources, android.R.drawable.stat_sys_download, theme)!!
+        stopping_drawable = ResourcesCompat.getDrawable(resources, android.R.drawable.button_onoff_indicator_off, theme)!!
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -71,7 +76,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         try {
             if (moStreamingService.isPlayingOrPreparing) {
                 stopPlaying()
-            } else {
+            } else if(moStreamingService.canPlay){
                 startPlaying()
             }
         } catch (e: Exception) {
@@ -124,8 +129,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         Thread {
             try {
                 while (isResumed) {
-                    Thread.sleep(5000)
-                    val collectedLog = LW.q.joinToString("")
+                    Thread.sleep(1500)
+                    val collectedLog = LW.q.toList().reversed().joinToString("")
                     runOnUiThread { txtError.text = collectedLog }
                 }
             } catch (e: Exception) {
@@ -191,15 +196,12 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     private fun startPlaying() {
         // FIXME mBound could be false for what ever reason
         moStreamingService.play()
-
-        fab.setImageDrawable(action_play)
-        LW.d(TAG, "Stopped playing")
+        LW.d(TAG, "Started playing")
     }
 
 
     private fun stopPlaying() {
         moStreamingService.stop()
-        fab.setImageDrawable(action_play)
         LW.d(TAG, "Stopped playing")
     }
 

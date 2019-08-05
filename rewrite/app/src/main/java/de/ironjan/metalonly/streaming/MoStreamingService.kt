@@ -13,7 +13,7 @@ import de.ironjan.metalonly.log.LW
 
 class MoStreamingService : Service() {
     enum class State {
-        Gone, Initialized, Preparing, Started, Completed,
+        Gone, Preparing, Started, Completed, Stopping,
 
         Error
     }
@@ -24,12 +24,24 @@ class MoStreamingService : Service() {
 
 
     val isPlayingOrPreparing: Boolean
-        get() {return  state == State.Preparing || state == State.Started }
+        get() {
+            return state == State.Preparing || state == State.Started
+        }
+
+    val canPlay: Boolean
+        get() {
+            return state == State.Gone
+        }
 
     private fun changeState(newState: State) {
+        LW.d(TAG, "Changeing state to $state.")
         state = newState
-        stateChangeCallback?.onChange(newState)
-        LW.d(TAG, "Changed state to $state.")
+
+        stateChangeCallback?.apply {
+            onChange(newState)
+            LW.d(TAG, "Changing state to $state - Callback invoked.")
+        }
+        LW.d(TAG, "Changing state to $state - Completed.")
     }
 
     val binder = LocalBinder()
@@ -51,6 +63,7 @@ class MoStreamingService : Service() {
     }
 
     fun play() {
+        LW.d(TAG, "play() called")
         changeState(State.Preparing)
         mp?.release()
 
@@ -117,6 +130,7 @@ class MoStreamingService : Service() {
     }
 
     fun stop() {
+        changeState(State.Stopping)
         mp?.apply {
             if (state == State.Preparing) {
                 this.setOnPreparedListener { mediaPlayer -> stopAndRelease(mediaPlayer) }
