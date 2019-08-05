@@ -1,3 +1,11 @@
+plugins {
+	id 'com.android.application'
+	id 'kotlin-android'
+	id 'kotlin-android-extensions'
+	
+	id 'com.github.triplet.play' version '2.3.0'
+}
+
 // use semantic versioning: http://semver.org/
 // only change _after_ merge requests
 def versionMajor = 0   // incompatible API changes
@@ -5,11 +13,15 @@ def versionMinor = 9   // added functionality in a backwards-compatible manner
 def versionPatch = 0  // backwards-compatible bug fixes
 def versionBuild = 8       // bump for dogfood builds, public betas, etc.
 
-apply plugin: 'com.android.application'
 
-apply plugin: 'kotlin-android'
+if (project.hasProperty("metalonly.publishkey")) {
+	play {
+        serviceAccountCredentials = file(project.property("metalonly.publishkey"))
+    }
+    println("Added publish key for gradle-play-publish")
+} else { println("No publishkey setting found.") }
 
-apply plugin: 'kotlin-android-extensions'
+
 
 android {
     compileSdkVersion 28
@@ -42,6 +54,7 @@ android {
         println("Project does not have production signing config")
     }
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
