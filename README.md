@@ -28,8 +28,7 @@ primär unter [http://ironjan.de/metal-only](http://ironjan.de/metal-only).
     * [Help with App Development](#help-with-app-development)
       * [Getting Started](#getting-started)
       * [Useful Knowledge](#useful-knowledge)
-  * [Used Libraries and Software](#used-libraries-and-software)
-  * [Project Organization](#project-organization)
+  * [Used Libraries, Software, Fonts, ...](#used-libraries-and-co)
 
 ## Helping
 
@@ -108,3 +107,9 @@ android {
   }
 }
 ```
+
+#  Used Libraries, Software, Fonts, ...
+
+Currently in progress. 
+
+Fonts: [Metal Mania](https://fonts.google.com/specimen/Metal+Mania) 
