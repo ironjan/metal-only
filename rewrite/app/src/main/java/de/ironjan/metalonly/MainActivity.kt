@@ -5,11 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +21,6 @@ import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.streaming.MediaPlayerWrapper
-import de.ironjan.metalonly.streaming.MediaPlayerWrapperStartCallback
 import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -101,7 +102,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
         isResumed = true
         loadStats()
-        addLogFetchingThread()
     }
 
 
@@ -136,22 +136,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     }
 
-    private fun addLogFetchingThread() {
-        LW.d(TAG, "Initializing log view thread.")
-        Thread {
-            try {
-                while (isResumed) {
-                    Thread.sleep(1500)
-                    val collectedLog = LW.q.toList().reversed().joinToString("")
-                    runOnUiThread { txtError.text = collectedLog }
-                }
-            } catch (e: Exception) {
-                LW.e(TAG, "Log fetching thread failed.")
-            }
-        }.start()
-        LW.d(TAG, "Initialized log view thread.")
-    }
-
     private fun loadStats() {
         Thread(Runnable {
             try {
@@ -172,6 +156,41 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             }
 
         }).start()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.mnuWish -> {
+                openWish()
+                return true}
+            R.id.mnuPlan -> {openPlan()
+                return true}
+            R.id.mnuPDonation -> {
+                openDonation()
+                return true
+            }
+            R.id.mnuFeedback -> {Mailer.sendFeedback(this)
+                    return true}
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openWish() = openBrowser("https://www.metal-only.de/wunschgruss.html")
+    private fun openPlan() = openBrowser("https://www.metal-only.de/sendeplan.html")
+    private fun openDonation() = openBrowser("https://www.metal-only.de/info-center/donation.html")
+
+    private fun openBrowser(url: String) {
+        val webpage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
     }
 
     private fun loadModeratorImage(stats: Stats) {

@@ -17,30 +17,21 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="METALFORCE WARP SPASM" />
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lblGenre"
-        android:text="Genre: "
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtShow"/>
-
     <TextView
         android:id="@+id/txtGenre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@id/lblGenre"
-        app:layout_constraintBaseline_toBaselineOf="@+id/lblGenre"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtShow"
         tools:text="Mixed Metal" />
 
 
@@ -48,12 +39,12 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/metalhead"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtShow"
+        app:layout_constraintTop_toBottomOf="@+id/txtGenre"
         tools:srcCompat="@drawable/metalhead" />
 
     <TextView
@@ -72,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         style="@style/TextAppearance.AppCompat.Medium"
@@ -96,16 +87,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="32dp" />
 
-    <TextView
-        android:id="@+id/txtError"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtTrack" />
+    <ImageButton
+        android:id="@+id/fab"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtTrack"
+        android:layout_margin="32dp"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:srcCompat="@android:drawable/ic_media_play" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
