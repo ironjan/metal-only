@@ -7,6 +7,9 @@ import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
+import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.appcompat.app.AppCompatActivity
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         when (newState) {
             MoStreamingService.State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
             MoStreamingService.State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
-            MoStreamingService.State.Stopping-> runOnUiThread { fab.setImageDrawable(action_stop) }
+            MoStreamingService.State.Stopping -> runOnUiThread { fab.setImageDrawable(action_stop) }
             MoStreamingService.State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
             MoStreamingService.State.Completed -> snack("on complete")
             MoStreamingService.State.Error -> snack("on error")
@@ -44,6 +47,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     private lateinit var action_stop: Drawable
     private lateinit var stream_loading: Drawable
     private lateinit var stopping_drawable: Drawable
+//    private var txtAbModerator: TextView? = null
+//    private var txtAbLoading: TextView? = null
 
     private lateinit var mediaPlayerWrapper: MediaPlayerWrapper
 
@@ -56,6 +61,13 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         LW.init(this)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+//        setSupportActionBar(toolbar)
+//        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+//        supportActionBar?.setDisplayShowCustomEnabled(true)
+//        txtAbModerator = supportActionBar?.customView?.findViewById(R.id.txtAbModerator)
+//        txtAbLoading = supportActionBar?.customView?.findViewById(R.id.txtAbLoading)
+
 
         action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
         action_stop = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
@@ -76,7 +88,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         try {
             if (moStreamingService.isPlayingOrPreparing) {
                 stopPlaying()
-            } else if(moStreamingService.canPlay){
+            } else if (moStreamingService.canPlay) {
                 startPlaying()
             }
         } catch (e: Exception) {
@@ -183,13 +195,21 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     }
 
     private fun showStats(stats: Stats) {
-        runOnUiThread {
-            val track = stats.track
+        val track = stats.track
+        val trackAsString = "${track.artist} - ${track.title}"
+        val showInformation = stats.showInformation
 
-            txtModerator.text = stats.showInformation.moderator
-            txtShow.text = stats.showInformation.show
-            txtGenre.text = stats.showInformation.genre
-            txtTrack.text = "${track.artist} - ${track.title}"
+        runOnUiThread {
+            txtShow.text = showInformation.show
+            txtGenre.text = showInformation.genre
+            txtTrack.text = trackAsString
+
+            txtAbModerator.text = showInformation.moderator
+
+            txtAbLoading.visibility = View.GONE
+            txtAbModerator.visibility = View.VISIBLE
+            txtAbIs.visibility = View.VISIBLE
+            txtAbOnAir.visibility = View.VISIBLE
         }
     }
 
