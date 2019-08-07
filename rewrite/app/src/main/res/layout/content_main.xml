@@ -9,69 +9,6 @@
         tools:showIn="@layout/activity_main"
         tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/txtShow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        style="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="METALFORCE WARP SPASM" />
-
-    <TextView
-        android:id="@+id/txtGenre"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        style="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtShow"
-        tools:text="Mixed Metal" />
-
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/metalhead"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtGenre"
-        tools:srcCompat="@drawable/metalhead" />
-
-    <TextView
-        android:id="@+id/bufferingState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:text="100%"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        />
-
-
-    <TextView
-        android:id="@+id/txtTrack"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        style="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:text="Ozzy Osbourne - Killer of Giants" />
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -87,14 +24,91 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="32dp" />
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/metalhead"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/metalhead" />
+
+    <TextView
+        android:id="@+id/bufferingState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        tools:text="100%"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        />
+
+    <TextView
+        android:id="@+id/txtShow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:text="METALFORCE WARP SPASM" />
+
+    <TextView
+        android:id="@+id/txtGenre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtShow"
+        tools:text="Mixed Metal" />
+
+
     <ImageButton
         android:id="@+id/fab"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintTop_toBottomOf="@+id/txtTrack"
+        app:layout_constraintTop_toBottomOf="@+id/txtGenre"
         android:layout_margin="32dp"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:srcCompat="@android:drawable/ic_media_play" />
+
+    <TextView 
+        android:id="@+id/lblTrack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/fab"
+        android:text="@string/current_track" />
+
+    <TextView
+        android:id="@+id/txtTrack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/lblTrack"
+        tools:text="Ozzy Osbourne - Killer of Giants" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

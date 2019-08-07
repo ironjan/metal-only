@@ -30,10 +30,12 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metalmania_regular"
                     android:text="Metal Only"
+                    android:textAlignment="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/txtAbModerator"
@@ -42,9 +44,10 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:fontFamily="@font/metalmania_regular"
                     android:visibility="gone"
+                    app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtAbLoading"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txtAbIs"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Metal Head" />
 
@@ -58,11 +61,12 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/txtAbModerator"
+                    app:layout_constraintEnd_toStartOf="@+id/txtAbOnAir"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtAbOnAir"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/metalmania_regular"
                     android:text="ON AIR"

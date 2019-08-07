@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Metal Only</string>
+    <string name="current_track">Current Track</string>
 </resources>
