@@ -48,10 +48,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     private lateinit var action_stop: Drawable
     private lateinit var stream_loading: Drawable
     private lateinit var stopping_drawable: Drawable
-//    private var txtAbModerator: TextView? = null
-//    private var txtAbLoading: TextView? = null
-
-    private lateinit var mediaPlayerWrapper: MediaPlayerWrapper
 
     private lateinit var moStreamingService: MoStreamingService
     private var mBound: Boolean = false
@@ -62,13 +58,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         LW.init(this)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
-//        setSupportActionBar(toolbar)
-//        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-//        supportActionBar?.setDisplayShowCustomEnabled(true)
-//        txtAbModerator = supportActionBar?.customView?.findViewById(R.id.txtAbModerator)
-//        txtAbLoading = supportActionBar?.customView?.findViewById(R.id.txtAbLoading)
-
 
         action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
         action_stop = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
@@ -82,7 +71,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         fabMail.setOnClickListener { Mailer.sendFeedback(this) }
 
         Client.initIon(this)
-        mediaPlayerWrapper = MediaPlayerWrapper()
     }
 
     private fun togglePlaying() {
@@ -263,7 +251,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayerWrapper.release()
         Intent(this, MoStreamingService::class.java).also {
             stopService(it)
         }
