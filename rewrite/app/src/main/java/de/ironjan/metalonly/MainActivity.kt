@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
-// FIXME add actual state handling for mediaplayer
+// FIXME service: https://stackoverflow.com/questions/5731387/binding-to-the-same-service-instance-in-android
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onChange(newState: MoStreamingService.State) {
         LW.d(TAG, "onChange($newState) called.")
