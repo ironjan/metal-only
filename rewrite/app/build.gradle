@@ -8,10 +8,10 @@ plugins {
 
 // use semantic versioning: http://semver.org/
 // only change _after_ merge requests
-def versionMajor = 0   // incompatible API changes
-def versionMinor = 9   // added functionality in a backwards-compatible manner
-def versionPatch = 0   // backwards-compatible bug fixes
-def versionBuild = 1   // bump for dogfood builds, public betas, etc.
+def versionMajor = 0    // incompatible API changes
+def versionMinor = 9    // added functionality in a backwards-compatible manner
+def versionPatch = 1    // backwards-compatible bug fixes
+def versionBuild = 0    // bump for dogfood builds, public betas, etc.
 
 
 
