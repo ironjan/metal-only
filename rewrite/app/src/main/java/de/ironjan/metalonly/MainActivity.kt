@@ -20,14 +20,11 @@ import com.koushikdutta.ion.Ion
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
-import de.ironjan.metalonly.streaming.MediaPlayerWrapper
 import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
-// FIXME service: https://stackoverflow.com/questions/5731387/binding-to-the-same-service-instance-in-android
-// Better https://www.dev2qa.com/android-foreground-service-example/ ?
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onChange(newState: MoStreamingService.State) {
         LW.d(TAG, "onChange($newState) called.")
@@ -76,10 +73,21 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     private fun togglePlaying() {
         try {
-            if (moStreamingService.isPlayingOrPreparing) {
-                stopPlaying()
-            } else if (moStreamingService.canPlay) {
-                startPlaying()
+            if (mBound) {
+                if (moStreamingService.isPlayingOrPreparing) {
+                    moStreamingService.stop()
+                    LW.d(TAG, "Stopped playing")
+                } else if (moStreamingService.canPlay) {
+                    moStreamingService.play(this)
+                    LW.d(TAG, "Started playing")
+                }
+            } else {
+                fab.setImageDrawable(stream_loading)
+                Intent(this, MoStreamingService::class.java).also {
+                    it.action = MoStreamingService.ACTION_PLAY
+                    startService(it)
+                    bindService(it, connection, 0)
+                }
             }
         } catch (e: Exception) {
             LW.e(TAG, "Toggle play failed.", e)
@@ -89,7 +97,12 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     override fun onResume() {
         super.onResume()
 
+        Intent(this, MoStreamingService::class.java).also { intent ->
+            bindService(intent, connection, 0)
+        }
+
         isResumed = true
+
         loadStats()
     }
 
@@ -113,9 +126,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     override fun onStart() {
         super.onStart()
-        Intent(this, MoStreamingService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
     }
 
     override fun onStop() {
@@ -157,15 +167,20 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         return when (item.itemId) {
             R.id.mnuWish -> {
                 openWish()
-                return true}
-            R.id.mnuPlan -> {openPlan()
-                return true}
+                return true
+            }
+            R.id.mnuPlan -> {
+                openPlan()
+                return true
+            }
             R.id.mnuPDonation -> {
                 openDonation()
                 return true
             }
-            R.id.mnuFeedback -> {Mailer.sendFeedback(this)
-                    return true}
+            R.id.mnuFeedback -> {
+                Mailer.sendFeedback(this)
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -221,17 +236,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         }
     }
 
-    private fun startPlaying() {
-        // FIXME mBound could be false for what ever reason
-        moStreamingService.play()
-        LW.d(TAG, "Started playing")
-    }
-
-
-    private fun stopPlaying() {
-        moStreamingService.stop()
-        LW.d(TAG, "Stopped playing")
-    }
 
     private fun snack(s: String) {
         runOnUiThread {
@@ -252,9 +256,9 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     override fun onDestroy() {
         super.onDestroy()
-        Intent(this, MoStreamingService::class.java).also {
-            stopService(it)
-        }
+//        Intent(this, MoStreamingService::class.java).also {
+//            stopService(it)
+//        }
     }
 
     override fun onPause() {

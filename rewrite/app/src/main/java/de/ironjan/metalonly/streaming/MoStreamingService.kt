@@ -1,6 +1,7 @@
 package de.ironjan.metalonly.streaming
 
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -9,6 +10,10 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import de.ironjan.metalonly.MainActivity
+import de.ironjan.metalonly.R
 import de.ironjan.metalonly.log.LW
 
 class MoStreamingService : Service() {
@@ -33,14 +38,34 @@ class MoStreamingService : Service() {
             return state == State.Gone
         }
 
+    private lateinit var notificationManager: NotificationManagerCompat
+
     private fun changeState(newState: State) {
-        LW.d(TAG, "Changeing state to $state.")
+        LW.d(TAG, "Changing state to $newState.")
         state = newState
 
         stateChangeCallback?.apply {
             onChange(newState)
             LW.d(TAG, "Changing state to $state - Callback invoked.")
         }
+
+        when (state) {
+            State.Preparing -> {
+                notification.tickerText = "Preparing..."
+                notificationManager.notify(NOTIFICATION_ID, notification)
+            }
+
+            State.Started -> {
+                notification.tickerText = "Playing..."
+                notificationManager.notify(NOTIFICATION_ID, notification)
+            }
+
+            else -> {
+                notification.tickerText = "Preparing..."
+                notificationManager.cancel(NOTIFICATION_ID)
+            }
+        }
+
         LW.d(TAG, "Changing state to $state - Completed.")
     }
 
@@ -51,21 +76,88 @@ class MoStreamingService : Service() {
     var mp: MediaPlayer? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        LW.d(TAG, "handling start command")
+
         when (intent?.action) {
             ACTION_PLAY -> play()
             ACTION_STOP -> stop()
             else -> LW.d(TAG, "Received unknown action")
         }
 
-
         return super.onStartCommand(intent, flags, startId)
 
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        LW.d(TAG, "onCreate called")
+
+        notificationManager = NotificationManagerCompat.from(this)
+        pendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
+            PendingIntent.getActivity(this, 0, notificationIntent, 0)
+        }
+        notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Metal Only")
+                .setContentText("Playing stream...")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(pendingIntent)
+                .setTicker("TODO Artist - Title") // TODO
+                .build()
+
+        createNotificationChannel()
+
+        LW.d(TAG, "onCreate done")
+
+    }
+
+    private val CHANNEL_ID = "Metal Only CHANNEL ID" // TODO
+    private fun createNotificationChannel() {
+        LW.d(TAG, "createNotificationChannel called")
+
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = (NOTIFICATION_CHANNEL_NAME)
+            val descriptionText = ("todo metal only notifications") // TODO
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+            LW.d(TAG, "notification channel created")
+        }else {
+            LW.d(TAG, "api < O. no notification channel necessary")
+
+        }
+    }
+
+
+    private val NOTIFICATION_ID = 0
+    private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
+
+    lateinit var pendingIntent: PendingIntent
+
+    lateinit var notification: Notification
+
+
+    fun play(cb: MoStreamingService.StateChangeCallback) {
+addStateChangeCallback(cb)
+        play()
+    }
     fun play() {
         LW.d(TAG, "play() called")
+        startForeground(NOTIFICATION_ID, notification)
+
+        LW.d(TAG, "Service is in foreground now")
+
         changeState(State.Preparing)
-        mp?.release()
+        mp?.apply {
+            release()
+            LW.d(TAG, "Released previous media player")
+        }
 
         Thread {
             mp = MediaPlayer()
@@ -127,18 +219,27 @@ class MoStreamingService : Service() {
     private fun onComplete(mediaPlayer: MediaPlayer) {
         LW.i(TAG, "onComplete called")
         changeState(State.Completed)
+        // todo release?
     }
 
     fun stop() {
+        LW.d(TAG, "stop called")
+
         changeState(State.Stopping)
         mp?.apply {
             if (state == State.Preparing) {
                 this.setOnPreparedListener { mediaPlayer -> stopAndRelease(mediaPlayer) }
+                LW.d(TAG, "Set onPreparedListener to stopAndRelease")
             } else {
                 stopAndRelease(this)
             }
+            LW.d(TAG, "Applied release preparations to media player")
         }
-
+        notificationManager.cancel(NOTIFICATION_ID)
+        LW.d(TAG, "Cancelled notification")
+        LW.d(TAG, "Stopping self...")
+        stopSelf()
+        LW.d(TAG, "Stopping self... done")
     }
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {
@@ -146,6 +247,7 @@ class MoStreamingService : Service() {
         mediaPlayer.release()
         changeState(State.Gone)
         mp = null
+        LW.d(TAG, "Stopped and released mediaplayer")
     }
 
     fun addStateChangeCallback(cb: StateChangeCallback) {
