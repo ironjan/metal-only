@@ -116,6 +116,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             while (isResumed) {
                 Thread.sleep(30000) // start with sleeping because loadStats includes current track
                 // FIXME is this the best way???
+                // TODO how to schedule updates for show info?
 
                 val track = Client(this).getTrack()
                 if (track.isRight()) {
