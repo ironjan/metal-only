@@ -1,2 +1,6 @@
- * It is possible to start two concurrent streams by tapping the play/pause button multiple times in quick succession.
  * onError and onComplete callbacks for mediaplayer are not implemented
+ * Turning screen off causes playback to stop (probably because wifi etc get turned off)
+ * other fixmes in code
+ * english translation
+ * horizontal screen needs to be added
+ * audio change handling
