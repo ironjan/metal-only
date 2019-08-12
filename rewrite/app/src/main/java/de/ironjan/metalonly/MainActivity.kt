@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.content_main.*
 
 
 // FIXME service: https://stackoverflow.com/questions/5731387/binding-to-the-same-service-instance-in-android
+// Better https://www.dev2qa.com/android-foreground-service-example/ ?
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onChange(newState: MoStreamingService.State) {
         LW.d(TAG, "onChange($newState) called.")
