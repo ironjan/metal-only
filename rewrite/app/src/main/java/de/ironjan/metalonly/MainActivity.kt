@@ -20,12 +20,21 @@ import com.koushikdutta.ion.Ion
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
+import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
+    override fun onTrackChange(trackInfo: TrackInfo) {
+        val s = "${trackInfo.artist} - ${trackInfo.title}"
+        runOnUiThread {
+            txtTrack.text = s
+        }
+        LW.d(TAG, "Track info updated: $s")
+    }
+
     override fun onChange(newState: MoStreamingService.State) {
         LW.d(TAG, "onChange($newState) called.")
         when (newState) {
@@ -49,6 +58,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     private lateinit var moStreamingService: MoStreamingService
     private var mBound: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,13 +107,30 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     override fun onResume() {
         super.onResume()
 
-        Intent(this, MoStreamingService::class.java).also { intent ->
-            bindService(intent, connection, 0)
-        }
-
         isResumed = true
 
         loadStats()
+        Thread {
+            LW.d(TAG, "Prepared track info update thread")
+            var lastTrackInfo: TrackInfo? = null
+            while (isResumed) {
+                Thread.sleep(30000) // start with sleeping because loadStats includes current track
+                // FIXME is this the best way???
+
+                val track = Client(this).getTrack()
+                if (track.isRight()) {
+                    track.map {
+                        if (it != lastTrackInfo) {
+                            // broadcast it
+                            onTrackChange(it)
+                            lastTrackInfo = it
+                            LW.d(TAG, "'Broadcasted' track info")
+                        }
+                    }
+                }
+            }
+            LW.d(TAG, "Track info update thread is not needed anymore")
+        }.start()
     }
 
 

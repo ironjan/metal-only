@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.TimedMetaData
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -14,6 +15,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
+import de.ironjan.metalonly.api.Client
+import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 
 class MoStreamingService : Service() {
@@ -128,7 +131,7 @@ class MoStreamingService : Service() {
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
             LW.d(TAG, "notification channel created")
-        }else {
+        } else {
             LW.d(TAG, "api < O. no notification channel necessary")
 
         }
@@ -144,9 +147,10 @@ class MoStreamingService : Service() {
 
 
     fun play(cb: MoStreamingService.StateChangeCallback) {
-addStateChangeCallback(cb)
+        addStateChangeCallback(cb)
         play()
     }
+
     fun play() {
         LW.d(TAG, "play() called")
         startForeground(NOTIFICATION_ID, notification)
@@ -203,6 +207,11 @@ addStateChangeCallback(cb)
                         Log.d(TAG, "Preparing internal media player async")
                     }
         }.start()
+    }
+
+
+    private fun onInfo(mp: MediaPlayer?, what: Int, extra: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
@@ -267,6 +276,7 @@ addStateChangeCallback(cb)
 
     interface StateChangeCallback {
         fun onChange(newState: State)
+        fun onTrackChange(trackInfo: TrackInfo)
     }
 
     companion object {
