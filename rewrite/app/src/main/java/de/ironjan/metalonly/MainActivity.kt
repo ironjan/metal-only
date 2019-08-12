@@ -25,7 +25,7 @@ import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-
+// todo add audio focus handling https://developer.android.com/guide/topics/media-apps/audio-focus
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
