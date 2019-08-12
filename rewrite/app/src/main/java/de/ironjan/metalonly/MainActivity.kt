@@ -158,9 +158,10 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     override fun onStop() {
         super.onStop()
-        unbindService(connection)
-        mBound = false
-
+        if(mBound) {
+          mBound = false
+          unbindService(connection)
+        }
     }
 
     private fun loadStats() {
