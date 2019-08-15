@@ -14,10 +14,15 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import arrow.core.None
+import arrow.core.Option
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
+import java.security.cert.PKIXRevocationChecker
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MoStreamingService : Service() {
     enum class State {
@@ -25,6 +30,9 @@ class MoStreamingService : Service() {
 
         Error
     }
+
+    var lastError: String? = null
+
 
     private var stateChangeCallback: StateChangeCallback? = null
 
@@ -159,6 +167,7 @@ class MoStreamingService : Service() {
 
     fun play() {
         LW.d(TAG, "play() called")
+        lastError = null
 
         LW.d(TAG, "Service is in foreground now")
 
@@ -213,9 +222,14 @@ class MoStreamingService : Service() {
             else -> "undocumented extra: $extra..."
         }
 
-        LW.e(TAG, "error: $whatAsSTring - $extraAsString")
+        val msg = "error: $whatAsSTring - $extraAsString"
+        LW.e(TAG, msg)
         changeState(State.Error)
 
+
+        val rightNow = Calendar.getInstance() //initialized with the current date and time
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
+        lastError = "$formattedDate: msg"
 
         return true
     }
@@ -264,6 +278,11 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Stopping self...")
         stopSelf()
         LW.d(TAG, "Stopping self... done")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LW.d(TAG, "Service is destroyed now.")
     }
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {

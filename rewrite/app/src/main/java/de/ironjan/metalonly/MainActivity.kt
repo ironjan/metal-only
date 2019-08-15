@@ -1,7 +1,6 @@
 package de.ironjan.metalonly
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
@@ -133,6 +132,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             LW.d(TAG, "Track info update thread is not needed anymore")
         }.start()
 
+        updateTxtError()
+
         LW.d(TAG, "onResume done.")
     }
 
@@ -145,11 +146,24 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             val binder = service as MoStreamingService.LocalBinder
             moStreamingService = binder.getService()
             moStreamingService.addStateChangeCallback(this@MainActivity)
+
+            updateTxtError()
+
             mBound = true
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             mBound = false
+        }
+    }
+
+    private fun updateTxtError(){
+        runOnUiThread {
+            if(mBound && moStreamingService.lastError !=null) {
+                txtError.text = moStreamingService.lastError ?: ""
+            } else {
+                txtError.text = ""
+            }
         }
     }
 
