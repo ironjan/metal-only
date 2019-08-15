@@ -65,17 +65,6 @@ class MoStreamingService : Service() {
             LW.d(TAG, "Changing state to $state - Callback invoked.")
         }
 
-
-        val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Metal Only")
-                .setContentText("$state") // TODO use show information
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentIntent(pendingIntent)
-                .setOnlyAlertOnce(true)
-                .build()
-        notificationManager.notify(NOTIFICATION_ID, notification2)
-        LW.d(TAG, "Updated notification")
-
         LW.d(TAG, "Changing state to $state - Completed.")
     }
 
@@ -119,10 +108,9 @@ class MoStreamingService : Service() {
         }
         val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Metal Only")
-                .setContentText("Playing stream...")
+                .setContentText("Playing stream")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
-                .setTicker("TODO Artist - Title") // TODO
                 .setOnlyAlertOnce(true)
                 .build()
 
@@ -142,7 +130,8 @@ class MoStreamingService : Service() {
 
     private lateinit var wifiLock: WifiManager.WifiLock
 
-    private val CHANNEL_ID = "Metal Only CHANNEL ID" // TODO
+    private val CHANNEL_ID = "Metal Only Stream Notifications"
+
     private fun createNotificationChannel() {
         LW.d(TAG, "createNotificationChannel called")
 
@@ -150,7 +139,7 @@ class MoStreamingService : Service() {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = (NOTIFICATION_CHANNEL_NAME)
-            val descriptionText = ("todo metal only notifications") // TODO
+            val descriptionText = ("Metal Only Stream Notification") // todo move to resource
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
@@ -292,9 +281,11 @@ class MoStreamingService : Service() {
 
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                // Lower the volume, keep playing todo?
+                // Lower the volume, keep playing
                 // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
                 // until required otherwise
+                
+                // todo: implement Lower the volume, keep playing?
                 LW.d(tag, "transient loss can duck. did nothing")
             }
             AudioManager.AUDIOFOCUS_GAIN -> {
@@ -329,7 +320,7 @@ class MoStreamingService : Service() {
         val res = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
 
         when (res) {
-            AudioManager.AUDIOFOCUS_REQUEST_FAILED -> onError("Could not get audio focus (failed). Try again.") // TODO
+            AudioManager.AUDIOFOCUS_REQUEST_FAILED -> onError("Could not get audio focus (failed). Try again.") // TODO move to resource, better message
 
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
                 registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
@@ -339,9 +330,9 @@ class MoStreamingService : Service() {
                 LW.d(TAG, "Started playback")
             }
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
-                onError("Could not get audio focus (delayed). Try again.") // TODO
+                onError("Could not get audio focus (delayed). Try again.") // TODO move to resource, better message
             }
-            else -> onError("Could not get audio focus (unknown). Try again.") // TODO
+            else -> onError("Could not get audio focus (unknown). Try again.") // TODO move to resource, better message
         }
 
 
@@ -367,7 +358,7 @@ class MoStreamingService : Service() {
     private fun onComplete(mediaPlayer: MediaPlayer) {
         LW.i(TAG, "onComplete called")
         changeState(State.Completed)
-        // todo release?
+        stop()
     }
 
     fun stop() {

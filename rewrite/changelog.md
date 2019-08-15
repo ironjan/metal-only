@@ -19,6 +19,15 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.7] - 2019-08-15
+
+ * Added show info updates
+ * Solved todos
+
+## [0.9.6] - 2019-08-15
+
+ * Resolved warnings, fixed play state?
+
 ## [0.9.5] - 2019-08-15
 
  * Added audio focus callbacks

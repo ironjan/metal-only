@@ -21,11 +21,11 @@ import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
+import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-// todo add audio focus handling https://developer.android.com/guide/topics/media-apps/audio-focus
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
@@ -33,6 +33,19 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             txtTrack.text = s
         }
         LW.d(TAG, "Track info updated: $s")
+    }
+    private fun onShowInfoChange(showInfo: ShowInfo) {
+        runOnUiThread {
+            txtShow.text = showInfo.show
+            txtGenre.text = showInfo.genre
+
+            txtAbModerator.text = showInfo.moderator
+
+            txtAbLoading.visibility = View.GONE
+            txtAbModerator.visibility = View.VISIBLE
+            txtAbIs.visibility = View.VISIBLE
+            txtAbOnAir.visibility = View.VISIBLE
+        }  
     }
 
     override fun onChange(newState: MoStreamingService.State) {
@@ -111,12 +124,12 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
         loadStats()
         Thread {
-            LW.d(TAG, "Prepared track info update thread")
+            val tag = "MainActivity.TrackInfoUpdateThread"
+            LW.d(tag, "Prepared track info update thread")
             var lastTrackInfo: TrackInfo? = null
             while (isResumed) {
-                Thread.sleep(30000) // start with sleeping because loadStats includes current track
+                Thread.sleep(30*1000) // start with sleeping because loadStats includes current track
                 // FIXME is this the best way???
-                // TODO how to schedule updates for show info?
 
                 val track = Client(this).getTrack()
                 if (track.isRight()) {
@@ -125,12 +138,35 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
                             // broadcast it
                             onTrackChange(it)
                             lastTrackInfo = it
-                            LW.d(TAG, "'Broadcasted' track info")
+                            LW.d(tag, "'Broadcasted' track info")
                         }
                     }
                 }
             }
-            LW.d(TAG, "Track info update thread is not needed anymore")
+            LW.d(tag, "Track info update thread is not needed anymore")
+        }.start()
+
+        Thread {
+            val tag = "MainActivity.ShowInfoUpdateThread"
+            LW.d(tag, "Prepared show info update thread")
+            var lastShowInfo: ShowInfo? = null
+            while (isResumed) {
+                Thread.sleep(5*60*1000) // start with sleeping because loadStats includes current track
+                // Replace this with scheduled service or lookup in plan
+                
+                val showInfo = Client(this).getShowInfo()
+                if (showInfo.isRight()) {
+                    showInfo.map {
+                        if (it != lastShowInfo) {
+                            // broadcast it
+                            onShowInfoChange(it)
+                            lastShowInfo = it
+                            LW.d(tag, "'Broadcasted' show info")
+                        }
+                    }
+                }
+            }
+            LW.d(tag, "Show info update thread is not needed anymore")
         }.start()
 
         updateTxtError()

@@ -6,6 +6,7 @@ import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
+import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.log.LW
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -21,7 +22,8 @@ class Client(private val context: Context) {
 
     fun getTrack(): Either<String, TrackInfo> = safeRequest(trackUrl, TrackInfo::class.java)
 
-    //    fun getShowInfo() = safeRequest(showInfoUrl, true)
+    fun getShowInfo(): Either<String, ShowInfo> = safeRequest(showInfoUrl, ShowInfo::class.java)
+
 //    fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
 //    fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
 
