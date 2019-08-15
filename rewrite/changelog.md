@@ -19,7 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.5] - 2019-08-15
+
  * Added audio focus callbacks
+ * Added noisy stream bc receiver
 
 ## [0.9.4] - 2019-08-15
 

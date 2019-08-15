@@ -1,8 +1,10 @@
 package de.ironjan.metalonly.streaming
 
 import android.app.*
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -92,13 +94,16 @@ class MoStreamingService : Service() {
 
     private lateinit var audioManager: AudioManager
 
+    private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+    private lateinit var myNoisyAudioStreamReceiver: BecomingNoisyReceiver
+
     override fun onCreate() {
         super.onCreate()
         LW.d(TAG, "onCreate called")
 
         notificationManager = NotificationManagerCompat.from(this)
         audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
+        myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)
 
         pendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
             PendingIntent.getActivity(this, 0, notificationIntent, 0)
@@ -223,6 +228,7 @@ class MoStreamingService : Service() {
         stop()
 
     }
+
     private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
         val whatAsSTring = when (what) {
             MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
@@ -288,13 +294,14 @@ class MoStreamingService : Service() {
                 // Raise volume to normal, restart playback if necessary
                 LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
 
-                if(continueOnAudioFocusReceived) {
+                if (continueOnAudioFocusReceived) {
                     mp?.start()
                     LW.d(tag, "... started playback again")
                 }
             }
         }
     }
+
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
         Log.d(TAG, "Preparation complete. Start audio playback")
 
@@ -310,13 +317,18 @@ class MoStreamingService : Service() {
             build()
         }
 
+
         val res = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
 
         when (res) {
             AudioManager.AUDIOFOCUS_REQUEST_FAILED -> onError("Could not get audio focus (failed). Try again.") // TODO
 
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
+                registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
+                LW.d(TAG, "registered myNoisyAudioStreamReceiver")
+
                 mediaPlayer.start()
+                LW.d(TAG, "Started playback")
             }
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
                 onError("Could not get audio focus (delayed). Try again.") // TODO
@@ -329,6 +341,16 @@ class MoStreamingService : Service() {
         changeState(State.Started)
         Log.d(TAG, "Now playing.")
     }
+
+    private class BecomingNoisyReceiver(val moStreamingService: MoStreamingService) : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
+                moStreamingService.stop()
+            }
+        }
+    }
+
 
     private fun bufferingUpdate(percent: Int) {
         LW.d(TAG, "Buffering Update: $percent%")
@@ -375,6 +397,10 @@ class MoStreamingService : Service() {
         changeState(State.Gone)
         mp = null
         LW.d(TAG, "Stopped and released mediaplayer")
+
+
+        unregisterReceiver(myNoisyAudioStreamReceiver)
+        LW.d(TAG, "unregistered noisy audio stream receiver")
     }
 
     fun addStateChangeCallback(cb: StateChangeCallback) {
