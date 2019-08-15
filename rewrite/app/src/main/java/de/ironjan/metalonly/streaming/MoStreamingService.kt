@@ -7,20 +7,17 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
-import android.os.PowerManager
+import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import arrow.core.None
-import arrow.core.Option
+import androidx.media.AudioAttributesCompat
+import androidx.media.AudioFocusRequestCompat
+import androidx.media.AudioManagerCompat
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
-import java.security.cert.PKIXRevocationChecker
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -93,12 +90,16 @@ class MoStreamingService : Service() {
 
     }
 
+    private lateinit var audioManager: AudioManager
+
     override fun onCreate() {
         super.onCreate()
         LW.d(TAG, "onCreate called")
 
-
         notificationManager = NotificationManagerCompat.from(this)
+        audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+
         pendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
             PendingIntent.getActivity(this, 0, notificationIntent, 0)
         }
@@ -208,6 +209,20 @@ class MoStreamingService : Service() {
         }.start()
     }
 
+    private fun onError(s: String) {
+        val msg = "error: $s"
+        LW.e(TAG, msg)
+        changeState(State.Error)
+
+
+        val rightNow = Calendar.getInstance() //initialized with the current date and time
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
+        lastError = "$formattedDate: msg"
+
+        LW.d(TAG, "onError(string) called. Triggering stop()")
+        stop()
+
+    }
     private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
         val whatAsSTring = when (what) {
             MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
@@ -231,17 +246,86 @@ class MoStreamingService : Service() {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
         lastError = "$formattedDate: msg"
 
+
+        LW.d(TAG, "onError(w,e,mp) called. Triggering stop()")
+        stop()
+
         return true
     }
 
 
-    private fun onInfo(mp: MediaPlayer?, what: Int, extra: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    var continueOnAudioFocusReceived: Boolean = false
 
+    val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+        val tag = "MoStreamingService.afChangeListener"
+
+        LW.d(tag, "Received audio focus change to $focusChange")
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                // Permanent loss of audio focus
+                // Stop playback immediately
+                continueOnAudioFocusReceived = false
+                stop()
+                LW.d(tag, "Stopped playback, no continue on gain")
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                // Pause playback
+                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
+                // until required otherwise
+                mp?.pause()
+                continueOnAudioFocusReceived = true
+                LW.d(tag, "transient loss. Paused playback, continue on gain")
+
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                // Lower the volume, keep playing todo?
+                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
+                // until required otherwise
+                LW.d(tag, "transient loss can duck. did nothing")
+            }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                // Your app has been granted audio focus again
+                // Raise volume to normal, restart playback if necessary
+                LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
+
+                if(continueOnAudioFocusReceived) {
+                    mp?.start()
+                    LW.d(tag, "... started playback again")
+                }
+            }
+        }
+    }
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
         Log.d(TAG, "Preparation complete. Start audio playback")
-        mediaPlayer.start()
+
+
+        val audioFocusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
+            setAudioAttributes(AudioAttributesCompat.Builder().run {
+                setUsage(AudioAttributesCompat.USAGE_MEDIA)
+                setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
+                // todo add playback delayed?
+                setOnAudioFocusChangeListener(afChangeListener, Handler())
+                build()
+            })
+            build()
+        }
+
+        val res = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
+
+        when (res) {
+            AudioManager.AUDIOFOCUS_REQUEST_FAILED -> onError("Could not get audio focus (failed). Try again.") // TODO
+
+            AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
+                mediaPlayer.start()
+            }
+            AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
+                onError("Could not get audio focus (delayed). Try again.") // TODO
+            }
+            else -> onError("Could not get audio focus (unknown). Try again.") // TODO
+        }
+
+
+
         changeState(State.Started)
         Log.d(TAG, "Now playing.")
     }
