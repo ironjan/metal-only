@@ -6,7 +6,6 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.TimedMetaData
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -15,7 +14,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
-import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 
@@ -52,22 +50,16 @@ class MoStreamingService : Service() {
             LW.d(TAG, "Changing state to $state - Callback invoked.")
         }
 
-        when (state) {
-            State.Preparing -> {
-                notification.tickerText = "Preparing..."
-                notificationManager.notify(NOTIFICATION_ID, notification)
-            }
 
-            State.Started -> {
-                notification.tickerText = "Playing..."
-                notificationManager.notify(NOTIFICATION_ID, notification)
-            }
-
-            else -> {
-                notification.tickerText = "Preparing..."
-                notificationManager.cancel(NOTIFICATION_ID)
-            }
-        }
+        val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Metal Only")
+                .setContentText("$state") // TODO use show information
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
+                .build()
+        notificationManager.notify(NOTIFICATION_ID, notification2)
+        LW.d(TAG, "Updated notification")
 
         LW.d(TAG, "Changing state to $state - Completed.")
     }
@@ -95,19 +87,24 @@ class MoStreamingService : Service() {
         super.onCreate()
         LW.d(TAG, "onCreate called")
 
+
         notificationManager = NotificationManagerCompat.from(this)
         pendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
             PendingIntent.getActivity(this, 0, notificationIntent, 0)
         }
-        notification = NotificationCompat.Builder(this, CHANNEL_ID)
+        val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Metal Only")
                 .setContentText("Playing stream...")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .setTicker("TODO Artist - Title") // TODO
+                .setOnlyAlertOnce(true)
                 .build()
 
+
         createNotificationChannel()
+
+        startForeground(NOTIFICATION_ID, notification2)
 
         LW.d(TAG, "onCreate done")
 
@@ -122,7 +119,7 @@ class MoStreamingService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = (NOTIFICATION_CHANNEL_NAME)
             val descriptionText = ("todo metal only notifications") // TODO
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
@@ -178,25 +175,7 @@ class MoStreamingService : Service() {
                         Log.d(TAG, "Initialized internal media player")
 
 
-                        setOnErrorListener { mp, what, extra ->
-
-                            val whatAsSTring = when (what) {
-                                MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
-                                MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
-                                else -> "Undocumented: $what..."
-                            }
-                            val extraAsString = when (extra) {
-                                MediaPlayer.MEDIA_ERROR_IO -> "io"
-                                MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
-                                MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
-                                MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
-                                else -> "undocumented extra: $extra..."
-                            }
-
-                            LW.e(TAG, "error: $whatAsSTring - $extraAsString")
-                            changeState(State.Error)
-                            true
-                        }
+                        setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
                         setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
                         setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
 
@@ -207,6 +186,26 @@ class MoStreamingService : Service() {
                         Log.d(TAG, "Preparing internal media player async")
                     }
         }.start()
+    }
+
+    private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
+        val whatAsSTring = when (what) {
+            MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
+            MediaPlayer.MEDIA_ERROR_SERVER_DIED -> "server died"
+            else -> "Undocumented: $what..."
+        }
+        val extraAsString = when (extra) {
+            MediaPlayer.MEDIA_ERROR_IO -> "io"
+            MediaPlayer.MEDIA_ERROR_MALFORMED -> "Malformed"
+            MediaPlayer.MEDIA_ERROR_UNSUPPORTED -> "unsupported"
+            MediaPlayer.MEDIA_ERROR_TIMED_OUT -> "timeout"
+            else -> "undocumented extra: $extra..."
+        }
+
+        LW.e(TAG, "error: $whatAsSTring - $extraAsString")
+        changeState(State.Error)
+
+        return true
     }
 
 
