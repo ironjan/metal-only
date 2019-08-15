@@ -132,6 +132,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             }
             LW.d(TAG, "Track info update thread is not needed anymore")
         }.start()
+
+        LW.d(TAG, "onResume done.")
     }
 
 
@@ -293,5 +295,6 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     override fun onPause() {
         super.onPause()
         isResumed = false
+        LW.d(TAG, "onPause done")
     }
 }
