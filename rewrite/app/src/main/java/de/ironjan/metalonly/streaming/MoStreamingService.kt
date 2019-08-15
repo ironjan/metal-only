@@ -6,9 +6,11 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.wifi.WifiManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -105,10 +107,17 @@ class MoStreamingService : Service() {
         createNotificationChannel()
 
         startForeground(NOTIFICATION_ID, notification2)
+        LW.d(TAG, "PRomoted service to goreground")
+
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock")
+        LW.d(TAG, "Acquired wifilock")
 
         LW.d(TAG, "onCreate done")
 
     }
+
+    private lateinit var wifiLock: WifiManager.WifiLock
 
     private val CHANNEL_ID = "Metal Only CHANNEL ID" // TODO
     private fun createNotificationChannel() {
@@ -150,7 +159,6 @@ class MoStreamingService : Service() {
 
     fun play() {
         LW.d(TAG, "play() called")
-        startForeground(NOTIFICATION_ID, notification)
 
         LW.d(TAG, "Service is in foreground now")
 
@@ -160,9 +168,12 @@ class MoStreamingService : Service() {
             LW.d(TAG, "Released previous media player")
         }
 
+
         Thread {
             mp = MediaPlayer()
                     .apply {
+                        setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+
                         if (Build.VERSION.SDK_INT < 26) {
                             @Suppress("DEPRECATION")
                             setAudioStreamType(AudioManager.STREAM_MUSIC)
@@ -205,6 +216,7 @@ class MoStreamingService : Service() {
         LW.e(TAG, "error: $whatAsSTring - $extraAsString")
         changeState(State.Error)
 
+
         return true
     }
 
@@ -245,6 +257,10 @@ class MoStreamingService : Service() {
         }
         notificationManager.cancel(NOTIFICATION_ID)
         LW.d(TAG, "Cancelled notification")
+
+        wifiLock.release()
+        LW.d(TAG, "Released wifilock")
+
         LW.d(TAG, "Stopping self...")
         stopSelf()
         LW.d(TAG, "Stopping self... done")

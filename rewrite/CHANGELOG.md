@@ -17,6 +17,10 @@ The subsections are formatted as they need when publishing a release to the Play
 <en-US>
 </en-US>
 
+## Unreleased
+
+ * Added wakelock and wifilock
+
 ## [0.9.3] - 2019-08-12
 
 <de-DE>
