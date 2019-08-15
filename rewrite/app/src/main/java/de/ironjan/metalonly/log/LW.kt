@@ -1,5 +1,6 @@
 package de.ironjan.metalonly.log
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import java.io.File
@@ -33,6 +34,7 @@ object LW {
     }
 
 
+    @SuppressLint("SimpleDateFormat")
     private fun internalLog(level: Level, tag: String, msg: String, e: Throwable? = null) {
         val rightNow = Calendar.getInstance() //initialized with the current date and time
 
