@@ -88,9 +88,7 @@ class Client(private val context: Context) {
                     override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
                     }
 
-                    override fun getAcceptedIssuers(): Array<X509Certificate> {
-                        return null as Array<X509Certificate>
-                    }
+                    override fun getAcceptedIssuers(): Array<X509Certificate>? = null
                 }
             }
             sslSocketMiddleware.setTrustManagers(tms)

@@ -1,5 +1,6 @@
 package de.ironjan.metalonly.streaming
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -35,7 +36,12 @@ class MoStreamingService : Service() {
 
     private var stateChangeCallback: StateChangeCallback? = null
 
-    private var state: State = State.Gone
+    private var _state: State = State.Gone
+    var state: State
+        get() = _state
+        private set(value) {
+            _state = value
+        }
 
 
     val isPlayingOrPreparing: Boolean
@@ -73,11 +79,14 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Changing state to $state - Completed.")
     }
 
-    val binder = LocalBinder()
+    private val binder = LocalBinder()
 
     override fun onBind(p0: Intent?): IBinder? = binder
 
-    var mp: MediaPlayer? = null
+    override fun onRebind(intent: Intent?) {
+        super.onRebind(intent)
+    }
+    private var mp: MediaPlayer? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         LW.d(TAG, "handling start command")
@@ -161,17 +170,14 @@ class MoStreamingService : Service() {
     private val NOTIFICATION_ID = 0
     private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
 
-    lateinit var pendingIntent: PendingIntent
+    private lateinit var pendingIntent: PendingIntent
 
-    lateinit var notification: Notification
-
-
-    fun play(cb: MoStreamingService.StateChangeCallback) {
+    fun play(cb: StateChangeCallback) {
         addStateChangeCallback(cb)
         play()
     }
 
-    fun play() {
+    private fun play() {
         LW.d(TAG, "play() called")
         lastError = null
 
@@ -203,7 +209,7 @@ class MoStreamingService : Service() {
 
                         setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
                         setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
-                        setOnBufferingUpdateListener { mp, percent -> bufferingUpdate(percent) }
+                        setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
 
                         setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
                         Log.d(TAG, "Hooked up call backs to internal media player")
@@ -214,6 +220,7 @@ class MoStreamingService : Service() {
         }.start()
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun onError(s: String) {
         val msg = "error: $s"
         LW.e(TAG, msg)
@@ -229,6 +236,7 @@ class MoStreamingService : Service() {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
         val whatAsSTring = when (what) {
             MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
@@ -260,9 +268,9 @@ class MoStreamingService : Service() {
     }
 
 
-    var continueOnAudioFocusReceived: Boolean = false
+    private var continueOnAudioFocusReceived: Boolean = false
 
-    val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+    private val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         val tag = "MoStreamingService.afChangeListener"
 
         LW.d(tag, "Received audio focus change to $focusChange")

@@ -1,6 +1,7 @@
 package de.ironjan.metalonly
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
@@ -134,6 +135,14 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
         updateTxtError()
 
+        if(mBound) {
+            onChange(moStreamingService.state)
+        } else {
+            Intent(this, MoStreamingService::class.java).also {
+                bindService(it, connection, 0)
+            }
+        }
+
         LW.d(TAG, "onResume done.")
     }
 
@@ -146,6 +155,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             val binder = service as MoStreamingService.LocalBinder
             moStreamingService = binder.getService()
             moStreamingService.addStateChangeCallback(this@MainActivity)
+
+            onChange(moStreamingService.state)
 
             updateTxtError()
 
