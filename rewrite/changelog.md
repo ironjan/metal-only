@@ -19,7 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.4] - 2019-08-15
+
  * Added wakelock and wifilock
+ * Added error display in ui
 
 ## [0.9.3] - 2019-08-12
 
