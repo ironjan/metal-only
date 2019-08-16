@@ -123,7 +123,7 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Promoted service to foreground")
 
         val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock")
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
         LW.d(TAG, "Acquired wifilock")
 
         LW.d(TAG, "onCreate done")
