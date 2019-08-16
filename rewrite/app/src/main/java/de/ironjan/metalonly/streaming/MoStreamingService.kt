@@ -55,7 +55,7 @@ class MoStreamingService : Service() {
         state = newState
 
         stateChangeCallback?.apply {
-            onChange(newState)
+            onStateChange(newState)
             LW.d(TAG, "Changing state to $state - Callback invoked.")
         }
 
@@ -445,9 +445,6 @@ class MoStreamingService : Service() {
 
     }
 
-    interface StateChangeCallback {
-        fun onChange(newState: State)
-    }
 
     companion object {
         const val ACTION_PLAY = "de.ironjan.metalonly.play"

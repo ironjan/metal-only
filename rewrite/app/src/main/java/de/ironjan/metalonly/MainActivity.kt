@@ -26,10 +26,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
 import de.ironjan.metalonly.streaming.State
+import de.ironjan.metalonly.streaming.StateChangeCallback
 
 
-class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
-    override fun onTrackChange(trackInfo: TrackInfo) {
+class MainActivity : AppCompatActivity(), StateChangeCallback {
+    private fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
         runOnUiThread {
             txtTrack.text = s
@@ -50,8 +51,8 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         }
     }
 
-    override fun onChange(newState: State) {
-        LW.d(TAG, "onChange($newState) called.")
+    override fun onStateChange(newState: State) {
+        LW.d(TAG, "onStateChange($newState) called.")
         when (newState) {
             State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
             State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             State.Completed -> snack("on complete")
             State.Error -> snack("on error")
         }
-        LW.d(TAG, "onChange($newState) completed.")
+        LW.d(TAG, "onStateChange($newState) completed.")
     }
 
     private var isResumed: Boolean = false
@@ -180,7 +181,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         updateTxtError()
 
         if(mBound) {
-            onChange(moStreamingService.state)
+            onStateChange(moStreamingService.state)
         } else {
             Intent(this, MoStreamingService::class.java).also {
                 bindService(it, connection, 0)
@@ -200,7 +201,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             moStreamingService = binder.getService()
             moStreamingService.addStateChangeCallback(this@MainActivity)
 
-            onChange(moStreamingService.state)
+            onStateChange(moStreamingService.state)
 
             updateTxtError()
 
