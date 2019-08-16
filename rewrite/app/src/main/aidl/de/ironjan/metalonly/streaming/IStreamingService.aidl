@@ -1,7 +1,18 @@
 package de.ironjan.metalonly.streaming;
 
+import de.ironjan.metalonly.streaming.IStreamChangeCallback;
+import de.ironjan.metalonly.streaming.State;
 
 interface IStreamingService {
-    //     MoStreamingService getService();
-    // FIXME Add aidl for callback, add callback and related methods. aidl may only include aidl interfaces
+    State getState();
+    boolean getIsPlayingOrPreparing();
+    boolean getCanPlay();
+    String getLastError();
+
+    void play(in IStreamChangeCallback cb);
+
+    void addCallback(in IStreamChangeCallback cb);
+
+    void stop();
+
 }

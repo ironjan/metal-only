@@ -62,7 +62,7 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Changing state to $state - Completed.")
     }
 
-    private val binder = LocalBinder()
+    private val binder = AidlBinder(this)
 
     override fun onBind(p0: Intent?): IBinder? = binder
 
@@ -443,6 +443,33 @@ class MoStreamingService : Service() {
         // Return this instance of LocalService so clients can call public methods
         fun getService(): MoStreamingService = this@MoStreamingService
 
+    }
+
+    /** AIDL based binder */
+    inner class AidlBinder(val srv: MoStreamingService): IStreamingService.Stub(){
+        override fun getIsPlayingOrPreparing(): Boolean = srv.isPlayingOrPreparing
+
+        override fun getCanPlay(): Boolean = srv.canPlay
+        override fun getLastError(): String? = srv.lastError
+
+        override fun addCallback(cb: IStreamChangeCallback?) {
+            srv.addStateChangeCallback(wrap(cb))
+        }
+
+        override fun play(cb: IStreamChangeCallback?) {
+            srv.play(wrap(cb))
+        }
+
+        private fun wrap(cb: IStreamChangeCallback?): StateChangeCallback {
+            return object: StateChangeCallback {
+                override fun onStateChange(newState: State) {
+                    cb?.onNewState(newState)
+                }
+            }
+        }
+        override fun stop() = srv.stop()
+
+        override fun getState(): State = srv.state
     }
 
 

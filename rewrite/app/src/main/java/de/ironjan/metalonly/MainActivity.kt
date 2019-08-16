@@ -25,6 +25,7 @@ import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
+import de.ironjan.metalonly.streaming.IStreamChangeCallback
 import de.ironjan.metalonly.streaming.State
 import de.ironjan.metalonly.streaming.StateChangeCallback
 
@@ -72,7 +73,6 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
     private lateinit var stream_loading: Drawable
     private lateinit var stopping_drawable: Drawable
 
-    private lateinit var moStreamingService: MoStreamingService
     private var mBound: Boolean = false
 
 
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
                     moStreamingService.stop()
                     LW.d(TAG, "Stopped playing")
                 } else if (moStreamingService.canPlay) {
-                    moStreamingService.play(this)
+                    moStreamingService.play(asIStreamChangeCallback())
                     LW.d(TAG, "Started playing")
                 }
             } else {
@@ -192,14 +192,16 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
     }
 
 
+    private lateinit var moStreamingService: MoStreamingService.AidlBinder
+
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            val binder = service as MoStreamingService.LocalBinder
-            moStreamingService = binder.getService()
-            moStreamingService.addStateChangeCallback(this@MainActivity)
+            moStreamingService = service as MoStreamingService.AidlBinder
+
+            moStreamingService.addCallback(asIStreamChangeCallback())
 
             onStateChange(moStreamingService.state)
 
@@ -210,6 +212,14 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
         override fun onServiceDisconnected(arg0: ComponentName) {
             mBound = false
+        }
+    }
+
+    private fun asIStreamChangeCallback(): IStreamChangeCallback.Stub {
+        return object : IStreamChangeCallback.Stub() {
+            override fun onNewState(state: State) {
+                this@MainActivity.onStateChange(state)
+            }
         }
     }
 
