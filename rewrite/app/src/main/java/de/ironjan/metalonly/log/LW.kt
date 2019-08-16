@@ -79,6 +79,11 @@ object LW {
         internalLog(Level.DEBUG, tag, msg)
     }
 
+    fun v(tag: String, msg: String) {
+        Log.v(tag, msg)
+        internalLog(Level.VERBOSE, tag, msg)
+    }
+
     fun w(tag: String, msg: String) {
         Log.w(tag, msg)
         internalLog(Level.WARNING, tag, msg)
