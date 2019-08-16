@@ -2,8 +2,21 @@ package de.ironjan.metalonly.streaming
 
 import android.os.Parcel
 import android.os.Parcelable
+
+/** Represents streaming state. Wraps the internal media player states. */
 enum class State : Parcelable {
-    Gone, Preparing, Started, Completed, Stopping, Error;
+    /** Stream is stopped. */
+    Gone,
+    /** Stream is being prepared. Corresponds to media player states Idle ... Preparing. */
+    Preparing,
+    /** Stream is currently playing. */
+    Started,
+    /** Stream is completed. TODO find out what this state means */
+    Completed,
+    /** Stream is stopping and service is cleaning up. */
+    Stopping,
+    /** An error occurred while playing the stream. */
+    Error;
 
     override fun writeToParcel(parcel: Parcel, flags: Int) = parcel.writeString(name)
 
