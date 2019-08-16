@@ -126,10 +126,18 @@ class MoStreamingService : Service() {
         wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
         LW.d(TAG, "Acquired wifilock")
 
+        wakeLock =
+                (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                    newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
+                        acquire()
+                    }
+                }
+        LW.d(TAG, "Acquired wakelock explictely.")
+
         LW.d(TAG, "onCreate done")
 
     }
-
+private lateinit var wakeLock: PowerManager.WakeLock
     private lateinit var wifiLock: WifiManager.WifiLock
 
     private val CHANNEL_ID = "Metal Only Stream Notifications"
@@ -390,6 +398,9 @@ class MoStreamingService : Service() {
 
         wifiLock.release()
         LW.d(TAG, "Released wifilock")
+
+        wakeLock.release()
+        LW.d(TAG, "Released wakelock")
 
         LW.d(TAG, "Stopping self...")
         stopSelf()
