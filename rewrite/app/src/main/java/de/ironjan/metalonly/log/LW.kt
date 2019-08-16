@@ -3,6 +3,7 @@ package de.ironjan.metalonly.log
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import de.ironjan.metalonly.BuildConfig
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +42,11 @@ object LW {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
 
         val em = if (e != null) "{{{$e}}}" else ""
-        val logString = "$formattedDate - $level - $tag: $msg $em\n"
+
+
+        val appVersion = BuildConfig.VERSION_NAME
+        
+        val logString = "$appVersion: $formattedDate - $level - $tag: $msg $em\n"
         q.add(logString)
         if (q.size > LogQueueFlushLimit) {
             flushQ()
