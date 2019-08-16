@@ -28,7 +28,7 @@
 
         <service
             android:name=".streaming.MoStreamingService"
-            android:description="Metal Only streaming"
+            android:description="@string/moServiceDescription"
             android:process=":stream" />
     </application>
 

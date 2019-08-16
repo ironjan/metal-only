@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.17] - 2019-08-17 00:21
+
+ * Moved service to own process; communication via AIDL
+
 ## [0.9.16] - 2019-08-16 14:59
 
  * Added missing permission

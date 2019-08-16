@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Metal Only</string>
     <string name="current_track">Current Track</string>
+    <string name="moServiceDescription">Metal Only streaming</string>
 </resources>
