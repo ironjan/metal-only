@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         // request is needed. FIXME: better way to do this.. *must* include a google-friendly explanation why doze impacts core functionality of the app
 
         val intent = Intent()
-        intent.action = Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
         intent.data = Uri.parse("package:${this.packageName}")
         val activityExists = intent.resolveActivity(packageManager) != null
         if (activityExists) {
