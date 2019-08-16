@@ -25,6 +25,9 @@ import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import android.os.Build
+
+
 
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
     override fun onTrackChange(trackInfo: TrackInfo) {
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
             txtAbModerator.visibility = View.VISIBLE
             txtAbIs.visibility = View.VISIBLE
             txtAbOnAir.visibility = View.VISIBLE
-        }  
+        }
     }
 
     override fun onChange(newState: MoStreamingService.State) {
@@ -108,7 +111,11 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
                 fab.setImageDrawable(stream_loading)
                 Intent(this, MoStreamingService::class.java).also {
                     it.action = MoStreamingService.ACTION_PLAY
-                    startService(it)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(it)
+                    } else {
+                        startService(it)
+                    }
                     bindService(it, connection, 0)
                 }
             }
