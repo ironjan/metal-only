@@ -64,7 +64,7 @@ object LW {
                 file.createNewFile()
             }
 
-            val fileSizeInMb = file.length() / (1024.0 * 1024)
+            val fileSizeInMb = file.length() / (256.0 * 1024)
             if (fileSizeInMb > LogFileMaxSizeInMb) {
                 // implicitely clear file
                 file.writeText(append, Charsets.UTF_8)
