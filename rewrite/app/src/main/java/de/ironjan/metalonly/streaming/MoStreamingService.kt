@@ -111,6 +111,8 @@ class MoStreamingService : Service() {
                 .setContentText("Playing stream")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setSound(null)
                 .setOnlyAlertOnce(true)
                 .build()
 
@@ -140,9 +142,10 @@ class MoStreamingService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = (NOTIFICATION_CHANNEL_NAME)
             val descriptionText = ("Metal Only Stream Notification") // todo move to resource
-            val importance = NotificationManager.IMPORTANCE_LOW
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
+                setSound(null,null)
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
