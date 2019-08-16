@@ -453,7 +453,6 @@ class MoStreamingService : Service() {
 
     interface StateChangeCallback {
         fun onChange(newState: State)
-        fun onTrackChange(trackInfo: TrackInfo)
     }
 
     companion object {
