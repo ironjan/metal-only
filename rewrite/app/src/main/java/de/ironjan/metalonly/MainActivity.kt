@@ -214,6 +214,10 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         val activityExists = intent.resolveActivity(packageManager) != null
         if (activityExists) {
             startActivity(intent)
+            LW.d(TAG, "Started activity to request whitelisting.")
+        }
+        else {
+            LW.d(TAG, "There is no activity for whitelisting...")
         }
 
     }
