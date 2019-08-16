@@ -126,6 +126,13 @@ class MoStreamingService : Service() {
         wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
         LW.d(TAG, "Acquired wifilock")
 
+
+        muticastLock = wifiManager.createMulticastLock("lockWiFiMulticast")
+        muticastLock.setReferenceCounted(false)
+        muticastLock.acquire();
+        LW.d(TAG, "Acquired muticastLock")
+
+
         wakeLock =
                 (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
                     newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
@@ -137,7 +144,9 @@ class MoStreamingService : Service() {
         LW.d(TAG, "onCreate done")
 
     }
-private lateinit var wakeLock: PowerManager.WakeLock
+
+    private lateinit var wakeLock: PowerManager.WakeLock
+    private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
     private lateinit var wifiLock: WifiManager.WifiLock
 
     private val CHANNEL_ID = "Metal Only Stream Notifications"
@@ -398,6 +407,9 @@ private lateinit var wakeLock: PowerManager.WakeLock
 
         wifiLock.release()
         LW.d(TAG, "Released wifilock")
+
+        muticastLock.release()
+        LW.d(TAG, "Released multicastLock")
 
         wakeLock.release()
         LW.d(TAG, "Released wakelock")
