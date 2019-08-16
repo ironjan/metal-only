@@ -21,13 +21,10 @@ import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.api.model.ShowInfo
-import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
-import de.ironjan.metalonly.streaming.IStreamChangeCallback
-import de.ironjan.metalonly.streaming.State
-import de.ironjan.metalonly.streaming.StateChangeCallback
+import de.ironjan.metalonly.streaming.*
 
 
 class MainActivity : AppCompatActivity(), StateChangeCallback {
@@ -192,14 +189,14 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
     }
 
 
-    private lateinit var moStreamingService: MoStreamingService.AidlBinder
+    private lateinit var moStreamingService: IStreamingService
 
     /** Defines callbacks for service binding, passed to bindService()  */
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            moStreamingService = service as MoStreamingService.AidlBinder
+            moStreamingService = IStreamingService.Stub.asInterface(service)
 
             moStreamingService.addCallback(asIStreamChangeCallback())
 
