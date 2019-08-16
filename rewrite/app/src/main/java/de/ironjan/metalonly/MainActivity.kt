@@ -113,8 +113,10 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
                     it.action = MoStreamingService.ACTION_PLAY
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(it)
+                        LW.d(TAG, "Running on Android O+, started service as foreground.")
                     } else {
                         startService(it)
+                        LW.d(TAG, "Running on Android before O, started service via startService.")
                     }
                     bindService(it, connection, 0)
                 }

@@ -159,7 +159,7 @@ class MoStreamingService : Service() {
     }
 
 
-    private val NOTIFICATION_ID = 0
+    private val NOTIFICATION_ID = 1
     private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
 
     private lateinit var pendingIntent: PendingIntent
