@@ -120,7 +120,7 @@ class MoStreamingService : Service() {
         createNotificationChannel()
 
         startForeground(NOTIFICATION_ID, notification2)
-        LW.d(TAG, "PRomoted service to goreground")
+        LW.d(TAG, "Promoted service to foreground")
 
         val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock")
