@@ -19,6 +19,8 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+ * Reduced log file max size to 256K
+
 ## [0.9.13] - 2019-08-17 13:
 
  * Using WIFI_MODE_FULL_HIGH_PERF for wifi lock
