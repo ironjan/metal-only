@@ -238,16 +238,19 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
     private fun loadStats() {
         Thread(Runnable {
+            LW.d(TAG, "Loading stats..")
             try {
                 val stats = Client(this).getStats()
 
                 if (stats.isLeft()) {
                     stats.mapLeft {
+                        LW.w(TAG, "Loading stats failed: $it")
                         snack(it)
                     }
                 } else {
                     stats.map {
                         showStats(it)
+                        LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
                         loadModeratorImage(it)
                     }
                 }
@@ -299,13 +302,16 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     }
 
     private fun loadModeratorImage(stats: Stats) {
+        LW.d(TAG, "Starting to load mod image.")
         val mod = stats.showInformation.moderator
         val id = resources.getIdentifier(mod.toLowerCase(), "drawable", packageName)
         val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
         runOnUiThread {
             if (id != 0) {
+                LW.d(TAG, "Mod image delivered via app. Using resource.")
                 imageView.setImageResource(id)
             } else {
+                LW.d(TAG, "Mod image not delivered via app. Loading from URL.")
                 Ion.with(imageView)
                         .placeholder(R.drawable.metalhead)
                         // TODO do we need these?
@@ -319,6 +325,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
     }
 
     private fun showStats(stats: Stats) {
+        LW.d(TAG, "Showing stats")
         val track = stats.track
         val trackAsString = "${track.artist} - ${track.title}"
         val showInformation = stats.showInformation
@@ -339,6 +346,7 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
 
 
     private fun snack(s: String) {
+        LW.v(TAG, "Called snack($s)")
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
         }

@@ -186,6 +186,7 @@ class MoStreamingService : Service() {
             mp = MediaPlayer()
                     .apply {
                         setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                        LW.d(TAG, "Acquired wake lock.")
 
                         if (Build.VERSION.SDK_INT < 26) {
                             @Suppress("DEPRECATION")
@@ -202,6 +203,7 @@ class MoStreamingService : Service() {
                         setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
                         setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
                         setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
+                        setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
 
                         setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
                         Log.d(TAG, "Hooked up call backs to internal media player")
@@ -212,6 +214,10 @@ class MoStreamingService : Service() {
         }.start()
     }
 
+    private fun onMpInfo(what: Int, extra:Int): Boolean {
+        LW.d(TAG, "MediaPlayer info: $what, $extra")
+        return true
+    }
     @SuppressLint("SimpleDateFormat")
     private fun onError(s: String) {
         val msg = "error: $s"
@@ -379,6 +385,8 @@ class MoStreamingService : Service() {
         }
         notificationManager.cancel(NOTIFICATION_ID)
         LW.d(TAG, "Cancelled notification")
+
+
 
         wifiLock.release()
         LW.d(TAG, "Released wifilock")
