@@ -1,6 +1,7 @@
 package de.ironjan.metalonly
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
@@ -24,6 +25,8 @@ import de.ironjan.metalonly.api.model.ShowInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
+import android.os.PowerManager
+import android.provider.Settings
 import de.ironjan.metalonly.streaming.*
 
 
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         }
         LW.d(TAG, "Track info updated: $s")
     }
+
     private fun onShowInfoChange(showInfo: ShowInfo) {
         runOnUiThread {
             txtShow.text = showInfo.show
@@ -134,7 +138,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
             LW.d(tag, "Prepared track info update thread")
             var lastTrackInfo: TrackInfo? = null
             while (isResumed) {
-                Thread.sleep(30*1000) // start with sleeping because loadStats includes current track
+                Thread.sleep(30 * 1000) // start with sleeping because loadStats includes current track
                 // FIXME is this the best way???
 
                 val track = Client(this).getTrack()
@@ -157,9 +161,9 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
             LW.d(tag, "Prepared show info update thread")
             var lastShowInfo: ShowInfo? = null
             while (isResumed) {
-                Thread.sleep(5*60*1000) // start with sleeping because loadStats includes current track
+                Thread.sleep(5 * 60 * 1000) // start with sleeping because loadStats includes current track
                 // Replace this with scheduled service or lookup in plan
-                
+
                 val showInfo = Client(this).getShowInfo()
                 if (showInfo.isRight()) {
                     showInfo.map {
@@ -177,7 +181,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
         updateTxtError()
 
-        if(mBound) {
+        if (mBound) {
             onStateChange(moStreamingService.state)
         } else {
             Intent(this, MoStreamingService::class.java).also {
@@ -185,9 +189,34 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
             }
         }
 
+        checkIgnoreBatteryOptimization()
+
         LW.d(TAG, "onResume done.")
     }
 
+    private fun checkIgnoreBatteryOptimization() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            LW.d(TAG, "Running on Android < O. No battery optimization request necesary.")
+            return
+        }
+
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
+            LW.d(TAG, "Already ignoring battery optimizations. Request not necessary.")
+            return
+        }
+
+        // request is needed. FIXME: better way to do this.. *must* include a google-friendly explanation why doze impacts core functionality of the app
+
+        val intent = Intent()
+        intent.action = Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+        intent.data = Uri.parse("package:${this.packageName}")
+        val activityExists = intent.resolveActivity(packageManager) != null
+        if (activityExists) {
+            startActivity(intent)
+        }
+
+    }
 
     private lateinit var moStreamingService: IStreamingService
 
@@ -220,9 +249,9 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         }
     }
 
-    private fun updateTxtError(){
+    private fun updateTxtError() {
         runOnUiThread {
-            if(mBound && moStreamingService.lastError !=null) {
+            if (mBound && moStreamingService.lastError != null) {
                 txtError.text = moStreamingService.lastError ?: ""
             } else {
                 txtError.text = ""
@@ -237,9 +266,9 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
     override fun onStop() {
         super.onStop()
-        if(mBound) {
-          mBound = false
-          unbindService(connection)
+        if (mBound) {
+            mBound = false
+            unbindService(connection)
         }
     }
 
