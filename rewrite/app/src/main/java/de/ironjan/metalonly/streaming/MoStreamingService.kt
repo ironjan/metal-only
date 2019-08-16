@@ -19,17 +19,11 @@ import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
-import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MoStreamingService : Service() {
-    enum class State {
-        Gone, Preparing, Started, Completed, Stopping,
-
-        Error
-    }
 
     var lastError: String? = null
 

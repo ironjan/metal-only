@@ -1,7 +1,6 @@
 package de.ironjan.metalonly
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
@@ -26,7 +25,7 @@ import de.ironjan.metalonly.streaming.MoStreamingService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
-
+import de.ironjan.metalonly.streaming.State
 
 
 class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback {
@@ -51,15 +50,15 @@ class MainActivity : AppCompatActivity(), MoStreamingService.StateChangeCallback
         }
     }
 
-    override fun onChange(newState: MoStreamingService.State) {
+    override fun onChange(newState: State) {
         LW.d(TAG, "onChange($newState) called.")
         when (newState) {
-            MoStreamingService.State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
-            MoStreamingService.State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
-            MoStreamingService.State.Stopping -> runOnUiThread { fab.setImageDrawable(action_stop) }
-            MoStreamingService.State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
-            MoStreamingService.State.Completed -> snack("on complete")
-            MoStreamingService.State.Error -> snack("on error")
+            State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
+            State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
+            State.Stopping -> runOnUiThread { fab.setImageDrawable(action_stop) }
+            State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
+            State.Completed -> snack("on complete")
+            State.Error -> snack("on error")
         }
         LW.d(TAG, "onChange($newState) completed.")
     }
