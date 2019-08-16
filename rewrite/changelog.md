@@ -19,6 +19,8 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.8] - 2019-08-16
+
  * Removed notification sound, fixed priority
  * Added version to log
 
