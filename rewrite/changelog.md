@@ -19,6 +19,8 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.14] - 2019-08-16 14:15
+
  * Reduced log file max size to 256K
  * Explicit wakelock
 
