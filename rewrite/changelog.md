@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.12] - 2019-08-17 13:42
+
+ * Added more log statements
+
 ## [0.9.11] - 2019-08-16 13:21
 
  * Added log statements and changed notification id
