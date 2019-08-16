@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.11] - 2019-08-16 13:21
+
+ * Added log statements and changed notification id
+
 ## [0.9.10] - 2019-08-16 13:06
 
  * Actually starting service as foreground with immediate promotion
