@@ -11,7 +11,7 @@ plugins {
 // only change _after_ merge requests
 def versionMajor = 0    // incompatible API changes
 def versionMinor = 9    // added functionality in a backwards-compatible manner
-def versionPatch = 24   // backwards-compatible bug fixes
+def versionPatch = 25   // backwards-compatible bug fixes
 def versionBuild = 0    // bump for dogfood builds, public betas, etc.
 
 
@@ -74,6 +74,7 @@ dependencies {
     implementation 'io.arrow-kt:arrow-core:0.8.2'
     implementation 'com.google.android.gms:play-services-base:17.0.0'
     implementation 'com.android.support:support-media-compat:28.0.0'
+    implementation 'com.hypertrack:hyperlog:0.0.10'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
