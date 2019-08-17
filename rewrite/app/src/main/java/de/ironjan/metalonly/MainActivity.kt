@@ -189,37 +189,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
             }
         }
 
-        checkIgnoreBatteryOptimization()
-
         LW.d(TAG, "onResume done.")
-    }
-
-    private fun checkIgnoreBatteryOptimization() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            LW.d(TAG, "Running on Android < O. No battery optimization request necesary.")
-            return
-        }
-
-        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        if (powerManager.isIgnoringBatteryOptimizations(BuildConfig.APPLICATION_ID)) {
-            LW.d(TAG, "Already ignoring battery optimizations. Request not necessary.")
-            return
-        }
-
-        // request is needed. FIXME: better way to do this.. *must* include a google-friendly explanation why doze impacts core functionality of the app
-
-        val intent = Intent()
-        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-        intent.data = Uri.parse("package:${this.packageName}")
-        val activityExists = intent.resolveActivity(packageManager) != null
-        if (activityExists) {
-            startActivity(intent)
-            LW.d(TAG, "Started activity to request whitelisting.")
-        }
-        else {
-            LW.d(TAG, "There is no activity for whitelisting...")
-        }
-
     }
 
     private lateinit var moStreamingService: IStreamingService
