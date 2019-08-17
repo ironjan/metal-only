@@ -16,7 +16,7 @@ object LW {
 
     private const val LogQueueFlushLimit = 1
     private const val LogFileName = "metalonly.log"
-    private const val LogFileMaxSizeInMb = 5
+    private const val LogFileMaxSizeInMb = 2
 
     val q: Queue<String> = ConcurrentLinkedQueue<String>()
     var applicationContext: Context? = null
@@ -84,8 +84,8 @@ object LW {
         if (applicationContext != null) {
             val file = File(applicationContext!!.filesDir, LogFileName)
 
-            val fis = FileOutputStream(file) // or FileOutputStream fos = new FileOutputStream(file);
-            val lock = fis.channel.lock()
+            val fis = FileOutputStream(file)
+            val lock = fis.channel.lock() ?: return // either we get the log or flush later. may loose log entries.
 
             if (!file.exists()) {
                 file.createNewFile()
