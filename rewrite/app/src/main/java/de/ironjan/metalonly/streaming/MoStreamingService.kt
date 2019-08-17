@@ -28,14 +28,14 @@ class MoStreamingService : Service() {
     var lastError: String? = null
 
 
-    private var stateChangeCallback: StateChangeCallback? = null
-
     private var _state: State = State.Gone
     var state: State
         get() = _state
         private set(value) {
             _state = value
         }
+
+    private var stateChangeCallback: StateChangeCallback? = null
 
 
     val isPlayingOrPreparing: Boolean
@@ -50,26 +50,69 @@ class MoStreamingService : Service() {
 
     private lateinit var notificationManager: NotificationManagerCompat
 
-    private fun changeState(newState: State) {
-        LW.d(TAG, "Changing state to $newState.")
-        state = newState
-
-        stateChangeCallback?.apply {
-            onStateChange(newState)
-            LW.d(TAG, "Changing state to $state - Callback invoked.")
-        }
-
-        LW.d(TAG, "Changing state to $state - Completed.")
-    }
-
     private val binder = AidlBinder(this)
 
-    override fun onBind(p0: Intent?): IBinder? = binder
-
-    override fun onRebind(intent: Intent?) {
-        super.onRebind(intent)
-    }
     private var mp: MediaPlayer? = null
+    private var continueOnAudioFocusReceived: Boolean = false
+
+
+    private lateinit var audioManager: AudioManager
+
+    private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+    private lateinit var myNoisyAudioStreamReceiver: BecomingNoisyReceiver
+
+    private lateinit var wakeLock: PowerManager.WakeLock
+    private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
+    private lateinit var wifiLock: WifiManager.WifiLock
+
+    private val CHANNEL_ID = "Metal Only Stream Notifications"
+
+    private val NOTIFICATION_ID = 1
+    private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
+
+    private val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+        val tag = "MoStreamingService.afChangeListener"
+
+        LW.d(tag, "Received audio focus change to $focusChange")
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                // Permanent loss of audio focus
+                // Stop playback immediately
+                continueOnAudioFocusReceived = false
+                stop()
+                LW.d(tag, "Stopped playback, no continue on gain")
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                // Pause playback
+                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
+                // until required otherwise
+                mp?.pause()
+                continueOnAudioFocusReceived = true
+                LW.d(tag, "transient loss. Paused playback, continue on gain")
+
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                // Lower the volume, keep playing
+                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
+                // until required otherwise
+
+                // todo: implement Lower the volume, keep playing?
+                LW.d(tag, "transient loss can duck. did nothing")
+            }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                // Your app has been granted audio focus again
+                // Raise volume to normal, restart playback if necessary
+                LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
+
+                if (continueOnAudioFocusReceived) {
+                    mp?.start()
+                    LW.d(tag, "... started playback again")
+                }
+            }
+        }
+    }
+
+    private lateinit var pendingIntent: PendingIntent
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         LW.d(TAG, "handling start command")
@@ -84,14 +127,23 @@ class MoStreamingService : Service() {
 
     }
 
-    private lateinit var audioManager: AudioManager
+    override fun onBind(p0: Intent?): IBinder? = binder
 
-    private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-    private lateinit var myNoisyAudioStreamReceiver: BecomingNoisyReceiver
+    private fun changeState(newState: State) {
+        LW.d(TAG, "Changing state to $newState.")
+        state = newState
+
+        stateChangeCallback?.apply {
+            onStateChange(newState)
+            LW.d(TAG, "Changing state to $state - Callback invoked.")
+        }
+
+        LW.d(TAG, "Changing state to $state - Completed.")
+    }
 
     override fun onCreate() {
         super.onCreate()
-        LW.d(TAG, "onCreate called")
+        LW.i(TAG, "onCreate called")
 
         notificationManager = NotificationManagerCompat.from(this)
         audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -114,36 +166,36 @@ class MoStreamingService : Service() {
         createNotificationChannel()
 
         startForeground(NOTIFICATION_ID, notification2)
-        LW.d(TAG, "Promoted service to foreground")
+        LW.i(TAG, "Promoted service to foreground")
 
-        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
-        LW.d(TAG, "Acquired wifilock")
-
-
-        muticastLock = wifiManager.createMulticastLock("lockWiFiMulticast")
-        muticastLock.setReferenceCounted(false)
-        muticastLock.acquire();
-        LW.d(TAG, "Acquired muticastLock")
-
-
-        wakeLock =
-                (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                    newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                        acquire()
-                    }
-                }
-        LW.d(TAG, "Acquired wakelock explictely.")
+        acquireLocks()
 
         LW.d(TAG, "onCreate done")
 
     }
 
-    private lateinit var wakeLock: PowerManager.WakeLock
-    private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
-    private lateinit var wifiLock: WifiManager.WifiLock
 
-    private val CHANNEL_ID = "Metal Only Stream Notifications"
+    private fun acquireLocks() {
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
+        LW.i(TAG, "Acquired wifilock")
+
+
+        muticastLock = wifiManager.createMulticastLock("lockWiFiMulticast")
+        muticastLock.setReferenceCounted(false)
+        muticastLock.acquire()
+
+        LW.i(TAG, "Acquired muticastLock")
+
+
+        wakeLock =
+                (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+                    newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, packageName + TAG).apply {
+                        acquire()
+                    }
+                }
+        LW.i(TAG, "Acquired wakelock explictely.")
+    }
 
     private fun createNotificationChannel() {
         LW.d(TAG, "createNotificationChannel called")
@@ -156,7 +208,7 @@ class MoStreamingService : Service() {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
-                setSound(null,null)
+                setSound(null, null)
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
@@ -168,12 +220,6 @@ class MoStreamingService : Service() {
 
         }
     }
-
-
-    private val NOTIFICATION_ID = 1
-    private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
-
-    private lateinit var pendingIntent: PendingIntent
 
     fun play(cb: StateChangeCallback) {
         addStateChangeCallback(cb)
@@ -225,10 +271,11 @@ class MoStreamingService : Service() {
         }.start()
     }
 
-    private fun onMpInfo(what: Int, extra:Int): Boolean {
+    private fun onMpInfo(what: Int, extra: Int): Boolean {
         LW.d(TAG, "MediaPlayer info: $what, $extra")
         return true
     }
+
     @SuppressLint("SimpleDateFormat")
     private fun onError(s: String) {
         val msg = "error: $s"
@@ -244,6 +291,7 @@ class MoStreamingService : Service() {
         stop()
 
     }
+
 
     @SuppressLint("SimpleDateFormat")
     private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
@@ -274,51 +322,6 @@ class MoStreamingService : Service() {
         stop()
 
         return true
-    }
-
-
-    private var continueOnAudioFocusReceived: Boolean = false
-
-    private val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-        val tag = "MoStreamingService.afChangeListener"
-
-        LW.d(tag, "Received audio focus change to $focusChange")
-        when (focusChange) {
-            AudioManager.AUDIOFOCUS_LOSS -> {
-                // Permanent loss of audio focus
-                // Stop playback immediately
-                continueOnAudioFocusReceived = false
-                stop()
-                LW.d(tag, "Stopped playback, no continue on gain")
-            }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                // Pause playback
-                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
-                // until required otherwise
-                mp?.pause()
-                continueOnAudioFocusReceived = true
-                LW.d(tag, "transient loss. Paused playback, continue on gain")
-
-            }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                // Lower the volume, keep playing
-                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
-                // until required otherwise
-                
-                // todo: implement Lower the volume, keep playing?
-                LW.d(tag, "transient loss can duck. did nothing")
-            }
-            AudioManager.AUDIOFOCUS_GAIN -> {
-                // Your app has been granted audio focus again
-                // Raise volume to normal, restart playback if necessary
-                LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
-
-                if (continueOnAudioFocusReceived) {
-                    mp?.start()
-                    LW.d(tag, "... started playback again")
-                }
-            }
-        }
     }
 
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
@@ -361,19 +364,11 @@ class MoStreamingService : Service() {
         Log.d(TAG, "Now playing.")
     }
 
-    private class BecomingNoisyReceiver(val moStreamingService: MoStreamingService) : BroadcastReceiver() {
-
-        override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
-                moStreamingService.stop()
-            }
-        }
-    }
-
 
     private fun bufferingUpdate(percent: Int) {
         LW.d(TAG, "Buffering Update: $percent%")
     }
+
 
     private fun onComplete(mediaPlayer: MediaPlayer) {
         LW.i(TAG, "onComplete called")
@@ -394,28 +389,40 @@ class MoStreamingService : Service() {
             }
             LW.d(TAG, "Applied release preparations to media player")
         }
-        notificationManager.cancel(NOTIFICATION_ID)
-        LW.d(TAG, "Cancelled notification")
 
 
+        releaseLocks()
 
+        LW.i(TAG, "Stopping foreground and...")
+        stopForeground(true)
+        LW.i(TAG, "... stopping self.")
+        stopSelf()
+        LW.i(TAG, "Stopping foreground and stopping self: done.")
+    }
+
+    private fun releaseLocks() {
         wifiLock.release()
-        LW.d(TAG, "Released wifilock")
+        LW.i(TAG, "Released wifilock")
 
         muticastLock.release()
-        LW.d(TAG, "Released multicastLock")
+        LW.i(TAG, "Released multicastLock")
 
         wakeLock.release()
-        LW.d(TAG, "Released wakelock")
-
-        LW.d(TAG, "Stopping self...")
-        stopSelf()
-        LW.d(TAG, "Stopping self... done")
+        LW.i(TAG, "Released wakelock")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         LW.d(TAG, "Service is destroyed now.")
+    }
+
+    private class BecomingNoisyReceiver(val moStreamingService: MoStreamingService) : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
+                moStreamingService.stop()
+            }
+        }
     }
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {
@@ -446,7 +453,7 @@ class MoStreamingService : Service() {
     }
 
     /** AIDL based binder */
-    inner class AidlBinder(val srv: MoStreamingService): IStreamingService.Stub(){
+    inner class AidlBinder(val srv: MoStreamingService) : IStreamingService.Stub() {
         override fun getIsPlayingOrPreparing(): Boolean = srv.isPlayingOrPreparing
 
         override fun getCanPlay(): Boolean = srv.canPlay
@@ -461,12 +468,13 @@ class MoStreamingService : Service() {
         }
 
         private fun wrap(cb: IStreamChangeCallback?): StateChangeCallback {
-            return object: StateChangeCallback {
+            return object : StateChangeCallback {
                 override fun onStateChange(newState: State) {
                     cb?.onNewState(newState)
                 }
             }
         }
+
         override fun stop() = srv.stop()
 
         override fun getState(): State = srv.state
