@@ -25,6 +25,28 @@ object LW {
         }
     }
 
+    fun v(tag: String, msg: String) {
+        Log.v(tag, msg)
+        internalLog(Level.VERBOSE, tag, msg)
+    }
+
+
+    fun d(tag: String, msg: String) {
+        Log.d(tag, msg)
+        internalLog(Level.DEBUG, tag, msg)
+    }
+
+
+    fun w(tag: String, msg: String) {
+        Log.w(tag, msg)
+        internalLog(Level.WARNING, tag, msg)
+    }
+
+    fun i(tag: String, msg: String) {
+        Log.i(tag, msg)
+        internalLog(LW.Level.INFO, tag, msg)
+    }
+
     fun e(tag: String, msg: String, e: Throwable? = null) {
         if (e != null) {
             Log.e(tag, msg, e)
@@ -33,7 +55,6 @@ object LW {
         }
         internalLog(Level.ERROR, tag, msg, e)
     }
-
 
     @SuppressLint("SimpleDateFormat")
     private fun internalLog(level: Level, tag: String, msg: String, e: Throwable? = null) {
@@ -45,7 +66,7 @@ object LW {
 
 
         val appVersion = BuildConfig.VERSION_NAME
-        
+
         val logString = "$appVersion: $formattedDate - $level - $tag: $msg $em\n"
         q.add(logString)
         if (q.size > LogQueueFlushLimit) {
@@ -53,14 +74,13 @@ object LW {
         }
     }
 
-
     private fun flushQ() {
         val append = q.joinToString("")
         q.clear()
 
         if (applicationContext != null) {
             val file = File(applicationContext!!.filesDir, LogFileName)
-            if(!file.exists()) {
+            if (!file.exists()) {
                 file.createNewFile()
             }
 
@@ -74,32 +94,13 @@ object LW {
         }
     }
 
-    fun d(tag: String, msg: String) {
-        Log.d(tag, msg)
-        internalLog(Level.DEBUG, tag, msg)
-    }
-
-    fun v(tag: String, msg: String) {
-        Log.v(tag, msg)
-        internalLog(Level.VERBOSE, tag, msg)
-    }
-
-    fun w(tag: String, msg: String) {
-        Log.w(tag, msg)
-        internalLog(Level.WARNING, tag, msg)
-    }
-
-    fun i(tag: String, msg: String) {
-        Log.i(tag, msg)
-        internalLog(LW.Level.INFO, tag, msg)
-    }
-
     fun getLogs(): String {
         flushQ()
         val file = File(applicationContext!!.filesDir, LogFileName)
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.createNewFile()
         }
         return file.readText(Charsets.UTF_8)
     }
+
 }
