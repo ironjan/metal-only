@@ -16,7 +16,7 @@ object LW {
 
     private const val LogQueueFlushLimit = 1
     private const val LogFileName = "metalonly.log"
-    private const val LogFileMaxSizeInMb = 25
+    private const val LogFileMaxSizeInMb = 5
 
     val q: Queue<String> = ConcurrentLinkedQueue<String>()
     var applicationContext: Context? = null
