@@ -8,13 +8,15 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.io.FileOutputStream
+
 
 object LW {
     enum class Level { VERBOSE, DEBUG, INFO, WARNING, ERROR }
 
-    private const val LogQueueFlushLimit = 25
+    private const val LogQueueFlushLimit = 1
     private const val LogFileName = "metalonly.log"
-    private const val LogFileMaxSizeInMb = 2
+    private const val LogFileMaxSizeInMb = 25
 
     val q: Queue<String> = ConcurrentLinkedQueue<String>()
     var applicationContext: Context? = null
@@ -74,12 +76,17 @@ object LW {
         }
     }
 
+    @Synchronized
     private fun flushQ() {
         val append = q.joinToString("")
         q.clear()
 
         if (applicationContext != null) {
             val file = File(applicationContext!!.filesDir, LogFileName)
+
+            val fis = FileOutputStream(file) // or FileOutputStream fos = new FileOutputStream(file);
+            val lock = fis.channel.lock()
+
             if (!file.exists()) {
                 file.createNewFile()
             }
@@ -91,6 +98,8 @@ object LW {
             } else {
                 file.appendText(append, Charsets.UTF_8)
             }
+
+            lock.release()
         }
     }
 
