@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.23] - 2019-08-17 18:05
+
+ * Improved logging
+
 ## [0.9.22] - 2019-08-17 13:41
 
  * Increased log file max size to 64k
