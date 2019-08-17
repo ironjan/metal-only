@@ -19,10 +19,12 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+ * Increased log file max size to 32k
+
 ## [0.9.21] - 2019-8-17 12:25
 
  * Removed app whitelisting again. No difference.
- * Reduced max log file size to 8k
+ * Reduced <main></main>x log file size to 8k
  * Now using stopforeground in service
  * Added stopwithtask to service
 
