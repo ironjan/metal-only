@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
+import de.ironjan.metalonly.BuildConfig
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.log.LW
@@ -174,16 +175,16 @@ class MoStreamingService : Service() {
         isActive = true
         Thread {
             val tag = "MoStreamingService.IsAwakeLogThread"
-            if (true || !BuildConfig.Debug) {
+            val activeAwakeLogThread = true || !BuildConfig.DEBUG
+            if (activeAwakeLogThread) {
                 LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
-                return
             }
 
             LW.d(tag, "Initialized $tag")
 
-            while (isActive) {
+            while (activeAwakeLogThread && isActive) {
                 LW.v(tag, "Streaming service is still active.")
-                Thread.sleep(30*0000)
+                Thread.sleep(30*1000)
             }
 
 
