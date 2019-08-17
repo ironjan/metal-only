@@ -69,6 +69,7 @@ class MoStreamingService : Service() {
 
     private val NOTIFICATION_ID = 1
     private val NOTIFICATION_CHANNEL_NAME = "Metal Only"
+    private var isActive = false
 
     private val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         val tag = "MoStreamingService.afChangeListener"
@@ -170,8 +171,26 @@ class MoStreamingService : Service() {
 
         acquireLocks()
 
-        LW.d(TAG, "onCreate done")
+        isActive = true
+        Thread {
+            val tag = "MoStreamingService.IsAwakeLogThread"
+            if (true || !BuildConfig.Debug) {
+                LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
+                return
+            }
 
+            LW.d(tag, "Initialized $tag")
+
+            while (isActive) {
+                LW.v(tag, "Streaming service is still active.")
+                Thread.sleep(30*0000)
+            }
+
+
+            LW.d(tag, "$tag is not needed anymore. Terminating.")
+        }.start()
+
+        LW.d(TAG, "onCreate done")
     }
 
 
