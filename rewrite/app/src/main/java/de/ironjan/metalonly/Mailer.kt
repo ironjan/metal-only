@@ -3,6 +3,7 @@ package de.ironjan.metalonly
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import de.ironjan.metalonly.log.LW
 import java.io.File
@@ -13,8 +14,13 @@ object Mailer {
 
 
 
+        val osVersion = Build.VERSION.RELEASE
+        val manufacturer = Build.MANUFACTURER;
+        val model = Build.MODEL
+
+        val info = "$manufacturer $model\nAndroid version: $osVersion"
         val logs = LW.getLogs()
-        val body = "Feedback:\n\n\n---\nLogs:\n$logs"
+        val body = "Feedback:\n\n\n---\nAdditional Info:\n$info\n\nLogs:\n$logs"
 
 
 
