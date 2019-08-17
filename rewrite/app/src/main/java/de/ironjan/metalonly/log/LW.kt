@@ -78,9 +78,6 @@ object LW {
 
     @Synchronized
     private fun flushQ() {
-        val append = q.joinToString("")
-        q.clear()
-
         if (applicationContext != null) {
             val file = File(applicationContext!!.filesDir, LogFileName)
 
@@ -90,6 +87,9 @@ object LW {
             if (!file.exists()) {
                 file.createNewFile()
             }
+
+            val append = q.joinToString("")
+            q.clear()
 
             val fileSizeInMb = file.length() / (64.0 * 1024)
             if (fileSizeInMb > LogFileMaxSizeInMb) {

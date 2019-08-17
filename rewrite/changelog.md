@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.24] - 2019-08-17 18:11
+
+ * Fixed log locking...
+
 ## [0.9.23] - 2019-08-17 18:05
 
  * Improved logging
