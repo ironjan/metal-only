@@ -61,6 +61,7 @@ class MoStreamingService : Service() {
 
     private val intentFilter = IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
     private lateinit var myNoisyAudioStreamReceiver: BecomingNoisyReceiver
+    private var myNoisyAudioStreamReceiverIsRegistered = false
 
     private lateinit var wakeLock: PowerManager.WakeLock
     private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
@@ -372,6 +373,7 @@ class MoStreamingService : Service() {
 
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
                 registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
+                myNoisyAudioStreamReceiverIsRegistered = true
                 LW.d(TAG, "registered myNoisyAudioStreamReceiver")
 
                 mediaPlayer.start()
@@ -472,8 +474,10 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Stopped and released mediaplayer")
 
 
-        unregisterReceiver(myNoisyAudioStreamReceiver)
-        LW.d(TAG, "unregistered noisy audio stream receiver")
+        if(myNoisyAudioStreamReceiverIsRegistered) {
+            unregisterReceiver(myNoisyAudioStreamReceiver)
+            LW.d(TAG, "unregistered noisy audio stream receiver")
+        }
     }
 
     fun addStateChangeCallback(cb: StateChangeCallback) {
