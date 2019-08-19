@@ -304,7 +304,24 @@ class MoStreamingService : Service() {
     }
 
     private fun onMpInfo(what: Int, extra: Int): Boolean {
-        LW.d(TAG, "MediaPlayer info: $what, $extra")
+        val whatAsString = when (what) {
+            MediaPlayer.MEDIA_INFO_UNKNOWN -> "MEDIA_INFO_UNKNOWN"
+            MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING -> "MEDIA_INFO_VIDEO_TRACK_LAGGING"
+                    MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> "MEDIA_INFO_VIDEO_RENDERING_START"
+                    MediaPlayer.MEDIA_INFO_BUFFERING_START -> "MEDIA_INFO_BUFFERING_START" // TODO show "buffering"
+                    MediaPlayer.MEDIA_INFO_BUFFERING_END -> "MEDIA_INFO_BUFFERING_END" // TODO remove (show "buffering")
+                MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING -> "MEDIA_INFO_BAD_INTERLEAVING"
+            MediaPlayer.MEDIA_INFO_NOT_SEEKABLE -> "MEDIA_INFO_NOT_SEEKABLE"
+            MediaPlayer.MEDIA_INFO_METADATA_UPDATE -> "MEDIA_INFO_METADATA_UPDATE"
+            MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE -> "MEDIA_INFO_UNSUPPORTED_SUBTITLE"
+            MediaPlayer.MEDIA_INFO_SUBTITLE_TIMED_OUT -> "MEDIA_INFO_SUBTITLE_TIMED_OUT"
+
+            // Should be MEDIA_INFO_NETWORK_BANDWIDTH but is not available as field..
+            703 -> "MEDIA_INFO_NETWORK_BANDWIDTH: bandwidth information is available (as extra kbps)"
+        }
+
+        LW.d(TAG, "MediaPlayer info: $whatAsString, $extra")
+
         return true
     }
 
