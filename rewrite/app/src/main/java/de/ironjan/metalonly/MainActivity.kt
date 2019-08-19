@@ -188,6 +188,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
                 startService(it)
                 LW.d(TAG, "Running on Android before O, started service via startService.")
             }
+            // FIXME leaking service connection
             bindService(it, connection, 0)
         }
     }

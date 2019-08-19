@@ -21,7 +21,7 @@ The subsections are formatted as they need when publishing a release to the Play
 
  * Improved logging
  * Cleanup in Streaming service, fixed non-ending service
- * Fixed service binding and leak
+ * Fixed service binding
 
 ## [0.9.26] - 2019-08-19
 
