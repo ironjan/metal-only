@@ -316,8 +316,6 @@ class MoStreamingService : Service() {
             else -> "undocumented extra: $extra..."
         }
 
-        val msg = "error: $whatAsSTring - $extraAsString"
-        LW.e(TAG, msg)
         changeState(State.Error)
 
 
@@ -326,7 +324,7 @@ class MoStreamingService : Service() {
         lastError = "$formattedDate: msg"
 
 
-        LW.d(TAG, "onError(w,e,mp) called. Triggering stop()")
+        LW.e(TAG, "onError($whatAsSTring, $extraAsString, mp) called. Triggering stop()")
         stop()
 
         return true
