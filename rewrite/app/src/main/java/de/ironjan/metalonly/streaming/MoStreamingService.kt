@@ -146,6 +146,9 @@ class MoStreamingService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        LW.init(this)
+
+
         LW.i(TAG, "onCreate called")
 
         notificationManager = NotificationManagerCompat.from(this)
@@ -176,8 +179,8 @@ class MoStreamingService : Service() {
         isActive = true
         Thread {
             val tag = "MoStreamingService.IsAwakeLogThread"
-            val activeAwakeLogThread = true || !BuildConfig.DEBUG
-            if (activeAwakeLogThread) {
+            val activeAwakeLogThread = !BuildConfig.DEBUG
+            if (!activeAwakeLogThread) {
                 LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
             }
 
