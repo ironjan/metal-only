@@ -178,7 +178,7 @@ class MoStreamingService : Service() {
         isActive = true
         Thread {
             val tag = "MoStreamingService.IsAwakeLogThread"
-            val activeAwakeLogThread = !BuildConfig.DEBUG
+            val activeAwakeLogThread = BuildConfig.DEBUG
             if (!activeAwakeLogThread) {
                 LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
             }
