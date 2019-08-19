@@ -64,6 +64,7 @@ class MoStreamingService : Service() {
 
     private lateinit var wakeLock: PowerManager.WakeLock
     private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
+    private lateinit var muticastLock2: android.net.wifi.WifiManager.MulticastLock
     private lateinit var wifiLock: WifiManager.WifiLock
 
     private val CHANNEL_ID = "Metal Only Stream Notifications"
@@ -204,8 +205,13 @@ class MoStreamingService : Service() {
         muticastLock = wifiManager.createMulticastLock("lockWiFiMulticast")
         muticastLock.setReferenceCounted(false)
         muticastLock.acquire()
-
         LW.i(TAG, "Acquired muticastLock")
+
+
+        muticastLock2 = wifiManager.createMulticastLock("lockWiFiMulticast2")
+        muticastLock2.setReferenceCounted(true)
+        muticastLock2.acquire()
+        LW.i(TAG, "Acquired muticastLock2")
 
 
         wakeLock =
@@ -426,6 +432,9 @@ class MoStreamingService : Service() {
 
         muticastLock.release()
         LW.i(TAG, "Released multicastLock")
+
+        muticastLock2.release()
+        LW.i(TAG, "Released multicastLock2")
 
         wakeLock.release()
         LW.i(TAG, "Released wakelock")
