@@ -154,6 +154,33 @@ class MoStreamingService : Service() {
         audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)
 
+        promoteToForeground()
+
+        acquireLocks()
+
+        isActive = true
+        Thread {
+            val tag = "MoStreamingService.IsAwakeLogThread"
+            val activeAwakeLogThread = BuildConfig.DEBUG
+            if (!activeAwakeLogThread) {
+                LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
+            }
+
+            LW.d(tag, "Initialized $tag")
+
+            while (activeAwakeLogThread && isActive) {
+                LW.v(tag, "Streaming service is still active.")
+                Thread.sleep(30 * 1000)
+            }
+
+
+            LW.d(tag, "$tag is not needed anymore. Terminating.")
+        }.start()
+
+        LW.d(TAG, "onCreate done")
+    }
+
+    private fun promoteToForeground() {
         pendingIntent = Intent(this, MainActivity::class.java).let { notificationIntent ->
             PendingIntent.getActivity(this, 0, notificationIntent, 0)
         }
@@ -172,29 +199,6 @@ class MoStreamingService : Service() {
 
         startForeground(NOTIFICATION_ID, notification2)
         LW.i(TAG, "Promoted service to foreground")
-
-        acquireLocks()
-
-        isActive = true
-        Thread {
-            val tag = "MoStreamingService.IsAwakeLogThread"
-            val activeAwakeLogThread = BuildConfig.DEBUG
-            if (!activeAwakeLogThread) {
-                LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
-            }
-
-            LW.d(tag, "Initialized $tag")
-
-            while (activeAwakeLogThread && isActive) {
-                LW.v(tag, "Streaming service is still active.")
-                Thread.sleep(30*1000)
-            }
-
-
-            LW.d(tag, "$tag is not needed anymore. Terminating.")
-        }.start()
-
-        LW.d(TAG, "onCreate done")
     }
 
 
@@ -261,37 +265,34 @@ class MoStreamingService : Service() {
             LW.d(TAG, "Released previous media player")
         }
 
+        mp = MediaPlayer()
+                .apply {
+                    setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                    LW.d(TAG, "Acquired wake lock.")
 
-        Thread {
-            mp = MediaPlayer()
-                    .apply {
-                        setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
-                        LW.d(TAG, "Acquired wake lock.")
-
-                        if (Build.VERSION.SDK_INT < 26) {
-                            @Suppress("DEPRECATION")
-                            setAudioStreamType(AudioManager.STREAM_MUSIC)
-                        } else {
-                            val b = AudioAttributes.Builder()
-                            b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                            setAudioAttributes(b.build())
-                        }
-                        setDataSource(streamUri)
-                        Log.d(TAG, "Initialized internal media player")
-
-
-                        setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
-                        setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
-                        setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
-                        setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
-
-                        setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
-                        Log.d(TAG, "Hooked up call backs to internal media player")
-
-                        prepareAsync()
-                        Log.d(TAG, "Preparing internal media player async")
+                    if (Build.VERSION.SDK_INT < 26) {
+                        @Suppress("DEPRECATION")
+                        setAudioStreamType(AudioManager.STREAM_MUSIC)
+                    } else {
+                        val b = AudioAttributes.Builder()
+                        b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                        setAudioAttributes(b.build())
                     }
-        }.start()
+                    setDataSource(streamUri)
+                    Log.d(TAG, "Initialized internal media player")
+
+
+                    setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
+                    setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
+                    setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
+                    setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
+
+                    setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
+                    Log.d(TAG, "Hooked up call backs to internal media player")
+
+                    prepareAsync()
+                    Log.d(TAG, "Preparing internal media player async")
+                }
     }
 
     private fun onMpInfo(what: Int, extra: Int): Boolean {
@@ -427,14 +428,26 @@ class MoStreamingService : Service() {
     }
 
     private fun releaseLocks() {
-        wifiLock.release()
-        LW.i(TAG, "Released wifilock")
+        if(wifiLock.isHeld){
+            wifiLock.release()
+            LW.i(TAG, "Released wifilock")
+        }else {
+            LW.w(TAG, "wifilock not yet acquired but releaseLocks() is called.")
+        }
 
-        muticastLock.release()
-        LW.i(TAG, "Released multicastLock")
+        if(muticastLock.isHeld) {
+            muticastLock.release()
+            LW.i(TAG, "Released muticastLock")
+        }else {
+            LW.w(TAG, "muticastLock not yet acquired but releaseLocks() is called.")
+        }
 
-        wakeLock.release()
-        LW.i(TAG, "Released wakelock")
+        if(wakeLock.isHeld){
+            wakeLock.release()
+            LW.i(TAG, "Released wakelock")
+        }else {
+            LW.w(TAG, "wakeLock not yet acquired but releaseLocks() is called.")
+        }
     }
 
     override fun onDestroy() {
