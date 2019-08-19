@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+ * Improved logging
+ * Cleanup in Streaming service, fixed non-ending service
+ * Fixed service binding and leak
+
 ## [0.9.26] - 2019-08-19
 
 Alpha Release 1.
