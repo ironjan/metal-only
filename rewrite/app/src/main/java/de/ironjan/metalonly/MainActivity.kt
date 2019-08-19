@@ -250,25 +250,29 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
     private fun loadStats() {
         Thread(Runnable {
             LW.d(TAG, "Loading stats..")
-            try {
-                val stats = Client(this).getStats()
+            var attempts = 0
+            while(attempts < 4) {
+                try {
+                    val stats = Client(this).getStats()
 
-                if (stats.isLeft()) {
-                    stats.mapLeft {
-                        LW.w(TAG, "Loading stats failed: $it")
-                        snack(it)
+                    if (stats.isLeft()) {
+                        stats.mapLeft {
+                            LW.w(TAG, "Loading stats failed: $it")
+                            snack(it)
+                        }
+                    } else {
+                        stats.map {
+                            showStats(it)
+                            LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
+                            loadModeratorImage(it)
+                            return@Runnable
+                        }
                     }
-                } else {
-                    stats.map {
-                        showStats(it)
-                        LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
-                        loadModeratorImage(it)
-                    }
+                } catch (e: Exception) {
+                    LW.e(TAG, "Loading stats failed. Attempt $attempts", e)
                 }
-            } catch (e: Exception) {
-                LW.e(TAG, "Loading stats failed", e)
+                attempts += 1
             }
-
         }).start()
     }
 
