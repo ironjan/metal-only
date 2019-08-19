@@ -110,17 +110,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
                 }
             } else {
                 fab.setImageDrawable(stream_loading)
-                Intent(this, MoStreamingService::class.java).also {
-                    it.action = MoStreamingService.ACTION_PLAY
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        startForegroundService(it)
-                        LW.d(TAG, "Running on Android O+, started service as foreground.")
-                    } else {
-                        startService(it)
-                        LW.d(TAG, "Running on Android before O, started service via startService.")
-                    }
-                    bindService(it, connection, 0)
-                }
+                startAndBindStreamingService()
             }
         } catch (e: Exception) {
             LW.e(TAG, "Toggle play failed.", e)
@@ -183,13 +173,23 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
         if (mBound) {
             onStateChange(moStreamingService.state)
-        } else {
-            Intent(this, MoStreamingService::class.java).also {
-                bindService(it, connection, 0)
-            }
         }
 
         LW.d(TAG, "onResume done.")
+    }
+
+    private fun startAndBindStreamingService() {
+        Intent(this, MoStreamingService::class.java).also {
+            it.action = MoStreamingService.ACTION_PLAY
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(it)
+                LW.d(TAG, "Running on Android O+, started service as foreground.")
+            } else {
+                startService(it)
+                LW.d(TAG, "Running on Android before O, started service via startService.")
+            }
+            bindService(it, connection, 0)
+        }
     }
 
     private lateinit var moStreamingService: IStreamingService
@@ -375,9 +375,11 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-//        Intent(this, MoStreamingService::class.java).also {
-//            stopService(it)
-//        }
+        if(mBound) {
+            unbindService(connection)
+            mBound = false
+        }
+
     }
 
     override fun onPause() {
