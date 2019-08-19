@@ -115,7 +115,7 @@ class MoStreamingService : Service() {
                 if (state == State.Started && continueOnAudioFocusReceived) {
                     mp?.start()
                     LW.d(tag, "... started playback again")
-                }else {
+                } else {
                     LW.d(tag, "... state was $state and continueOnAudioFocusReceived was $continueOnAudioFocusReceived. Playback not resumed.")
                 }
             }
@@ -307,10 +307,10 @@ class MoStreamingService : Service() {
         val whatAsString = when (what) {
             MediaPlayer.MEDIA_INFO_UNKNOWN -> "MEDIA_INFO_UNKNOWN"
             MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING -> "MEDIA_INFO_VIDEO_TRACK_LAGGING"
-                    MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> "MEDIA_INFO_VIDEO_RENDERING_START"
-                    MediaPlayer.MEDIA_INFO_BUFFERING_START -> "MEDIA_INFO_BUFFERING_START" // TODO show "buffering"
-                    MediaPlayer.MEDIA_INFO_BUFFERING_END -> "MEDIA_INFO_BUFFERING_END" // TODO remove (show "buffering")
-                MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING -> "MEDIA_INFO_BAD_INTERLEAVING"
+            MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START -> "MEDIA_INFO_VIDEO_RENDERING_START"
+            MediaPlayer.MEDIA_INFO_BUFFERING_START -> "MEDIA_INFO_BUFFERING_START" // TODO show "buffering"
+            MediaPlayer.MEDIA_INFO_BUFFERING_END -> "MEDIA_INFO_BUFFERING_END" // TODO remove (show "buffering")
+            MediaPlayer.MEDIA_INFO_BAD_INTERLEAVING -> "MEDIA_INFO_BAD_INTERLEAVING"
             MediaPlayer.MEDIA_INFO_NOT_SEEKABLE -> "MEDIA_INFO_NOT_SEEKABLE"
             MediaPlayer.MEDIA_INFO_METADATA_UPDATE -> "MEDIA_INFO_METADATA_UPDATE"
             MediaPlayer.MEDIA_INFO_UNSUPPORTED_SUBTITLE -> "MEDIA_INFO_UNSUPPORTED_SUBTITLE"
@@ -318,6 +318,7 @@ class MoStreamingService : Service() {
 
             // Should be MEDIA_INFO_NETWORK_BANDWIDTH but is not available as field..
             703 -> "MEDIA_INFO_NETWORK_BANDWIDTH: bandwidth information is available (as extra kbps)"
+            else -> "undocumented what: $what"
         }
 
         LW.d(TAG, "MediaPlayer info: $whatAsString, $extra")
@@ -400,6 +401,38 @@ class MoStreamingService : Service() {
 
                 mediaPlayer.start()
                 LW.d(TAG, "Started playback")
+                Thread {
+                    val tag = "MoStreaminService.MpWatcher"
+                    val isDebug = BuildConfig.DEBUG
+                    val pauseTime : Long  = if (isDebug) 30 * 1000 else 60 * 1000
+
+                    if (!isDebug) {
+                        LW.w(tag, "Not a debug build.")
+                    }
+
+                    while (//isDebug &&
+                            isActive) {
+                        LW.d(tag, "Checking mp state...")
+                        try {
+                            val currentPosition = mp?.currentPosition
+                            val duration = mp?.duration
+
+                            val hadConnectionLoss =
+                                    if (currentPosition != null && duration != null) {
+                                        currentPosition > duration
+                                    } else null
+
+
+                            LW.i(tag, "isPlaying: ${mp?.isPlaying}, isLooping: ${mp?.isLooping}. currentPos: $currentPosition/$duration. Had connection loss? $hadConnectionLoss")
+                        } catch (e: Throwable) {
+                            LW.e(tag, "Exception in mpWatcher. Stopping thread.", e)
+                            return@Thread
+                        }
+
+                        Thread.sleep(pauseTime)
+                    }
+                    LW.i(tag, "$tag not needed anymore.")
+                }.start()
             }
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
                 onError("Could not get audio focus (delayed). Try again.") // TODO move to resource, better message
@@ -420,7 +453,7 @@ class MoStreamingService : Service() {
 
 
     private fun onComplete(mediaPlayer: MediaPlayer) {
-        // happens when server restarts
+        // happens when server restarts pr connection is lost. hence restart
         LW.i(TAG, "onComplete called")
 
         changeState(State.Completed)
@@ -429,6 +462,9 @@ class MoStreamingService : Service() {
 
     fun stop() {
         LW.d(TAG, "stop called")
+
+        isActive = false
+        LW.d(TAG, "Set isActive to false.")
 
         changeState(State.Stopping)
         mp?.apply {
