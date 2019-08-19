@@ -89,10 +89,15 @@ class MoStreamingService : Service() {
                 // Pause playback
                 // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
                 // until required otherwise
-                mp?.pause()
-                continueOnAudioFocusReceived = true
-                LW.d(tag, "transient loss. Paused playback, continue on gain")
+                if (state == State.Started) {
+                    mp?.pause()
+                    continueOnAudioFocusReceived = true
+                    LW.d(tag, "transient loss. Paused playback, continue on gain")
+                }
+                if (state == State.Preparing) {
 
+                }
+// FIXME how to handle preparing?
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                 // Lower the volume, keep playing
@@ -107,9 +112,11 @@ class MoStreamingService : Service() {
                 // Raise volume to normal, restart playback if necessary
                 LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
 
-                if (continueOnAudioFocusReceived) {
+                if (state == State.Started && continueOnAudioFocusReceived) {
                     mp?.start()
                     LW.d(tag, "... started playback again")
+                }else {
+                    LW.d(tag, "... state was $state and continueOnAudioFocusReceived was $continueOnAudioFocusReceived. Playback not resumed.")
                 }
             }
         }
@@ -356,7 +363,7 @@ class MoStreamingService : Service() {
             setAudioAttributes(AudioAttributesCompat.Builder().run {
                 setUsage(AudioAttributesCompat.USAGE_MEDIA)
                 setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
-                // todo add playback delayed?
+                // fixme add playback delayed on transient loss?
                 setOnAudioFocusChangeListener(afChangeListener, Handler())
                 build()
             })
@@ -428,24 +435,24 @@ class MoStreamingService : Service() {
     }
 
     private fun releaseLocks() {
-        if(wifiLock.isHeld){
+        if (wifiLock.isHeld) {
             wifiLock.release()
             LW.i(TAG, "Released wifilock")
-        }else {
+        } else {
             LW.w(TAG, "wifilock not yet acquired but releaseLocks() is called.")
         }
 
-        if(muticastLock.isHeld) {
+        if (muticastLock.isHeld) {
             muticastLock.release()
             LW.i(TAG, "Released muticastLock")
-        }else {
+        } else {
             LW.w(TAG, "muticastLock not yet acquired but releaseLocks() is called.")
         }
 
-        if(wakeLock.isHeld){
+        if (wakeLock.isHeld) {
             wakeLock.release()
             LW.i(TAG, "Released wakelock")
-        }else {
+        } else {
             LW.w(TAG, "wakeLock not yet acquired but releaseLocks() is called.")
         }
     }
@@ -472,7 +479,7 @@ class MoStreamingService : Service() {
         LW.d(TAG, "Stopped and released mediaplayer")
 
 
-        if(myNoisyAudioStreamReceiverIsRegistered) {
+        if (myNoisyAudioStreamReceiverIsRegistered) {
             unregisterReceiver(myNoisyAudioStreamReceiver)
             LW.d(TAG, "unregistered noisy audio stream receiver")
         }
