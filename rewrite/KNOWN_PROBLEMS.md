@@ -2,5 +2,3 @@
  * Turning screen off causes playback to stop (probably because wifi etc get turned off)
  * other fixmes in code
  * english translation
- * horizontal screen needs to be added
- * audio change handling
