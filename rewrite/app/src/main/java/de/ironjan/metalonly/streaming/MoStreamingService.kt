@@ -300,23 +300,6 @@ class MoStreamingService : Service() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun onError(s: String) {
-        val msg = "error: $s"
-        LW.e(TAG, msg)
-        changeState(State.Error)
-
-
-        val rightNow = Calendar.getInstance() //initialized with the current date and time
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
-        lastError = "$formattedDate: msg"
-
-        LW.d(TAG, "onError(string) called. Triggering stop()")
-        stop()
-
-    }
-
-
-    @SuppressLint("SimpleDateFormat")
     private fun onError(what: Int, extra: Int, mp: MediaPlayer): Boolean {
         val whatAsSTring = when (what) {
             MediaPlayer.MEDIA_ERROR_UNKNOWN -> "unknown"
@@ -345,6 +328,24 @@ class MoStreamingService : Service() {
         stop()
 
         return true
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
+    private fun onError(s: String) {
+        val msg = "error: $s"
+        LW.e(TAG, msg)
+        changeState(State.Error)
+
+
+        val rightNow = Calendar.getInstance() //initialized with the current date and time
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
+        lastError = "$formattedDate: msg"
+
+        LW.d(TAG, "onError($s) called. Triggering stop()")
+        LW.e(TAG, s)
+        stop()
+
     }
 
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
@@ -396,7 +397,7 @@ class MoStreamingService : Service() {
     private fun onComplete(mediaPlayer: MediaPlayer) {
         LW.i(TAG, "onComplete called")
         changeState(State.Completed)
-        stop()
+        play()
     }
 
     fun stop() {
