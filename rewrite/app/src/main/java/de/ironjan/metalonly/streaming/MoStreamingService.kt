@@ -395,7 +395,9 @@ class MoStreamingService : Service() {
 
 
     private fun onComplete(mediaPlayer: MediaPlayer) {
+        // happens when server restarts
         LW.i(TAG, "onComplete called")
+
         changeState(State.Completed)
         play()
     }
