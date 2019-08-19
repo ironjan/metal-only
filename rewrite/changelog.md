@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.26] - 2019-08-19
+
+Alpha Release 1.
+
 ## [0.9.25] - 2019-08-17 18:21
 
  * Using HyperLog
