@@ -48,7 +48,7 @@ object LW {
     }
 
     fun getLogs(): String {
-        val file = HyperLog.getDeviceLogsInFile(applicationContext)
+        val file = HyperLog.getDeviceLogsInFile(applicationContext, false)
         if (!file.exists()) {
             file.createNewFile()
         }
