@@ -24,6 +24,13 @@ import de.ironjan.metalonly.log.LW
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+/**
+ * streaming service. wraps interaction with media player. Use [IStreamingService.Stub] to bind.
+ *
+ * TODO extract the different responsibilities out of this class. this class should be "setup stream, start stream, stop, cleanup"
+ * FIXME handle network change: wifi <-> mobile
+ */
 class MoStreamingService : Service() {
 
     var lastError: String? = null
