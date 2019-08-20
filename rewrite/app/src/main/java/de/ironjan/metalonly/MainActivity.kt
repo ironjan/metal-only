@@ -29,7 +29,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import de.ironjan.metalonly.streaming.*
 
-
+// TODO split out the watcher thread etc -> SRP
 class MainActivity : AppCompatActivity(), StateChangeCallback {
     private fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
