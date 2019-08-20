@@ -27,7 +27,6 @@ import java.util.*
 /**
  * streaming service. wraps interaction with media player. Use [IStreamingService.Stub] to bind.
  *
- * TODO extract the different responsibilities out of this class. this class should be "setup stream, start stream, stop, cleanup"
  * FIXME handle network change: wifi <-> mobile
  */
 class MoStreamingService : Service() {
