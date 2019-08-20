@@ -7,6 +7,7 @@ import android.os.Build
 import android.widget.Toast
 import de.ironjan.metalonly.log.LW
 import java.io.File
+import java.nio.charset.Charset
 
 object Mailer {
     internal fun sendFeedback(context: Context) {
@@ -19,7 +20,7 @@ object Mailer {
         val model = Build.MODEL
 
         val info = "$manufacturer $model\nAndroid version: $osVersion"
-        val logs = LW.getLogs()
+        val logs = trim(LW.getLogs())
         val body = "Feedback:\n\n\n---\nAdditional Info:\n$info\n\nLogs:\n$logs"
 
 
@@ -50,5 +51,14 @@ object Mailer {
         } else {
             Toast.makeText(context, "No mail app installed.", Toast.LENGTH_LONG).show()
         }
+    }
+
+    /** Cuts logs into half until it is small enough for an intent */
+    private fun trim(logs: String): String{
+        var trimmed = logs
+        while(trimmed.toByteArray().size > 256000) {
+            trimmed = "..." + trimmed.substring(trimmed.length/2)
+        }
+        return trimmed
     }
 }

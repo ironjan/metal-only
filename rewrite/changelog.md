@@ -19,6 +19,14 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+ * Fixed: logs were to big for intents
+ * Improved logging
+ * Cleanup in Streaming service, fixed non-ending service
+ * Fixed service binding
+ * More debug statements to investigate doze
+ * Improved audio focus handling
+ * More debug statements to prepare "stream is buffering" UI
+
 ## [0.9.27] - 2019-08-19 23:38
  * Improved logging
  * Cleanup in Streaming service, fixed non-ending service

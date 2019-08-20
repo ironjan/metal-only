@@ -17,7 +17,7 @@ object LW {
     fun `init`(context: Context) {
         val c = context.applicationContext
         applicationContext = c
-        HyperLog.initialize(c)
+        HyperLog.initialize(c, 12*60*60)
         HyperLog.setLogLevel(Log.VERBOSE)
     }
 
@@ -48,7 +48,7 @@ object LW {
     }
 
     fun getLogs(): String {
-        val file = HyperLog.getDeviceLogsInFile(applicationContext, false)
+        val file = HyperLog.getDeviceLogsInFile(applicationContext, true)
         if (!file.exists()) {
             file.createNewFile()
         }
