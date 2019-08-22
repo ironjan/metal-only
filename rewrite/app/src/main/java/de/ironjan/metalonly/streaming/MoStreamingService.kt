@@ -32,6 +32,7 @@ import java.util.*
 class MoStreamingService : Service() {
 
     private var mp: MediaPlayer? = null
+    private var lockHandler: LockHandler? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         LW.d(TAG, "handling start command")
@@ -58,7 +59,7 @@ class MoStreamingService : Service() {
 
         promoteToForeground()
 
-        acquireLocks()
+        lockHandler = LockHandler.acquire(this)
 
         isActive = true
 
@@ -176,59 +177,6 @@ class MoStreamingService : Service() {
         }
     }
 
-
-    // endregion
-
-
-    // region lock handling
-    private lateinit var wakeLock: PowerManager.WakeLock
-    private lateinit var muticastLock: android.net.wifi.WifiManager.MulticastLock
-    private lateinit var wifiLock: WifiManager.WifiLock
-
-    private fun acquireLocks() {
-        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "mylock")
-        LW.i(TAG, "Acquired wifilock")
-
-
-        muticastLock = wifiManager.createMulticastLock("lockWiFiMulticast")
-        muticastLock.setReferenceCounted(false)
-        muticastLock.acquire()
-
-        LW.i(TAG, "Acquired muticastLock")
-
-
-        wakeLock =
-            (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, packageName + TAG).apply {
-                    acquire()
-                }
-            }
-        LW.i(TAG, "Acquired wakelock explictely.")
-    }
-
-    private fun releaseLocks() {
-        if (wifiLock.isHeld) {
-            wifiLock.release()
-            LW.i(TAG, "Released wifilock")
-        } else {
-            LW.w(TAG, "wifilock not yet acquired but releaseLocks() is called.")
-        }
-
-        if (muticastLock.isHeld) {
-            muticastLock.release()
-            LW.i(TAG, "Released muticastLock")
-        } else {
-            LW.w(TAG, "muticastLock not yet acquired but releaseLocks() is called.")
-        }
-
-        if (wakeLock.isHeld) {
-            wakeLock.release()
-            LW.i(TAG, "Released wakelock")
-        } else {
-            LW.w(TAG, "wakeLock not yet acquired but releaseLocks() is called.")
-        }
-    }
 
     // endregion
 
@@ -435,7 +383,7 @@ class MoStreamingService : Service() {
         }
 
 
-        releaseLocks()
+        lockHandler?.releaseLocks()
 
         LW.i(TAG, "Stopping foreground and...")
         stopForeground(true)
