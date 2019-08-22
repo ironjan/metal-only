@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.wifi.WifiManager
 import android.os.*
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -16,7 +15,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
-import de.ironjan.metalonly.BuildConfig
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.log.LW
@@ -61,9 +59,6 @@ class MoStreamingService : Service() {
 
         lockHandler = LockHandler.acquire(this)
 
-        isActive = true
-
-        startIsAwakeLogThread()
         LW.d(TAG, "onCreate done")
     }
 
@@ -258,7 +253,6 @@ class MoStreamingService : Service() {
 
                 mediaPlayer.start()
                 LW.d(TAG, "Started playback")
-                startMediaplayerWatcher()
             }
             AudioManager.AUDIOFOCUS_REQUEST_DELAYED -> {
                 onError("Could not get audio focus (delayed). Try again.") // TODO move to resource, better message
@@ -368,7 +362,6 @@ class MoStreamingService : Service() {
     fun stop() {
         LW.d(TAG, "stop called")
 
-        isActive = false
         LW.d(TAG, "Set isActive to false.")
 
         changeState(State.Stopping)
@@ -466,65 +459,6 @@ class MoStreamingService : Service() {
     private var myNoisyAudioStreamReceiverIsRegistered = false
     // endregion
 
-    // region debug related
-    private var isActive = false
-
-    private fun startIsAwakeLogThread() {
-        Thread {
-            val tag = "MoStreamingService.IsAwakeLogThread"
-            val activeAwakeLogThread = BuildConfig.DEBUG
-            if (!activeAwakeLogThread) {
-                LW.i(tag, "Configuration is not DEBUG. $tag will remain inactive.")
-            }
-
-            LW.d(tag, "Initialized $tag")
-
-            while (activeAwakeLogThread && isActive) {
-                LW.v(tag, "Streaming service is still active.")
-                Thread.sleep(30 * 1000)
-            }
-
-
-            LW.d(tag, "$tag is not needed anymore. Terminating.")
-        }.start()
-    }
-    private fun startMediaplayerWatcher() {
-        Thread {
-            val tag = "MoStreaminService.MpWatcher"
-            val isDebug = BuildConfig.DEBUG
-            val pauseTime: Long = if (isDebug) 30 * 1000 else 60 * 1000
-
-            if (!isDebug) {
-                LW.w(tag, "Not a debug build.")
-            }
-
-            while (//isDebug &&
-                isActive) {
-                LW.d(tag, "Checking mp state...")
-                try {
-                    val currentPosition = mp?.currentPosition
-                    val duration = mp?.duration
-
-                    val hadConnectionLoss =
-                        if (currentPosition != null && duration != null) {
-                            currentPosition > duration
-                        } else null
-
-
-                    LW.i(
-                        tag,
-                        "isPlaying: ${mp?.isPlaying}, isLooping: ${mp?.isLooping}. currentPos: $currentPosition/$duration. Had connection loss? $hadConnectionLoss"
-                    )
-                } catch (e: Throwable) {
-                    LW.e(tag, "Exception in mpWatcher. Stopping thread.", e)
-                    return@Thread
-                }
-
-                Thread.sleep(pauseTime)
-            }
-            LW.i(tag, "$tag not needed anymore.")
-        }.start()
-    }
     // endregion
 
     companion object {
