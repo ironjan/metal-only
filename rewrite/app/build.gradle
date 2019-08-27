@@ -24,6 +24,7 @@ play {
         println("Disabling publish plugin")
         enabled = false
     }
+    defaultToAppBundles = true
 }
 
 
