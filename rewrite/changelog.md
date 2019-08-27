@@ -19,6 +19,8 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.28] - 2019-08-27
+
  * Fixed: logs were to big for intents
  * Fixed: Non-ending service
  * Fixed: service binding
