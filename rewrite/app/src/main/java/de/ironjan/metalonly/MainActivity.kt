@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
     override fun onStateChange(newState: State) {
         LW.d(TAG, "onStateChange($newState) called.")
+        localState = newState
         when (newState) {
             State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
             State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         }
         LW.d(TAG, "onStateChange($newState) completed.")
     }
+
+    private var localState: State = State.Gone
 
     private var isResumed: Boolean = false
     private val TAG = "MainActivity"
@@ -84,10 +87,17 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        action_play = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
-        action_stop = ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
-        stream_loading = ResourcesCompat.getDrawable(resources, android.R.drawable.stat_sys_download, theme)!!
-        stopping_drawable = ResourcesCompat.getDrawable(resources, android.R.drawable.button_onoff_indicator_off, theme)!!
+        action_play =
+            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
+        action_stop =
+            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
+        stream_loading =
+            ResourcesCompat.getDrawable(resources, android.R.drawable.stat_sys_download, theme)!!
+        stopping_drawable = ResourcesCompat.getDrawable(
+            resources,
+            android.R.drawable.button_onoff_indicator_off,
+            theme
+        )!!
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -98,17 +108,38 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         Client.initIon(this)
     }
 
+    private val localStateIsPlayingOrPreparing
+        get() = localState == State.Preparing || localState == State.Started
+
     private fun togglePlaying() {
         try {
+            // TODO move this to BG? add runonui for fab calls
             if (mBound) {
                 if (moStreamingService.isPlayingOrPreparing) {
+                    LW.d(TAG, "Service is bound and playing or preparing, directly calling stop().")
                     moStreamingService.stop()
                     LW.d(TAG, "Stopped playing")
                 } else if (moStreamingService.canPlay) {
+                    LW.d(TAG, "Service is bound and can play, directly calling play(callback).")
                     moStreamingService.play(asIStreamChangeCallback())
                     LW.d(TAG, "Started playing")
                 }
+            } else if (localStateIsPlayingOrPreparing) {
+                LW.d(TAG, "Service is not bound but local state is playing or preparing. Stopping via intent.")
+                Intent(this, MoStreamingService::class.java).also {
+                    it.action = MoStreamingService.ACTION_STOP
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(it)
+                        LW.d(TAG, "Running on Android O+, sending intent as foreground.")
+                    } else {
+                        startService(it)
+                        LW.d(TAG, "Running on Android before O, sending intent via startService.")
+                    }
+                    fab.setImageDrawable(action_play)
+                }
             } else {
+                LW.d(TAG, "Service is not bound and local state represents can Play. Starting and binding.")
                 fab.setImageDrawable(stream_loading)
                 startAndBindStreamingService()
             }
@@ -251,7 +282,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         Thread(Runnable {
             LW.d(TAG, "Loading stats..")
             var attempts = 0
-            while(attempts < 4) {
+            while (attempts < 4) {
                 try {
                     val stats = Client(this).getStats()
 
@@ -328,12 +359,12 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
             } else {
                 LW.d(TAG, "Mod image not delivered via app. Loading from URL.")
                 Ion.with(imageView)
-                        .placeholder(R.drawable.metalhead)
-                        // TODO do we need these?
+                    .placeholder(R.drawable.metalhead)
+                    // TODO do we need these?
 //                        .error(R.drawable.error_image)
 //                        .animateLoad(spinAnimation)
 //                        .animateIn(fadeInAnimation)
-                        .load(modUrl)
+                    .load(modUrl)
 
             }
         }
@@ -380,7 +411,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        if(mBound) {
+        if (mBound) {
             unbindService(connection)
             mBound = false
         }

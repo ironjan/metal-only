@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+
+
 /**
  * streaming service. wraps interaction with media player. Use [IStreamingService.Stub] to bind.
  *
@@ -33,7 +35,7 @@ class MoStreamingService : Service() {
     private var lockHandler: LockHandler? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        LW.d(TAG, "handling start command")
+        LW.d(TAG, "Handling start command with action '${intent?.action}'.")
 
         when (intent?.action) {
             ACTION_PLAY -> play()
@@ -70,6 +72,7 @@ class MoStreamingService : Service() {
     // region binding
     override fun onBind(p0: Intent?): IBinder? = binder
     private val binder = StreamingServiceBinder(this)
+
     // endregion
 
 
@@ -218,7 +221,8 @@ class MoStreamingService : Service() {
                     setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
                     LW.d(TAG, "Hooked up call backs to internal media player")
 
-                    if(BuildConfig.DEBUG) { LW.w(TAG, "Sleeping to have some time for debugger attachement."); Thread.sleep(5000); }
+//                    if(BuildConfig.DEBUG) { LW.w(TAG, "Sleeping to have some time for debugger attachement."); Thread.sleep(5000); }
+
                     prepareAsync()
                     LW.d(TAG, "Preparing internal media player async")
                 }
@@ -290,6 +294,7 @@ class MoStreamingService : Service() {
             else -> "undocumented what: $what"
         }
 
+        causeExceptionForCallstack()
         LW.d(TAG, "MediaPlayer info: $whatAsString, $extra")
 
         return true
@@ -310,6 +315,8 @@ class MoStreamingService : Service() {
             else -> "undocumented extra: $extra..."
         }
 
+        causeExceptionForCallstack()
+
         changeState(State.Error)
 
 
@@ -318,10 +325,17 @@ class MoStreamingService : Service() {
         lastError = "$formattedDate: msg"
 
 
-        LW.e(TAG, "onError($whatAsSTring, $extraAsString, mp) called. Triggering stop()")
-        stop()
+        LW.e(TAG, "onError($whatAsSTring, $extraAsString, mp) called. Triggering stopAndRelease()")
+        stopAndRelease(mp)
 
         return true
+    }
+
+    private fun causeExceptionForCallstack() {
+        val ex = Exception()
+        ex.fillInStackTrace()
+        val cause = ex.stackTrace
+        LW.e(TAG, "Callstack stuff:", ex)
     }
 
 
@@ -336,9 +350,12 @@ class MoStreamingService : Service() {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(rightNow.time)
         lastError = "$formattedDate: msg"
 
-        LW.d(TAG, "onError($s) called. Triggering stop()")
+        LW.d(TAG, "onError($s) called. Triggering stopAndRelease() if mp != null")
         LW.e(TAG, s)
-        stop()
+        mp?.apply {
+            LW.d(TAG, "mp is not null. stopAndRelease")
+            stopAndRelease(this)
+        }
 
     }
 
@@ -360,6 +377,11 @@ class MoStreamingService : Service() {
 
     // region stop related
 
+    fun stopWithCallback(cb: StateChangeCallback) {
+        LW.d(TAG, "stop called with callback.")
+        stateChangeCallback = cb
+        stop()
+    }
     fun stop() {
         LW.d(TAG, "stop called")
 
@@ -370,6 +392,7 @@ class MoStreamingService : Service() {
             if (state == State.Preparing) {
                 this.setOnPreparedListener { mediaPlayer -> stopAndRelease(mediaPlayer) }
                 LW.d(TAG, "Set onPreparedListener to stopAndRelease")
+//                stopAndRelease(this)
             } else {
                 stopAndRelease(this)
             }
@@ -388,9 +411,9 @@ class MoStreamingService : Service() {
 
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {
-        if(state != State.Error) {
-            mediaPlayer.stop()
-        }
+//        if(state == State.Started) {
+//            mediaPlayer.stop()
+//        }
         mediaPlayer.release()
         changeState(State.Gone)
         mp = null

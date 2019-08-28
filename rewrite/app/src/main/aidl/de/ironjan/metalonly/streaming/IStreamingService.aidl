@@ -6,6 +6,7 @@ import de.ironjan.metalonly.streaming.State;
 interface IStreamingService {
     void play(in IStreamChangeCallback cb);
     void stop();
+    void stopWithCallback(in IStreamChangeCallback cb);
 
     State getState();
     boolean getIsPlayingOrPreparing();
