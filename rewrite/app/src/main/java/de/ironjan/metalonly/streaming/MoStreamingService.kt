@@ -9,12 +9,12 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.*
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
+import de.ironjan.metalonly.BuildConfig
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.log.LW
@@ -207,7 +207,7 @@ class MoStreamingService : Service() {
                         setAudioAttributes(b.build())
                     }
                     setDataSource(streamUri)
-                    Log.d(TAG, "Initialized internal media player")
+                    LW.d(TAG, "Initialized internal media player")
 
 
                     setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
@@ -216,14 +216,15 @@ class MoStreamingService : Service() {
                     setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
 
                     setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
-                    Log.d(TAG, "Hooked up call backs to internal media player")
+                    LW.d(TAG, "Hooked up call backs to internal media player")
 
+                    if(BuildConfig.DEBUG) { LW.w(TAG, "Sleeping to have some time for debugger attachement."); Thread.sleep(5000); }
                     prepareAsync()
-                    Log.d(TAG, "Preparing internal media player async")
+                    LW.d(TAG, "Preparing internal media player async")
                 }
     }
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
-        Log.d(TAG, "Preparation complete. Start audio playback")
+        LW.d(TAG, "Preparation complete. Start audio playback")
 
 
         val audioFocusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
@@ -263,7 +264,7 @@ class MoStreamingService : Service() {
 
 
         changeState(State.Started)
-        Log.d(TAG, "Now playing.")
+        LW.d(TAG, "Now playing.")
     }
 
     // endregion
@@ -387,7 +388,9 @@ class MoStreamingService : Service() {
 
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {
-        mediaPlayer.stop()
+        if(state != State.Error) {
+            mediaPlayer.stop()
+        }
         mediaPlayer.release()
         changeState(State.Gone)
         mp = null
