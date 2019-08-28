@@ -19,7 +19,14 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.30] - 2019-08-28
+
  * Fixed: IllegalStateException when stopping
+ * Added: Info about loading show info
+
+## [0.9.29] - ??
+
+(Unknown)
 
 ## [0.9.28] - 2019-08-27
 
