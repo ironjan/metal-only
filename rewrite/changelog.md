@@ -19,6 +19,10 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.31] - 2019-08-30
+
+ * Fixed: Binding to service after resuming activity
+
 ## [0.9.30] - 2019-08-28
 
  * Fixed: IllegalStateException when stopping
