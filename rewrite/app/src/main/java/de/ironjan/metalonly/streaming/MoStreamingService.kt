@@ -325,13 +325,8 @@ class MoStreamingService : Service() {
         lastError = "$formattedDate: msg"
 
 
-<<<<<<< Updated upstream
-        LW.e(TAG, "onError($whatAsSTring, $extraAsString, mp) called. Triggering stopAndRelease()")
-        stopAndRelease(mp)
-=======
         LW.e(TAG, "onError($whatAsSTring, $extraAsString, mp) called. Triggering stop()")
-        stopAndRelease()
->>>>>>> Stashed changes
+        stopAndRelease(mp)
 
         return true
     }
@@ -357,15 +352,10 @@ class MoStreamingService : Service() {
 
         LW.d(TAG, "onError($s) called. Triggering stopAndRelease() if mp != null")
         LW.e(TAG, s)
-<<<<<<< Updated upstream
         mp?.apply {
             LW.d(TAG, "mp is not null. stopAndRelease")
             stopAndRelease(this)
         }
-=======
-        stopAndRelease()
->>>>>>> Stashed changes
-
     }
 
 
