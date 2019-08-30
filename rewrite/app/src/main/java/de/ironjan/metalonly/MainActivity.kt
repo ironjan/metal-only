@@ -204,6 +204,12 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
         if (mBound) {
             onStateChange(moStreamingService.state)
+        } else {
+            Intent(this, MoStreamingService::class.java).also {
+                it.action = MoStreamingService.ACTION_PLAY
+                bindService(it, connection, 0)
+                LW.d(TAG, "onResume - binding to service if it exists.")
+            }
         }
 
         LW.d(TAG, "onResume done.")
