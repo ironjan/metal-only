@@ -466,6 +466,8 @@ class MoStreamingService : Service() {
     fun restartPlayback() {
         createMediaPlayer("${TAG}.restartPlayback").apply {
             setOnPreparedListener { mediaPlayer ->
+                if(state == State.Started) {mp?.stop()}
+                mp?.release()
                 mp = mediaPlayer
                 onPreparedPlay(mediaPlayer)
             }
