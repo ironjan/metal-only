@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
 import android.os.*
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -222,6 +223,10 @@ class MoStreamingService : Service() {
 
 //                    if(BuildConfig.DEBUG) { LW.w(TAG, "Sleeping to have some time for debugger attachement."); Thread.sleep(5000); }
 
+                    registerReceiver(networkObserver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                    networkObserverRegistered=true
+                    LW.d(TAG, "Registered networkObserver")
+
                     prepareAsync()
                     LW.d(TAG, "Preparing internal media player async")
                 }
@@ -263,8 +268,6 @@ class MoStreamingService : Service() {
             }
             else -> onError("Could not get audio focus (unknown). Try again.") // TODO move to resource, better message
         }
-
-
 
         changeState(State.Started)
         LW.d(TAG, "Now playing.")
@@ -426,6 +429,11 @@ class MoStreamingService : Service() {
             unregisterReceiver(myNoisyAudioStreamReceiver)
             LW.d(TAG, "unregistered noisy audio stream receiver")
         }
+
+        if(networkObserverRegistered) {
+            unregisterReceiver(networkObserver)
+            LW.d(TAG, "unregistered networkObserver receiver")
+        }
     }
     // endregion
 
@@ -449,6 +457,11 @@ class MoStreamingService : Service() {
     private var myNoisyAudioStreamReceiverIsRegistered = false
     // endregion
 
+    // region network change receiver
+    private val networkObserver = NetworkObserver(this)
+    private var networkObserverRegistered = false
+
+    // endregion
     companion object {
         const val ACTION_PLAY = "de.ironjan.metalonly.play"
         const val ACTION_STOP = "de.ironjan.metalonly.stop"
