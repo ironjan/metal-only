@@ -436,10 +436,12 @@ class MoStreamingService : Service() {
 
     internal fun continuePlayback() {
         mp?.start()
+        changeState(State.Started)
     }
 
     internal fun pause() {
         mp?.pause()
+        changeState(State.Paused)
     }
 
     private val myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)

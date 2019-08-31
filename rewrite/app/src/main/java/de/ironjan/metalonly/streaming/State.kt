@@ -16,7 +16,9 @@ enum class State : Parcelable {
     /** Stream is stopping and service is cleaning up. */
     Stopping,
     /** An error occurred while playing the stream. */
-    Error;
+    Error,
+    /** Stream is prepared and paused */
+    Paused;
 
     override fun writeToParcel(parcel: Parcel, flags: Int) = parcel.writeString(name)
 
