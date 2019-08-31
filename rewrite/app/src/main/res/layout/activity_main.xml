@@ -18,71 +18,9 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:foregroundGravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/txtAbLoading"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/metalmania_regular"
-                    android:text="Metal Only"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/txtAbModerator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:fontFamily="@font/metalmania_regular"
-                    android:visibility="gone"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/txtAbIs"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Metal Head" />
-
-                <TextView
-                    android:id="@+id/txtAbIs"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/metalmania_regular"
-                    android:text=" IST "
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtAbModerator"
-                    app:layout_constraintEnd_toStartOf="@+id/txtAbOnAir"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txtAbOnAir"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/metalmania_regular"
-                    android:text="ON AIR"
-                    android:textColor="@color/brightGreen"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    style="@style/TextAppearance.AppCompat.Title"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtAbIs"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMail"
