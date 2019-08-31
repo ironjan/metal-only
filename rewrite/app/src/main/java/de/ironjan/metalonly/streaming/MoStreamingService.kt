@@ -14,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
-import de.ironjan.metalonly.BuildConfig
 import de.ironjan.metalonly.MainActivity
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.log.LW
@@ -55,7 +54,7 @@ class MoStreamingService : Service() {
         LW.i(TAG, "onCreate called")
 
 
-        myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)
+
 
         promoteToForeground()
 
@@ -433,61 +432,19 @@ class MoStreamingService : Service() {
 
 
     // region audio focus and noisy receiver
-    private var continueOnAudioFocusReceived: Boolean = false
-    private val afChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-        val tag = "MoStreamingService.afChangeListener"
+    private val afChangeListener = OnAudioFocusChangeListener(this, this)
 
-        LW.d(tag, "Received audio focus change to $focusChange")
-        when (focusChange) {
-            AudioManager.AUDIOFOCUS_LOSS -> {
-                // Permanent loss of audio focus
-                // Stop playback immediately
-                continueOnAudioFocusReceived = false
-                stop()
-                LW.d(tag, "Stopped playback, no continue on gain")
-            }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                // Pause playback
-                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
-                // until required otherwise
-                if (state == State.Started) {
-                    mp?.pause()
-                    continueOnAudioFocusReceived = true
-                    LW.d(tag, "transient loss. Paused playback, continue on gain")
-                }
-                if (state == State.Preparing) {
-
-                }
-// FIXME how to handle preparing?
-            }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                // Lower the volume, keep playing
-                // we rely on https://developer.android.com/guide/topics/media-apps/audio-focus#automatic-ducking
-                // until required otherwise
-
-                // todo: implement Lower the volume, keep playing?
-                LW.d(tag, "transient loss can duck. did nothing")
-            }
-            AudioManager.AUDIOFOCUS_GAIN -> {
-                // Your app has been granted audio focus again
-                // Raise volume to normal, restart playback if necessary
-                LW.d(tag, "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived")
-
-                if (state == State.Started && continueOnAudioFocusReceived) {
-                    mp?.start()
-                    LW.d(tag, "... started playback again")
-                } else {
-                    LW.d(tag, "... state was $state and continueOnAudioFocusReceived was $continueOnAudioFocusReceived. Playback not resumed.")
-                }
-            }
-        }
+    internal fun continuePlayback() {
+        mp?.start()
     }
 
-    private lateinit var myNoisyAudioStreamReceiver: BecomingNoisyReceiver
+    internal fun pause() {
+        mp?.pause()
+    }
+
+    private val myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)
 
     private var myNoisyAudioStreamReceiverIsRegistered = false
-    // endregion
-
     // endregion
 
     companion object {
