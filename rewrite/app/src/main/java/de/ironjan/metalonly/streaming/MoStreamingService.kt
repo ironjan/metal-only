@@ -198,7 +198,7 @@ class MoStreamingService : Service() {
         networkObserverRegistered = true
         LW.d(TAG, "Registered networkObserver")
 
-        mp = createMediaPlayer().apply {
+        mp = createMediaPlayer("$TAG.play").apply {
             setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
             LW.d(TAG, "Hooked up call backs to internal media player")
 
@@ -207,7 +207,7 @@ class MoStreamingService : Service() {
         }
     }
 
-    private fun createMediaPlayer(): MediaPlayer {
+    private fun createMediaPlayer(tag: String): MediaPlayer {
         return MediaPlayer()
             .apply {
                 setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
@@ -300,7 +300,7 @@ class MoStreamingService : Service() {
             else -> "undocumented what: $what"
         }
 
-        causeExceptionForCallstack()
+//        causeExceptionForCallstack()
         LW.d(TAG, "MediaPlayer info: $whatAsString, $extra")
 
         return true
@@ -457,11 +457,24 @@ class MoStreamingService : Service() {
     private val myNoisyAudioStreamReceiver = BecomingNoisyReceiver(this)
 
     private var myNoisyAudioStreamReceiverIsRegistered = false
+
     // endregion
 
     // region network change receiver
     private lateinit var networkObserver: NetworkObserver
     private var networkObserverRegistered = false
+    fun restartPlayback() {
+        createMediaPlayer("${TAG}.restartPlayback").apply {
+            setOnPreparedListener { mediaPlayer ->
+                mp = mediaPlayer
+                onPreparedPlay(mediaPlayer)
+            }
+            LW.d(TAG, "Hooked up call backs to internal media player")
+
+            prepareAsync()
+            LW.d(TAG, "Preparing internal media player async")
+        }
+    }
 
     // endregion
     companion object {
