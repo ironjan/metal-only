@@ -22,8 +22,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
-
 /**
  * streaming service. wraps interaction with media player. Use [IStreamingService.Stub] to bind.
  *
@@ -71,6 +69,7 @@ class MoStreamingService : Service() {
 
     // region binding
     override fun onBind(p0: Intent?): IBinder? = binder
+
     private val binder = StreamingServiceBinder(this)
 
     // endregion
@@ -121,8 +120,6 @@ class MoStreamingService : Service() {
     // endregion
 
 
-
-
     // region foreground service notification
 
     private val CHANNEL_ID = "Metal Only Stream Notifications" // todo move to resource?
@@ -135,14 +132,14 @@ class MoStreamingService : Service() {
             PendingIntent.getActivity(this, 0, notificationIntent, 0)
         }
         val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Metal Only")
-                .setContentText("Playing stream")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setSound(null)
-                .setOnlyAlertOnce(true)
-                .build()
+            .setContentTitle("Metal Only")
+            .setContentText("Playing stream")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setSound(null)
+            .setOnlyAlertOnce(true)
+            .build()
 
 
         createNotificationChannel()
@@ -196,65 +193,72 @@ class MoStreamingService : Service() {
             LW.d(TAG, "Released previous media player")
         }
 
-        mp = MediaPlayer()
-                .apply {
-                    setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
-                    LW.d(TAG, "Acquired wake lock.")
+        networkObserver = NetworkObserver(this)
+        registerReceiver(networkObserver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        networkObserverRegistered = true
+        LW.d(TAG, "Registered networkObserver")
 
-                    if (Build.VERSION.SDK_INT < 26) {
-                        @Suppress("DEPRECATION")
-                        setAudioStreamType(AudioManager.STREAM_MUSIC)
-                    } else {
-                        val b = AudioAttributes.Builder()
-                        b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                        setAudioAttributes(b.build())
-                    }
-                    setDataSource(streamUri)
-                    LW.d(TAG, "Initialized internal media player")
+        mp = createMediaPlayer().apply {
+            setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
+            LW.d(TAG, "Hooked up call backs to internal media player")
 
-
-                    setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
-                    setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
-                    setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
-                    setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
-
-                    setOnPreparedListener { mediaPlayer -> onPreparedPlay(mediaPlayer) }
-                    LW.d(TAG, "Hooked up call backs to internal media player")
-
-//                    if(BuildConfig.DEBUG) { LW.w(TAG, "Sleeping to have some time for debugger attachement."); Thread.sleep(5000); }
-
-                    registerReceiver(networkObserver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-                    networkObserverRegistered=true
-                    LW.d(TAG, "Registered networkObserver")
-
-                    prepareAsync()
-                    LW.d(TAG, "Preparing internal media player async")
-                }
+            prepareAsync()
+            LW.d(TAG, "Preparing internal media player async")
+        }
     }
+
+    private fun createMediaPlayer(): MediaPlayer {
+        return MediaPlayer()
+            .apply {
+                setWakeMode(applicationContext, PowerManager.PARTIAL_WAKE_LOCK)
+                LW.d(TAG, "Acquired wake lock.")
+
+                if (Build.VERSION.SDK_INT < 26) {
+                    @Suppress("DEPRECATION")
+                    (setAudioStreamType(AudioManager.STREAM_MUSIC))
+                } else {
+                    val b = AudioAttributes.Builder()
+                    b.setLegacyStreamType(AudioManager.STREAM_MUSIC)
+                    setAudioAttributes(b.build())
+                }
+                setDataSource(streamUri)
+                LW.d(TAG, "Initialized internal media player")
+
+
+                setOnErrorListener { mp, what, extra -> onError(what, extra, mp) }
+                setOnCompletionListener { mediaPlayer -> onComplete(mediaPlayer) }
+                setOnBufferingUpdateListener { _, percent -> bufferingUpdate(percent) }
+                setOnInfoListener { _, what, extra -> onMpInfo(what, extra) }
+            }
+    }
+
     private fun onPreparedPlay(mediaPlayer: MediaPlayer) {
         LW.d(TAG, "Preparation complete. Start audio playback")
 
 
-        val audioFocusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
-            setAudioAttributes(AudioAttributesCompat.Builder().run {
-                setUsage(AudioAttributesCompat.USAGE_MEDIA)
-                setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
-                // fixme add playback delayed on transient loss?
-                setOnAudioFocusChangeListener(afChangeListener, Handler())
+        val audioFocusRequest =
+            AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN).run {
+                setAudioAttributes(AudioAttributesCompat.Builder().run {
+                    setUsage(AudioAttributesCompat.USAGE_MEDIA)
+                    setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
+                    // fixme add playback delayed on transient loss?
+                    setOnAudioFocusChangeListener(afChangeListener, Handler())
+                    build()
+                })
                 build()
-            })
-            build()
-        }
+            }
 
 
-        val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioManager =
+            applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val res = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
 
         when (res) {
             AudioManager.AUDIOFOCUS_REQUEST_FAILED -> onError("Could not get audio focus (failed). Try again.") // TODO move to resource, better message
 
             AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> {
-                registerReceiver(myNoisyAudioStreamReceiver,
+                registerReceiver(
+                    myNoisyAudioStreamReceiver,
                     IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
                 )
                 myNoisyAudioStreamReceiverIsRegistered = true
@@ -361,8 +365,6 @@ class MoStreamingService : Service() {
     }
 
 
-
-
     private fun bufferingUpdate(percent: Int) {
         LW.d(TAG, "Buffering Update: $percent%")
     }
@@ -383,6 +385,7 @@ class MoStreamingService : Service() {
         stateChangeCallback = cb
         stop()
     }
+
     fun stop() {
         LW.d(TAG, "stop called")
 
@@ -404,7 +407,7 @@ class MoStreamingService : Service() {
         cleanUpService()
     }
 
-    private fun cleanUpService(){
+    private fun cleanUpService() {
         lockHandler?.releaseLocks()
 
         LW.i(TAG, "Stopping foreground and...")
@@ -416,7 +419,7 @@ class MoStreamingService : Service() {
 
 
     private fun stopAndRelease(mediaPlayer: MediaPlayer) {
-        if(state == State.Started) {
+        if (state == State.Started) {
             mediaPlayer.stop()
         }
         mediaPlayer.release()
@@ -430,13 +433,12 @@ class MoStreamingService : Service() {
             LW.d(TAG, "unregistered noisy audio stream receiver")
         }
 
-        if(networkObserverRegistered) {
+        if (networkObserverRegistered) {
             unregisterReceiver(networkObserver)
             LW.d(TAG, "unregistered networkObserver receiver")
         }
     }
     // endregion
-
 
 
     // region audio focus and noisy receiver
@@ -458,7 +460,7 @@ class MoStreamingService : Service() {
     // endregion
 
     // region network change receiver
-    private val networkObserver = NetworkObserver(this)
+    private lateinit var networkObserver: NetworkObserver
     private var networkObserverRegistered = false
 
     // endregion
