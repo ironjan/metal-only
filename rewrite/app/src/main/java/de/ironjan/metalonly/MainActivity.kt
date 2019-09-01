@@ -1,7 +1,6 @@
 package de.ironjan.metalonly
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
@@ -25,13 +24,39 @@ import de.ironjan.metalonly.api.model.ShowInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
-import android.os.PowerManager
-import android.provider.Settings
 import de.ironjan.metalonly.streaming.*
 
 // TODO split out the watcher thread etc -> SRP
-class MainActivity : AppCompatActivity(), StateChangeCallback {
-    private fun onTrackChange(trackInfo: TrackInfo) {
+class MainActivity : AppCompatActivity(),
+    StateChangeCallback,
+    MainActivityTrackUpdateThread.TrackUpdate,
+    MainActivityShowInfoUpdateThread.OnShowInfoUpdateCallback,
+    StatsLoadingRunnable.StatsLoadingCallback {
+
+    override fun onStatsLoadingError(s: String) = snack(s)
+
+    override fun onStatsLoadingSuccess(stats: Stats) {
+        LW.d(TAG, "Showing stats")
+        val track = stats.track
+        val trackAsString = "${track.artist} - ${track.title}"
+        val showInformation = stats.showInformation
+        runOnUiThread {
+            txtShow.text = showInformation.show
+            txtGenre.text = showInformation.genre
+            txtTrack.text = trackAsString
+
+            txtAbModerator.text = showInformation.moderator
+
+            txtAbLoading.visibility = View.GONE
+            txtAbModerator.visibility = View.VISIBLE
+            txtAbIs.visibility = View.VISIBLE
+            txtAbOnAir.visibility = View.VISIBLE
+        }
+        LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
+        loadModeratorImage(stats)
+    }
+
+    override fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
         runOnUiThread {
             txtTrack.text = s
@@ -39,7 +64,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         LW.d(TAG, "Track info updated: $s")
     }
 
-    private fun onShowInfoChange(showInfo: ShowInfo) {
+    override fun onShowInfoChange(showInfo: ShowInfo) {
         runOnUiThread {
             txtShow.text = showInfo.show
             txtGenre.text = showInfo.genre
@@ -69,7 +94,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
 
     private var localState: State = State.Gone
 
-    private var isResumed: Boolean = false
+    internal var isResumed: Boolean = false
     private val TAG = "MainActivity"
 
     private lateinit var action_play: Drawable
@@ -125,7 +150,10 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
                     LW.d(TAG, "Started playing")
                 }
             } else if (localStateIsPlayingOrPreparing) {
-                LW.d(TAG, "Service is not bound but local state is playing or preparing. Stopping via intent.")
+                LW.d(
+                    TAG,
+                    "Service is not bound but local state is playing or preparing. Stopping via intent."
+                )
                 Intent(this, MoStreamingService::class.java).also {
                     it.action = MoStreamingService.ACTION_STOP
 
@@ -139,7 +167,10 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
                     fab.setImageDrawable(action_play)
                 }
             } else {
-                LW.d(TAG, "Service is not bound and local state represents can Play. Starting and binding.")
+                LW.d(
+                    TAG,
+                    "Service is not bound and local state represents can Play. Starting and binding."
+                )
                 fab.setImageDrawable(stream_loading)
                 startAndBindStreamingService()
             }
@@ -154,51 +185,8 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         isResumed = true
 
         loadStats()
-        Thread {
-            val tag = "MainActivity.TrackInfoUpdateThread"
-            LW.d(tag, "Prepared track info update thread")
-            var lastTrackInfo: TrackInfo? = null
-            while (isResumed) {
-                Thread.sleep(30 * 1000) // start with sleeping because loadStats includes current track
-                // FIXME is this the best way???
-
-                val track = Client(this).getTrack()
-                if (track.isRight()) {
-                    track.map {
-                        if (it != lastTrackInfo) {
-                            // broadcast it
-                            onTrackChange(it)
-                            lastTrackInfo = it
-                            LW.d(tag, "'Broadcasted' track info")
-                        }
-                    }
-                }
-            }
-            LW.d(tag, "Track info update thread is not needed anymore")
-        }.start()
-
-        Thread {
-            val tag = "MainActivity.ShowInfoUpdateThread"
-            LW.d(tag, "Prepared show info update thread")
-            var lastShowInfo: ShowInfo? = null
-            while (isResumed) {
-                Thread.sleep(5 * 60 * 1000) // start with sleeping because loadStats includes current track
-                // Replace this with scheduled service or lookup in plan
-
-                val showInfo = Client(this).getShowInfo()
-                if (showInfo.isRight()) {
-                    showInfo.map {
-                        if (it != lastShowInfo) {
-                            // broadcast it
-                            onShowInfoChange(it)
-                            lastShowInfo = it
-                            LW.d(tag, "'Broadcasted' show info")
-                        }
-                    }
-                }
-            }
-            LW.d(tag, "Show info update thread is not needed anymore")
-        }.start()
+        MainActivityTrackUpdateThread(this).run()
+        MainActivityShowInfoUpdateThread(this).run()
 
         updateTxtError()
 
@@ -285,32 +273,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
     }
 
     private fun loadStats() {
-        Thread(Runnable {
-            LW.d(TAG, "Loading stats..")
-            var attempts = 0
-            while (attempts < 4) {
-                try {
-                    val stats = Client(this).getStats()
-
-                    if (stats.isLeft()) {
-                        stats.mapLeft {
-                            LW.w(TAG, "Loading stats failed: $it")
-                            snack(it)
-                        }
-                    } else {
-                        stats.map {
-                            showStats(it)
-                            LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
-                            loadModeratorImage(it)
-                            return@Runnable
-                        }
-                    }
-                } catch (e: Exception) {
-                    LW.e(TAG, "Loading stats failed. Attempt $attempts", e)
-                }
-                attempts += 1
-            }
-        }).start()
+        StatsLoadingRunnable(this).run()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -353,7 +316,7 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         }
     }
 
-    private fun loadModeratorImage(stats: Stats) {
+    internal fun loadModeratorImage(stats: Stats) {
         LW.d(TAG, "Starting to load mod image.")
         val mod = stats.showInformation.moderator
         val id = resources.getIdentifier(mod.toLowerCase(), "drawable", packageName)
@@ -376,28 +339,8 @@ class MainActivity : AppCompatActivity(), StateChangeCallback {
         }
     }
 
-    private fun showStats(stats: Stats) {
-        LW.d(TAG, "Showing stats")
-        val track = stats.track
-        val trackAsString = "${track.artist} - ${track.title}"
-        val showInformation = stats.showInformation
 
-        runOnUiThread {
-            txtShow.text = showInformation.show
-            txtGenre.text = showInformation.genre
-            txtTrack.text = trackAsString
-
-            txtAbModerator.text = showInformation.moderator
-
-            txtAbLoading.visibility = View.GONE
-            txtAbModerator.visibility = View.VISIBLE
-            txtAbIs.visibility = View.VISIBLE
-            txtAbOnAir.visibility = View.VISIBLE
-        }
-    }
-
-
-    private fun snack(s: String) {
+    internal fun snack(s: String) {
         LW.v(TAG, "Called snack($s)")
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
