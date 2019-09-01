@@ -2,15 +2,21 @@ package de.ironjan.metalonly.api
 
 import android.content.Context
 import arrow.core.Either
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.koushikdutta.async.future.FutureCallback
 import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.api.model.ShowInfo
+import de.ironjan.metalonly.api.model.Wish
 import de.ironjan.metalonly.log.LW
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
+import java.net.URL
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.TrustManager
@@ -24,8 +30,13 @@ class Client(private val context: Context) {
 
     fun getShowInfo(): Either<String, ShowInfo> = safeRequest(showInfoUrl, ShowInfo::class.java)
 
-//    fun getMods(noCache: Boolean) = safeRequest(modsUrl, noCache)
-//    fun getPlan(noCache: Boolean) = safeRequest(planUrl, noCache)
+    fun sendWish(wish: Wish, futureCallback: FutureCallback<String>) {
+        Ion.with(context)
+            .load(wishUrl)
+            .setJsonPojoBody(wish)
+            .asString()
+            .setCallback(futureCallback);
+    }
 
     private fun <T> safeRequest(url: String, clazz: Class<T>): Either<String, T> {
         return try {
@@ -67,10 +78,12 @@ class Client(private val context: Context) {
         private const val showInformationPath = "/showinformation"
         private const val planPath = "/plan"
         private const val modsPath = "/mods"
+        private const val wishPath = "/wish"
 
         const val statsUrl = "$baseUrl$statsPath"
         const val showInfoUrl = "$baseUrl$showInformationPath"
         const val trackUrl = "$baseUrl$trackPath"
+        const val wishUrl = "$baseUrl$wishPath"
         const val planUrl = "$baseUrl$planPath"
         const val modsUrl = "$baseUrl$modsPath"
 
