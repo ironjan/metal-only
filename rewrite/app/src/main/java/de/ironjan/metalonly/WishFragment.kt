@@ -7,11 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import de.ironjan.metalonly.R
 
-/**
- * A simple [Fragment] subclass.
- * Use the [WishFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WishFragment : Fragment() {
 
     override fun onCreateView(
