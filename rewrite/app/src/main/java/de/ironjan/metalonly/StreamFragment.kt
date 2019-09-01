@@ -4,18 +4,14 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.*
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.koushikdutta.ion.Ion
-import de.ironjan.metalonly.R
-import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
@@ -26,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_stream.*
 
 class StreamFragment : Fragment(),
     StateChangeCallback,
-    MainActivityTrackUpdateThread.TrackUpdate,
-    MainActivityShowInfoUpdateThread.OnShowInfoUpdateCallback,
+    MainActivityTrackUpdater.TrackUpdate,
+    MainActivityShowInfoUpdater.OnShowInfoUpdateCallback,
     StatsLoadingRunnable.StatsLoadingCallback {
 
     override fun onCreateView(
@@ -45,6 +41,10 @@ class StreamFragment : Fragment(),
         super.onCreate(savedInstanceState)
 
         initPlayButtonDrawables()
+
+        val lContext = context ?: return
+        mainActivityShowInfoUpdater = MainActivityShowInfoUpdater(lContext, this)
+        mainActivityTrackUpdater = MainActivityTrackUpdater(lContext, this)
     }
 
     override fun onResume() {
@@ -61,10 +61,10 @@ class StreamFragment : Fragment(),
 
     private fun refreshUi() {
         val lContext = context ?: return
-        // FIXME started too often...
         Thread(StatsLoadingRunnable(lContext, this)).start()
-        Thread(MainActivityTrackUpdateThread(lContext, this)).start()
-        Thread(MainActivityShowInfoUpdateThread(lContext, this)).start()
+
+        lifecycle.addObserver(mainActivityShowInfoUpdater)
+       lifecycle.addObserver(mainActivityTrackUpdater)
 
         updateTxtError()
 
@@ -92,6 +92,8 @@ class StreamFragment : Fragment(),
 
     override fun IsResumed(): Boolean = isResumed
 
+    private lateinit var mainActivityShowInfoUpdater: MainActivityShowInfoUpdater
+    private lateinit var mainActivityTrackUpdater: MainActivityTrackUpdater
     // endregion
 
 
