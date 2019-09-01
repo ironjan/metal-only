@@ -27,7 +27,7 @@ import android.os.Build
 import de.ironjan.metalonly.streaming.*
 import kotlinx.android.synthetic.main.action_bar.*
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     // region lifecycle methods
 
@@ -89,6 +89,21 @@ class MainActivity : AppCompatActivity(){
     }
     // endregion
 
+
+    fun setModerator(moderator: String?) {
+        if (moderator != null) {
+            txtAbModerator.text = moderator
+            txtAbLoading.visibility = View.GONE
+            txtAbModerator.visibility = View.VISIBLE
+            txtAbIs.visibility = View.VISIBLE
+            txtAbOnAir.visibility = View.VISIBLE
+        } else {
+            txtAbLoading.visibility = View.VISIBLE
+            txtAbModerator.visibility = View.GONE
+            txtAbIs.visibility = View.GONE
+            txtAbOnAir.visibility = View.GONE
+        }
+    }
 
     companion object {
         private const val TAG = "MainActivity"

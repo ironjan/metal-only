@@ -22,14 +22,13 @@ import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.streaming.*
 import kotlinx.android.synthetic.main.action_bar.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.fragment_stream.*
 
-class StreamFragment : Fragment() ,
+class StreamFragment : Fragment(),
     StateChangeCallback,
     MainActivityTrackUpdateThread.TrackUpdate,
     MainActivityShowInfoUpdateThread.OnShowInfoUpdateCallback,
-    StatsLoadingRunnable.StatsLoadingCallback{
+    StatsLoadingRunnable.StatsLoadingCallback {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +49,22 @@ class StreamFragment : Fragment() ,
 
     override fun onResume() {
         super.onResume()
+        if (view != null) {
+            refreshUi()
+        }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        refreshUi()
+    }
+
+    private fun refreshUi() {
         val lContext = context ?: return
-        StatsLoadingRunnable(lContext, this).run()
-        MainActivityTrackUpdateThread(lContext, this).run()
-        MainActivityShowInfoUpdateThread(lContext, this).run()
+        // FIXME started too often...
+        Thread(StatsLoadingRunnable(lContext, this)).start()
+        Thread(MainActivityTrackUpdateThread(lContext, this)).start()
+        Thread(MainActivityShowInfoUpdateThread(lContext, this)).start()
 
         updateTxtError()
 
@@ -68,11 +78,8 @@ class StreamFragment : Fragment() ,
                 LW.d(TAG, "onResume - binding to service if it exists.")
             }
         }
-
-        LW.d(TAG, "onResume done.")
+        fab.setOnClickListener { togglePlaying() }
     }
-
-
 
     override fun onStop() {
         super.onStop()
@@ -101,16 +108,12 @@ class StreamFragment : Fragment() ,
             txtGenre.text = showInformation.genre
             txtTrack.text = trackAsString
 
-            txtAbModerator.text = showInformation.moderator
-
-            txtAbLoading.visibility = View.GONE
-            txtAbModerator.visibility = View.VISIBLE
-            txtAbIs.visibility = View.VISIBLE
-            txtAbOnAir.visibility = View.VISIBLE
         }
+        (activity as MainActivity).setModerator(showInformation.moderator)
         LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
         loadModeratorImage(stats)
     }
+
     private fun loadModeratorImage(stats: Stats) {
         LW.d(TAG, "Starting to load mod image.")
         val mod = stats.showInformation.moderator
@@ -184,6 +187,7 @@ class StreamFragment : Fragment() ,
             currentTheme
         )!!
     }
+
     private lateinit var action_play: Drawable
     private lateinit var action_stop: Drawable
     private lateinit var stream_loading: Drawable
@@ -226,7 +230,10 @@ class StreamFragment : Fragment() ,
                     LW.d(TAG, "Started playing")
                 }
             } else if (localStateIsPlayingOrPreparing) {
-                LW.d(TAG, "Service is not bound but local state is playing or preparing. Stopping via intent.")
+                LW.d(
+                    TAG,
+                    "Service is not bound but local state is playing or preparing. Stopping via intent."
+                )
                 val lContext = context ?: return
                 Intent(lContext, MoStreamingService::class.java).also {
                     it.action = MoStreamingService.ACTION_STOP

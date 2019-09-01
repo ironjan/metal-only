@@ -22,6 +22,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabMail"
         android:layout_width="wrap_content"
@@ -30,5 +40,4 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_action_mail" />
 
-    <include layout="@layout/content_main" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
