@@ -17,7 +17,6 @@ import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.streaming.*
-import kotlinx.android.synthetic.main.action_bar.*
 import kotlinx.android.synthetic.main.fragment_stream.*
 
 class StreamFragment : Fragment(),
@@ -64,7 +63,7 @@ class StreamFragment : Fragment(),
         Thread(StatsLoadingRunnable(lContext, this)).start()
 
         lifecycle.addObserver(mainActivityShowInfoUpdater)
-       lifecycle.addObserver(mainActivityTrackUpdater)
+        lifecycle.addObserver(mainActivityTrackUpdater)
 
         updateTxtError()
 
@@ -109,11 +108,12 @@ class StreamFragment : Fragment(),
             txtShow.text = showInformation.show
             txtGenre.text = showInformation.genre
             txtTrack.text = trackAsString
-
         }
-        (activity as MainActivity).setModerator(showInformation.moderator)
-        LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
-        loadModeratorImage(stats)
+        if (isAdded) {
+            (activity as MainActivity?)?.setModerator(showInformation.moderator)
+            LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
+            loadModeratorImage(stats)
+        }
     }
 
     private fun loadModeratorImage(stats: Stats) {
@@ -155,13 +155,9 @@ class StreamFragment : Fragment(),
         runOnUiThread {
             txtShow.text = showInfo.show
             txtGenre.text = showInfo.genre
-
-            txtAbModerator.text = showInfo.moderator
-
-            txtAbLoading.visibility = View.GONE
-            txtAbModerator.visibility = View.VISIBLE
-            txtAbIs.visibility = View.VISIBLE
-            txtAbOnAir.visibility = View.VISIBLE
+            if (isAdded) {
+                (activity as MainActivity?)?.setModerator(showInfo.moderator)
+            }
         }
     }
     // endregion

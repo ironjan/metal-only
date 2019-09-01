@@ -1,31 +1,20 @@
 package de.ironjan.metalonly
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.content.res.ResourcesCompat
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.koushikdutta.ion.Ion
-import de.ironjan.metalonly.log.LW
+import androidx.core.view.children
 import de.ironjan.metalonly.api.Client
-import de.ironjan.metalonly.api.model.Stats
-import de.ironjan.metalonly.api.model.TrackInfo
-import de.ironjan.metalonly.api.model.ShowInfo
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import android.os.Build
-import de.ironjan.metalonly.streaming.*
+import de.ironjan.metalonly.log.LW
 import kotlinx.android.synthetic.main.action_bar.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,9 +26,10 @@ class MainActivity : AppCompatActivity() {
         LW.init(this)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        setSupportActionBar(toolbar)
 
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+        
         fabMail.setOnClickListener { Mailer.sendFeedback(this) }
 
         Client.initIon(this)
