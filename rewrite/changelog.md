@@ -19,7 +19,11 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
+## [0.9.32]
+
  * Added: support for changing network
+ * UI styling
+ * Internal: Switched to navigation component
 
 ## [0.9.31] - 2019-08-30
 
