@@ -12,11 +12,15 @@
         tools:layout="@layout/fragment_stream" >
         <action
             android:id="@+id/action_streamFragment_to_wishFragment2"
-            app:destination="@id/wishFragment2" />
+            app:destination="@id/wishFragment2"/>
     </fragment>
     <fragment
         android:id="@+id/wishFragment2"
         android:name="de.ironjan.metalonly.WishFragment"
         android:label="fragment_wish"
-        tools:layout="@layout/fragment_wish" />
+        tools:layout="@layout/fragment_wish" >
+        <action
+            android:id="@+id/action_wishFragment_to_wishFragment"
+            app:destination="@id/wishFragment2" />
+    </fragment>
 </navigation>

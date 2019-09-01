@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        
+
         fabMail.setOnClickListener { Mailer.sendFeedback(this) }
 
         Client.initIon(this)
@@ -44,9 +44,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = nav_host_fragment.findNavController()
         return when (item.itemId) {
             R.id.mnuWish -> {
-                nav_host_fragment.findNavController().navigate(R.id.action_streamFragment_to_wishFragment2)
+                if (navController.currentDestination?.id != R.id.wishFragment2) {
+                    navController.navigate(R.id.action_streamFragment_to_wishFragment2)
+                }
                 return true
             }
             R.id.mnuPlan -> {
@@ -79,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setModerator(moderator: String?) {
-        runOnUiThread{
+        runOnUiThread {
             if (moderator != null) {
                 txtAbModerator?.text = moderator
                 txtAbLoading?.visibility = View.GONE
