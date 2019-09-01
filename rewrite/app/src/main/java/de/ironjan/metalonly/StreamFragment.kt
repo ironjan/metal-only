@@ -117,7 +117,7 @@ class StreamFragment : Fragment(),
     private fun loadModeratorImage(stats: Stats) {
         LW.d(TAG, "Starting to load mod image.")
         val mod = stats.showInformation.moderator
-        val id = resources.getIdentifier(mod.toLowerCase(), "drawable", "de.ironjan.metalonly")
+        val id = resources.getIdentifier(mod.toLowerCase(), "drawable", activity?.packageName)
         val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
         runOnUiThread {
             if (id != 0) {

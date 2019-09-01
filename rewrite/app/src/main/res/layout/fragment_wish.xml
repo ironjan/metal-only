@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".WishFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,6 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:visibility="gone"
         android:text="Nick:"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -46,6 +48,7 @@
     <EditText
         android:id="@+id/editNick"
         android:layout_width="0dp"
+        android:hint="Nick"
         android:layout_height="wrap_content"
         android:ems="10"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -57,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Artist:"
+        android:text="Wunsch:"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editNick" />
@@ -67,6 +70,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Artist"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/lblArtist" />
@@ -77,6 +81,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
     android:text="Title:"
+    android:visibility="gone"
     app:layout_constraintEnd_toStartOf="@+id/guideline2"
     app:layout_constraintStart_toStartOf="@+id/guideline"
     app:layout_constraintTop_toBottomOf="@+id/editArtist" />
@@ -85,6 +90,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Title"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
