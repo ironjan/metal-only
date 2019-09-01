@@ -134,7 +134,7 @@ class MoStreamingService : Service() {
         val notification2 = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Metal Only")
             .setContentText("Playing stream")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setSound(null)
