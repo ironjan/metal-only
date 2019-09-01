@@ -36,6 +36,7 @@
         android:text=" IST "/>
     <TextView android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:id="@+id/txtAbOnAir"
         app:layout_constraintStart_toEndOf="@+id/txtAbIs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

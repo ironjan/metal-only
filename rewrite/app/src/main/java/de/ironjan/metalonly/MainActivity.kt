@@ -28,6 +28,7 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import de.ironjan.metalonly.streaming.*
+import kotlinx.android.synthetic.main.action_bar.*
 
 // TODO split out the watcher thread etc -> SRP
 class MainActivity : AppCompatActivity(), StateChangeCallback {
