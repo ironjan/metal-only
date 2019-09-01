@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/planFragment"
-        android:name="com.codingspezis.android.metalonly.player.PlanFragment"
+        android:name="de.ironjan.metalonly.PlanFragment"
         android:label="fragment_plan"
         tools:layout="@layout/fragment_plan" />
     <activity
@@ -24,12 +24,12 @@
     </activity>
     <fragment
         android:id="@+id/wishFragment"
-        android:name="com.codingspezis.android.metalonly.player.WishFragment"
+        android:name="de.ironjan.metalonly.WishFragment"
         android:label="fragment_wish"
         tools:layout="@layout/fragment_wish" />
     <fragment
         android:id="@+id/streamControlFragment2"
-        android:name="com.codingspezis.android.metalonly.player.StreamControlFragment"
+        android:name="de.ironjan.metalonly.StreamControlFragment"
         android:label="fragment_stream_control"
-        tools:layout="@layout/fragment_stream_control" />
+        tools:layout="@layout/fragment_stream" />
 </navigation>
