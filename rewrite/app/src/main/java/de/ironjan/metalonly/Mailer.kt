@@ -10,7 +10,10 @@ import java.io.File
 import java.nio.charset.Charset
 
 object Mailer {
-    internal fun sendFeedback(context: Context) {
+    internal fun sendFeedback(context: Context?) {
+        if(context==null){
+            return
+        }
         val subject = String.format("Metal Only Feedback %s", BuildConfig.VERSION_NAME)
 
 
