@@ -24,8 +24,9 @@
     <TextView
         android:id="@+id/txtExplanation"
         android:layout_width="0dp"
-        tools:text="Derzeitiges Limit: 3 Wünsche und unbegrenzt Grüße pro Hörer. Wünsche und Grüße sind nur während der moderierten Sendezeit möglich."
+        tools:text="Derzeitiges Limit: 3 Wünsche und unbegrenzt Grüße pro Hörer. Wünsche und Grüße sind nur während der moderierten Sendezeit möglich. Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich."
         android:layout_height="wrap_content"
+        android:minLines="3"
         android:text="@string/hello_blank_fragment"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"

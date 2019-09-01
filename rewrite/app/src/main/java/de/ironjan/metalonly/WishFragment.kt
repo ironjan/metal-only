@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.google.gson.JsonObject
 import com.koushikdutta.async.future.FutureCallback
 import de.ironjan.metalonly.api.Client
+import de.ironjan.metalonly.api.model.Stats
 import de.ironjan.metalonly.api.model.Wish
 import de.ironjan.metalonly.log.LW
 import kotlinx.android.synthetic.main.fragment_wish.*
@@ -18,7 +19,30 @@ import java.lang.Exception
 /**
  * A simple [Fragment] subclass.
  */
-class WishFragment : Fragment() {
+class WishFragment : Fragment(), StatsLoadingRunnable.StatsLoadingCallback {
+    override fun onStatsLoadingError(s: String) {
+        runOnUiThread { txtExplanation.setText("Konnte Show-Infos nicht laden.") }
+    }
+
+    override fun onStatsLoadingSuccess(stats: Stats) {
+        val maxNoOfWishesAsString =
+            if (stats.maxNoOfWishes == 0) "unbegrenzt" else stats.maxNoOfWishes
+        val maxNoOfGreetingsAsString = if (stats.maxNoOfGreetings == 0) "unbegrenzt" else stats
+        val playlistFull =
+            if (stats.maxNoOfWishesReached) "Sorry, die Playlist ist bereits voll. Es sind keine weiteren Wünsche mehr möglich." else ""
+
+        val msg =
+            "Derzeitiges Limit: $maxNoOfWishesAsString Wünsche und $maxNoOfGreetingsAsString Grüße pro Hörer. Wünsche und Grüße sind nur während der moderierten Sendezeit möglich. $playlistFull"
+
+        runOnUiThread {
+            editArtist.isEnabled = !stats.maxNoOfWishesReached
+            editTitle.isEnabled = !stats.maxNoOfWishesReached
+            editGreeting.isEnabled = !stats.maxNoOfGreetingsReached
+            txtExplanation.setText(msg)
+        }
+    }
+
+    private fun runOnUiThread(function: () -> Unit) = activity?.runOnUiThread(function)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +56,9 @@ class WishFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         btnClear.setOnClickListener { clearForm() }
         btnSubmit.setOnClickListener { submit() }
+
+        val lContext = context ?: return
+        StatsLoadingRunnable(lContext, this).run()
     }
 
     private fun clearForm() {
@@ -52,12 +79,12 @@ class WishFragment : Fragment() {
 
     private val futureCallback = object : FutureCallback<String> {
         override fun onCompleted(e: Exception?, result: String?) {
-            if(e!=null){
+            if (e != null) {
                 LW.e(TAG, "Exception when sending wishes.", e)
                 snack("Wunsch/Gruß konnte nicht gesendet werden: " + e.message)
                 return
             }
-            if(result != null) {
+            if (result != null) {
                 snack("Wunsch/Gruß wurde erfolgreich verschick.")
                 clearForm()
             }
