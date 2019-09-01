@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import android.os.Build
 import de.ironjan.metalonly.streaming.*
+import kotlinx.android.synthetic.main.action_bar.*
 
 // TODO split out the watcher thread etc -> SRP
 class MainActivity : AppCompatActivity(),
