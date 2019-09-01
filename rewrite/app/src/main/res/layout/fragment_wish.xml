@@ -52,26 +52,51 @@
         app:layout_constraintTop_toBottomOf="@+id/lblNick" />
 
     <TextView
-        android:id="@+id/lblWish"
+        android:id="@+id/lblArtist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Wunsch:"
+        android:text="Artist:"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editNick" />
 
     <EditText
-        android:id="@+id/editWish"
+        android:id="@+id/editArtist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/lblWish" />
+        app:layout_constraintTop_toBottomOf="@+id/lblArtist" />
 
+<TextView
+    android:id="@+id/lblTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:text="Title:"
+    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+    app:layout_constraintStart_toStartOf="@+id/guideline"
+    app:layout_constraintTop_toBottomOf="@+id/editArtist" />
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitle" />
 
-
+    <TextView
+        android:id="@+id/lblGreeting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Gruß:"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle" />
     <EditText
         android:id="@+id/editGreeting"
         android:layout_width="0dp"
@@ -84,15 +109,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/lblGreeting" />
 
-    <TextView
-        android:id="@+id/lblGreeting"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Gruß:"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editWish" />
 
 
     <androidx.constraintlayout.widget.Guideline
