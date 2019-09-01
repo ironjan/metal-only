@@ -81,17 +81,19 @@ class MainActivity : AppCompatActivity() {
 
 
     fun setModerator(moderator: String?) {
-        if (moderator != null) {
-            txtAbModerator.text = moderator
-            txtAbLoading.visibility = View.GONE
-            txtAbModerator.visibility = View.VISIBLE
-            txtAbIs.visibility = View.VISIBLE
-            txtAbOnAir.visibility = View.VISIBLE
-        } else {
-            txtAbLoading.visibility = View.VISIBLE
-            txtAbModerator.visibility = View.GONE
-            txtAbIs.visibility = View.GONE
-            txtAbOnAir.visibility = View.GONE
+        runOnUiThread{
+            if (moderator != null) {
+                txtAbModerator.text = moderator
+                txtAbLoading.visibility = View.GONE
+                txtAbModerator.visibility = View.VISIBLE
+                txtAbIs.visibility = View.VISIBLE
+                txtAbOnAir.visibility = View.VISIBLE
+            } else {
+                txtAbLoading.visibility = View.VISIBLE
+                txtAbModerator.visibility = View.GONE
+                txtAbIs.visibility = View.GONE
+                txtAbOnAir.visibility = View.GONE
+            }
         }
     }
 

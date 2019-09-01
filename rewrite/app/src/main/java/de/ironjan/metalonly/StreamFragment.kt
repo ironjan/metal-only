@@ -152,12 +152,12 @@ class StreamFragment : Fragment(),
 
     // region show info update callbackes
     override fun onShowInfoChange(showInfo: ShowInfo) {
+        if (isAdded) {
+            (activity as MainActivity?)?.setModerator(showInfo.moderator)
+        }
         runOnUiThread {
             txtShow.text = showInfo.show
             txtGenre.text = showInfo.genre
-            if (isAdded) {
-                (activity as MainActivity?)?.setModerator(showInfo.moderator)
-            }
         }
     }
     // endregion
