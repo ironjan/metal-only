@@ -34,6 +34,80 @@ class MainActivity : AppCompatActivity(),
     MainActivityShowInfoUpdateThread.OnShowInfoUpdateCallback,
     StatsLoadingRunnable.StatsLoadingCallback {
 
+    // region lifecycle methods
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        LW.init(this)
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        setSupportActionBar(toolbar)
+
+        fab.setOnClickListener { togglePlaying() }
+        fabMail.setOnClickListener { Mailer.sendFeedback(this) }
+
+        Client.initIon(this)
+
+        setContentView(R.layout.activity_main)
+        initPlayButtonDrawables()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        isResumed = true
+
+        StatsLoadingRunnable(this).run()
+        MainActivityTrackUpdateThread(this).run()
+        MainActivityShowInfoUpdateThread(this).run()
+
+        updateTxtError()
+
+        if (mBound) {
+            onStateChange(moStreamingService.state)
+        } else {
+            Intent(this, MoStreamingService::class.java).also {
+                it.action = MoStreamingService.ACTION_PLAY
+                bindService(it, connection, 0)
+                LW.d(TAG, "onResume - binding to service if it exists.")
+            }
+        }
+
+        LW.d(TAG, "onResume done.")
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        isResumed = false
+        LW.d(TAG, "onPause done")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (mBound) {
+            mBound = false
+            unbindService(connection)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mBound) {
+            unbindService(connection)
+            mBound = false
+        }
+
+    }
+
+    internal var isResumed: Boolean = false
+
+    // endregion
+
+
+    // region stats callbacks and mod image loading
     override fun onStatsLoadingError(s: String) = snack(s)
 
     override fun onStatsLoadingSuccess(stats: Stats) {
@@ -56,7 +130,31 @@ class MainActivity : AppCompatActivity(),
         LW.d(TAG, "Loading stats succeeded. Triggering mod image load.")
         loadModeratorImage(stats)
     }
+    private fun loadModeratorImage(stats: Stats) {
+        LW.d(TAG, "Starting to load mod image.")
+        val mod = stats.showInformation.moderator
+        val id = resources.getIdentifier(mod.toLowerCase(), "drawable", packageName)
+        val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
+        runOnUiThread {
+            if (id != 0) {
+                LW.d(TAG, "Mod image delivered via app. Using resource.")
+                imageView.setImageResource(id)
+            } else {
+                LW.d(TAG, "Mod image not delivered via app. Loading from URL.")
+                Ion.with(imageView)
+                    .placeholder(R.drawable.metalhead)
+                    // TODO do we need these?
+//                        .error(R.drawable.error_image)
+//                        .animateLoad(spinAnimation)
+//                        .animateIn(fadeInAnimation)
+                    .load(modUrl)
 
+            }
+        }
+    }
+    // endregion StatsLoadingCallback
+
+    // region track update callbacks
     override fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
         runOnUiThread {
@@ -64,7 +162,9 @@ class MainActivity : AppCompatActivity(),
         }
         LW.d(TAG, "Track info updated: $s")
     }
+    // endregion
 
+    // region show info update callbackes
     override fun onShowInfoChange(showInfo: ShowInfo) {
         runOnUiThread {
             txtShow.text = showInfo.show
@@ -78,6 +178,37 @@ class MainActivity : AppCompatActivity(),
             txtAbOnAir.visibility = View.VISIBLE
         }
     }
+    // endregion
+
+
+    // region play button drawables
+    private fun initPlayButtonDrawables() {
+        val currentTheme = theme
+        action_play =
+            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, currentTheme)!!
+        action_stop = ResourcesCompat.getDrawable(
+            resources,
+            android.R.drawable.ic_media_pause,
+            currentTheme
+        )!!
+        stream_loading = ResourcesCompat.getDrawable(
+            resources,
+            android.R.drawable.stat_sys_download,
+            currentTheme
+        )!!
+        stopping_drawable = ResourcesCompat.getDrawable(
+            resources,
+            android.R.drawable.button_onoff_indicator_off,
+            currentTheme
+        )!!
+    }
+    private lateinit var action_play: Drawable
+    private lateinit var action_stop: Drawable
+    private lateinit var stream_loading: Drawable
+    private lateinit var stopping_drawable: Drawable
+    // endregion
+
+    // region state handling and state change callback
 
     override fun onStateChange(newState: State) {
         LW.d(TAG, "onStateChange($newState) called.")
@@ -94,52 +225,14 @@ class MainActivity : AppCompatActivity(),
     }
 
     private var localState: State = State.Gone
-
-    internal var isResumed: Boolean = false
-    private val TAG = "MainActivity"
-
-    private lateinit var action_play: Drawable
-    private lateinit var action_stop: Drawable
-    private lateinit var stream_loading: Drawable
-    private lateinit var stopping_drawable: Drawable
-
-    private var mBound: Boolean = false
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        LW.init(this)
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
-        action_play =
-            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, theme)!!
-        action_stop =
-            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_pause, theme)!!
-        stream_loading =
-            ResourcesCompat.getDrawable(resources, android.R.drawable.stat_sys_download, theme)!!
-        stopping_drawable = ResourcesCompat.getDrawable(
-            resources,
-            android.R.drawable.button_onoff_indicator_off,
-            theme
-        )!!
-
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { togglePlaying() }
-        fabMail.setOnClickListener { Mailer.sendFeedback(this) }
-
-        Client.initIon(this)
-    }
-
     private val localStateIsPlayingOrPreparing
         get() = localState == State.Preparing || localState == State.Started
 
+    // endregion
+
+    // region stream control
     private fun togglePlaying() {
         try {
-            // TODO move this to BG? add runonui for fab calls
             if (mBound) {
                 if (moStreamingService.isPlayingOrPreparing) {
                     LW.d(TAG, "Service is bound and playing or preparing, directly calling stop().")
@@ -151,10 +244,7 @@ class MainActivity : AppCompatActivity(),
                     LW.d(TAG, "Started playing")
                 }
             } else if (localStateIsPlayingOrPreparing) {
-                LW.d(
-                    TAG,
-                    "Service is not bound but local state is playing or preparing. Stopping via intent."
-                )
+                LW.d(TAG, "Service is not bound but local state is playing or preparing. Stopping via intent.")
                 Intent(this, MoStreamingService::class.java).also {
                     it.action = MoStreamingService.ACTION_STOP
 
@@ -180,44 +270,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        isResumed = true
-
-        loadStats()
-        MainActivityTrackUpdateThread(this).run()
-        MainActivityShowInfoUpdateThread(this).run()
-
-        updateTxtError()
-
-        if (mBound) {
-            onStateChange(moStreamingService.state)
-        } else {
-            Intent(this, MoStreamingService::class.java).also {
-                it.action = MoStreamingService.ACTION_PLAY
-                bindService(it, connection, 0)
-                LW.d(TAG, "onResume - binding to service if it exists.")
-            }
-        }
-
-        LW.d(TAG, "onResume done.")
-    }
-
-    private fun startAndBindStreamingService() {
-        Intent(this, MoStreamingService::class.java).also {
-            it.action = MoStreamingService.ACTION_PLAY
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(it)
-                LW.d(TAG, "Running on Android O+, started service as foreground.")
-            } else {
-                startService(it)
-                LW.d(TAG, "Running on Android before O, started service via startService.")
-            }
-            // FIXME leaking service connection
-            bindService(it, connection, 0)
-        }
-    }
+    private var mBound: Boolean = false
 
     private lateinit var moStreamingService: IStreamingService
 
@@ -250,6 +303,23 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    private fun startAndBindStreamingService() {
+        Intent(this, MoStreamingService::class.java).also {
+            it.action = MoStreamingService.ACTION_PLAY
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(it)
+                LW.d(TAG, "Running on Android O+, started service as foreground.")
+            } else {
+                startService(it)
+                LW.d(TAG, "Running on Android before O, started service via startService.")
+            }
+            // FIXME leaking service connection
+            bindService(it, connection, 0)
+        }
+    }
+    // endregion
+
+
     private fun updateTxtError() {
         runOnUiThread {
             if (mBound && moStreamingService.lastError != null) {
@@ -260,23 +330,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mBound) {
-            mBound = false
-            unbindService(connection)
-        }
-    }
-
-    private fun loadStats() {
-        StatsLoadingRunnable(this).run()
-    }
-
+    // region options menu and navigation
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
@@ -316,61 +370,17 @@ class MainActivity : AppCompatActivity(),
             startActivity(intent)
         }
     }
-
-    internal fun loadModeratorImage(stats: Stats) {
-        LW.d(TAG, "Starting to load mod image.")
-        val mod = stats.showInformation.moderator
-        val id = resources.getIdentifier(mod.toLowerCase(), "drawable", packageName)
-        val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=$mod"
-        runOnUiThread {
-            if (id != 0) {
-                LW.d(TAG, "Mod image delivered via app. Using resource.")
-                imageView.setImageResource(id)
-            } else {
-                LW.d(TAG, "Mod image not delivered via app. Loading from URL.")
-                Ion.with(imageView)
-                    .placeholder(R.drawable.metalhead)
-                    // TODO do we need these?
-//                        .error(R.drawable.error_image)
-//                        .animateLoad(spinAnimation)
-//                        .animateIn(fadeInAnimation)
-                    .load(modUrl)
-
-            }
-        }
-    }
+    // endregion
 
 
-    internal fun snack(s: String) {
+    private fun snack(s: String) {
         LW.v(TAG, "Called snack($s)")
         runOnUiThread {
             Snackbar.make(fab, s, Snackbar.LENGTH_LONG).show()
         }
     }
 
-    private val STRING_EXTRA_STREAM_EVENT = "STREAM_EVENT"
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        val event = intent?.extras?.getString(STRING_EXTRA_STREAM_EVENT)
-        if (event != null) {
-            LW.w(TAG, event)
-            snack(event)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (mBound) {
-            unbindService(connection)
-            mBound = false
-        }
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        isResumed = false
-        LW.d(TAG, "onPause done")
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }
