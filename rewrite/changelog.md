@@ -19,7 +19,13 @@ The subsections are formatted as they need when publishing a release to the Play
 
 ## Unreleased
 
-## [0.9.32]
+## [0.9.33] - 2019-09-01
+
+ * Added: smaller screen support
+ * Internal: Improved navigation
+ * Added: basic wish functionality
+
+## [0.9.32] - 2019-09-01
 
  * Added: support for changing network
  * UI styling
