@@ -103,9 +103,9 @@ class StreamFragment : Fragment(),
         val trackAsString = "${track.artist} - ${track.title}"
         val showInformation = stats.showInformation
         runOnUiThread {
-            txtShow.text = showInformation.show
-            txtGenre.text = showInformation.genre
-            txtTrack.text = trackAsString
+            txtShow?.text = showInformation.show
+            txtGenre?.text = showInformation.genre
+            txtTrack?.text = trackAsString
         }
         if (isAdded) {
             (activity as MainActivity?)?.setModerator(showInformation.moderator)
@@ -142,7 +142,7 @@ class StreamFragment : Fragment(),
     override fun onTrackChange(trackInfo: TrackInfo) {
         val s = "${trackInfo.artist} - ${trackInfo.title}"
         runOnUiThread {
-            txtTrack.text = s
+            txtTrack?.text = s
         }
         LW.d(TAG, "Track info updated: $s")
     }
@@ -154,8 +154,8 @@ class StreamFragment : Fragment(),
             (activity as MainActivity?)?.setModerator(showInfo.moderator)
         }
         runOnUiThread {
-            txtShow.text = showInfo.show
-            txtGenre.text = showInfo.genre
+            txtShow?.text = showInfo.show
+            txtGenre?.text = showInfo.genre
         }
     }
     // endregion

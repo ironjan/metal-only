@@ -7,10 +7,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.children
+import androidx.navigation.fragment.findNavController
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.log.LW
 import kotlinx.android.synthetic.main.action_bar.*
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.mnuWish -> {
-                openWish()
+                nav_host_fragment.findNavController().navigate(R.id.action_streamFragment_to_wishFragment2)
                 return true
             }
             R.id.mnuPlan -> {
@@ -66,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openWish() = openBrowser("https://www.metal-only.de/wunschgruss.html")
     private fun openPlan() = openBrowser("https://www.metal-only.de/sendeplan.html")
     private fun openDonation() = openBrowser("https://www.metal-only.de/info-center/donation.html")
 
@@ -83,16 +81,16 @@ class MainActivity : AppCompatActivity() {
     fun setModerator(moderator: String?) {
         runOnUiThread{
             if (moderator != null) {
-                txtAbModerator.text = moderator
-                txtAbLoading.visibility = View.GONE
-                txtAbModerator.visibility = View.VISIBLE
-                txtAbIs.visibility = View.VISIBLE
-                txtAbOnAir.visibility = View.VISIBLE
+                txtAbModerator?.text = moderator
+                txtAbLoading?.visibility = View.GONE
+                txtAbModerator?.visibility = View.VISIBLE
+                txtAbIs?.visibility = View.VISIBLE
+                txtAbOnAir?.visibility = View.VISIBLE
             } else {
-                txtAbLoading.visibility = View.VISIBLE
-                txtAbModerator.visibility = View.GONE
-                txtAbIs.visibility = View.GONE
-                txtAbOnAir.visibility = View.GONE
+                txtAbLoading?.visibility = View.VISIBLE
+                txtAbModerator?.visibility = View.GONE
+                txtAbIs?.visibility = View.GONE
+                txtAbOnAir?.visibility = View.GONE
             }
         }
     }
