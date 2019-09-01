@@ -39,8 +39,6 @@ class StreamFragment : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initPlayButtonDrawables()
-
         val lContext = context ?: return
         mainActivityShowInfoUpdater = MainActivityShowInfoUpdater(lContext, this)
         mainActivityTrackUpdater = MainActivityTrackUpdater(lContext, this)
@@ -162,46 +160,16 @@ class StreamFragment : Fragment(),
     }
     // endregion
 
-
-    // region play button drawables
-    private fun initPlayButtonDrawables() {
-        val currentTheme = activity?.theme ?: return
-
-        action_play =
-            ResourcesCompat.getDrawable(resources, android.R.drawable.ic_media_play, currentTheme)!!
-        action_stop = ResourcesCompat.getDrawable(
-            resources,
-            android.R.drawable.ic_media_pause,
-            currentTheme
-        )!!
-        stream_loading = ResourcesCompat.getDrawable(
-            resources,
-            android.R.drawable.stat_sys_download,
-            currentTheme
-        )!!
-        stopping_drawable = ResourcesCompat.getDrawable(
-            resources,
-            android.R.drawable.button_onoff_indicator_off,
-            currentTheme
-        )!!
-    }
-
-    private lateinit var action_play: Drawable
-    private lateinit var action_stop: Drawable
-    private lateinit var stream_loading: Drawable
-    private lateinit var stopping_drawable: Drawable
-    // endregion
-
     // region state handling and state change callback
 
     override fun onStateChange(newState: State) {
         LW.d(TAG, "onStateChange($newState) called.")
         localState = newState
         when (newState) {
-            State.Preparing -> runOnUiThread { fab.setImageDrawable(stream_loading) }
-            State.Started -> runOnUiThread { fab.setImageDrawable(action_stop) }
-            State.Stopping -> runOnUiThread { fab.setImageDrawable(action_stop) }
-            State.Gone -> runOnUiThread { fab.setImageDrawable(action_play) }
+            State.Preparing -> runOnUiThread { fab.setImageResource(R.drawable.ic_stream_loading) }
+            State.Started -> runOnUiThread { fab.setImageResource(R.drawable.ic_action_stop) }
+            State.Stopping -> runOnUiThread { fab.setImageResource(R.drawable.ic_action_stop) }
+            State.Gone -> runOnUiThread { fab.setImageResource(R.drawable.ic_action_play) }
             State.Completed -> snack("on complete")
             State.Error -> snack("on error")
         }
@@ -243,14 +211,14 @@ class StreamFragment : Fragment(),
                         lContext.startService(it)
                         LW.d(TAG, "Running on Android before O, sending intent via startService.")
                     }
-                    fab.setImageDrawable(action_play)
+                    fab.setImageResource(R.drawable.ic_action_play)
                 }
             } else {
                 LW.d(
                     TAG,
                     "Service is not bound and local state represents can Play. Starting and binding."
                 )
-                fab.setImageDrawable(stream_loading)
+                fab.setImageResource(R.drawable.ic_stream_loading)
                 startAndBindStreamingService()
             }
         } catch (e: Exception) {
