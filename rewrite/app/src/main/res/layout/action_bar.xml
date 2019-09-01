@@ -7,25 +7,24 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txtAbLoading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtAbLoading"
+        android:fontFamily="@font/metalmania_regular"
         android:text="Metal Only"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/metalmania_regular" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtAbModerator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/txtAbLoading"
-
-        tools:text="Metal Head"
-        app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/metalmania_regular"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/txtAbLoading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Metal Head" />
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
