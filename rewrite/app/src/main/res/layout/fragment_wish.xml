@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Button"
+        android:text="Leeren"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editGreeting" />
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Button"
+        android:text="Abschicken"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/editGreeting" />
@@ -129,11 +129,12 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
-        app:layout_constraintTop_toBottomOf="@id/btnSubmit"
+        android:layout_marginTop="32dp"
         android:text="Das Team von Metal Only behält es sich vor, Wünsche nicht zu spielen und Grüße nicht vorzulesen, ohne eine Begründung dafür zu nennen.\n
 Kein Moderator ist dazu verpflichtet einen Gruß vorzulesen oder einen Wunsch zu erfüllen. Insbesondere gilt dies für Wünsche, die nicht den Genrevorgaben der Sendung entsprechen.\n
-Aufgrund der hohen Grußfrequenz entscheidet jeder Moderator selbst, welche Grüße vorgelesen werden. Dies ist nicht als Wertung des Grüßenden oder des Gegrüßten zu verstehen."/>
+Aufgrund der hohen Grußfrequenz entscheidet jeder Moderator selbst, welche Grüße vorgelesen werden. Dies ist nicht als Wertung des Grüßenden oder des Gegrüßten zu verstehen."
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/btnSubmit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
