@@ -3,32 +3,20 @@ package de.ironjan.metalonly.api
 import android.content.Context
 import arrow.core.Either
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.koushikdutta.async.future.FutureCallback
 import com.koushikdutta.ion.Ion
 import com.koushikdutta.ion.builder.Builders
-import de.ironjan.metalonly.api.model.Stats
-import de.ironjan.metalonly.api.model.TrackInfo
-import de.ironjan.metalonly.api.model.ShowInfo
-import de.ironjan.metalonly.api.model.Wish
+import de.ironjan.metalonly.api.model.*
 import de.ironjan.metalonly.log.LW
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
-import java.net.URL
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 class Client(private val context: Context) {
-
-    fun getStats(): Either<String, Stats> = safeRequest(statsUrl, Stats::class.java)
-
-    fun getTrack(): Either<String, TrackInfo> = safeRequest(trackUrl, TrackInfo::class.java)
-
-    fun getShowInfo(): Either<String, ShowInfo> = safeRequest(showInfoUrl, ShowInfo::class.java)
 
     fun sendWish(wish: Wish, futureCallback: FutureCallback<String>) {
         Ion.with(context)
@@ -37,6 +25,26 @@ class Client(private val context: Context) {
             .asString()
             .setCallback(futureCallback);
     }
+
+    fun getPlan(): Either<String, List<PlanEntry>> {
+        return try {
+            val gson = Gson()
+            val right = prepareRequest(planUrl, true)
+                .asJsonArray()
+                .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
+                .map { gson.fromJson(it, PlanEntry::class.java)}
+
+            Either.right(right)
+        } catch (e: Exception) {
+            wrapException(e)
+        }
+    }
+
+    fun getStats(): Either<String, Stats> = safeRequest(statsUrl, Stats::class.java)
+
+    fun getTrack(): Either<String, TrackInfo> = safeRequest(trackUrl, TrackInfo::class.java)
+
+    fun getShowInfo(): Either<String, ShowInfo> = safeRequest(showInfoUrl, ShowInfo::class.java)
 
     private fun <T> safeRequest(url: String, clazz: Class<T>): Either<String, T> {
         return try {
