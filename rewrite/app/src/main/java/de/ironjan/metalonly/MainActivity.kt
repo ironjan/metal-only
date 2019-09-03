@@ -48,12 +48,14 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.mnuWish -> {
                 if (navController.currentDestination?.id != R.id.wishFragment2) {
-                    navController.navigate(R.id.action_streamFragment_to_wishFragment2)
+                    navController.navigate(R.id.to_wishFragment)
                 }
                 return true
             }
             R.id.mnuPlan -> {
-                openPlan()
+                if(navController.currentDestination?.id != R.id.planFragment){
+                    navController.navigate(R.id.to_planFragment)
+                }
                 return true
             }
             R.id.mnuPDonation -> {

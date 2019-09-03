@@ -11,8 +11,11 @@
         android:label="StreamFragment"
         tools:layout="@layout/fragment_stream" >
         <action
-            android:id="@+id/action_streamFragment_to_wishFragment2"
+            android:id="@+id/to_wishFragment"
             app:destination="@id/wishFragment2"/>
+        <action
+            android:id="@+id/to_planFragment"
+            app:destination="@id/planFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishFragment2"
@@ -20,7 +23,16 @@
         android:label="fragment_wish"
         tools:layout="@layout/fragment_wish" >
         <action
-            android:id="@+id/action_wishFragment_to_wishFragment"
+            android:id="@+id/to_wishFragment"
             app:destination="@id/wishFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/planFragment"
+        android:name="de.ironjan.metalonly.PlanFragment"
+        android:label="fragment_plan"
+        tools:layout="@layout/fragment_plan" >
+        <action
+            android:id="@+id/to_planFragment"
+            app:destination="@id/planFragment" />
     </fragment>
 </navigation>
