@@ -25,6 +25,9 @@
         <action
             android:id="@+id/to_wishFragment"
             app:destination="@id/wishFragment2" />
+        <action
+            android:id="@+id/to_planFragment"
+            app:destination="@id/planFragment" />
     </fragment>
     <fragment
         android:id="@+id/planFragment"
@@ -34,5 +37,8 @@
         <action
             android:id="@+id/to_planFragment"
             app:destination="@id/planFragment" />
+        <action
+            android:id="@+id/to_wishFragment"
+            app:destination="@id/wishFragment2" />
     </fragment>
 </navigation>

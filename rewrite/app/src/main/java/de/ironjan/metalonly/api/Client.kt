@@ -32,7 +32,7 @@ class Client(private val context: Context) {
             val right = prepareRequest(planUrl, true)
                 .asJsonArray()
                 .get(REQUEST_TIMEOUT_30_SECONDS, TimeUnit.SECONDS)
-                .map { gson.fromJson(it, PlanEntry::class.java)}
+                .map { gson.fromJson(it, PlanEntry::class.java) }
 
             Either.right(right)
         } catch (e: Exception) {
