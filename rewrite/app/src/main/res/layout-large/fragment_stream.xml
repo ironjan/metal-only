@@ -31,7 +31,8 @@
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtGenre"
-        app:srcCompat="@android:drawable/ic_media_play" />
+        android:src="@drawable/ic_action_play"
+        tools:srcCompat="@drawable/ic_action_play" />
 
     <TextView
         android:id="@+id/bufferingState"
