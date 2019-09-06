@@ -31,9 +31,9 @@
     </fragment>
     <fragment
         android:id="@+id/planFragment"
-        android:name="de.ironjan.metalonly.PlanFragment"
+        android:name="de.ironjan.metalonly.PlanFragmentOld"
         android:label="fragment_plan"
-        tools:layout="@layout/fragment_plan" >
+        tools:layout="@layout/fragment_plan_old" >
         <action
             android:id="@+id/to_planFragment"
             app:destination="@id/planFragment" />

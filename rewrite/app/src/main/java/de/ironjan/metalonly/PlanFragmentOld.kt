@@ -1,25 +1,22 @@
 package de.ironjan.metalonly
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.ListFragment
-import arrow.core.right
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.PlanEntry
 import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.log.LW
-import kotlinx.android.synthetic.main.fragment_plan.*
 
 /**
  * FIXME add list
  * FIXME add empty view, loading fail, etc.
  */
-class PlanFragment : ListFragment() {
+class PlanFragmentOld : ListFragment() {
 
     private lateinit var arrayAdapter: ArrayAdapter<PlanEntry>
 
@@ -35,7 +32,7 @@ class PlanFragment : ListFragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_plan, container, false)
+        return inflater.inflate(R.layout.fragment_plan_old, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -115,6 +112,6 @@ class PlanFragment : ListFragment() {
     }
 
     companion object {
-        private const val TAG = "PlanFragment"
+        private const val TAG = "PlanFragmentOld"
     }
 }
