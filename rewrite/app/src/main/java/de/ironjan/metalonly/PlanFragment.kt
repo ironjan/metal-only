@@ -8,26 +8,27 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.ListFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import arrow.core.right
 import de.ironjan.metalonly.api.Client
 import de.ironjan.metalonly.api.model.PlanEntry
 import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.log.LW
+import de.ironjan.metalonly.plan.PlanRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_plan.*
 
 /**
  * FIXME add list
  * FIXME add empty view, loading fail, etc.
  */
-class PlanFragment : ListFragment() {
+class PlanFragment : Fragment() {
 
-    private lateinit var arrayAdapter: ArrayAdapter<PlanEntry>
+    private lateinit var recyclerView: RecyclerView
+    private val adapter = PlanRecyclerViewAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val lContext = context ?: return
-        arrayAdapter = ArrayAdapter<PlanEntry>(lContext, R.layout.view_plan_entry, R.id.txtShow, emptyArray())
-        listAdapter = arrayAdapter
     }
 
     override fun onCreateView(
@@ -40,6 +41,22 @@ class PlanFragment : ListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val lContext = context ?: return
+
+        recyclerView = view.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+
+            // use a linear layout manager
+            layoutManager = LinearLayoutManager(lContext)
+
+            // specify an viewAdapter (see also next example)
+            adapter = this@PlanFragment.adapter
+
+        }
+
         refresh()
     }
 
@@ -107,12 +124,7 @@ class PlanFragment : ListFragment() {
 
     }
 
-    private fun showPlan(plan: List<PlanEntry>) {
-        arrayAdapter.clear()
-        plan.map { arrayAdapter.add(it) }
-        LW.d(TAG, "Showing done")
-
-    }
+    private fun showPlan(plan: List<PlanEntry>) = adapter.setPlan(plan)
 
     companion object {
         private const val TAG = "PlanFragment"
