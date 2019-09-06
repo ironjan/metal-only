@@ -17,6 +17,7 @@ import de.ironjan.metalonly.api.model.ShowInfo
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.plan.PlanRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_plan.*
+import java.util.*
 
 /**
  * FIXME add list
@@ -81,7 +82,11 @@ class PlanFragment : Fragment() {
         }
     }
 
-    private fun showPlan(plan: List<PlanEntry>) = adapter.setPlan(plan)
+    private fun showPlan(plan: List<PlanEntry>) {
+        val now = Date()
+        val filteredPlan = plan.filter { it.startDateTime.before(now) || it.endDateTime.after(now) }.sortedBy { it.start }
+        adapter.setPlan(filteredPlan)
+    }
 
     companion object {
         private const val TAG = "PlanFragment"
