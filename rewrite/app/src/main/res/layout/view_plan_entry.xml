@@ -3,25 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
 
     <ImageView
         android:id="@+id/imgMod"
         android:layout_width="64dp"
         android:layout_height="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate"
+        android:layout_marginTop="8dp"
         tools:src="@drawable/metalhead" />
+
+    <TextView
+        android:id="@+id/txtStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDate"
+        app:layout_constraintStart_toEndOf="@id/txtDate"
+        app:layout_constraintTop_toTopOf="@+id/txtDate"
+        tools:text="12:00" />
+
+    <TextView
+        android:id="@+id/txtTimeBuffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - "
+        app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
+        app:layout_constraintStart_toEndOf="@+id/txtStartTime"
+        app:layout_constraintTop_toTopOf="@+id/txtStartTime" />
+
+    <TextView
+        android:id="@+id/txtEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTimeBuffer"
+        app:layout_constraintStart_toEndOf="@+id/txtTimeBuffer"
+        app:layout_constraintTop_toTopOf="@+id/txtTimeBuffer"
+        tools:text="15:00" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="09.09.2019" />
 
     <TextView
         android:id="@+id/txtModerator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/txtShow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgMod"
         app:layout_constraintTop_toTopOf="@+id/imgMod"
-        app:layout_constraintBottom_toTopOf="@id/txtShow"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="Metal Head" />
 
@@ -29,10 +67,10 @@
         android:id="@+id/txtShow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/txtGenre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgMod"
         app:layout_constraintTop_toBottomOf="@+id/txtModerator"
-        app:layout_constraintBottom_toTopOf="@id/txtGenre"
         tools:text="Keine Grüsse und Wünsche möglich" />
 
     <TextView
@@ -45,40 +83,4 @@
         app:layout_constraintTop_toBottomOf="@+id/txtShow"
         tools:text="Mixed Metal" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtDate"
-        app:layout_constraintTop_toBottomOf="@id/imgMod"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="09.09.2019" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/txtDate"
-        app:layout_constraintStart_toEndOf="@id/txtDate"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDate"
-        android:id="@+id/txtStartTime"
-        android:layout_marginStart="8dp"
-        tools:text="12:00"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" - "
-        android:id="@+id/txtTimeBuffer"
-        app:layout_constraintStart_toEndOf="@+id/txtStartTime"
-        app:layout_constraintTop_toTopOf="@+id/txtStartTime"
-        app:layout_constraintBottom_toBottomOf="@+id/txtStartTime"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/txtTimeBuffer"
-        app:layout_constraintTop_toTopOf="@+id/txtTimeBuffer"
-        app:layout_constraintBottom_toBottomOf="@+id/txtTimeBuffer"
-        android:id="@+id/txtEndTime"
-        tools:text="15:00" />
 </androidx.constraintlayout.widget.ConstraintLayout>
