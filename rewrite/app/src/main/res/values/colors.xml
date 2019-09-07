@@ -5,4 +5,5 @@
     <color name="colorAccent">@color/brightGreen</color>
 
     <color name="brightGreen">#00b215</color>
+    <color name="lightGrey">#cccccc</color>
 </resources>

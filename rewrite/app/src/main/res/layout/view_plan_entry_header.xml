@@ -9,26 +9,26 @@
 
     <TextView
         android:id="@+id/txtDate"
+        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/circle_shape"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
-        android:elevation="16dp"
-        android:padding="8dp"
-        android:gravity="center"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:background="@drawable/circle_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="09" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/guideline2"
-        app:layout_constraintGuide_begin="72dp"
         android:orientation="vertical"
-        />
+        app:layout_constraintGuide_begin="72dp" />
 
     <include layout="@layout/view_plan_entry_show_info" />
 
