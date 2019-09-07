@@ -80,7 +80,7 @@ class PlanFragment : Fragment() {
     private fun showPlan(plan: List<PlanEntry>) {
         val now = Date()
 
-        val filteredPlan = plan.filter { it.endDateTime.after(now) }.sortedBy { it.start }
+        val filteredPlan = plan.filter { it.endDateTime.after(now) }.filter { !"frei".equals(it.showInformation.moderator) }.sortedBy { it.start }
 
         adapter.setPlan(filteredPlan)
     }
