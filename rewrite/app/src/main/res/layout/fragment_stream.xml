@@ -56,7 +56,7 @@
         tools:text="METALFORCE WARP SPASM" />
 
     <TextView
-        android:id="@+id/txtShow"
+        android:id="@+id/txtGenre"
         style="@style/TextAppearance.AppCompat.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
