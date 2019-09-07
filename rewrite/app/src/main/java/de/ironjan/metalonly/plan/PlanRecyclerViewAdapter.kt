@@ -49,7 +49,7 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         }
         return VIEW_TYPE_ENTRY
     }
-    
+
     override fun getItemCount(): Int = plan.size
 
     override fun onBindViewHolder(holder: PlanEntryViewHolder, position: Int) {
@@ -63,8 +63,8 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
 
         val day = dayDateFormat.format(entry.startDateTime)
         holder.itemView.findViewById<TextView>(R.id.txtDate).text = day
-        holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = entry.startTime
-        holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = entry.endTime
+        holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = timeDateFormat.format(entry.startDateTime)
+        holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = timeDateFormat.format(entry.endDateTime)
 
 
         val imgMod = holder.itemView.findViewById<ImageView>(R.id.imgMod) ?: return
@@ -90,6 +90,7 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         private const val VIEW_TYPE_HEADER = 1
         private const val VIEW_TYPE_ENTRY = 2
         val dayDateFormat = SimpleDateFormat("dd'.'", Locale.GERMAN)
+        val timeDateFormat = SimpleDateFormat("hh':'mm", Locale.GERMAN)
 
     }
 }
