@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.ListFragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import arrow.core.right
@@ -46,14 +47,8 @@ class PlanFragment : Fragment() {
         val lContext = context ?: return
 
         recyclerView = view.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
-
-            // use a linear layout manager
             layoutManager = LinearLayoutManager(lContext)
-
-            // specify an viewAdapter (see also next example)
             adapter = this@PlanFragment.adapter
 
         }
@@ -84,9 +79,12 @@ class PlanFragment : Fragment() {
 
     private fun showPlan(plan: List<PlanEntry>) {
         val now = Date()
-        val filteredPlan = plan.filter { it.startDateTime.before(now) || it.endDateTime.after(now) }.sortedBy { it.start }
+
+        val filteredPlan = plan.filter { it.endDateTime.after(now) }.sortedBy { it.start }
+
         adapter.setPlan(filteredPlan)
     }
+
 
     companion object {
         private const val TAG = "PlanFragment"
