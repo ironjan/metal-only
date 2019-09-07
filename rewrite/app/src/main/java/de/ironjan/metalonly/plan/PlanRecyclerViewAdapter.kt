@@ -23,13 +23,33 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         notifyDataSetChanged()
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanEntryViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_plan_entry, parent, false) as ConstraintLayout
+        val view = when (viewType) {
+            VIEW_TYPE_ENTRY -> LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_plan_entry, parent, false) as ConstraintLayout
+            VIEW_TYPE_HEADER -> LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_plan_entry_header, parent, false) as ConstraintLayout
+            else -> LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_plan_entry, parent, false) as ConstraintLayout
+        }
 
         return PlanEntryViewHolder(view)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        if(position <= 0) {
+            return VIEW_TYPE_HEADER
+        }
+
+        val dayPosMinus1 = dayDateFormat.format(plan[position-1].startDateTime)
+        val dayPos= dayDateFormat.format(plan[position].startDateTime)
+        if(!dayPosMinus1.equals(dayPos)) {
+            return VIEW_TYPE_HEADER
+        }
+        return VIEW_TYPE_ENTRY
+    }
+    
     override fun getItemCount(): Int = plan.size
 
     override fun onBindViewHolder(holder: PlanEntryViewHolder, position: Int) {
@@ -41,9 +61,8 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         holder.itemView.findViewById<TextView>(R.id.txtShow).text = show.genre
 
 
-        val dayDateFormat = SimpleDateFormat("dd'.'", Locale.GERMAN)
-
-        holder.itemView.findViewById<TextView>(R.id.txtDate).text = dayDateFormat.format(entry.startDateTime)
+        val day = dayDateFormat.format(entry.startDateTime)
+        holder.itemView.findViewById<TextView>(R.id.txtDate).text = day
         holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = entry.startTime
         holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = entry.endTime
 
@@ -51,6 +70,7 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         val imgMod = holder.itemView.findViewById<ImageView>(R.id.imgMod) ?: return
 
         // fixme duplicate code
+        // fixme use resource if available
         val context = holder.itemView.context ?: return
         val id = context.resources.getIdentifier(show.moderator.toLowerCase(), "drawable", context.packageName)
         val modUrl = "https://www.metal-only.de/botcon/mob.php?action=pic&nick=${show.moderator}"
@@ -66,7 +86,12 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         // todo bind times...
     }
 
+    companion object {
+        private const val VIEW_TYPE_HEADER = 1
+        private const val VIEW_TYPE_ENTRY = 2
+        val dayDateFormat = SimpleDateFormat("dd'.'", Locale.GERMAN)
 
+    }
 }
 
 class PlanEntryViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
