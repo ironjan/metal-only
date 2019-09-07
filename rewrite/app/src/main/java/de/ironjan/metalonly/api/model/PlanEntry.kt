@@ -10,15 +10,17 @@ data class PlanEntry(
 ){
     val startDateTime
         get() = simpleDateFormat.parse(start)
+
+    val startDay
+            get() = start.substring(8, 10)
+
     val endDateTime
         get() = simpleDateFormat.parse(end)
-    val startDate
-        get() = start.substring(0,10)
 
     val startTime
-        get() = start.substring(12,16)
+        get() = start.substring(11,16)
     val endTime
-        get() = end.substring(12,16)
+        get() = end.substring(11,16)
 
     companion object {
         private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.GERMAN)
