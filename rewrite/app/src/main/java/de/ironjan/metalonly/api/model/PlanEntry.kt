@@ -1,6 +1,7 @@
 package de.ironjan.metalonly.api.model
 
 import java.text.SimpleDateFormat
+import java.util.*
 
 data class PlanEntry(
     val start: String,
@@ -20,7 +21,7 @@ data class PlanEntry(
         get() = end.substring(12,16)
 
     companion object {
-        private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+        private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.GERMAN)
     }
 }
 

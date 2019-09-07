@@ -3,12 +3,10 @@ package de.ironjan.metalonly
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.koushikdutta.ion.Ion
@@ -104,7 +102,7 @@ class StreamFragment : Fragment(),
         val showInformation = stats.showInformation
         runOnUiThread {
             txtShow?.text = showInformation.show
-            txtGenre?.text = showInformation.genre
+            txtShow?.text = showInformation.genre
             txtTrack?.text = trackAsString
         }
         if (isAdded) {
@@ -156,7 +154,7 @@ class StreamFragment : Fragment(),
         }
         runOnUiThread {
             txtShow?.text = showInfo.show
-            txtGenre?.text = showInfo.genre
+            txtShow?.text = showInfo.genre
         }
     }
     // endregion

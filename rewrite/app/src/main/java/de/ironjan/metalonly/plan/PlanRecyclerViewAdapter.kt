@@ -11,6 +11,8 @@ import com.koushikdutta.ion.Ion
 import de.ironjan.metalonly.R
 import de.ironjan.metalonly.api.model.PlanEntry
 import de.ironjan.metalonly.log.LW
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
     private val plan = mutableListOf<PlanEntry>()
@@ -36,8 +38,12 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
 
         holder.itemView.findViewById<TextView>(R.id.txtModerator).text = show.moderator
         holder.itemView.findViewById<TextView>(R.id.txtShow).text = show.show
-        holder.itemView.findViewById<TextView>(R.id.txtGenre).text = show.genre
-        holder.itemView.findViewById<TextView>(R.id.txtDate).text = entry.startDate
+        holder.itemView.findViewById<TextView>(R.id.txtShow).text = show.genre
+
+
+        val dayDateFormat = SimpleDateFormat("dd'.'", Locale.GERMAN)
+
+        holder.itemView.findViewById<TextView>(R.id.txtDate).text = dayDateFormat.format(entry.startDateTime)
         holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = entry.startTime
         holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = entry.endTime
 
