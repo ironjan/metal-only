@@ -63,9 +63,14 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
 
         val day = dayDateFormat.format(entry.startDateTime)
         holder.itemView.findViewById<TextView>(R.id.txtDate).text = day
-        holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = timeDateFormat.format(entry.startDateTime)
-        holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = timeDateFormat.format(entry.endDateTime)
 
+        val sTime = entry.startTime //timeDateFormat.format(entry.startDateTime)
+        holder.itemView.findViewById<TextView>(R.id.txtStartTime).text = sTime
+
+        val eTime = entry.endTime //timeDateFormat.format(entry.endDateTime)
+        holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = eTime
+
+        LW.e("OOOOO", "$entry -- $sTime -> $eTime [${entry.startDateTime} -> ${entry.endDateTime}]")
 
         val imgMod = holder.itemView.findViewById<ImageView>(R.id.imgMod) ?: return
 
@@ -89,8 +94,8 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
     companion object {
         private const val VIEW_TYPE_HEADER = 1
         private const val VIEW_TYPE_ENTRY = 2
-        val dayDateFormat = SimpleDateFormat("dd'.'", Locale.GERMAN)
-        val timeDateFormat = SimpleDateFormat("hh':'mm", Locale.GERMAN)
+        val dayDateFormat = SimpleDateFormat("dd.", Locale.GERMAN)
+        val timeDateFormat = SimpleDateFormat("HH:mm", Locale.GERMAN)
 
     }
 }
