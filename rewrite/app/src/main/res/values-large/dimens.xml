@@ -1,0 +1,3 @@
+<resources>
+    <item name="stream_fragment_guiding_percent" type="dimen">0.5</item>
+</resources>
