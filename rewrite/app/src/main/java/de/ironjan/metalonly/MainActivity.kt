@@ -41,9 +41,15 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        if(onNavigationViaId(item.itemId)) true else super.onOptionsItemSelected(item)
+
+    /**
+     * Pass in a menu id.
+     */
+    fun onNavigationViaId(itemId: Int): Boolean {
         val navController = nav_host_fragment.findNavController()
-        return when (item.itemId) {
+        return when (itemId) {
             R.id.mnuWish -> {
                 if (navController.currentDestination?.id != R.id.wishFragment2) {
                     navController.navigate(R.id.to_wishFragment)
@@ -64,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 Mailer.sendFeedback(this)
                 return true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> return false
         }
     }
 

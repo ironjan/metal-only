@@ -56,6 +56,9 @@ class StreamFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         refreshUi()
         imageView.setOnClickListener { onModClicked() }
+        imgActionPlan.setOnClickListener { (activity as MainActivity).onNavigationViaId(R.id.mnuPlan) }
+        imgActionDonation.setOnClickListener { (activity as MainActivity).onNavigationViaId(R.id.mnuPDonation) }
+        imgActionWish.setOnClickListener { (activity as MainActivity).onNavigationViaId(R.id.mnuWish) }
     }
 
     private fun onModClicked(): Boolean {
