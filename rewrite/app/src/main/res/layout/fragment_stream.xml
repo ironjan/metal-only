@@ -75,8 +75,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toEndOf="@+id/imgActionWish"
         app:layout_constraintEnd_toStartOf="@id/imgActionDonation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtError"
+        app:layout_constraintBottom_toBottomOf="@id/imgActionWish"
+        app:layout_constraintTop_toTopOf="@id/imgActionWish"
         app:srcCompat="@drawable/ic_action_plan" />
 
     <ImageView
@@ -86,8 +86,8 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toEndOf="@+id/imgActionPlan"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtError"
+        app:layout_constraintBottom_toBottomOf="@id/imgActionWish"
+        app:layout_constraintTop_toTopOf="@id/imgActionWish"
         app:srcCompat="@drawable/ic_action_donation" />
 
 
