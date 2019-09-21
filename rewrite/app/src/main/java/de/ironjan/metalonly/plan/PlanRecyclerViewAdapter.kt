@@ -70,8 +70,6 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
         val eTime = entry.endTime //timeDateFormat.format(entry.endDateTime)
         holder.itemView.findViewById<TextView>(R.id.txtEndTime).text = eTime
 
-        LW.e("OOOOO", "$entry -- $sTime -> $eTime [${entry.startDateTime} -> ${entry.endDateTime}]")
-
         val imgMod = holder.itemView.findViewById<ImageView>(R.id.imgMod) ?: return
 
         // fixme duplicate code
@@ -94,9 +92,8 @@ class PlanRecyclerViewAdapter : RecyclerView.Adapter<PlanEntryViewHolder>() {
     companion object {
         private const val VIEW_TYPE_HEADER = 1
         private const val VIEW_TYPE_ENTRY = 2
-        val dayDateFormat = SimpleDateFormat("dd.", Locale.GERMAN)
+        val dayDateFormat = SimpleDateFormat("cc", Locale.GERMAN)
         val timeDateFormat = SimpleDateFormat("HH:mm", Locale.GERMAN)
-
     }
 }
 
