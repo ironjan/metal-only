@@ -16,6 +16,9 @@ import de.ironjan.metalonly.api.model.TrackInfo
 import de.ironjan.metalonly.log.LW
 import de.ironjan.metalonly.streaming.*
 import kotlinx.android.synthetic.main.fragment_stream.*
+import kotlinx.android.synthetic.main.fragment_stream.txtGenre
+import kotlinx.android.synthetic.main.fragment_stream.txtShow
+import kotlinx.android.synthetic.main.view_plan_entry.*
 
 class StreamFragment : Fragment(),
     StateChangeCallback,
@@ -52,9 +55,20 @@ class StreamFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshUi()
+        imageView.setOnClickListener { onModClicked() }
+    }
+
+    private fun onModClicked(): Boolean {
+        refreshUi()
+        return true
     }
 
     private fun refreshUi() {
+        runOnUiThread {
+            txtShow?.setText(R.string.loadingShowInfo)
+            txtGenre?.text = ""
+            txtTrack?.text = ""
+        }
         val lContext = context ?: return
         Thread(StatsLoadingRunnable(lContext, this)).start()
 
@@ -93,7 +107,11 @@ class StreamFragment : Fragment(),
 
 
     // region stats callbacks and mod image loading
-    override fun onStatsLoadingError(s: String) = snack(s)
+    override fun onStatsLoadingError(s: String) {
+        runOnUiThread {
+            txtShow.setText("Laden fehlgeschlagen. Moderator-Bild antippen, um es erneut zu versuchen.")
+        }
+    }
 
     override fun onStatsLoadingSuccess(stats: Stats) {
         LW.d(TAG, "Showing stats")

@@ -1,5 +1,6 @@
 package de.ironjan.metalonly
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -50,9 +51,9 @@ class PlanFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(lContext)
             adapter = this@PlanFragment.adapter
-
         }
 
+        empty.setOnClickListener { refresh() }
         refresh()
     }
 
@@ -69,7 +70,7 @@ class PlanFragment : Fragment() {
         if (either.isLeft()) {
             either.mapLeft {
                 LW.d(TAG, "Loading plan failed: $it")
-                activity?.runOnUiThread { Toast.makeText(lContext, "Loading fail", Toast.LENGTH_LONG).show() }
+                loadingFailed()
             }
         } else {
             LW.d(TAG, "Loading done")
@@ -83,6 +84,13 @@ class PlanFragment : Fragment() {
         val filteredPlan = plan.filter { it.endDateTime.after(now) }.filter { !"frei".equals(it.showInformation.moderator) }.sortedBy { it.start }
 
         adapter.setPlan(filteredPlan)
+        empty.visibility = View.GONE;
+        recyclerView.visibility = View.VISIBLE;
+    }
+
+    private fun loadingFailed(){
+        empty.visibility = View.VISIBLE;
+        recyclerView.visibility = View.GONE;
     }
 
 
