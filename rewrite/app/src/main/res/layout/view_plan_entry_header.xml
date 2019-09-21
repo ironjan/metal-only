@@ -16,7 +16,7 @@
         android:elevation="8dp"
         android:gravity="center"
         android:padding="8dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="72dp" />
 
-    <include layout="@layout/view_plan_entry_show_info" />
+    <include layout="@layout/view_plan_entry_show_info"
+        android:padding="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="80dp"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
