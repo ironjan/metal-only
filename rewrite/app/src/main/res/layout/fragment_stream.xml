@@ -6,26 +6,13 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-    <TextView
-        android:id="@+id/txtError"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtTrack"
-        tools:text="Latest Error:\n..." />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="32dp" />
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -39,8 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="@dimen/stream_fragment_guiding_percent"/>
-
+        app:layout_constraintGuide_percent="@dimen/stream_fragment_guiding_percent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -51,11 +37,11 @@
         android:maxWidth="250dp"
         android:maxHeight="250dp"
         android:src="@drawable/metalhead"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         tools:srcCompat="@drawable/metalhead" />
 
     <ImageView
@@ -68,6 +54,55 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtShow"
         app:srcCompat="@drawable/ic_action_play" />
+
+
+    <ImageView
+        android:id="@+id/imgActionWish"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/imgActionPlan"
+        app:layout_constraintTop_toBottomOf="@+id/txtError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_action_plan" />
+
+    <ImageView
+        android:id="@+id/imgActionPlan"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toEndOf="@+id/imgActionWish"
+        app:layout_constraintEnd_toStartOf="@id/imgActionDonation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtError"
+        app:srcCompat="@drawable/ic_action_plan" />
+
+    <ImageView
+        android:id="@+id/imgActionDonation"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toEndOf="@+id/imgActionPlan"
+        app:layout_constraintEnd_toEndOf="@+id/guideline2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtError"
+        app:srcCompat="@drawable/ic_action_plan" />
+
+
+    <TextView
+        android:id="@+id/txtError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtTrack"
+        tools:text="Latest Error:\n..." />
 
     <TextView
         android:id="@+id/bufferingState"
@@ -115,7 +150,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/fab" />
 
-
     <TextView
         android:id="@+id/txtTrack"
         style="@style/TextAppearance.AppCompat.Medium"
@@ -129,24 +163,4 @@
         tools:text="Ozzy Osbourne - Killer of Giants" />
 
 
-    <ImageView
-        android:id="@+id/imgActionWish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgActionPlan"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtError"
-        app:srcCompat="@drawable/ic_action_wish" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imgActionPlan"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgActionWish"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtError"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>
