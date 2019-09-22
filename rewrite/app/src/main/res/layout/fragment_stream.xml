@@ -52,7 +52,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtShow"
+        app:layout_constraintTop_toBottomOf="@+id/txtGenre"
         app:srcCompat="@drawable/ic_action_play" />
 
 
@@ -75,12 +75,11 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintEnd_toStartOf="@+id/imgActionPlan"
         android:tooltipText="Wünsche/Grüße"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@+id/txtError"
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_action_wish" />
 
@@ -169,6 +168,5 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/lblTrack"
         tools:text="Ozzy Osbourne - Killer of Giants" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
