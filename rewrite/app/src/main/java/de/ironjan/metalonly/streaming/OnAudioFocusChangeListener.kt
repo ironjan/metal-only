@@ -53,7 +53,7 @@ class OnAudioFocusChangeListener(
                     "gained focus, continueOnAudioFocusReceived: $continueOnAudioFocusReceived"
                 )
 
-                if (moStreamingService.state == State.Started && continueOnAudioFocusReceived) {
+                if (moStreamingService.state == State.Paused && continueOnAudioFocusReceived) {
                     moStreamingService.continuePlayback()
                     LW.d(TAG, "... started playback again")
                 } else {
