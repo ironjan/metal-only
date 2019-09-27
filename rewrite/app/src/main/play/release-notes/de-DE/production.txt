@@ -1,1 +1,0 @@
-Komplettes Rewrite der App in neuem Design. Support für neue Android-Versionen (>8). Batterie-Verbrauch deutlich gesenkt. 

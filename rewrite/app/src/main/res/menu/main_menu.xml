@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/mnuWish" android:title="Wünsche/Grüße" />
-    <item android:id="@+id/mnuPlan" android:title="Plan" />
-    <item android:id="@+id/mnuPDonation" android:title="Spenden" />
-    <item android:id="@+id/mnuFeedback" android:title="Feedback senden" />
-</menu>
